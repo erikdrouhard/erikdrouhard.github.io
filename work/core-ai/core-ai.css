@@ -1,0 +1,717 @@
+.core-ai-page {
+  min-width: 320px;
+  color: #000;
+  font-family: "Crimson Text", serif;
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+
+.core-ai-page .skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 12px;
+  left: 12px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #000;
+  color: #fff;
+  font-family: "Crimson Pro", serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+
+.core-ai-page .skip-link:focus {
+  transform: translateY(0);
+}
+
+.core-ai-page .site-header {
+  margin-inline: auto;
+}
+
+.core-ai-page .chapter-nav {
+  width: 100%;
+  margin-top: 30px;
+  border-block: 1px solid rgb(0 0 0 / 12%);
+}
+
+.core-ai-page .chapter-nav-inner {
+  display: flex;
+  min-width: 0;
+  padding-block: 13px;
+  gap: 28px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.core-ai-page .chapter-nav-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.core-ai-page .chapter-nav a {
+  color: rgb(0 0 0 / 68%);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.core-ai-page .chapter-nav a:hover {
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.core-ai-page .shell {
+  width: min(100%, 940px);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+.core-ai-page .core-main {
+  isolation: isolate;
+  width: 100%;
+  overflow: hidden;
+}
+
+.core-ai-page h1,
+.core-ai-page h2,
+.core-ai-page h3,
+.core-ai-page p,
+.core-ai-page blockquote,
+.core-ai-page figure {
+  margin-top: 0;
+}
+
+.core-ai-page h1,
+.core-ai-page h2,
+.core-ai-page h3 {
+  font-family: "Crimson Pro", serif;
+  text-wrap: balance;
+}
+
+.core-ai-page h1 {
+  max-width: 14ch;
+  margin-bottom: 30px;
+  font-size: clamp(3.5rem, 7vw, 5.5rem);
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.core-ai-page h2 {
+  margin-bottom: 22px;
+  font-size: clamp(2.4rem, 5vw, 4.25rem);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.core-ai-page h3 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.12;
+}
+
+.core-ai-page p:last-child {
+  margin-bottom: 0;
+}
+
+.core-ai-page .eyebrow,
+.core-ai-page .number,
+.core-ai-page .label,
+.core-ai-page time {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.core-ai-page .eyebrow,
+.core-ai-page .number,
+.core-ai-page time {
+  color: rgb(0 0 0 / 58%);
+}
+
+.core-ai-page .eyebrow {
+  margin-bottom: 28px;
+}
+
+.core-ai-page .hero {
+  padding: 128px 0 80px;
+}
+
+.core-ai-page .hero-deck {
+  max-width: 670px;
+  margin-bottom: 32px;
+  color: rgb(0 0 0 / 72%);
+  font-size: 1.45rem;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.core-ai-page .button-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.core-ai-page .button {
+  display: inline-flex;
+  min-height: 44px;
+  padding: 0 22px;
+  border: 1px solid #000;
+  border-radius: 999px;
+  align-items: center;
+  justify-content: center;
+  font-family: "Crimson Pro", serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.025em;
+  text-decoration: none;
+}
+
+.core-ai-page .button-primary {
+  background: #000;
+  color: #fff;
+}
+
+.core-ai-page .button-secondary {
+  background: transparent;
+}
+
+.core-ai-page .button:hover {
+  opacity: 0.75;
+}
+
+.core-ai-page .snapshot {
+  display: grid;
+  margin: 0;
+  padding: 28px 0;
+  border-block: 1px solid rgb(0 0 0 / 14%);
+  list-style: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.core-ai-page .snapshot li {
+  display: grid;
+  padding: 0 22px;
+  gap: 8px;
+  align-content: start;
+}
+
+.core-ai-page .snapshot li:first-child {
+  padding-left: 0;
+}
+
+.core-ai-page .snapshot li + li {
+  border-left: 1px solid rgb(0 0 0 / 14%);
+}
+
+.core-ai-page .snapshot strong {
+  font-family: "Crimson Pro", serif;
+  font-size: 1.15rem;
+  line-height: 1.1;
+}
+
+.core-ai-page .snapshot span {
+  color: rgb(0 0 0 / 62%);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.core-ai-page .section {
+  padding: 112px 0;
+  scroll-margin-top: 24px;
+}
+
+.core-ai-page .section-rule .shell {
+  padding-top: 112px;
+  border-top: 1px solid rgb(0 0 0 / 14%);
+}
+
+.core-ai-page .section-rule {
+  padding-top: 0;
+}
+
+.core-ai-page .section-heading {
+  max-width: 760px;
+  margin-bottom: 64px;
+}
+
+.core-ai-page .section-heading > p:last-child {
+  max-width: 650px;
+  color: rgb(0 0 0 / 68%);
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.core-ai-page .timeline {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid rgb(0 0 0 / 14%);
+  list-style: none;
+}
+
+.core-ai-page .timeline li {
+  display: grid;
+  padding: 30px 0;
+  border-bottom: 1px solid rgb(0 0 0 / 14%);
+  column-gap: 28px;
+  grid-template-columns: 160px minmax(220px, 1fr) minmax(260px, 1.45fr);
+  align-items: start;
+}
+
+.core-ai-page .timeline h3,
+.core-ai-page .timeline p {
+  margin-bottom: 0;
+}
+
+.core-ai-page .timeline p,
+.core-ai-page .body-copy p,
+.core-ai-page .prototype p,
+.core-ai-page .outcome p,
+.core-ai-page .public-link p,
+.core-ai-page .sprint-step p,
+.core-ai-page .scope-note p,
+.core-ai-page .applied-work p,
+.core-ai-page .map-of-truth p {
+  color: rgb(0 0 0 / 68%);
+}
+
+.core-ai-page .split {
+  display: grid;
+  gap: 72px;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  align-items: start;
+}
+
+.core-ai-page .body-copy p + p {
+  margin-top: 1.4em;
+}
+
+.core-ai-page .pullquote {
+  margin-bottom: 0;
+  padding-left: 28px;
+  border-left: 1px solid #000;
+  font-family: "Crimson Pro", serif;
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 1.25;
+}
+
+.core-ai-page .media {
+  margin: 64px 0 0;
+}
+
+.core-ai-page .media-frame {
+  overflow: hidden;
+  border: 1px solid rgb(0 0 0 / 12%);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 50%);
+}
+
+.core-ai-page .media-frame img {
+  width: 100%;
+  height: auto;
+}
+
+.core-ai-page .architecture-frame {
+  padding: 20px;
+}
+
+.core-ai-page figcaption {
+  max-width: 760px;
+  margin-top: 14px;
+  color: rgb(0 0 0 / 58%);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.core-ai-page figcaption a,
+.core-ai-page .public-link a,
+.core-ai-page .applied-work-link a {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.core-ai-page .sprint-grid,
+.core-ai-page .outcome-grid {
+  display: grid;
+  border-block: 1px solid rgb(0 0 0 / 14%);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.core-ai-page .sprint-step,
+.core-ai-page .outcome {
+  padding: 30px;
+}
+
+.core-ai-page .sprint-step:first-child,
+.core-ai-page .outcome:first-child {
+  padding-left: 0;
+}
+
+.core-ai-page .sprint-step + .sprint-step,
+.core-ai-page .outcome + .outcome {
+  border-left: 1px solid rgb(0 0 0 / 14%);
+}
+
+.core-ai-page .number {
+  display: block;
+  margin-bottom: 28px;
+}
+
+.core-ai-page .bridge,
+.core-ai-page .map-of-truth {
+  display: grid;
+  padding: 48px;
+  border: 1px solid rgb(0 0 0 / 12%);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 34%);
+  gap: 56px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+}
+
+.core-ai-page .bridge h2 {
+  margin-bottom: 0;
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+}
+
+.core-ai-page .bridge-copy p + p {
+  margin-top: 1.4em;
+}
+
+.core-ai-page .section-dark {
+  position: relative;
+  background: linear-gradient(180deg, rgb(0 0 0 / 3%), transparent);
+}
+
+.core-ai-page .system-map {
+  display: grid;
+  border-block: 1px solid rgb(0 0 0 / 14%);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.core-ai-page .system-layer {
+  display: grid;
+  padding: 30px;
+  gap: 10px;
+}
+
+.core-ai-page .system-layer:first-child {
+  padding-left: 0;
+}
+
+.core-ai-page .system-layer + .system-layer {
+  border-left: 1px solid rgb(0 0 0 / 14%);
+}
+
+.core-ai-page .system-layer strong {
+  font-family: "Crimson Pro", serif;
+  font-size: 1.5rem;
+}
+
+.core-ai-page .system-layer span {
+  color: rgb(0 0 0 / 62%);
+}
+
+.core-ai-page .system-arrow {
+  padding: 18px 0;
+  border-top: 1px solid rgb(0 0 0 / 14%);
+  color: rgb(0 0 0 / 58%);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  grid-column: 1 / -1;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.core-ai-page .prototype-grid,
+.core-ai-page .link-grid {
+  display: grid;
+  border-top: 1px solid rgb(0 0 0 / 14%);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.core-ai-page .prototype,
+.core-ai-page .public-link {
+  padding: 32px 36px 32px 0;
+  border-bottom: 1px solid rgb(0 0 0 / 14%);
+}
+
+.core-ai-page .prototype:nth-child(even),
+.core-ai-page .public-link:nth-child(even) {
+  padding-right: 0;
+  padding-left: 36px;
+  border-left: 1px solid rgb(0 0 0 / 14%);
+}
+
+.core-ai-page .label {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 24px;
+  padding: 6px 9px;
+  border: 1px solid rgb(0 0 0 / 18%);
+  border-radius: 999px;
+  color: rgb(0 0 0 / 62%);
+  font-size: 0.675rem;
+  line-height: 1;
+}
+
+.core-ai-page .applied-work {
+  display: grid;
+  margin-top: 72px;
+  padding-top: 40px;
+  border-top: 1px solid rgb(0 0 0 / 14%);
+  gap: 64px;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
+}
+
+.core-ai-page .applied-work-link,
+.core-ai-page .scope-note {
+  display: grid;
+  padding-left: 28px;
+  border-left: 1px solid rgb(0 0 0 / 18%);
+  gap: 10px;
+}
+
+.core-ai-page .applied-work-link strong,
+.core-ai-page .map-node strong {
+  font-family: "Crimson Pro", serif;
+  font-size: 1.125rem;
+}
+
+.core-ai-page .applied-work-link span,
+.core-ai-page .map-node span {
+  color: rgb(0 0 0 / 62%);
+  font-size: 0.95rem;
+}
+
+.core-ai-page .map-of-truth {
+  margin-top: 64px;
+}
+
+.core-ai-page .map-flow {
+  display: grid;
+  border-top: 1px solid rgb(0 0 0 / 14%);
+}
+
+.core-ai-page .map-node {
+  display: grid;
+  padding: 18px 0;
+  border-bottom: 1px solid rgb(0 0 0 / 14%);
+  gap: 4px;
+}
+
+.core-ai-page .evidence-key {
+  display: flex;
+  margin: -30px 0 0;
+  padding: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.core-ai-page .evidence-key .label {
+  margin: 0;
+}
+
+.core-ai-page .link-grid {
+  margin-top: 48px;
+}
+
+.core-ai-page .site-footer {
+  padding: 36px 0 48px;
+}
+
+.core-ai-page .footer-inner {
+  display: flex;
+  padding-top: 28px;
+  border-top: 1px solid rgb(0 0 0 / 14%);
+  color: rgb(0 0 0 / 58%);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  justify-content: space-between;
+}
+
+.core-ai-page .footer-inner p {
+  margin-bottom: 0;
+}
+
+.core-ai-page .button:focus-visible,
+.core-ai-page .chapter-nav a:focus-visible,
+.core-ai-page figcaption a:focus-visible,
+.core-ai-page .public-link a:focus-visible,
+.core-ai-page .applied-work-link a:focus-visible {
+  outline: 2px solid #1677ff;
+  outline-offset: 3px;
+}
+
+@media (min-width: 810px) and (max-width: 1199.98px) {
+  .core-ai-page .shell {
+    width: min(calc(100% - 80px), 730px);
+    padding-inline: 0;
+  }
+
+  .core-ai-page .hero {
+    padding-top: 104px;
+  }
+
+  .core-ai-page .timeline li {
+    grid-template-columns: 130px minmax(180px, 0.9fr) minmax(240px, 1.3fr);
+  }
+
+  .core-ai-page .bridge,
+  .core-ai-page .map-of-truth {
+    padding: 40px;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 809.98px) {
+  .core-ai-page .chapter-nav {
+    margin-top: 16px;
+  }
+
+  .core-ai-page .shell {
+    width: 100%;
+    padding-inline: 16px;
+  }
+
+  .core-ai-page .chapter-nav-inner {
+    gap: 22px;
+  }
+
+  .core-ai-page .hero {
+    padding: 72px 0 56px;
+  }
+
+  .core-ai-page h1 {
+    font-size: clamp(2.75rem, 13.5vw, 4rem);
+  }
+
+  .core-ai-page h2 {
+    font-size: clamp(2.25rem, 11vw, 3.25rem);
+  }
+
+  .core-ai-page .hero-deck {
+    font-size: 1.2rem;
+  }
+
+  .core-ai-page .button-row,
+  .core-ai-page .button {
+    width: 100%;
+  }
+
+  .core-ai-page .snapshot,
+  .core-ai-page .sprint-grid,
+  .core-ai-page .outcome-grid,
+  .core-ai-page .system-map,
+  .core-ai-page .prototype-grid,
+  .core-ai-page .link-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .core-ai-page .snapshot {
+    padding: 0;
+  }
+
+  .core-ai-page .snapshot li,
+  .core-ai-page .snapshot li:first-child {
+    padding: 20px 0;
+  }
+
+  .core-ai-page .snapshot li + li,
+  .core-ai-page .sprint-step + .sprint-step,
+  .core-ai-page .outcome + .outcome,
+  .core-ai-page .system-layer + .system-layer {
+    border-top: 1px solid rgb(0 0 0 / 14%);
+    border-left: 0;
+  }
+
+  .core-ai-page .section {
+    padding: 80px 0;
+  }
+
+  .core-ai-page .section-rule {
+    padding-top: 0;
+  }
+
+  .core-ai-page .section-rule .shell {
+    padding-top: 80px;
+  }
+
+  .core-ai-page .section-heading {
+    margin-bottom: 48px;
+  }
+
+  .core-ai-page .timeline li,
+  .core-ai-page .split,
+  .core-ai-page .bridge,
+  .core-ai-page .map-of-truth,
+  .core-ai-page .applied-work {
+    grid-template-columns: 1fr;
+  }
+
+  .core-ai-page .timeline li {
+    gap: 12px;
+  }
+
+  .core-ai-page .pullquote,
+  .core-ai-page .scope-note,
+  .core-ai-page .applied-work-link {
+    padding: 24px 0 0;
+    border-top: 1px solid rgb(0 0 0 / 18%);
+    border-left: 0;
+  }
+
+  .core-ai-page .sprint-step,
+  .core-ai-page .sprint-step:first-child,
+  .core-ai-page .outcome,
+  .core-ai-page .outcome:first-child,
+  .core-ai-page .system-layer,
+  .core-ai-page .system-layer:first-child,
+  .core-ai-page .prototype,
+  .core-ai-page .prototype:nth-child(even),
+  .core-ai-page .public-link,
+  .core-ai-page .public-link:nth-child(even) {
+    padding: 28px 0;
+    border-right: 0;
+    border-left: 0;
+  }
+
+  .core-ai-page .bridge,
+  .core-ai-page .map-of-truth {
+    padding: 28px;
+    gap: 36px;
+  }
+
+  .core-ai-page .applied-work {
+    gap: 36px;
+  }
+
+  .core-ai-page .media {
+    margin-top: 48px;
+  }
+
+  .core-ai-page .architecture-frame {
+    padding: 8px;
+  }
+
+  .core-ai-page .footer-inner {
+    display: grid;
+    gap: 8px;
+  }
+}
