@@ -1,3 +1,5 @@
+@import url("./magnetic-card.css");
+
 case-study-nav {
   position: sticky;
   z-index: 10;

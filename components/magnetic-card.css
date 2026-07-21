@@ -1,0 +1,98 @@
+.case-study-magnetic-stage {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  perspective: 900px;
+  isolation: isolate;
+}
+
+.case-study-magnetic-stage::before {
+  position: absolute;
+  z-index: 0;
+  inset: 12% 7% -5%;
+  border-radius: 24px;
+  background: rgb(8 12 28 / 34%);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(
+      var(--magnetic-shadow-x, 0),
+      var(--magnetic-shadow-y, 12px),
+      -1px
+    )
+    scale(0.92);
+  filter: blur(18px);
+}
+
+.case-study-magnetic-card {
+  --magnetic-rest-rotate: 0deg;
+  --magnetic-x: 0px;
+  --magnetic-y: 0px;
+  --magnetic-z: 0px;
+  --magnetic-rotate-x: 0deg;
+  --magnetic-rotate-y: 0deg;
+  --magnetic-scale: 1;
+
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  transform-origin: center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .case-study-magnetic-stage .case-study-magnetic-card {
+    transform: translate3d(
+        var(--magnetic-x),
+        var(--magnetic-y),
+        var(--magnetic-z)
+      )
+      rotateX(var(--magnetic-rotate-x))
+      rotateY(var(--magnetic-rotate-y))
+      rotateZ(var(--magnetic-rest-rotate))
+      scale(var(--magnetic-scale));
+    transform-style: preserve-3d;
+    transition: transform 240ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    will-change: transform;
+  }
+
+  .case-study-magnetic-stage .case-study-magnetic-card.mix-hero-visual {
+    --magnetic-rest-rotate: 1deg;
+  }
+
+  .case-study-magnetic-stage.is-magnetized::before {
+    opacity: 0.72;
+    transform: translate3d(
+        var(--magnetic-shadow-x, 0),
+        var(--magnetic-shadow-y, 12px),
+        -1px
+      )
+      scale(1);
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease;
+  }
+
+  .case-study-magnetic-stage.is-magnetized .case-study-magnetic-card {
+    transition-duration: 110ms;
+    transition-timing-function: ease-out;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (max-width: 809.98px) {
+  .case-study-magnetic-stage .case-study-magnetic-card.mix-hero-visual {
+    --magnetic-rest-rotate: 0deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-study-magnetic-stage::before {
+    opacity: 0;
+    transform: none;
+    transition: none;
+  }
+
+  .case-study-magnetic-stage .case-study-magnetic-card {
+    transform: none;
+    transition: none;
+  }
+}

@@ -1,3 +1,5 @@
+import "./magnetic-card.js";
+
 class CaseStudyNav extends HTMLElement {
   connectedCallback() {
     this.links = [...this.querySelectorAll('a[href^="#"]')];
