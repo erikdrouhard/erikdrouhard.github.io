@@ -7,6 +7,7 @@ export default defineConfig({
       input: {
         home: resolve(__dirname, "index.html"),
         work: resolve(__dirname, "work/index.html"),
+        dragonDrive: resolve(__dirname, "work/dragon-drive/index.html"),
         coreAI: resolve(__dirname, "work/core-ai/index.html"),
         mixDialog: resolve(__dirname, "work/mix-dialog/index.html"),
       },

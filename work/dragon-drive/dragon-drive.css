@@ -1,0 +1,768 @@
+.drive-page {
+  --drive-ink: #071e26;
+  --drive-ink-soft: rgb(7 30 38 / 68%);
+  --drive-cyan: #087f91;
+  --drive-cyan-bright: #29d3df;
+  --drive-cyan-soft: #e2f7f7;
+  --drive-paper: #f4f9f8;
+  --drive-line: rgb(7 30 38 / 14%);
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 84% 8%, rgb(41 211 223 / 13%), transparent 28rem),
+    linear-gradient(170deg, #fbfdfc 0%, var(--drive-paper) 100%);
+  color: var(--drive-ink);
+}
+
+.drive-skip-link {
+  position: fixed;
+  z-index: 30;
+  top: 12px;
+  left: 12px;
+  min-height: 44px;
+  padding: 13px 16px;
+  border-radius: 999px;
+  background: var(--drive-ink);
+  color: #fff;
+  font-family: "Crimson Pro", serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+
+.drive-skip-link:focus {
+  transform: translateY(0);
+}
+
+.drive-shell {
+  align-items: center;
+  container-type: inline-size;
+}
+
+.drive-header {
+  flex: 0 0 auto;
+  margin-bottom: 48px;
+}
+
+.drive-main {
+  padding-bottom: 0;
+  align-items: stretch;
+}
+
+.drive-content {
+  gap: 0;
+  color: var(--drive-ink);
+  font-family: "Crimson Text", serif;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+.drive-content h1,
+.drive-content h2,
+.drive-content h3,
+.drive-content p,
+.drive-content figure,
+.drive-content blockquote,
+.drive-content dl,
+.drive-content dd {
+  margin: 0;
+}
+
+.drive-content h1,
+.drive-content h2,
+.drive-content h3,
+.drive-content blockquote {
+  font-family: "Crimson Pro", serif;
+  text-wrap: balance;
+}
+
+.drive-content h2 {
+  max-width: 24ch;
+  font-size: clamp(2.25rem, 5vw, 4.25rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.drive-content h3 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.drive-content p {
+  text-wrap: pretty;
+}
+
+.drive-hero {
+  display: grid;
+  padding: 108px 0 104px;
+  gap: 54px;
+  grid-template-columns: minmax(0, 9fr) minmax(380px, 11fr);
+  align-items: center;
+}
+
+.drive-hero-copy {
+  display: grid;
+  min-width: 0;
+  gap: 22px;
+}
+
+.drive-eyebrow,
+.drive-section-label,
+.drive-moment-number,
+.drive-translation-flow > li > span {
+  color: rgb(7 30 38 / 56%);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.drive-hero h1 {
+  max-width: 12ch;
+  font-size: clamp(4rem, 7vw, 5.75rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.drive-deck {
+  max-width: 31ch;
+  color: var(--drive-ink-soft);
+  font-size: 1.35rem;
+  line-height: 1.45;
+}
+
+.drive-badges {
+  display: flex;
+  margin: 4px 0 0;
+  padding: 0;
+  flex-wrap: wrap;
+  gap: 7px;
+  list-style: none;
+}
+
+.drive-badges li {
+  min-height: 28px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 74%);
+  box-shadow: 0 0 0 1px rgb(7 30 38 / 13%);
+  font-family: "Crimson Pro", serif;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.015em;
+}
+
+.drive-hero-visual {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+}
+
+.drive-video-frame {
+  --frame-radius: min(2vw, 24px);
+  --frame-padding: 10px;
+  position: relative;
+  overflow: hidden;
+  padding: var(--frame-padding);
+  border-radius: var(--frame-radius);
+  background: var(--drive-ink);
+  box-shadow:
+    0 0 0 1px rgb(7 30 38 / 16%),
+    0 30px 72px rgb(7 30 38 / 18%),
+    0 8px 22px rgb(0 0 0 / 9%);
+}
+
+.drive-video-frame video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: calc(var(--frame-radius) - var(--frame-padding));
+  object-fit: cover;
+  outline: 1px solid rgb(255 255 255 / 12%);
+  outline-offset: -1px;
+}
+
+.drive-live-label {
+  position: absolute;
+  z-index: 1;
+  top: 22px;
+  left: 22px;
+  padding: 7px 9px;
+  border-radius: 999px;
+  background: rgb(7 30 38 / 86%);
+  color: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  pointer-events: none;
+}
+
+.drive-hero-visual figcaption,
+.drive-wide-media figcaption,
+.drive-highlight figcaption {
+  max-width: 70ch;
+  color: rgb(7 30 38 / 58%);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.drive-section {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  padding: 104px 0;
+  border-top: 1px solid var(--drive-line);
+  gap: 48px;
+  scroll-margin-top: 72px;
+}
+
+.drive-reading {
+  display: grid;
+  gap: 18px;
+}
+
+.drive-reading > p,
+.drive-prose {
+  max-width: 720px;
+}
+
+.drive-reading > p:not(.drive-section-label),
+.drive-prose {
+  color: var(--drive-ink-soft);
+  font-size: 1.2rem;
+}
+
+.drive-prose {
+  display: grid;
+  gap: 1.5em;
+}
+
+.drive-context {
+  display: grid;
+  padding: 0;
+  border-block: 1px solid var(--drive-line);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.drive-context > div {
+  display: grid;
+  min-width: 0;
+  padding: 26px;
+  gap: 8px;
+  align-content: start;
+}
+
+.drive-context > div:first-child {
+  padding-left: 0;
+}
+
+.drive-context > div:last-child {
+  padding-right: 0;
+}
+
+.drive-context > div + div {
+  border-left: 1px solid var(--drive-line);
+}
+
+.drive-context dt {
+  font-family: "Crimson Pro", serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.drive-context dd {
+  color: var(--drive-ink-soft);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.drive-wide-media,
+.drive-highlight {
+  display: grid;
+  gap: 12px;
+}
+
+.drive-wide-media img,
+.drive-highlight video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: min(1.5vw, 18px);
+  object-fit: cover;
+  outline: 1px solid rgb(7 30 38 / 10%);
+  outline-offset: -1px;
+}
+
+.drive-wide-media img {
+  aspect-ratio: 3 / 2;
+}
+
+.drive-section-feature::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0 calc((100vw - 100%) / -2);
+  border-block: 1px solid rgb(8 127 145 / 11%);
+  background:
+    radial-gradient(circle at 92% 10%, rgb(41 211 223 / 15%), transparent 24rem),
+    linear-gradient(150deg, rgb(226 247 247 / 78%), rgb(255 255 255 / 52%));
+  content: "";
+  pointer-events: none;
+}
+
+.drive-moments {
+  display: grid;
+  border-block: 1px solid var(--drive-line);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.drive-moments article {
+  display: grid;
+  min-width: 0;
+  padding: 28px;
+  gap: 10px;
+}
+
+.drive-moments article:first-child {
+  padding-left: 0;
+}
+
+.drive-moments article:last-child {
+  padding-right: 0;
+}
+
+.drive-moments article + article {
+  border-left: 1px solid var(--drive-line);
+}
+
+.drive-moments article > p:last-child {
+  color: var(--drive-ink-soft);
+  font-size: 1rem;
+}
+
+.drive-moment-number {
+  color: var(--drive-cyan);
+}
+
+.drive-interaction-map {
+  display: grid;
+  min-width: 0;
+  padding: 28px;
+  border-radius: 18px;
+  background: var(--drive-ink);
+  box-shadow:
+    0 0 0 1px rgb(7 30 38 / 16%),
+    0 24px 56px rgb(7 30 38 / 13%);
+  color: #fff;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  user-select: none;
+}
+
+.drive-map-step {
+  display: grid;
+  min-width: 0;
+  min-height: 150px;
+  padding: 20px;
+  border-radius: 12px;
+  background: rgb(255 255 255 / 8%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
+  gap: 6px;
+  align-content: center;
+}
+
+.drive-map-step-accent {
+  background: rgb(41 211 223 / 14%);
+  box-shadow: inset 0 0 0 1px rgb(41 211 223 / 34%);
+}
+
+.drive-map-step span {
+  color: rgb(255 255 255 / 56%);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.drive-map-step strong {
+  font-family: "Crimson Pro", serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+.drive-map-step small {
+  color: rgb(255 255 255 / 66%);
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.drive-map-arrow {
+  color: var(--drive-cyan-bright);
+  font-family: "Crimson Pro", serif;
+  font-size: 1.5rem;
+  align-self: center;
+}
+
+.drive-callout {
+  max-width: 740px;
+  padding-left: 24px;
+  border-left: 3px solid var(--drive-cyan);
+  color: var(--drive-ink);
+  font-family: "Crimson Pro", serif;
+  font-size: 1.55rem;
+  font-weight: 500;
+  line-height: 1.32;
+}
+
+.drive-translation-flow {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--drive-line);
+  list-style: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.drive-translation-flow li {
+  display: grid;
+  min-width: 0;
+  padding: 30px;
+  border-bottom: 1px solid var(--drive-line);
+  gap: 10px;
+}
+
+.drive-translation-flow li:nth-child(odd) {
+  padding-left: 0;
+}
+
+.drive-translation-flow li:nth-child(even) {
+  padding-right: 0;
+  border-left: 1px solid var(--drive-line);
+}
+
+.drive-translation-flow li p {
+  max-width: 42ch;
+  color: var(--drive-ink-soft);
+  font-size: 1rem;
+}
+
+.drive-role-note {
+  display: grid;
+  max-width: 760px;
+  padding: 34px;
+  border-radius: 18px;
+  background: var(--drive-cyan-soft);
+  box-shadow: inset 0 0 0 1px rgb(8 127 145 / 13%);
+  gap: 12px;
+}
+
+.drive-role-note h3 {
+  font-size: 1.75rem;
+}
+
+.drive-role-note > p:last-child {
+  max-width: 58ch;
+  color: var(--drive-ink-soft);
+}
+
+.drive-section-showcase {
+  padding-bottom: 0;
+}
+
+.drive-highlight video {
+  aspect-ratio: 16 / 9;
+  background: var(--drive-ink);
+  box-shadow: 0 20px 54px rgb(7 30 38 / 13%);
+}
+
+.drive-outcome {
+  position: relative;
+  display: grid;
+  width: 100cqi;
+  margin-left: calc((100% - 100cqi) / 2);
+  padding: 96px max(24px, calc((100cqi - 892px) / 2));
+  overflow: hidden;
+  background: var(--drive-ink);
+  color: #fff;
+  gap: 20px;
+}
+
+.drive-outcome::after {
+  position: absolute;
+  right: -80px;
+  bottom: -120px;
+  width: 360px;
+  height: 360px;
+  border: 1px solid rgb(41 211 223 / 20%);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.drive-outcome .drive-section-label {
+  color: var(--drive-cyan-bright);
+}
+
+.drive-outcome blockquote {
+  position: relative;
+  z-index: 1;
+  max-width: 26ch;
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.drive-outcome > p:last-child {
+  position: relative;
+  z-index: 1;
+  max-width: 70ch;
+  color: rgb(255 255 255 / 66%);
+  font-size: 1rem;
+}
+
+.drive-footer {
+  display: grid;
+  width: 100cqi;
+  margin-left: calc((100% - 100cqi) / 2);
+  padding: 96px max(24px, calc((100cqi - 892px) / 2)) 104px;
+  background:
+    radial-gradient(circle at 88% 0%, rgb(41 211 223 / 16%), transparent 24rem),
+    var(--drive-cyan-soft);
+  gap: 18px;
+}
+
+.drive-footer h2 {
+  max-width: 18ch;
+}
+
+.drive-footer > p:not(.drive-section-label) {
+  max-width: 52ch;
+  color: var(--drive-ink-soft);
+}
+
+.drive-footer-actions {
+  display: flex;
+  padding-top: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.drive-contact {
+  display: inline-flex;
+  min-width: 158px;
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: var(--drive-ink);
+  color: #fff;
+  font-family: "Crimson Pro", serif;
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.025em;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+.drive-contact-secondary {
+  background: transparent;
+  color: var(--drive-ink);
+  box-shadow: inset 0 0 0 1px rgb(7 30 38 / 30%);
+}
+
+.drive-contact:focus-visible,
+.drive-video-frame video:focus-visible,
+.drive-highlight video:focus-visible {
+  outline: 2px solid var(--drive-ink);
+  outline-offset: 3px;
+}
+
+.drive-header a,
+.drive-header summary {
+  touch-action: manipulation;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .drive-contact {
+    transition: opacity 150ms ease, transform 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  .drive-contact:hover {
+    opacity: 0.82;
+    transform: translateY(-1px);
+  }
+}
+
+.drive-contact:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 809.98px) {
+  .drive-header {
+    display: flex;
+  }
+
+  .drive-main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .drive-content {
+    font-size: 1.125rem;
+  }
+
+  .drive-hero {
+    padding: 76px 0 72px;
+    gap: 44px;
+    grid-template-columns: 1fr;
+  }
+
+  .drive-hero h1 {
+    font-size: clamp(3.25rem, 17vw, 4.75rem);
+  }
+
+  .drive-deck {
+    max-width: 34ch;
+    font-size: 1.2rem;
+  }
+
+  .drive-hero-visual {
+    width: min(100%, 620px);
+  }
+
+  .drive-hero-visual figcaption,
+  .drive-wide-media figcaption,
+  .drive-highlight figcaption {
+    font-size: 1rem;
+  }
+
+  .drive-live-label {
+    top: 18px;
+    left: 18px;
+  }
+
+  .drive-section {
+    padding: 76px 0;
+    gap: 38px;
+  }
+
+  .drive-content h2 {
+    font-size: 2.5rem;
+  }
+
+  .drive-reading > p:not(.drive-section-label),
+  .drive-prose {
+    font-size: 1.125rem;
+  }
+
+  .drive-context,
+  .drive-moments,
+  .drive-translation-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .drive-context > div,
+  .drive-context > div:first-child,
+  .drive-context > div:last-child,
+  .drive-moments article,
+  .drive-moments article:first-child,
+  .drive-moments article:last-child,
+  .drive-translation-flow li,
+  .drive-translation-flow li:nth-child(odd),
+  .drive-translation-flow li:nth-child(even) {
+    padding: 22px 0;
+  }
+
+  .drive-context > div + div,
+  .drive-moments article + article {
+    border-top: 1px solid var(--drive-line);
+    border-left: 0;
+  }
+
+  .drive-translation-flow li:nth-child(even) {
+    border-left: 0;
+  }
+
+  .drive-context dd,
+  .drive-moments article > p:last-child,
+  .drive-translation-flow li p,
+  .drive-outcome > p:last-child {
+    font-size: 1rem;
+  }
+
+  .drive-interaction-map {
+    padding: 20px;
+    grid-template-columns: 1fr;
+  }
+
+  .drive-map-step {
+    min-height: 126px;
+  }
+
+  .drive-map-arrow {
+    transform: rotate(90deg);
+    justify-self: center;
+  }
+
+  .drive-callout {
+    padding-left: 18px;
+    font-size: 1.35rem;
+  }
+
+  .drive-role-note {
+    padding: 26px;
+  }
+
+  .drive-outcome,
+  .drive-footer {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .drive-outcome {
+    padding-top: 76px;
+    padding-bottom: 80px;
+  }
+
+  .drive-outcome blockquote {
+    font-size: 2.65rem;
+  }
+
+  .drive-footer {
+    padding-top: 76px;
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 359.98px) {
+  .drive-content h2 {
+    font-size: 2.2rem;
+  }
+
+  .drive-live-label {
+    max-width: calc(100% - 36px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drive-contact,
+  .drive-skip-link {
+    transition: none;
+  }
+}

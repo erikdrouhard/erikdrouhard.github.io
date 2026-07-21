@@ -15,6 +15,7 @@ Build production output with `npm run build` and preview it with `npm run previe
 
 - `/` — portfolio homepage
 - `/work/` — case studies index
+- `/work/dragon-drive/` — Nuance Dragon Drive automotive HUD case study
 - `/work/core-ai/` — Microsoft Core AI case study
 - `/work/mix-dialog/` — Nuance Mix.dialog case study
 

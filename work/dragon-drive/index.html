@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Dragon Drive case study: leading UI and interaction design for a gaze-driven automotive HUD and translating motion prototypes into embedded behavior."
+    />
+    <meta name="theme-color" content="#f4f9f8" />
+    <title>Dragon Drive Case Study | Erik Drouhard</title>
+    <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="/assets/crimson-pro.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/crimson-text-regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="/work/dragon-drive/assets/hud-hero-poster.avif"
+      type="image/avif"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/components/case-study-nav.css" />
+    <link rel="stylesheet" href="/work/dragon-drive/dragon-drive.css" />
+    <script type="module" src="/components/case-study-nav.js"></script>
+    <script type="module" src="/work/dragon-drive/dragon-drive.js"></script>
+  </head>
+  <body class="drive-page">
+    <a class="drive-skip-link" href="#main">Skip to case study</a>
+
+    <div class="page-shell drive-shell">
+      <header class="site-header drive-header">
+        <a class="brand-link" href="/" aria-label="Homepage">
+          <img
+            class="brand-mark"
+            src="/assets/erikdrouhard-logomark.svg"
+            width="48"
+            height="48"
+            alt=""
+          />
+        </a>
+
+        <div class="desktop-header-actions">
+          <a class="case-studies-link" href="/work/" aria-current="page">CASE STUDIES</a>
+          <a
+            class="resume-button"
+            href="/assets/erik-drouhard-resume.pdf"
+            download="Erik-Drouhard-Resume.pdf"
+          >
+            <img src="/assets/download.svg" width="16" height="16" alt="" />
+            <span>DOWNLOAD RESUME</span>
+          </a>
+        </div>
+
+        <details class="mobile-menu">
+          <summary>MENU</summary>
+          <nav class="mobile-nav" aria-label="Mobile navigation">
+            <a href="/work/" aria-current="page">CASE STUDIES</a>
+            <a href="/assets/erik-drouhard-resume.pdf" download="Erik-Drouhard-Resume.pdf">DOWNLOAD RESUME</a>
+          </nav>
+        </details>
+      </header>
+
+      <case-study-nav>
+        <nav class="case-study-nav__inner" aria-label="Case study chapters">
+          <a href="#overview">Overview</a>
+          <a href="#interaction">Interaction</a>
+          <a href="#translation">Translation</a>
+          <a href="#showcase">Showcase</a>
+        </nav>
+      </case-study-nav>
+
+      <main id="main" class="site-main drive-main">
+        <article class="content drive-content">
+          <header class="drive-hero">
+            <div class="drive-hero-copy">
+              <p class="drive-eyebrow">NUANCE · 2017–2019</p>
+              <h1>Dragon Drive</h1>
+              <p class="drive-deck">
+                Designing a gaze-driven windshield HUD that made an intelligent car’s behavior legible without asking drivers to leave the road.
+              </p>
+              <ul class="drive-badges" role="list" aria-label="Project details">
+                <li>TECHNICAL DESIGNER</li>
+                <li>UI + INTERACTION LEAD</li>
+                <li>GAZE-DRIVEN HUD</li>
+                <li>EMBEDDED MOTION</li>
+              </ul>
+            </div>
+
+            <figure class="drive-hero-visual">
+              <div class="drive-video-frame">
+                <video
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  poster="./assets/hud-hero-poster.avif"
+                  aria-label="Dragon Drive windshield HUD running in the demonstration vehicle"
+                  data-autoplay-video
+                >
+                  <source src="./assets/hud-hero-loop.mp4" type="video/mp4" />
+                </video>
+                <span class="drive-live-label">IN-VEHICLE PROTOTYPE · CES 2019</span>
+              </div>
+              <figcaption>
+                The projected HUD and embedded center display working together in the Dragon Drive demonstration vehicle.
+              </figcaption>
+            </figure>
+          </header>
+
+          <section id="overview" class="drive-section" aria-labelledby="overview-heading">
+            <div class="drive-reading">
+              <p class="drive-section-label">01 · THE CHALLENGE</p>
+              <h2 id="overview-heading">Designing for a glance, not a screen</h2>
+              <div class="drive-prose">
+                <p>
+                  A windshield interface sits inside the driver’s field of view. It cannot demand the same attention as a phone or dashboard app. Information has to arrive at the right moment, reveal just enough detail, and make every state change understandable while the road remains primary.
+                </p>
+                <p>
+                  Dragon Drive brought voice, gaze, a projected HUD, and an embedded center display into one real-time experience. I led the UI and interaction design for the windshield HUD and worked as the technical designer translating prototypes and animation intent into behavior the display systems could carry.
+                </p>
+              </div>
+            </div>
+
+            <dl class="drive-context" aria-label="Project context">
+              <div>
+                <dt>Environment</dt>
+                <dd>Moving vehicle, changing light, visually noisy streets.</dd>
+              </div>
+              <div>
+                <dt>Attention</dt>
+                <dd>Divided, time-sensitive, and anchored on the road.</dd>
+              </div>
+              <div>
+                <dt>System</dt>
+                <dd>Windshield HUD, gaze input, voice, and embedded display.</dd>
+              </div>
+              <div>
+                <dt>Design job</dt>
+                <dd>Make focus, response, and system state readable at a glance.</dd>
+              </div>
+            </dl>
+
+            <figure class="drive-wide-media">
+              <img
+                src="./assets/dragon-drive-cabin.avif"
+                width="1200"
+                height="800"
+                alt="View from inside the Dragon Drive demonstration vehicle showing a four-panel windshield HUD over a city street and a companion display below"
+                loading="lazy"
+              />
+              <figcaption>
+                Four high-value domains—weather, phone, music, and navigation—were available in the windshield layer while the embedded display carried denser information.
+              </figcaption>
+            </figure>
+          </section>
+
+          <section id="interaction" class="drive-section drive-section-feature" aria-labelledby="interaction-heading">
+            <div class="drive-reading">
+              <p class="drive-section-label">02 · INTERACTION MODEL</p>
+              <h2 id="interaction-heading">Gaze provided intent. Motion provided confidence.</h2>
+              <p>
+                The HUD needed to acknowledge attention without turning every look into a disruptive action. A stable overview preserved orientation; focus and motion then made the system’s response visible.
+              </p>
+            </div>
+
+            <div class="drive-moments">
+              <article>
+                <p class="drive-moment-number">01</p>
+                <h3>Orient</h3>
+                <p>Keep the primary domains stable and spatially predictable so the interface can be read peripherally.</p>
+              </article>
+              <article>
+                <p class="drive-moment-number">02</p>
+                <h3>Focus</h3>
+                <p>Apply gaze as selection context, making the attended region clear before revealing more information.</p>
+              </article>
+              <article>
+                <p class="drive-moment-number">03</p>
+                <h3>Respond</h3>
+                <p>Use motion and multimodal feedback to show what changed, what is active, and where detail moved.</p>
+              </article>
+            </div>
+
+            <div
+              class="drive-interaction-map"
+              role="img"
+              aria-label="Interaction sequence showing driver gaze establishing intent, the HUD acknowledging focus, and detailed content appearing on the embedded display"
+            >
+              <div class="drive-map-step">
+                <span>DRIVER</span>
+                <strong>Attention</strong>
+                <small>Eyes remain oriented toward the road.</small>
+              </div>
+              <span class="drive-map-arrow" aria-hidden="true">→</span>
+              <div class="drive-map-step drive-map-step-accent">
+                <span>HUD</span>
+                <strong>Focus</strong>
+                <small>The attended tile acknowledges gaze.</small>
+              </div>
+              <span class="drive-map-arrow" aria-hidden="true">→</span>
+              <div class="drive-map-step">
+                <span>SYSTEM</span>
+                <strong>Response</strong>
+                <small>Motion and the embedded display carry detail.</small>
+              </div>
+            </div>
+
+            <p class="drive-callout">
+              The interface was not a second dashboard floating on the windshield. It was a compact layer for orientation and action, paired with a richer display when the task needed more detail.
+            </p>
+          </section>
+
+          <section id="translation" class="drive-section" aria-labelledby="translation-heading">
+            <div class="drive-reading">
+              <p class="drive-section-label">03 · MY ROLE</p>
+              <h2 id="translation-heading">I translated design intent into embedded behavior</h2>
+              <div class="drive-prose">
+                <p>
+                  As the technical designer, I worked between interaction design and implementation. I used prototypes and animation studies to make the intended behavior concrete, then translated that behavior for the embedded display and HUD teams.
+                </p>
+                <p>
+                  The work was not simply making transitions look polished. Timing, hierarchy, movement, and feedback each carried meaning. The handoff had to preserve that meaning as the experience moved from a design prototype into a constrained, real-time automotive system.
+                </p>
+              </div>
+            </div>
+
+            <ol class="drive-translation-flow" role="list">
+              <li>
+                <span>01 · PROTOTYPE</span>
+                <h3>Make the moment tangible</h3>
+                <p>Model gaze, focus, selection, and feedback as a complete interaction rather than a sequence of static screens.</p>
+              </li>
+              <li>
+                <span>02 · DECOMPOSE</span>
+                <h3>Name the states and transitions</h3>
+                <p>Break the prototype into triggers, state changes, timing, layering, and visual assets that could be discussed precisely.</p>
+              </li>
+              <li>
+                <span>03 · TRANSLATE</span>
+                <h3>Adapt motion to the display system</h3>
+                <p>Shape the behavior for the embedded pipeline and HUD while protecting the interaction’s hierarchy and intent.</p>
+              </li>
+              <li>
+                <span>04 · VALIDATE</span>
+                <h3>Evaluate it in physical context</h3>
+                <p>Review the experience against road noise, divided attention, projection, and the behavior of the full in-car system.</p>
+              </li>
+            </ol>
+
+            <aside class="drive-role-note" aria-labelledby="role-note-heading">
+              <p class="drive-section-label">THE DESIGN-ENGINEERING BRIDGE</p>
+              <h3 id="role-note-heading">The prototype became a shared language</h3>
+              <p>
+                Product and interaction intent could be experienced early; implementation partners could inspect the behavior they needed to reproduce. That bridge let motion function as a specification, not decoration.
+              </p>
+            </aside>
+          </section>
+
+          <section id="showcase" class="drive-section drive-section-showcase" aria-labelledby="showcase-heading">
+            <div class="drive-reading">
+              <p class="drive-section-label">04 · THE SHOWCASE</p>
+              <h2 id="showcase-heading">A working system in a moving vehicle</h2>
+              <p>
+                The HUD was featured at the Dragon Drive Innovation Showcase at CES 2019. The in-vehicle demonstration made the complete interaction visible: gaze on the windshield layer, animated feedback, voice, and the embedded display behaving as one system.
+              </p>
+            </div>
+
+            <figure class="drive-highlight">
+              <video
+                controls
+                playsinline
+                preload="metadata"
+                poster="./assets/gaze-hud-poster.avif"
+                aria-label="Thirty-eight second highlight from the Dragon Drive CES demonstration"
+              >
+                <source src="./assets/gaze-hud-highlight.mp4" type="video/mp4" />
+              </video>
+              <figcaption>
+                38-second excerpt from the preserved Dragon Drive car-demo footage. Press play to watch the HUD and embedded display in context.
+              </figcaption>
+            </figure>
+
+            <div class="drive-outcome">
+              <p class="drive-section-label">OUTCOME</p>
+              <blockquote>
+                The project made an intelligent system’s focus and response visible where software meets the physical world.
+              </blockquote>
+              <p>
+                My contribution was UI and interaction-design leadership plus technical translation for the HUD and embedded experience. The underlying gaze technology, vehicle platform, and wider Dragon Drive engineering were collaborative system inputs—not my individual inventions.
+              </p>
+            </div>
+          </section>
+
+          <footer class="drive-footer">
+            <p class="drive-section-label">NEXT CASE STUDY</p>
+            <h2>From intelligent cars to conversational systems.</h2>
+            <p>See how I made complex enterprise behavior easier to author in Mix.dialog.</p>
+            <div class="drive-footer-actions">
+              <a class="drive-contact" href="/work/mix-dialog/">READ MIX.DIALOG</a>
+              <a class="drive-contact drive-contact-secondary" href="mailto:erikdrouhard@gmail.com">GET IN TOUCH</a>
+            </div>
+          </footer>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>
