@@ -1,0 +1,348 @@
+@font-face {
+  font-family: "Crimson Pro";
+  src: url("./assets/crimson-pro.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Crimson Text";
+  src: url("./assets/crimson-text-regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Crimson Text";
+  src: url("./assets/crimson-text-semibold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Crimson Text";
+  src: url("./assets/crimson-text-bold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  color: #000;
+  background: #f6f6f6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-width: 320px;
+  background: linear-gradient(172deg, rgb(252 254 255) 0%, rgb(246 246 246) 100%);
+  color: #000;
+}
+
+img {
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+.page-shell {
+  isolation: isolate;
+  display: flex;
+  min-height: 100dvh;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.site-header {
+  display: flex;
+  width: min(100%, 940px);
+  height: 88px;
+  padding: 40px 24px 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-link,
+.brand-mark {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+}
+
+.resume-button {
+  display: flex;
+  width: 237px;
+  height: 40px;
+  padding: 0 24px;
+  align-items: center;
+  gap: 12px;
+  border-radius: 999px;
+  background: #000;
+  color: #fff;
+  font-family: "Crimson Pro", serif;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.025em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.resume-button img {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
+
+.site-main {
+  display: flex;
+  width: min(100%, 940px);
+  padding: 0 24px 40px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.intro {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  padding-top: 160px;
+  flex-direction: column;
+  gap: 40px;
+}
+
+h1,
+.skills,
+.bio p,
+.portrait-frame {
+  margin: 0;
+}
+
+h1 {
+  font-family: "Crimson Pro", serif;
+  font-size: 2.25rem;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+h1 a {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.skills {
+  width: 85%;
+  font-family: "Crimson Pro", serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.skills strong {
+  font-weight: 800;
+}
+
+.profile {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 60px;
+}
+
+.bio {
+  width: min(100%, 480px);
+  min-width: 0;
+  flex: 0 1 480px;
+  font-family: "Crimson Text", serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.bio p + p {
+  margin-top: 1.45em;
+}
+
+.bio strong {
+  font-weight: 700;
+}
+
+.bio a {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.portrait-frame {
+  width: 320px;
+  height: 320px;
+  flex: 0 0 320px;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.social-links {
+  display: flex;
+  height: 24px;
+  align-items: center;
+  gap: 12px;
+}
+
+.social-links a {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.social-links a::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 48px);
+  height: max(100%, 48px);
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.social-links img {
+  width: 24px;
+  height: 24px;
+}
+
+.resume-button:hover,
+.social-links a:hover {
+  opacity: 0.78;
+}
+
+.resume-button:focus-visible,
+.brand-link:focus-visible,
+.social-links a:focus-visible,
+h1 a:focus-visible,
+.bio a:focus-visible {
+  outline: 2px solid #1677ff;
+  outline-offset: 3px;
+}
+
+@media (min-width: 810px) and (max-width: 1199.98px) {
+  .site-header,
+  .site-main {
+    width: min(calc(100% - 80px), 730px);
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .intro {
+    padding-top: 88px;
+  }
+
+  h1 {
+    font-size: 1.8125rem;
+  }
+
+  .profile {
+    gap: 20px;
+  }
+
+  .bio {
+    width: 480px;
+    flex: 0 0 480px;
+  }
+
+  .portrait-frame {
+    width: 230px;
+    height: 230px;
+    flex-basis: 230px;
+  }
+}
+
+@media (max-width: 809.98px) {
+  .site-header {
+    width: 100%;
+    height: 64px;
+    padding: 16px 16px 0;
+  }
+
+  .site-main {
+    width: 100%;
+    padding: 0 16px 16px;
+  }
+
+  .content {
+    gap: 24px;
+  }
+
+  .intro {
+    padding-top: 40px;
+    gap: 24px;
+  }
+
+  h1 {
+    font-size: 1.125rem;
+    line-height: 1.35;
+  }
+
+  .skills {
+    width: 100%;
+  }
+
+  .profile {
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .bio {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .portrait-frame {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    flex-basis: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
