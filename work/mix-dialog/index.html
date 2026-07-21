@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Mix.dialog case study: designing a multimodal authoring system for complex enterprise IVR conversations."
+    />
+    <meta name="theme-color" content="#fcfeff" />
+    <title>Mix.dialog Case Study | Erik Drouhard</title>
+    <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      as="image"
+      href="/work/mix-dialog/assets/media/image-14.avif"
+      type="image/avif"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/work/mix-dialog/mix-dialog.css" />
+  </head>
+  <body class="mix-page">
+    <a class="mix-skip-link" href="#main">Skip to case study</a>
+
+    <div class="page-shell mix-shell">
+      <header class="site-header mix-header">
+        <a class="brand-link" href="/" aria-label="Homepage">
+          <img
+            class="brand-mark"
+            src="/assets/erikdrouhard-logomark.svg"
+            width="48"
+            height="48"
+            alt=""
+          />
+        </a>
+
+        <div class="desktop-header-actions">
+          <a class="case-studies-link" href="/work/" aria-current="page">CASE STUDIES</a>
+          <a
+            class="resume-button"
+            href="/assets/erik-drouhard-resume.pdf"
+            download="Erik-Drouhard-Resume.pdf"
+          >
+            <img src="/assets/download.svg" width="16" height="16" alt="" />
+            <span>DOWNLOAD RESUME</span>
+          </a>
+        </div>
+
+        <details class="mobile-menu">
+          <summary>MENU</summary>
+          <nav class="mobile-nav" aria-label="Mobile navigation">
+            <a href="/work/" aria-current="page">CASE STUDIES</a>
+            <a href="/assets/erik-drouhard-resume.pdf" download="Erik-Drouhard-Resume.pdf">DOWNLOAD RESUME</a>
+          </nav>
+        </details>
+      </header>
+
+      <nav class="mix-chapter-nav" aria-label="Case study chapters">
+        <div class="mix-chapter-nav-inner">
+          <a href="#problem">Problem</a>
+          <a href="#process">Process</a>
+          <a href="#results">Results</a>
+          <a href="#verse">Verse</a>
+        </div>
+      </nav>
+
+      <main id="main" class="site-main mix-main">
+        <article class="content mix-content">
+          <header class="mix-hero">
+            <div class="mix-hero-copy">
+              <p class="mix-eyebrow">NUANCE · 2019–2022</p>
+              <h1>Mix.dialog</h1>
+              <p class="mix-deck">
+                Designing a multimodal authoring system for the conditional conversations enterprise IVR teams could not safely express in chatbot tools.
+              </p>
+              <ul class="mix-badges" role="list" aria-label="Project details">
+                <li>SENIOR UX DESIGNER</li>
+                <li>INTERACTION DESIGN LEAD</li>
+                <li>BEHAVIOR AUTHORING</li>
+                <li>RESEARCH + PROTOTYPING</li>
+              </ul>
+            </div>
+
+            <figure class="mix-hero-visual">
+              <span class="mix-visual-label">PRODUCT WORK · CONDITION STACK</span>
+              <img
+                src="./assets/media/image-14.avif"
+                width="380"
+                height="270"
+                alt="Presentation slide showing the redesigned Mix.dialog condition stack and nested conditional authoring interface."
+                fetchpriority="high"
+              />
+              <figcaption>Implemented direction shown in a condition-stack product presentation.</figcaption>
+            </figure>
+          </header>
+
+          <section id="problem" class="mix-section" aria-labelledby="situation-heading">
+            <div class="mix-reading">
+              <p class="mix-section-label">01 · SITUATION</p>
+              <h2 id="situation-heading">IVR logic is not a chatbot flow</h2>
+              <div class="mix-prose">
+                <p>
+                  Before large language models, enterprise voice systems depended on deep conditional logic and intent recognition to decide what a conversation should do next—and what should happen when it failed.
+                </p>
+                <p>
+                  Most authoring tools in the space focused on virtual assistants. IVR teams carried a harder operational burden: no-match and no-input paths, retries, escalation, channel differences, nested business rules, and graceful recovery when recognition broke down.
+                </p>
+              </div>
+              <p class="mix-callout">
+                The existing workaround was a handoff artifact. Conversation designers built long conditional spreadsheets to explain intended behavior to customers and engineers. The logic was difficult to read, expensive to change, and separated design intent from implementation.
+              </p>
+            </div>
+          </section>
+
+          <section class="mix-section" aria-labelledby="platform-heading">
+            <div class="mix-reading">
+              <p class="mix-section-label">02 · PLATFORM CONTEXT</p>
+              <h2 id="platform-heading">One authoring experience in a connected platform</h2>
+              <p>
+                Mix.dialog was the multimodal behavior layer—not a standalone chatbot builder. It connected language understanding to deployable conversation logic across voice and digital channels.
+              </p>
+            </div>
+            <div class="mix-three-column mix-platform-grid">
+              <div>
+                <p class="mix-item-label">NLU</p>
+                <h3>Mix.nlu</h3>
+                <p>Defined intents and entities the experience could recognize.</p>
+              </div>
+              <div>
+                <p class="mix-item-label">01</p>
+                <h3>Mix.dialog</h3>
+                <p>Authored prompts, conditions, actions, and recovery behavior.</p>
+              </div>
+              <div>
+                <p class="mix-item-label">DASHBOARD</p>
+                <h3>Dashboard</h3>
+                <p>Managed and deployed dialog and NLU configurations.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="mix-section" aria-labelledby="role-heading">
+            <div class="mix-reading">
+              <p class="mix-section-label">03 · MY ROLE</p>
+              <h2 id="role-heading">Designing at the boundary of UX and architecture</h2>
+              <p>
+                I led designs with conversation designers, product leadership, and engineering directors. My technical background made me uniquely useful in a space where interface decisions changed how the underlying product had to represent and generate logic. Along the way I conducted research with internal conversation designers, prototyped interaction models and failure states, partnered with engineering on feasible data and UI structures, and created patterns that became templates for the wider tool.
+              </p>
+            </div>
+
+            <div class="mix-scope">
+              <p class="mix-section-label">SCOPE</p>
+              <h2>The core authoring surfaces I shaped</h2>
+              <p>
+                The work crossed node behavior, shared properties, and the connection between NLU recognition and actions in the dialog.
+              </p>
+              <div class="mix-three-column">
+                <div>
+                  <p class="mix-item-label">ANCHOR PATTERN</p>
+                  <h3>Question &amp; Answer node</h3>
+                  <p>Reworked the central intent-discovery loop and used its complex properties as a model for the rest of the authoring experience.</p>
+                </div>
+                <div>
+                  <p class="mix-item-label">BEHAVIOR BUILDING</p>
+                  <h3>Messages + conditions</h3>
+                  <p>Designed how authors created conditional prompts, nested logic, and channel-aware messages without reading or writing generated code.</p>
+                </div>
+                <div>
+                  <p class="mix-item-label">SYSTEM CONNECTION</p>
+                  <h3>NLU + actions</h3>
+                  <p>Integrated intents and entities into the QA node so recognized information could map to downstream behavior and actions.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="process" class="mix-section mix-section-feature" aria-labelledby="action-heading">
+            <div class="mix-reading">
+              <p class="mix-section-label">04 · ACTION</p>
+              <h2 id="action-heading">Making conditional logic visible and direct</h2>
+              <p>
+                The condition stack became a focused design program: understand the failure, test multiple structures, and let feedback shape the product’s architecture as well as its interface.
+              </p>
+            </div>
+
+            <div class="mix-action-list">
+              <article>
+                <p class="mix-item-label">01 · DIVERGE</p>
+                <div>
+                  <h3>We failed a lot—and learned why</h3>
+                  <p>Code-forward concepts were powerful but alienating. Form-heavy designs hid context. Other versions were hard to scan or too rigid for the depth IVR teams needed.</p>
+                </div>
+              </article>
+              <article>
+                <p class="mix-item-label">02 · LISTEN</p>
+                <div>
+                  <h3>Designers needed context before power</h3>
+                  <p>Research showed that nested conditions were not only a syntax problem. Authors needed clear starting zones, visible hierarchy, readable content, and confidence about what an edit would affect.</p>
+                </div>
+              </article>
+              <article>
+                <p class="mix-item-label">03 · CONVERGE</p>
+                <div>
+                  <h3>A visual structure that still mapped to valid logic</h3>
+                  <p>The final direction treated conditional groups as directly manipulable objects. Authors could read hierarchy, add branches, move content, and understand the output without translating a spreadsheet or writing code.</p>
+                </div>
+              </article>
+              <article>
+                <p class="mix-item-label">04 · REFINE</p>
+                <div>
+                  <h3>Small behaviors carried architectural weight</h3>
+                  <p>Adding, deleting, reordering, and changing an if branch into an else-if branch all needed predictable rules. These details were essential to making a deep system feel safe rather than fragile.</p>
+                </div>
+              </article>
+            </div>
+
+            <p class="mix-gallery-label">
+              14 condition-stack explorations <span>Scroll to compare →</span>
+            </p>
+            <div class="mix-media-scroller" role="region" aria-label="Condition stack design explorations" tabindex="0">
+              <figure><img src="./assets/media/image-01.avif" width="380" height="270" alt="Condition stack design exploration, slide 1 of 14." /></figure>
+              <figure><img src="./assets/media/image-02.avif" width="380" height="270" alt="Condition stack design exploration, slide 2 of 14." /></figure>
+              <figure><img src="./assets/media/image-03.avif" width="380" height="270" alt="Condition stack design exploration, slide 3 of 14." /></figure>
+              <figure><img src="./assets/media/image-04.avif" width="380" height="270" alt="Condition stack design exploration, slide 4 of 14." /></figure>
+              <figure><img src="./assets/media/image-05.avif" width="380" height="270" alt="Condition stack design exploration, slide 5 of 14." /></figure>
+              <figure><img src="./assets/media/image-06.avif" width="380" height="270" alt="Condition stack design exploration, slide 6 of 14." /></figure>
+              <figure><img src="./assets/media/image-07.avif" width="380" height="270" alt="Condition stack design exploration, slide 7 of 14." /></figure>
+              <figure><img src="./assets/media/image-08.avif" width="380" height="270" alt="Condition stack design exploration, slide 8 of 14." /></figure>
+              <figure><img src="./assets/media/image-09.avif" width="380" height="270" alt="Condition stack design exploration, slide 9 of 14." /></figure>
+              <figure><img src="./assets/media/image-10.avif" width="380" height="270" alt="Condition stack design exploration, slide 10 of 14." /></figure>
+              <figure><img src="./assets/media/image-11.avif" width="380" height="270" alt="Condition stack design exploration, slide 11 of 14." /></figure>
+              <figure><img src="./assets/media/image-12.avif" width="380" height="270" alt="Condition stack design exploration, slide 12 of 14." /></figure>
+              <figure><img src="./assets/media/image-13.avif" width="380" height="270" alt="Condition stack design exploration, slide 13 of 14." /></figure>
+              <figure><img src="./assets/media/image-14.avif" width="380" height="270" alt="Condition stack design exploration, slide 14 of 14." /></figure>
+            </div>
+          </section>
+
+          <section class="mix-section" aria-labelledby="process-heading">
+            <div class="mix-reading">
+              <p class="mix-section-label">HOW I WORKED</p>
+              <h2 id="process-heading">Research, design, validate, implement</h2>
+              <p>
+                This was not a screen-design handoff. The condition model evolved in a continuous loop with conversation designers, product, and engineering. Interface discoveries frequently became architecture conversations.
+              </p>
+            </div>
+
+            <div class="mix-four-column">
+              <div>
+                <p class="mix-item-label">01</p>
+                <h3>Research real authoring work</h3>
+                <p>Study spreadsheets, tools, handoffs, and nested IVR scenarios.</p>
+              </div>
+              <div>
+                <p class="mix-item-label">02</p>
+                <h3>Prototype competing mental models</h3>
+                <p>Tables, forms, graphs, code-like syntax, and direct manipulation.</p>
+              </div>
+              <div>
+                <p class="mix-item-label">03</p>
+                <h3>Validate comprehension and control</h3>
+                <p>Test context, nesting, add points, movement, and recovery.</p>
+              </div>
+              <div>
+                <p class="mix-item-label">04</p>
+                <h3>Shape implementation with engineering</h3>
+                <p>Align interaction rules with valid generated logic and data.</p>
+              </div>
+            </div>
+
+            <p class="mix-gallery-label">
+              Research + implementation presentations <span>Scroll to compare →</span>
+            </p>
+            <div class="mix-media-scroller mix-media-wide" role="region" aria-label="Research and implementation presentations" tabindex="0">
+              <figure><img src="./assets/media/image-15.avif" width="380" height="214" alt="Research and implementation presentation, slide 1 of 6." /></figure>
+              <figure><img src="./assets/media/image-16.avif" width="380" height="214" alt="Research and implementation presentation, slide 2 of 6." /></figure>
+              <figure><img src="./assets/media/image-17.avif" width="380" height="214" alt="Research and implementation presentation, slide 3 of 6." /></figure>
+              <figure><img src="./assets/media/image-18.avif" width="380" height="214" alt="Research and implementation presentation, slide 4 of 6." /></figure>
+              <figure><img src="./assets/media/image-19.avif" width="380" height="214" alt="Research and implementation presentation, slide 5 of 6." /></figure>
+              <figure><img src="./assets/media/image-20.avif" width="380" height="214" alt="Research and implementation presentation, slide 6 of 6." /></figure>
+            </div>
+          </section>
+
+          <section id="results" class="mix-section mix-section-feature" aria-labelledby="result-heading">
+            <div class="mix-reading">
+              <p class="mix-section-label">05 · RESULT</p>
+              <h2 id="result-heading">A more usable language for complex behavior</h2>
+              <p>
+                The work improved deeply nested condition authoring while establishing interaction patterns that influenced the wider Mix platform.
+              </p>
+            </div>
+
+            <div class="mix-metrics" role="group" aria-label="Condition-stack research outcomes">
+              <article>
+                <strong>17</strong>
+                <span>IVR + digital-VA designers</span>
+              </article>
+              <article>
+                <strong>5.0 → 7.0</strong>
+                <span>CSAT · +40%</span>
+              </article>
+              <article>
+                <strong>52.67 → 61.50</strong>
+                <span>SUS · +8.83 points</span>
+              </article>
+            </div>
+            <p class="mix-metric-note">
+              Three-session longitudinal study. Both old-table-to-Session-3 gains were statistically significant at p &lt; .05; the source deck does not report per-session completion counts.
+            </p>
+
+            <div class="mix-three-column mix-results-grid">
+              <div>
+                <h3>A validated direction</h3>
+                <p>The new stack significantly improved satisfaction and perceived usability while revealing findability and hierarchy issues that still needed iteration.</p>
+              </div>
+              <div>
+                <h3>Proven in enterprise contexts</h3>
+                <p>The workflows supported customers including Sony Interactive Entertainment and Rakuten, where reliability and complex branching mattered.</p>
+              </div>
+              <div>
+                <h3>A platform-level template</h3>
+                <p>The QA node and condition work established properties and interaction patterns that informed other nodes and shared product behavior.</p>
+              </div>
+            </div>
+
+            <p class="mix-gallery-label">
+              Condition-stack results <span>Scroll to compare →</span>
+            </p>
+            <div class="mix-media-scroller" role="region" aria-label="Condition stack results" tabindex="0">
+              <figure><img src="./assets/media/image-21.avif" width="380" height="270" alt="Condition stack results, slide 1 of 5." /></figure>
+              <figure><img src="./assets/media/image-22.avif" width="380" height="270" alt="Condition stack results, slide 2 of 5." /></figure>
+              <figure><img src="./assets/media/image-23.avif" width="380" height="270" alt="Condition stack results, slide 3 of 5." /></figure>
+              <figure><img src="./assets/media/image-24.avif" width="380" height="270" alt="Condition stack results, slide 4 of 5." /></figure>
+              <figure><img src="./assets/media/image-25.avif" width="380" height="270" alt="Condition stack results, slide 5 of 5." /></figure>
+            </div>
+
+            <p class="mix-callout mix-customer-note">
+              Customer context. Sony Interactive Entertainment used Mix.dialog and its condition system in work supporting voice functionality for PlayStation 5. This case study focuses on the authoring system—not Sony’s implementation details.
+            </p>
+          </section>
+
+          <section id="verse" class="mix-section" aria-labelledby="verse-heading">
+            <div class="mix-reading">
+              <p class="mix-section-label">06 · LATER CHAPTER · 2022–2023</p>
+              <h2 id="verse-heading">From product patterns to a shared system</h2>
+              <p>
+                The Mix.dialog work exposed a broader need for consistency, accessibility, and a shared language between design and engineering. I later led the design and front-end architecture of Verse.
+              </p>
+            </div>
+
+            <p class="mix-gallery-label">
+              Verse design-system presentations <span>Scroll to compare →</span>
+            </p>
+            <div class="mix-media-scroller mix-media-wide" role="region" aria-label="Verse design system presentations" tabindex="0">
+              <figure><img src="./assets/media/image-26.avif" width="380" height="214" alt="Verse design system presentation, slide 1 of 8." /></figure>
+              <figure><img src="./assets/media/image-27.avif" width="380" height="214" alt="Verse design system presentation, slide 2 of 8." /></figure>
+              <figure><img src="./assets/media/image-28.avif" width="380" height="214" alt="Verse design system presentation, slide 3 of 8." /></figure>
+              <figure><img src="./assets/media/image-29.avif" width="380" height="214" alt="Verse design system presentation, slide 4 of 8." /></figure>
+              <figure><img src="./assets/media/image-30.avif" width="380" height="214" alt="Verse design system presentation, slide 5 of 8." /></figure>
+              <figure><img src="./assets/media/image-31.avif" width="380" height="214" alt="Verse design system presentation, slide 6 of 8." /></figure>
+              <figure><img src="./assets/media/image-32.avif" width="380" height="214" alt="Verse design system presentation, slide 7 of 8." /></figure>
+              <figure><img src="./assets/media/image-33.avif" width="380" height="214" alt="Verse design system presentation, slide 8 of 8." /></figure>
+            </div>
+          </section>
+
+          <footer class="mix-footer">
+            <h2>Let’s make complex systems understandable.</h2>
+            <p>Senior UX Designer · UX Engineer · Design systems and AI tools</p>
+            <div class="mix-footer-actions">
+              <a class="mix-contact" href="/work/core-ai/">NEXT: MICROSOFT CORE AI</a>
+              <a class="mix-contact mix-contact-secondary" href="mailto:erikdrouhard@gmail.com">GET IN TOUCH</a>
+            </div>
+          </footer>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

@@ -8,6 +8,7 @@ export default defineConfig({
         home: resolve(__dirname, "index.html"),
         work: resolve(__dirname, "work/index.html"),
         coreAI: resolve(__dirname, "work/core-ai/index.html"),
+        mixDialog: resolve(__dirname, "work/mix-dialog/index.html"),
       },
     },
   },

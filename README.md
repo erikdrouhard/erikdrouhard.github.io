@@ -16,6 +16,9 @@ Build production output with `npm run build` and preview it with `npm run previe
 - `/` — portfolio homepage
 - `/work/` — case studies index
 - `/work/core-ai/` — Microsoft Core AI case study
+- `/work/mix-dialog/` — Nuance Mix.dialog case study
+
+The Mix.dialog route and its optimized case-study imagery are served entirely from this repository; it does not depend on Framer at runtime.
 
 ## Deployment
 
