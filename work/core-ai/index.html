@@ -10,7 +10,9 @@
     <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
     <title>Prototyping the systems behind AI product design — Erik Drouhard</title>
     <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/components/case-study-nav.css" />
     <link rel="stylesheet" href="/work/core-ai/core-ai.css" />
+    <script type="module" src="/components/case-study-nav.js"></script>
   </head>
   <body class="core-ai-page">
     <a class="skip-link" href="#main">Skip to case study</a>
@@ -47,14 +49,14 @@
       </details>
     </header>
 
-    <nav class="chapter-nav" aria-label="Case study chapters">
-      <div class="shell chapter-nav-inner">
+    <case-study-nav data-offset>
+      <nav class="case-study-nav__inner" aria-label="Case study chapters">
         <a href="#progression">Progression</a>
         <a href="#parity">Copilot Studio</a>
         <a href="#core-ai">Core AI</a>
         <a href="#evidence">Evidence</a>
-      </div>
-    </nav>
+      </nav>
+    </case-study-nav>
 
     <main id="main" class="core-main">
       <section class="hero">

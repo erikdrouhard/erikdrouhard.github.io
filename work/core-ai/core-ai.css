@@ -37,44 +37,6 @@
   margin-inline: auto;
 }
 
-.core-ai-page .chapter-nav {
-  position: sticky;
-  z-index: 10;
-  top: 0;
-  width: 100%;
-  margin-top: 30px;
-  border-block: 1px solid rgb(0 0 0 / 12%);
-  background: rgb(249 249 250 / 88%);
-  backdrop-filter: blur(14px);
-}
-
-.core-ai-page .chapter-nav-inner {
-  display: flex;
-  min-width: 0;
-  padding-block: 13px;
-  gap: 28px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.core-ai-page .chapter-nav-inner::-webkit-scrollbar {
-  display: none;
-}
-
-.core-ai-page .chapter-nav a {
-  display: inline-flex;
-  min-height: 44px;
-  color: rgb(0 0 0 / 68%);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-decoration: none;
-  text-transform: uppercase;
-  white-space: nowrap;
-  align-items: center;
-}
-
 .core-ai-page .shell {
   width: min(100%, 940px);
   margin-inline: auto;
@@ -728,7 +690,6 @@
 }
 
 .core-ai-page .button:focus-visible,
-.core-ai-page .chapter-nav a:focus-visible,
 .core-ai-page figcaption a:focus-visible,
 .core-ai-page .public-link a:focus-visible,
 .core-ai-page .applied-work-link a:focus-visible {
@@ -746,11 +707,6 @@
     transform: translateY(-1px);
   }
 
-  .core-ai-page .chapter-nav a:hover {
-    color: #000;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
 }
 
 @media (min-width: 810px) and (max-width: 1199.98px) {
@@ -780,17 +736,9 @@
 }
 
 @media (max-width: 809.98px) {
-  .core-ai-page .chapter-nav {
-    margin-top: 16px;
-  }
-
   .core-ai-page .shell {
     width: 100%;
     padding-inline: 16px;
-  }
-
-  .core-ai-page .chapter-nav-inner {
-    gap: 22px;
   }
 
   .core-ai-page .hero {

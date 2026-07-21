@@ -17,7 +17,11 @@
       type="image/avif"
     />
     <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/components/case-study-nav.css" />
     <link rel="stylesheet" href="/work/mix-dialog/mix-dialog.css" />
+    <link rel="stylesheet" href="/work/mix-dialog/condition-stack-demo.css" />
+    <script type="module" src="/components/case-study-nav.js"></script>
+    <script type="module" src="/work/mix-dialog/condition-stack-demo.js"></script>
   </head>
   <body class="mix-page">
     <a class="mix-skip-link" href="#main">Skip to case study</a>
@@ -55,14 +59,14 @@
         </details>
       </header>
 
-      <nav class="mix-chapter-nav" aria-label="Case study chapters">
-        <div class="mix-chapter-nav-inner">
+      <case-study-nav>
+        <nav class="case-study-nav__inner" aria-label="Case study chapters">
           <a href="#problem">Problem</a>
           <a href="#process">Process</a>
           <a href="#results">Results</a>
           <a href="#verse">Verse</a>
-        </div>
-      </nav>
+        </nav>
+      </case-study-nav>
 
       <main id="main" class="site-main mix-main">
         <article class="content mix-content">
@@ -127,7 +131,7 @@
                 <p>Defined intents and entities the experience could recognize.</p>
               </div>
               <div>
-                <p class="mix-item-label">01</p>
+                <p class="mix-item-label">Dialog</p>
                 <h3>Mix.dialog</h3>
                 <p>Authored prompts, conditions, actions, and recovery behavior.</p>
               </div>
@@ -212,6 +216,19 @@
                   <p>Adding, deleting, reordering, and changing an if branch into an else-if branch all needed predictable rules. These details were essential to making a deep system feel safe rather than fragile.</p>
                 </div>
               </article>
+            </div>
+
+            <div class="mix-condition-demo">
+              <div class="mix-condition-demo-heading">
+                <p class="mix-section-label">INTERACTIVE RECONSTRUCTION</p>
+                <h3>Nestable condition blocks made the logic directly manipulable</h3>
+                <p>
+                  Every condition block kept its if, optional else-if branches, and else together as one movable structure. Authors could nest whole blocks, move messages, variable assignments, and events between levels, and reorder else-if branches without detaching them from their parent logic.
+                </p>
+              </div>
+              <condition-stack-demo>
+                <p>Enable JavaScript to explore the interactive condition-stack reconstruction.</p>
+              </condition-stack-demo>
             </div>
 
             <p class="mix-gallery-label">

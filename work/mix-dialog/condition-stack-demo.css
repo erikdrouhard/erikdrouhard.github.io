@@ -1,0 +1,513 @@
+condition-stack-demo {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  color: #19142f;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.condition-demo {
+  overflow: hidden;
+  border-radius: 24px;
+  background: #f8f7fc;
+  box-shadow:
+    0 0 0 1px rgb(32 25 74 / 12%),
+    0 24px 70px rgb(39 26 94 / 10%);
+}
+
+.condition-demo__topbar {
+  display: flex;
+  min-height: 64px;
+  padding: 10px 14px 10px 20px;
+  border-bottom: 1px solid rgb(32 25 74 / 10%);
+  background: rgb(255 255 255 / 82%);
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.condition-demo__title {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.condition-demo__title strong {
+  font-size: 0.9375rem;
+  font-weight: 650;
+}
+
+.condition-demo__title span,
+.condition-demo__hint,
+.condition-demo__legend {
+  color: rgb(32 25 74 / 58%);
+  font-size: 0.75rem;
+}
+
+.condition-demo__toolbar {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.condition-demo button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 650;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+.condition-demo button:disabled {
+  opacity: 0.34;
+  cursor: default;
+}
+
+.condition-demo button:focus-visible,
+.cs-action:focus-visible,
+.cs-block:focus-visible,
+.cs-branch:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.condition-demo__reset,
+.condition-demo__cancel {
+  padding-inline: 14px;
+  background: #fff;
+  color: #302663;
+  box-shadow: inset 0 0 0 1px rgb(48 38 99 / 18%);
+}
+
+.condition-demo__cancel {
+  background: #302663;
+  color: #fff;
+}
+
+.condition-demo__canvas {
+  padding: clamp(16px, 3vw, 28px);
+  background:
+    radial-gradient(circle at 90% 0%, rgb(101 72 232 / 10%), transparent 28rem),
+    linear-gradient(145deg, #f6f3ff, #f5f8fb);
+}
+
+.condition-demo__hint {
+  margin: 0 0 14px;
+}
+
+.condition-demo__legend {
+  display: flex;
+  margin: 0;
+  padding: 12px 20px 16px;
+  border-top: 1px solid rgb(32 25 74 / 9%);
+  background: rgb(255 255 255 / 72%);
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  list-style: none;
+}
+
+.condition-demo__legend li,
+.cs-action__kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.condition-demo__legend i,
+.cs-action__icon {
+  display: inline-grid;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  font-size: 0.625rem;
+  font-style: normal;
+  font-weight: 750;
+  place-items: center;
+}
+
+.is-message .cs-action__icon,
+.condition-demo__legend .is-message {
+  background: #e8f4ff;
+  color: #126696;
+}
+
+.is-variable .cs-action__icon,
+.condition-demo__legend .is-variable {
+  background: #eee9ff;
+  color: #593ac6;
+}
+
+.is-event .cs-action__icon,
+.condition-demo__legend .is-event {
+  background: #e5f8ef;
+  color: #197046;
+}
+
+.cs-block {
+  position: relative;
+  min-width: 0;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(46 35 95 / 13%),
+    0 10px 28px rgb(32 25 74 / 6%);
+}
+
+.cs-block.is-nested {
+  margin: 10px 0 2px clamp(12px, 2.5vw, 26px);
+  box-shadow:
+    -3px 0 0 #8068e9,
+    0 0 0 1px rgb(46 35 95 / 13%),
+    0 10px 28px rgb(32 25 74 / 6%);
+}
+
+.cs-block__header {
+  display: flex;
+  min-height: 52px;
+  padding: 6px 8px 6px 14px;
+  border-bottom: 1px solid rgb(32 25 74 / 10%);
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.cs-block__identity,
+.cs-drag-handle {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.cs-drag-handle {
+  min-height: 36px;
+  color: rgb(32 25 74 / 55%);
+  cursor: grab;
+  user-select: none;
+}
+
+.cs-drag-handle:active {
+  cursor: grabbing;
+}
+
+.cs-grip {
+  font-size: 1rem;
+  letter-spacing: -0.2em;
+}
+
+.cs-block__identity strong {
+  overflow: hidden;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-block__actions,
+.cs-branch__tools,
+.cs-item__tools {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+}
+
+.condition-demo .cs-tool,
+.condition-demo .cs-branch__move {
+  min-width: 44px;
+  padding-inline: 10px;
+  background: transparent;
+  color: #43377b;
+  font-size: 0.75rem;
+}
+
+.condition-demo .cs-add-elseif {
+  padding-inline: 12px;
+  background: #eeeaff;
+  color: #4b35b0;
+  font-size: 0.75rem;
+}
+
+.cs-branches {
+  display: grid;
+  padding: 10px;
+  gap: 8px;
+}
+
+.cs-branch {
+  min-width: 0;
+  overflow: visible;
+  border-radius: 13px;
+  background: #fbfbfd;
+  box-shadow: inset 0 0 0 1px rgb(32 25 74 / 9%);
+}
+
+.cs-branch__header {
+  display: flex;
+  min-height: 48px;
+  padding: 6px 8px 6px 12px;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.cs-branch__condition {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+}
+
+.cs-branch__label {
+  flex: 0 0 auto;
+  color: #5a43c1;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cs-expression {
+  overflow: hidden;
+  color: #28223f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-branch__body {
+  position: relative;
+  min-height: 54px;
+  padding: 0 8px 8px;
+  border-radius: 0 0 13px 13px;
+  transition: background-color 140ms ease;
+}
+
+.cs-branch__body.is-drop-target {
+  background: rgb(101 72 232 / 9%);
+  box-shadow: inset 0 0 0 2px #6548e8;
+}
+
+.cs-items {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+}
+
+.cs-action {
+  display: flex;
+  min-width: 0;
+  min-height: 48px;
+  padding: 6px 7px 6px 10px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgb(32 25 74 / 10%);
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.cs-action__content {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+}
+
+.cs-action__copy {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.cs-action__copy span:first-child {
+  color: rgb(32 25 74 / 55%);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cs-action__copy code {
+  overflow: hidden;
+  color: #28223f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-branch__footer {
+  position: relative;
+  display: flex;
+  min-height: 48px;
+  padding: 5px 0 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.condition-demo .cs-add-trigger,
+.condition-demo .cs-move-here {
+  padding-inline: 13px;
+  background: transparent;
+  color: #4b35b0;
+  font-size: 0.75rem;
+}
+
+.condition-demo .cs-move-here {
+  width: 100%;
+  border: 1px dashed rgb(75 53 176 / 45%);
+  background: rgb(238 234 255 / 55%);
+}
+
+.cs-add-menu {
+  position: absolute;
+  z-index: 20;
+  bottom: 44px;
+  left: 0;
+  display: grid;
+  width: min(250px, calc(100vw - 72px));
+  padding: 6px;
+  border-radius: 13px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(32 25 74 / 12%),
+    0 18px 42px rgb(32 25 74 / 16%);
+  gap: 2px;
+}
+
+.cs-add-menu[hidden] {
+  display: none;
+}
+
+.condition-demo .cs-add-menu button {
+  display: flex;
+  width: 100%;
+  padding: 0 12px;
+  background: transparent;
+  color: #28223f;
+  font-size: 0.8125rem;
+  text-align: left;
+  align-items: center;
+  gap: 9px;
+}
+
+.cs-moving {
+  opacity: 0.48;
+}
+
+.cs-dragging {
+  opacity: 0.45;
+}
+
+.is-entering {
+  z-index: 1;
+  transform-origin: center;
+  animation: condition-pop 220ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  will-change: transform, opacity;
+}
+
+@keyframes condition-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  68% {
+    opacity: 1;
+    transform: scale(1.015);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cs-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .condition-demo button:hover {
+    background-color: #eeeaff;
+  }
+
+  .cs-action:hover,
+  .cs-branch:hover {
+    box-shadow: inset 0 0 0 1px rgb(76 53 177 / 25%);
+  }
+}
+
+@media (max-width: 809.98px) {
+  .condition-demo {
+    width: calc(100% + 16px);
+    border-radius: 18px 0 0 18px;
+  }
+
+  .condition-demo__topbar {
+    padding-left: 14px;
+  }
+
+  .condition-demo__title span,
+  .condition-demo__hint {
+    display: none;
+  }
+
+  .condition-demo__canvas {
+    padding: 12px 8px 14px 10px;
+  }
+
+  .cs-block {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .cs-block.is-nested {
+    margin-left: 0;
+  }
+
+  .cs-block.is-nested .cs-block__identity > .cs-drag-handle > span:last-child {
+    display: none;
+  }
+
+  .cs-block__header {
+    padding-left: 10px;
+  }
+
+  .condition-demo .cs-tool {
+    padding-inline: 8px;
+  }
+
+  .cs-action__copy code {
+    max-width: 155px;
+  }
+
+  .condition-demo__legend {
+    padding-inline: 14px;
+  }
+}
+
+@media (max-width: 419.98px) {
+  .cs-item__tools .cs-reorder,
+  .cs-branch__tools .cs-reorder {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-branch__body,
+  .is-entering {
+    animation: none;
+    transition: none;
+  }
+}
