@@ -1,0 +1,1344 @@
+<!doctype html>
+<html lang="en" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A case study about Erik Drouhard's work across Microsoft Copilot Studio, Microsoft Core AI, Microsoft Foundry, and Azure portals."
+    />
+    <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
+    <title>Prototyping the systems behind AI product design — Erik Drouhard</title>
+    <style>
+      :root {
+        --paper: #fbfbfa;
+        --surface: #ffffff;
+        --ink: #171717;
+        --muted: #5f5f5b;
+        --line: rgb(23 23 23 / 12%);
+        --line-strong: rgb(23 23 23 / 22%);
+        --accent: #0067b8;
+        --accent-dark: #004f8c;
+        --accent-soft: #eef6fc;
+        --warm: #f5f1e8;
+        --dark: #161616;
+        --dark-muted: #b8b8b2;
+        --content: 1160px;
+        --reading: 720px;
+        --radius: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 16px;
+        line-height: 1.65;
+        text-rendering: optimizeLegibility;
+      }
+
+      a {
+        color: var(--accent-dark);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+      }
+
+      a:hover {
+        color: var(--ink);
+      }
+
+      :focus-visible {
+        outline: 3px solid #60a5fa;
+        outline-offset: 3px;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      p,
+      figure,
+      blockquote {
+        margin-top: 0;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-weight: 600;
+        text-wrap: balance;
+      }
+
+      p,
+      li,
+      figcaption {
+        text-wrap: pretty;
+      }
+
+      .skip-link {
+        position: fixed;
+        z-index: 50;
+        top: 12px;
+        left: 12px;
+        padding: 8px 12px;
+        background: var(--dark);
+        color: white;
+        transform: translateY(-180%);
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .site-header {
+        border-bottom: 1px solid var(--line);
+        background: rgb(251 251 250 / 94%);
+        backdrop-filter: blur(12px);
+      }
+
+      .header-inner {
+        display: flex;
+        width: min(calc(100% - 40px), var(--content));
+        min-height: 72px;
+        margin-inline: auto;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        display: block;
+        width: 48px;
+        height: 48px;
+        color: var(--ink);
+        text-decoration: none;
+        flex: 0 0 48px;
+      }
+
+      .brand img {
+        width: 48px;
+        height: 48px;
+      }
+
+      .desktop-nav {
+        display: none;
+        gap: 24px;
+        align-items: center;
+      }
+
+      .desktop-nav a,
+      .mobile-nav a {
+        color: var(--muted);
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      .mobile-menu {
+        position: relative;
+      }
+
+      .mobile-menu summary {
+        min-width: 48px;
+        min-height: 48px;
+        padding: 11px 8px;
+        cursor: pointer;
+        font-weight: 500;
+        list-style: none;
+        text-align: right;
+      }
+
+      .mobile-menu summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .mobile-nav {
+        position: absolute;
+        z-index: 5;
+        top: 50px;
+        right: 0;
+        display: grid;
+        min-width: 220px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: 0 12px 30px rgb(23 23 23 / 10%);
+      }
+
+      .mobile-nav a {
+        padding: 10px 8px;
+      }
+
+      .shell {
+        width: min(calc(100% - 40px), var(--content));
+        margin-inline: auto;
+      }
+
+      .reading {
+        max-width: var(--reading);
+      }
+
+      .section {
+        padding-block: 80px;
+      }
+
+      .section-rule {
+        border-top: 1px solid var(--line);
+      }
+
+      .section-dark {
+        background: var(--dark);
+        color: white;
+      }
+
+      .eyebrow {
+        margin-bottom: 16px;
+        color: var(--accent-dark);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .section-dark .eyebrow {
+        color: #7cc4f5;
+      }
+
+      .hero {
+        padding-block: 88px 72px;
+      }
+
+      .hero h1 {
+        max-width: 19ch;
+        margin-bottom: 24px;
+        font-size: clamp(2.65rem, 7vw, 5.8rem);
+        letter-spacing: -0.055em;
+        line-height: 0.98;
+      }
+
+      .hero-deck {
+        max-width: 50ch;
+        margin-bottom: 32px;
+        color: var(--muted);
+        font-size: 1.25rem;
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 44px;
+        padding: 9px 14px;
+        border-radius: 8px;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        text-decoration: none;
+        align-items: center;
+      }
+
+      .button-primary {
+        background: var(--accent);
+        color: white;
+      }
+
+      .button-primary:hover {
+        background: var(--accent-dark);
+        color: white;
+      }
+
+      .button-secondary {
+        border: 1px solid var(--line-strong);
+        color: var(--ink);
+      }
+
+      .snapshot {
+        display: grid;
+        gap: 0;
+        margin: 0;
+        padding: 0;
+        border-block: 1px solid var(--line);
+        list-style: none;
+      }
+
+      .snapshot li {
+        padding-block: 22px;
+      }
+
+      .snapshot li + li {
+        border-top: 1px solid var(--line);
+      }
+
+      .snapshot strong,
+      .snapshot span {
+        display: block;
+      }
+
+      .snapshot strong {
+        margin-bottom: 4px;
+        font-size: 1.125rem;
+        font-weight: 600;
+      }
+
+      .snapshot span {
+        color: var(--muted);
+        font-size: 0.9375rem;
+      }
+
+      .section-heading {
+        margin-bottom: 48px;
+      }
+
+      .section-heading h2 {
+        max-width: 28ch;
+        margin-bottom: 16px;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        letter-spacing: -0.045em;
+        line-height: 1.05;
+      }
+
+      .section-heading p {
+        max-width: 58ch;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 1.125rem;
+      }
+
+      .section-dark .section-heading p {
+        color: var(--dark-muted);
+      }
+
+      .evidence-key {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .label {
+        display: inline-flex;
+        padding: 5px 9px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        align-items: center;
+      }
+
+      .label-official {
+        border-color: rgb(0 103 184 / 25%);
+        background: var(--accent-soft);
+        color: var(--accent-dark);
+      }
+
+      .timeline {
+        position: relative;
+        display: grid;
+        gap: 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .timeline::before {
+        position: absolute;
+        top: 13px;
+        bottom: 13px;
+        left: 6px;
+        width: 1px;
+        background: var(--line-strong);
+        content: "";
+      }
+
+      .timeline li {
+        position: relative;
+        display: grid;
+        gap: 4px;
+        padding: 0 0 38px 34px;
+      }
+
+      .timeline li:last-child {
+        padding-bottom: 0;
+      }
+
+      .timeline li::before {
+        position: absolute;
+        top: 8px;
+        left: 0;
+        width: 13px;
+        height: 13px;
+        border: 3px solid var(--paper);
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent);
+        content: "";
+      }
+
+      .timeline time {
+        color: var(--muted);
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+
+      .timeline h3 {
+        margin: 0;
+        font-size: 1.35rem;
+      }
+
+      .timeline p {
+        max-width: 66ch;
+        margin: 4px 0 0;
+        color: var(--muted);
+      }
+
+      .split {
+        display: grid;
+        gap: 40px;
+        align-items: start;
+      }
+
+      .body-copy h3 {
+        margin-bottom: 12px;
+        font-size: 1.5rem;
+      }
+
+      .body-copy p {
+        max-width: 66ch;
+        color: var(--muted);
+      }
+
+      .body-copy p:last-child {
+        margin-bottom: 0;
+      }
+
+      .pullquote {
+        margin: 0;
+        padding: 24px;
+        border-left: 3px solid var(--accent);
+        background: var(--accent-soft);
+        font-size: 1.2rem;
+      }
+
+      .pullquote p {
+        margin-bottom: 0;
+      }
+
+      .media {
+        margin: 40px 0 0;
+      }
+
+      .media-frame {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: min(1vw, var(--radius));
+        background: var(--surface);
+      }
+
+      .media-frame img {
+        width: 100%;
+        border-radius: min(0.5vw, 7px);
+        outline: 1px solid rgb(23 23 23 / 8%);
+        outline-offset: -1px;
+      }
+
+      figcaption {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 0.875rem;
+      }
+
+      .sprint-grid,
+      .prototype-grid,
+      .outcome-grid,
+      .link-grid {
+        display: grid;
+        gap: 24px;
+      }
+
+      .sprint-step,
+      .prototype,
+      .outcome,
+      .public-link {
+        padding-top: 20px;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .sprint-step .number {
+        display: block;
+        margin-bottom: 18px;
+        color: var(--accent-dark);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+
+      .sprint-step h3,
+      .prototype h3,
+      .outcome h3,
+      .public-link h3 {
+        margin-bottom: 8px;
+        font-size: 1.2rem;
+      }
+
+      .sprint-step p,
+      .prototype p,
+      .outcome p,
+      .public-link p {
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .bridge {
+        display: grid;
+        gap: 32px;
+        padding: 40px;
+        border-radius: var(--radius);
+        background: var(--dark);
+        color: white;
+      }
+
+      .bridge h2 {
+        max-width: 24ch;
+        margin-bottom: 0;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        letter-spacing: -0.045em;
+        line-height: 1.05;
+      }
+
+      .bridge-copy p {
+        max-width: 58ch;
+        margin-bottom: 18px;
+        color: var(--dark-muted);
+      }
+
+      .bridge-copy p:last-child {
+        margin-bottom: 0;
+      }
+
+      .system-map {
+        display: grid;
+        gap: 12px;
+        margin-top: 44px;
+      }
+
+      .system-layer {
+        display: grid;
+        gap: 8px;
+        padding: 20px;
+        border: 1px solid rgb(255 255 255 / 14%);
+        border-radius: var(--radius);
+        background: rgb(255 255 255 / 5%);
+      }
+
+      .system-layer strong {
+        font-size: 1.05rem;
+      }
+
+      .system-layer span {
+        color: var(--dark-muted);
+      }
+
+      .system-arrow {
+        color: #7cc4f5;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.8125rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .prototype .label {
+        margin-bottom: 16px;
+      }
+
+      .applied-work {
+        display: grid;
+        gap: 24px;
+        margin-top: 48px;
+        padding-top: 28px;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .applied-work h3 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .applied-work p {
+        max-width: 66ch;
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .applied-work .label {
+        margin-bottom: 16px;
+      }
+
+      .applied-work-link {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--accent-soft);
+      }
+
+      .applied-work-link strong,
+      .applied-work-link span {
+        display: block;
+      }
+
+      .applied-work-link span {
+        margin-top: 6px;
+        color: var(--muted);
+      }
+
+      .applied-work-link a {
+        display: inline-block;
+        margin-top: 14px;
+        font-weight: 600;
+      }
+
+      .architecture-frame {
+        background: white;
+      }
+
+      .architecture-frame img {
+        object-fit: contain;
+      }
+
+      .map-of-truth {
+        display: grid;
+        gap: 20px;
+        padding: 28px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--warm);
+      }
+
+      .map-of-truth h3 {
+        margin-bottom: 0;
+        font-size: 1.5rem;
+      }
+
+      .map-flow {
+        display: grid;
+        gap: 10px;
+      }
+
+      .map-node {
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgb(255 255 255 / 72%);
+      }
+
+      .map-node strong,
+      .map-node span {
+        display: block;
+      }
+
+      .map-node span {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 0.875rem;
+      }
+
+      .scope-note {
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+      }
+
+      .scope-note h3 {
+        margin-bottom: 8px;
+        font-size: 1.125rem;
+      }
+
+      .scope-note p {
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .public-link a {
+        font-weight: 600;
+      }
+
+      .site-footer {
+        padding-block: 48px;
+        border-top: 1px solid var(--line);
+      }
+
+      .footer-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px 32px;
+        color: var(--muted);
+        font-size: 0.875rem;
+        justify-content: space-between;
+      }
+
+      .footer-inner p {
+        margin-bottom: 0;
+      }
+
+      @media (min-width: 700px) {
+        .section {
+          padding-block: 112px;
+        }
+
+        .desktop-nav {
+          display: flex;
+        }
+
+        .mobile-menu {
+          display: none;
+        }
+
+        .snapshot {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .snapshot li {
+          padding: 24px;
+        }
+
+        .snapshot li:first-child {
+          padding-left: 0;
+        }
+
+        .snapshot li:last-child {
+          padding-right: 0;
+        }
+
+        .snapshot li + li {
+          border-top: 0;
+          border-left: 1px solid var(--line);
+        }
+
+        .split {
+          grid-template-columns: minmax(0, 7fr) minmax(280px, 4fr);
+          gap: 72px;
+        }
+
+        .sprint-grid,
+        .outcome-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .prototype-grid,
+        .link-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .bridge {
+          grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
+          gap: 64px;
+          padding: 64px;
+        }
+
+        .applied-work {
+          grid-template-columns: minmax(0, 7fr) minmax(260px, 3fr);
+          gap: 48px;
+        }
+
+        .system-map {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          align-items: stretch;
+        }
+
+        .system-arrow {
+          grid-column: 1 / -1;
+        }
+
+        .map-flow {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 980px) {
+        .prototype-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .link-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to case study</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="Homepage">
+          <img src="/assets/erikdrouhard-logomark.svg" width="48" height="48" alt="" />
+        </a>
+        <nav class="desktop-nav" aria-label="Case study chapters">
+          <a href="/work/">Case studies</a>
+          <a href="#progression">Progression</a>
+          <a href="#parity">Copilot Studio</a>
+          <a href="#core-ai">Core AI</a>
+          <a href="#evidence">Evidence</a>
+        </nav>
+        <details class="mobile-menu">
+          <summary>Menu</summary>
+          <nav class="mobile-nav" aria-label="Mobile case study chapters">
+            <a href="/work/">Case studies</a>
+            <a href="#progression">Progression</a>
+            <a href="#parity">Copilot Studio</a>
+            <a href="#core-ai">Core AI</a>
+            <a href="#evidence">Evidence</a>
+          </nav>
+        </details>
+      </div>
+    </header>
+
+    <main id="main" class="isolate">
+      <section class="hero">
+        <div class="shell">
+          <p class="eyebrow">Microsoft · 2023–present</p>
+          <h1>Prototyping the systems behind AI product design.</h1>
+          <p class="hero-deck">
+            I brought complex behavior-authoring experience from Nuance Mix.dialog
+            into Copilot Studio, then moved into Microsoft Core AI to help a 30+
+            person design organization explore, critique, and build AI products
+            faster.
+          </p>
+          <div class="button-row">
+            <a class="button button-primary" href="#parity">Read the story</a>
+            <a
+              class="button button-secondary"
+              href="https://azure.microsoft.com/en-us/products/ai-foundry"
+              target="_blank"
+              rel="noreferrer"
+              >Visit Microsoft Foundry</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section aria-label="Case study snapshot">
+        <div class="shell">
+          <ul class="snapshot" role="list">
+            <li>
+              <strong>Two roles</strong>
+              <span>Product Designer I–II, then UX Engineer II</span>
+            </li>
+            <li>
+              <strong>One throughline</strong>
+              <span>Make complex systems faster to understand and shape</span>
+            </li>
+            <li>
+              <strong>30+ designers</strong>
+              <span>Internal tools and AI-native workflow enablement</span>
+            </li>
+            <li>
+              <strong>Design + code</strong>
+              <span>Prototypes, mini products, agent skills, and guidance</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="progression" class="section">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="eyebrow">Role progression</p>
+            <h2>The scope grew from a product problem to a design-system problem for AI work itself.</h2>
+            <p>
+              The promotion and transfer matter because they show a continuous
+              expansion of responsibility—not three unrelated Microsoft projects.
+            </p>
+          </div>
+
+          <ol class="timeline" role="list">
+            <li>
+              <time datetime="2023-08">August 2023</time>
+              <h3>Product Designer I · Copilot Studio</h3>
+              <p>
+                Joined the team designing conversational AI authoring experiences,
+                bringing prior experience with deeply nested logic and behavior
+                authoring from Nuance Mix.dialog.
+              </p>
+            </li>
+            <li>
+              <time>During Copilot Studio tenure</time>
+              <h3>Promoted to Product Designer II</h3>
+              <p>
+                Expanded from individual interaction work into cross-functional
+                facilitation and product-direction framing, including a three-day
+                stakeholder design sprint on the largest Mix-to-Copilot Studio
+                parity opportunities.
+              </p>
+            </li>
+            <li>
+              <time datetime="2025-04">April 2025</time>
+              <h3>UX Engineer II · Microsoft Core AI</h3>
+              <p>
+                Transferred into a hybrid design-engineering role supporting
+                Microsoft AI Foundry and Azure portal teams through rapid
+                prototyping, reusable agent skills, mini products, and AI workflow
+                leadership.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="parity" class="section section-rule">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="eyebrow">Chapter 01 · Copilot Studio</p>
+            <h2>Turning “feature parity” into a decision about which complexity mattered.</h2>
+            <p>
+              Copilot Studio needed stronger support for nested conditions. My
+              Mix.dialog background gave the team a working reference for how
+              enterprise authors build, read, and debug complex conversational
+              logic.
+            </p>
+          </div>
+
+          <div class="split">
+            <div class="body-copy">
+              <h3>The design problem</h3>
+              <p>
+                Parity was not a checklist exercise. Nested conditions affect how
+                authors scan branches, understand precedence, recover from errors,
+                and trust what a conversational system will do at runtime.
+              </p>
+              <p>
+                I worked on nested-condition authoring for Copilot Studio with the
+                goal of reaching the functional depth users had in Nuance Mix,
+                while fitting Microsoft's product model and interaction patterns.
+              </p>
+            </div>
+            <blockquote class="pullquote">
+              <p>
+                The transferable insight was not a screen. It was a model of where
+                conditional complexity becomes hard to comprehend.
+              </p>
+            </blockquote>
+          </div>
+
+          <figure class="media">
+            <div class="media-frame">
+              <img
+                src="https://learn.microsoft.com/en-us/microsoft-copilot-studio/media/authoring-condition-node/authoring-condition-node-new-condition.png"
+                alt="Microsoft Copilot Studio condition node with condition and all-other-conditions branches"
+              />
+            </div>
+            <figcaption>
+              Public product context from Microsoft Learn. This is not a private
+              project artifact. View the
+              <a
+                href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-using-conditions"
+                target="_blank"
+                rel="noreferrer"
+                >official condition-authoring documentation</a
+              >.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section section-rule">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="eyebrow">Three-day design sprint</p>
+            <h2>Aligning stakeholders around the “big rocks.”</h2>
+            <p>
+              I planned and ran a three-day workshop to convert a broad parity goal
+              into a shared view of the highest-value problems to pursue.
+            </p>
+          </div>
+
+          <div class="sprint-grid">
+            <article class="sprint-step">
+              <span class="number">Day 01</span>
+              <h3>Build the shared model</h3>
+              <p>
+                Align on the Mix reference point, Copilot Studio's current model,
+                user needs, technical boundaries, and where “parity” concealed
+                different assumptions.
+              </p>
+            </article>
+            <article class="sprint-step">
+              <span class="number">Day 02</span>
+              <h3>Explore the opportunity space</h3>
+              <p>
+                Generate and compare approaches across authoring, comprehension,
+                validation, and debugging instead of prematurely converging on one
+                interface.
+              </p>
+            </article>
+            <article class="sprint-step">
+              <span class="number">Day 03</span>
+              <h3>Choose the big rocks</h3>
+              <p>
+                Prioritize the areas that could create the largest step change and
+                leave stakeholders with a clearer product sequence for deeper
+                exploration.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="shell">
+          <div class="bridge">
+            <h2>The work opened a larger question: how should design teams prototype AI products?</h2>
+            <div class="bridge-copy">
+              <p>
+                Production repositories were too costly and constrained for many
+                early design questions. Static design tools could show a state, but
+                not the behavior of an agentic system.
+              </p>
+              <p>
+                My transfer to Core AI made that gap the center of my role: build
+                smaller, safer environments where designers, PMs, and engineers
+                could make the behavior real early enough to learn from it.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="core-ai" class="section section-dark">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="eyebrow">Chapter 02 · Microsoft Core AI</p>
+            <h2>A prototyping layer for a 30+ person design team.</h2>
+            <p>
+              On Microsoft AI Foundry—now publicly named Microsoft Foundry—I
+              designed and built tools that helped the team move from an idea to a
+              testable interaction without waiting for the production repo.
+            </p>
+          </div>
+
+          <div class="system-map" aria-label="Core AI prototyping system">
+            <div class="system-layer">
+              <strong>Explore</strong>
+              <span>Agentic playgrounds and focused GUI tools.</span>
+            </div>
+            <div class="system-layer">
+              <strong>Make it real</strong>
+              <span>Mini products with representative behavior and data.</span>
+            </div>
+            <div class="system-layer">
+              <strong>Evaluate</strong>
+              <span>Live annotation, feedback, and reusable agent skills.</span>
+            </div>
+            <div class="system-arrow">Idea → behavior → feedback → iteration</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="eyebrow">The prototype portfolio</p>
+            <h2>Different tools for different kinds of uncertainty.</h2>
+            <p>
+              The output was not one monolithic platform. It was a family of focused
+              tools that reduced the cost of answering a design question.
+            </p>
+          </div>
+
+          <div class="prototype-grid">
+            <article class="prototype">
+              <span class="label">Official work · private</span>
+              <h3>Agentic CodePen</h3>
+              <p>
+                A GUI prototyping environment where designers could use agents to
+                create and modify working interface experiments, then iterate in a
+                tighter visual loop.
+              </p>
+            </article>
+            <article class="prototype">
+              <span class="label">Official work · private</span>
+              <h3>Live annotation</h3>
+              <p>
+                Tools for marking up a running interface and converting feedback
+                into clearer, actionable context for an agent or implementation
+                partner.
+              </p>
+            </article>
+            <article class="prototype">
+              <span class="label">Official work · private</span>
+              <h3>Product mini apps</h3>
+              <p>
+                Focused versions of Microsoft products that preserved the behavior
+                needed for design evaluation while remaining much faster to change
+                than production systems.
+              </p>
+            </article>
+            <article class="prototype">
+              <span class="label">Official work · private</span>
+              <h3>Agent skills</h3>
+              <p>
+                Robust instructions and context packages that helped Copilot and
+                other agents apply the correct product conventions with less drift.
+              </p>
+            </article>
+          </div>
+
+          <article class="applied-work">
+            <div>
+              <span class="label">Official work · unfinished</span>
+              <h3>Feature explorations for Azure SRE Agent</h3>
+              <p>
+                I helped apply these prototyping tools to early feature work for
+                Azure SRE Agent. The concepts were still in development and I did
+                not finish them during my involvement, so this work is presented as
+                an application of the prototyping method—not as completed or shipped
+                product work.
+              </p>
+            </div>
+            <aside class="applied-work-link">
+              <strong>Public product context</strong>
+              <span>
+                Azure SRE Agent helps teams investigate and respond to production
+                reliability issues.
+              </span>
+              <a
+                href="https://azure.microsoft.com/en-us/products/sre-agent/"
+                target="_blank"
+                rel="noreferrer"
+                >Visit Azure SRE Agent</a
+              >
+            </aside>
+          </article>
+
+          <figure class="media">
+            <div class="media-frame architecture-frame">
+              <img
+                src="/assets/case-studies/core-ai/agent-canvas-architecture.svg"
+                alt="Architecture diagram for the public Agent Canvas design review prototype"
+              />
+            </div>
+            <figcaption>
+              Sanitized public sandbox evidence: an architecture diagram from
+              Erik's Agent Canvas experiment. This demonstrates a prototyping
+              method and is not presented as an official Microsoft implementation.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section section-rule">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="eyebrow">Azure portals</p>
+            <h2>Making agent-generated prototypes feel native across Azure portal experiences.</h2>
+            <p>
+              Some of the mini-app and agent-context work extended into Azure portal
+              experiences. My contribution was primarily the shared prototyping
+              infrastructure and team enablement—not product ownership for an
+              individual Azure service.
+            </p>
+          </div>
+
+          <div class="split">
+            <div class="body-copy">
+              <h3>A shared mini Azure</h3>
+              <p>
+                With another technical designer, I built a robust miniature version
+                of Azure that designers, PMs, and developers could use to rapidly
+                prototype features. It gave the teams a common executable surface
+                without requiring every idea to enter the production codebase.
+              </p>
+              <p>
+                I helped create stronger AI skills for Copilot and other agents,
+                especially around the many product-specific implementations of
+                Fluent 2 found across Azure portals.
+              </p>
+            </div>
+
+            <aside class="scope-note">
+              <h3>Why product context mattered</h3>
+              <p>
+                “Use Fluent 2” was not precise enough. An agent also needed to know
+                which product surface, repository, component source, and local
+                conventions were authoritative for the task.
+              </p>
+            </aside>
+          </div>
+
+          <div class="map-of-truth media" aria-label="Representative map of truth model">
+            <div>
+              <span class="label">Representative reconstruction</span>
+              <h3>Map of Truth</h3>
+              <p>
+                An npm package that gave agents a semantic map of where to find the
+                correct resource and how to interpret it, reducing confusion between
+                similarly named design-system sources and product variants.
+              </p>
+            </div>
+            <div class="map-flow">
+              <div class="map-node">
+                <strong>Product context</strong>
+                <span>Which Azure experience is being changed?</span>
+              </div>
+              <div class="map-node">
+                <strong>Authority map</strong>
+                <span>Which source answers tokens, components, and behavior?</span>
+              </div>
+              <div class="map-node">
+                <strong>Agent decision</strong>
+                <span>Which Fluent 2 variant and resource should be used?</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-rule">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="eyebrow">Leadership as infrastructure</p>
+            <h2>The tools mattered, but adoption required a weekly practice.</h2>
+            <p>
+              I paired implementation with teaching: weekly learning sessions,
+              hands-on guidance, and patterns the design team could reuse without
+              waiting for a specialist.
+            </p>
+          </div>
+
+          <div class="outcome-grid">
+            <article class="outcome">
+              <h3>Shared capability</h3>
+              <p>
+                Helped designers build with LLMs and agents directly, moving AI from
+                a specialist tool into the team's everyday prototyping practice.
+              </p>
+            </article>
+            <article class="outcome">
+              <h3>Faster feedback</h3>
+              <p>
+                Made interactions executable earlier, so product, design, and
+                engineering could react to behavior rather than infer it from static
+                screens.
+              </p>
+            </article>
+            <article class="outcome">
+              <h3>More reliable agents</h3>
+              <p>
+                Improved the context agents received about components, product
+                variants, and source authority—reducing plausible but incorrect
+                implementation choices.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="evidence" class="section section-rule">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="eyebrow">Evidence model</p>
+            <h2>Showing the work without misrepresenting what can be public.</h2>
+            <p>
+              Official implementations lived in Microsoft's managed environment and
+              are described here at a high level. Public links establish product
+              context; selected sandbox work demonstrates methods, not shipped
+              Microsoft code.
+            </p>
+          </div>
+
+          <ul class="evidence-key" role="list" aria-label="Evidence labels">
+            <li><span class="label label-official">Public product context</span></li>
+            <li><span class="label">Official work · private</span></li>
+            <li><span class="label">Public sandbox evidence</span></li>
+            <li><span class="label">Representative reconstruction</span></li>
+          </ul>
+
+          <div class="link-grid media">
+            <article class="public-link">
+              <h3>Microsoft Copilot Studio</h3>
+              <p>
+                Public context for Microsoft's agent and workflow authoring product.
+              </p>
+              <a
+                href="https://www.microsoft.com/en-us/microsoft-365-copilot/microsoft-copilot-studio"
+                target="_blank"
+                rel="noreferrer"
+                >Visit the product</a
+              >
+            </article>
+            <article class="public-link">
+              <h3>Microsoft Foundry</h3>
+              <p>
+                The current public name for the AI platform referenced on Erik's
+                résumé as Microsoft AI Foundry.
+              </p>
+              <a
+                href="https://azure.microsoft.com/en-us/products/ai-foundry"
+                target="_blank"
+                rel="noreferrer"
+                >Visit the product</a
+              >
+            </article>
+            <article class="public-link">
+              <h3>Azure SRE Agent</h3>
+              <p>
+                Public context for the reliability product where Erik applied the
+                prototyping toolkit to unfinished feature explorations.
+              </p>
+              <a
+                href="https://azure.microsoft.com/en-us/products/sre-agent/"
+                target="_blank"
+                rel="noreferrer"
+                >Visit the product</a
+              >
+            </article>
+            <article class="public-link">
+              <h3>Agent Canvas</h3>
+              <p>
+                A sanitized diagram from a personal-account experiment showing
+                spec-driven design QA and visual feedback methods for AI agents.
+                It demonstrates method, not official Microsoft implementation.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <p>Public-safe account using product context and representative evidence.</p>
+        <p>Erik Drouhard · Senior AI Design Engineer</p>
+      </div>
+    </footer>
+  </body>
+</html>

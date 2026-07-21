@@ -11,6 +11,12 @@ npm run dev
 
 Build production output with `npm run build` and preview it with `npm run preview`.
 
+## Routes
+
+- `/` — portfolio homepage
+- `/work/` — case studies index
+- `/work/core-ai/` — Microsoft Core AI case study
+
 ## Deployment
 
 Pushes to `main` are built with Vite and deployed automatically through GitHub Actions.

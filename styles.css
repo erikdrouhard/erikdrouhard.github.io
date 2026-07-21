@@ -88,6 +88,78 @@ a {
   flex: 0 0 48px;
 }
 
+.desktop-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.case-studies-link {
+  font-family: "Crimson Pro", serif;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.025em;
+  text-decoration: none;
+}
+
+.case-studies-link[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
+
+.mobile-menu {
+  position: relative;
+  display: none;
+  font-family: "Crimson Pro", serif;
+}
+
+.mobile-menu summary {
+  position: relative;
+  display: flex;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.025em;
+  list-style: none;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.mobile-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.mobile-nav {
+  position: absolute;
+  z-index: 10;
+  top: 52px;
+  right: 0;
+  display: grid;
+  width: 220px;
+  padding: 8px;
+  border: 1px solid rgb(0 0 0 / 10%);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 98%);
+  box-shadow: 0 16px 36px rgb(0 0 0 / 10%);
+}
+
+.mobile-nav a {
+  min-height: 48px;
+  padding: 15px 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.mobile-nav a + a {
+  border-top: 1px solid rgb(0 0 0 / 8%);
+}
+
 .resume-button {
   display: flex;
   width: 237px;
@@ -246,17 +318,121 @@ h1 a {
 }
 
 .resume-button:hover,
+.case-studies-link:hover,
+.mobile-nav a:hover,
 .social-links a:hover {
   opacity: 0.78;
 }
 
 .resume-button:focus-visible,
+.case-studies-link:focus-visible,
+.mobile-menu summary:focus-visible,
+.mobile-nav a:focus-visible,
 .brand-link:focus-visible,
 .social-links a:focus-visible,
 h1 a:focus-visible,
 .bio a:focus-visible {
   outline: 2px solid #1677ff;
   outline-offset: 3px;
+}
+
+.work-main {
+  align-items: stretch;
+}
+
+.work-content {
+  gap: 72px;
+  padding-top: 136px;
+}
+
+.work-intro {
+  display: grid;
+  gap: 20px;
+}
+
+.work-eyebrow,
+.work-title {
+  margin: 0;
+}
+
+.work-eyebrow,
+.work-meta,
+.work-cta {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.work-eyebrow,
+.work-meta {
+  color: rgb(0 0 0 / 58%);
+}
+
+.work-title {
+  max-width: 22ch;
+  font-size: 3.5rem;
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.work-list {
+  width: 100%;
+  border-top: 1px solid rgb(0 0 0 / 14%);
+}
+
+.work-item {
+  display: grid;
+  min-width: 0;
+  padding: 32px 0;
+  border-bottom: 1px solid rgb(0 0 0 / 14%);
+  gap: 20px;
+  text-decoration: none;
+  grid-template-columns: minmax(160px, 1fr) minmax(0, 2.35fr) auto;
+  align-items: start;
+}
+
+.work-item-copy {
+  display: grid;
+  min-width: 0;
+  gap: 10px;
+}
+
+.work-item-copy strong {
+  max-width: 26ch;
+  font-family: "Crimson Pro", serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.work-item-copy > span {
+  max-width: 58ch;
+  color: rgb(0 0 0 / 68%);
+  font-family: "Crimson Text", serif;
+  font-size: 1.125rem;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.work-cta {
+  padding-top: 4px;
+  white-space: nowrap;
+}
+
+.work-item:hover .work-item-copy strong,
+.work-item:hover .work-cta {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
+
+.work-item:focus-visible {
+  outline: 2px solid #1677ff;
+  outline-offset: 8px;
 }
 
 @media (min-width: 810px) and (max-width: 1199.98px) {
@@ -298,6 +474,14 @@ h1 a:focus-visible,
     padding: 16px 16px 0;
   }
 
+  .desktop-header-actions {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: block;
+  }
+
   .site-main {
     width: 100%;
     padding: 0 16px 16px;
@@ -336,6 +520,39 @@ h1 a:focus-visible,
     height: auto;
     aspect-ratio: 1;
     flex-basis: auto;
+  }
+
+  .work-content {
+    gap: 48px;
+    padding-top: 64px;
+  }
+
+  .work-intro {
+    gap: 16px;
+  }
+
+  .work-title {
+    font-size: 2.25rem;
+    line-height: 1.08;
+  }
+
+  .work-item {
+    padding: 24px 0;
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+
+  .work-item-copy strong {
+    font-size: 1.75rem;
+    line-height: 1.08;
+  }
+
+  .work-item-copy > span {
+    font-size: 1.125rem;
+  }
+
+  .work-cta {
+    padding-top: 4px;
   }
 }
 

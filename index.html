@@ -15,7 +15,7 @@
   <body>
     <div class="page-shell">
       <header class="site-header">
-        <a class="brand-link" href="./" aria-label="Homepage">
+        <a class="brand-link" href="/" aria-label="Homepage">
           <img
             class="brand-mark"
             src="./assets/erikdrouhard-logomark.svg"
@@ -25,14 +25,25 @@
           />
         </a>
 
-        <a
-          class="resume-button"
-          href="./assets/erik-drouhard-resume.pdf"
-          download="Erik-Drouhard-Resume.pdf"
-        >
-          <img src="./assets/download.svg" width="16" height="16" alt="" />
-          <span>DOWNLOAD RESUME</span>
-        </a>
+        <div class="desktop-header-actions">
+          <a class="case-studies-link" href="/work/">CASE STUDIES</a>
+          <a
+            class="resume-button"
+            href="./assets/erik-drouhard-resume.pdf"
+            download="Erik-Drouhard-Resume.pdf"
+          >
+            <img src="./assets/download.svg" width="16" height="16" alt="" />
+            <span>DOWNLOAD RESUME</span>
+          </a>
+        </div>
+
+        <details class="mobile-menu">
+          <summary>MENU</summary>
+          <nav class="mobile-nav" aria-label="Mobile navigation">
+            <a href="/work/">CASE STUDIES</a>
+            <a href="./assets/erik-drouhard-resume.pdf" download="Erik-Drouhard-Resume.pdf">DOWNLOAD RESUME</a>
+          </nav>
+        </details>
       </header>
 
       <main class="site-main">
@@ -70,7 +81,7 @@
                 where I designed tools for authoring complex conversational behavior. I also led the creation of Verse, a design system for Mix and the surrounding platform.
               </p>
               <p>
-                Today, I work as a UX Engineer on Microsoft Core AI, working across products including
+                Today, I work as a UX Engineer on <a href="/work/core-ai/">Microsoft Core AI</a>, working across products including
                 <a href="https://ai.azure.com/" target="_blank" rel="noopener noreferrer">Microsoft AI Foundry</a>
                 and Azure portals. I use design, code, AI, and LLMs to prototype ideas, build team tooling, explore emerging interaction patterns, and help teams translate complex AI capabilities into usable product experiences.
               </p>
