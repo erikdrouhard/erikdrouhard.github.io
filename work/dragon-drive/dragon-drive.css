@@ -442,6 +442,7 @@
   padding: 30px;
   border-bottom: 1px solid var(--drive-line);
   gap: 10px;
+  align-content: start;
 }
 
 .drive-translation-flow li:nth-child(odd) {
