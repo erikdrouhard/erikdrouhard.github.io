@@ -91,7 +91,7 @@ a {
 .desktop-header-actions {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 16px;
 }
 
 .case-studies-link {
@@ -101,6 +101,23 @@ a {
   line-height: 1;
   letter-spacing: 0.025em;
   text-decoration: none;
+}
+
+.contact-button {
+  display: flex;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid rgb(0 0 0 / 24%);
+  border-radius: 999px;
+  align-items: center;
+  background: transparent;
+  font-family: "Crimson Pro", serif;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.025em;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .case-studies-link[aria-current="page"] {
@@ -317,7 +334,17 @@ h1 a {
   height: 24px;
 }
 
+.social-footer {
+  display: flex;
+  width: min(100%, 940px);
+  margin: 0 auto;
+  padding: 24px 24px 40px;
+  border-top: 1px solid rgb(0 0 0 / 10%);
+  justify-content: flex-start;
+}
+
 .resume-button:focus-visible,
+.contact-button:focus-visible,
 .case-studies-link:focus-visible,
 .mobile-menu summary:focus-visible,
 .mobile-nav a:focus-visible,
@@ -423,6 +450,7 @@ h1 a:focus-visible,
 
 @media (hover: hover) and (pointer: fine) {
   .resume-button:hover,
+  .contact-button:hover,
   .case-studies-link:hover,
   .mobile-nav a:hover,
   .social-links a:hover {
@@ -439,7 +467,8 @@ h1 a:focus-visible,
 
 @media (min-width: 810px) and (max-width: 1199.98px) {
   .site-header,
-  .site-main {
+  .site-main,
+  .social-footer {
     width: min(calc(100% - 80px), 730px);
     padding-right: 0;
     padding-left: 0;
@@ -487,6 +516,11 @@ h1 a:focus-visible,
   .site-main {
     width: 100%;
     padding: 0 16px 16px;
+  }
+
+  .social-footer {
+    width: calc(100% - 32px);
+    padding: 24px 0 calc(32px + env(safe-area-inset-bottom));
   }
 
   .content {
