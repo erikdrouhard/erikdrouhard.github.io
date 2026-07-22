@@ -523,12 +523,22 @@
   letter-spacing: -0.035em;
 }
 
-.drive-outcome > p:last-child {
+.drive-outcome-copy {
   position: relative;
   z-index: 1;
   max-width: 70ch;
   color: rgb(255 255 255 / 66%);
   font-size: 1rem;
+}
+
+.drive-outcome-copy a {
+  color: inherit;
+  text-decoration-color: var(--drive-cyan-bright);
+  text-underline-offset: 0.18em;
+}
+
+.drive-outcome-copy a:hover {
+  color: #fff;
 }
 
 .drive-footer {
@@ -699,7 +709,7 @@
   .drive-context dd,
   .drive-moments article > p:last-child,
   .drive-translation-flow li p,
-  .drive-outcome > p:last-child {
+  .drive-outcome-copy {
     font-size: 1rem;
   }
 
