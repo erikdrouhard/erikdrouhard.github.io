@@ -680,6 +680,12 @@
     line-height: var(--display-section-title-mobile-line-height);
   }
 
+  .drive-content h3 {
+    font-size: var(--case-study-item-title-mobile-size);
+    font-weight: var(--case-study-item-title-mobile-weight);
+    line-height: 1.2;
+  }
+
   .drive-reading > p:not(.drive-section-label),
   .drive-prose {
     font-size: 1.125rem;

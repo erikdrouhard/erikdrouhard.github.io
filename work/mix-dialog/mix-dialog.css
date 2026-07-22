@@ -612,6 +612,13 @@
     line-height: var(--display-section-title-mobile-line-height);
   }
 
+  .mix-content h3,
+  .mix-content .mix-condition-demo-heading h3 {
+    font-size: var(--case-study-item-title-mobile-size);
+    font-weight: var(--case-study-item-title-mobile-weight);
+    line-height: 1.2;
+  }
+
   .mix-three-column,
   .mix-four-column {
     grid-template-columns: 1fr;

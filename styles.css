@@ -44,6 +44,10 @@
   --display-section-title-letter-spacing: 0;
   --display-section-title-mobile-size: 1.125rem;
   --display-section-title-mobile-line-height: 1.35;
+  --case-study-item-title-mobile-size: 1.25rem;
+  --case-study-item-title-mobile-weight: 600;
+  --case-study-support-title-mobile-size: 1.125rem;
+  --case-study-support-title-mobile-weight: 600;
   --content-link-weight: 600;
   color: #000;
   background: #f6f6f6;

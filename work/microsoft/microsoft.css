@@ -844,6 +844,12 @@
     line-height: var(--display-section-title-mobile-line-height);
   }
 
+  .core-ai-page h3 {
+    font-size: var(--case-study-item-title-mobile-size);
+    font-weight: var(--case-study-item-title-mobile-weight);
+    line-height: 1.2;
+  }
+
   .core-ai-page .hero-deck {
     font-size: 1.125rem;
   }
@@ -863,6 +869,12 @@
   .core-ai-page .applied-work-link span,
   .core-ai-page .map-node span {
     font-size: 1rem;
+  }
+
+  .core-ai-page .snapshot strong {
+    font-size: var(--case-study-support-title-mobile-size);
+    font-weight: var(--case-study-support-title-mobile-weight);
+    line-height: 1.2;
   }
 
   .core-ai-page .snapshot,
