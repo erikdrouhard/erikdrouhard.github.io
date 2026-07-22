@@ -125,7 +125,7 @@ class ConditionStackDemo extends HTMLElement {
 
   render(focusId = null) {
     this.innerHTML = `
-      <section class="condition-demo" aria-labelledby="condition-demo-title">
+      <section class="condition-demo" aria-labelledby="condition-demo-title" aria-describedby="condition-demo-invitation">
         <header class="condition-demo__topbar">
           <div class="condition-demo__title">
             <strong id="condition-demo-title">Account support dialog</strong>
@@ -137,7 +137,10 @@ class ConditionStackDemo extends HTMLElement {
           </div>
         </header>
         <div class="condition-demo__canvas">
-          <p class="condition-demo__hint">Add actions or nested conditions from any branch. Drag an action or a whole nested block—or choose Move for a touch and keyboard-friendly path.</p>
+          <div class="condition-demo__invitation" id="condition-demo-invitation">
+            <strong>Try the interactive demo</strong>
+            <span>Choose <b>+ Add action</b> below, or move and reorder the existing actions to reshape the conversation.</span>
+          </div>
           ${this.renderBlock(this.root, true)}
         </div>
         <ul class="condition-demo__legend" aria-label="Action types">

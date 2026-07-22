@@ -40,7 +40,6 @@ condition-stack-demo {
 }
 
 .condition-demo__title span,
-.condition-demo__hint,
 .condition-demo__legend {
   color: rgb(32 25 74 / 58%);
   font-size: 0.75rem;
@@ -95,8 +94,30 @@ condition-stack-demo {
     linear-gradient(145deg, #f6f3ff, #f5f8fb);
 }
 
-.condition-demo__hint {
-  margin: 0 0 14px;
+.condition-demo__invitation {
+  display: grid;
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #302663;
+  color: #fff;
+  box-shadow: 0 10px 24px rgb(48 38 99 / 16%);
+  gap: 3px;
+}
+
+.condition-demo__invitation strong {
+  font-size: 0.9375rem;
+  font-weight: 750;
+}
+
+.condition-demo__invitation span {
+  color: rgb(255 255 255 / 78%);
+  font-size: 0.8125rem;
+}
+
+.condition-demo__invitation b {
+  color: #fff;
+  font-weight: 750;
 }
 
 .condition-demo__legend {
@@ -458,8 +479,7 @@ condition-stack-demo {
     padding-left: 14px;
   }
 
-  .condition-demo__title span,
-  .condition-demo__hint {
+  .condition-demo__title span {
     display: none;
   }
 
