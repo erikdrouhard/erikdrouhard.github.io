@@ -70,9 +70,10 @@
   margin-bottom: 30px;
   font-family: var(--display-title-font);
   font-size: var(--display-title-size);
-  font-weight: var(--display-title-weight);
+  font-weight: var(--content-link-weight);
   letter-spacing: var(--display-title-letter-spacing);
   line-height: var(--display-title-line-height);
+  text-decoration: none;
 }
 
 .core-ai-page h2 {

@@ -115,9 +115,10 @@
 .mix-hero h1 {
   font-family: var(--display-title-font);
   font-size: var(--display-title-size);
-  font-weight: var(--display-title-weight);
+  font-weight: var(--content-link-weight);
   line-height: var(--display-title-line-height);
   letter-spacing: var(--display-title-letter-spacing);
+  text-decoration: none;
 }
 
 .mix-deck {
