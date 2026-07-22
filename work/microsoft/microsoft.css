@@ -136,8 +136,10 @@
   max-width: 670px;
   margin-bottom: 32px;
   color: rgb(0 0 0 / 72%);
-  font-size: 1.45rem;
-  line-height: 1.4;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0;
   text-wrap: pretty;
 }
 
@@ -356,7 +358,7 @@
 
 .core-ai-page .recommendation-attribution h2 {
   margin-bottom: 18px;
-  font-size: clamp(2.25rem, 4vw, 3.35rem);
+  font-size: var(--display-section-title-size);
 }
 
 .core-ai-page .recommendation-attribution > p:not(.eyebrow) {
@@ -569,7 +571,7 @@
 
 .core-ai-page .bridge h2 {
   margin-bottom: 0;
-  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  font-size: var(--display-section-title-size);
 }
 
 .core-ai-page .bridge-copy p + p {
@@ -833,14 +835,16 @@
 
   .core-ai-page h1 {
     font-size: var(--display-title-mobile-size);
+    line-height: var(--display-title-mobile-line-height);
   }
 
   .core-ai-page h2 {
     font-size: var(--display-section-title-mobile-size);
+    line-height: var(--display-section-title-mobile-line-height);
   }
 
   .core-ai-page .hero-deck {
-    font-size: 1.2rem;
+    font-size: 1.125rem;
   }
 
   .core-ai-page .button-row,

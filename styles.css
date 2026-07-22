@@ -32,16 +32,18 @@
 
 :root {
   --display-title-font: "Crimson Pro", serif;
-  --display-title-size: clamp(4rem, 7vw, 5.75rem);
+  --display-title-size: 2.25rem;
   --display-title-weight: 300;
-  --display-title-line-height: 0.95;
-  --display-title-letter-spacing: -0.045em;
-  --display-title-mobile-size: 3.25rem;
-  --display-section-title-size: clamp(2.25rem, 5vw, 4.25rem);
+  --display-title-line-height: 1.2;
+  --display-title-letter-spacing: 0;
+  --display-title-mobile-size: 1.125rem;
+  --display-title-mobile-line-height: 1.35;
+  --display-section-title-size: 2.25rem;
   --display-section-title-weight: 300;
-  --display-section-title-line-height: 1;
-  --display-section-title-letter-spacing: -0.035em;
-  --display-section-title-mobile-size: 2.5rem;
+  --display-section-title-line-height: 1.2;
+  --display-section-title-letter-spacing: 0;
+  --display-section-title-mobile-size: 1.125rem;
+  --display-section-title-mobile-line-height: 1.35;
   color: #000;
   background: #f6f6f6;
   font-synthesis: none;
@@ -481,6 +483,11 @@ h1 a:focus-visible,
 }
 
 @media (min-width: 810px) and (max-width: 1199.98px) {
+  :root {
+    --display-title-size: 1.8125rem;
+    --display-section-title-size: 1.8125rem;
+  }
+
   .site-header,
   .site-main,
   .social-footer {
@@ -514,6 +521,11 @@ h1 a:focus-visible,
 }
 
 @media (max-width: 809.98px) {
+  :root {
+    --display-title-size: 1.125rem;
+    --display-section-title-size: 1.125rem;
+  }
+
   .site-header {
     width: 100%;
     height: 64px;

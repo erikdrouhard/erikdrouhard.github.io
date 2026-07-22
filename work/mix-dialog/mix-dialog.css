@@ -123,8 +123,10 @@
 .mix-deck {
   max-width: 30ch;
   color: rgb(0 0 0 / 75%);
-  font-size: 1.35rem;
+  font-size: 1.125rem;
+  font-weight: 400;
   line-height: 1.45;
+  letter-spacing: 0;
 }
 
 .mix-badges {
@@ -586,11 +588,12 @@
 
   .mix-hero h1 {
     font-size: var(--display-title-mobile-size);
+    line-height: var(--display-title-mobile-line-height);
   }
 
   .mix-deck {
     max-width: 34ch;
-    font-size: 1.2rem;
+    font-size: 1.125rem;
   }
 
   .mix-hero-visual {
@@ -605,6 +608,7 @@
 
   .mix-content h2 {
     font-size: var(--display-section-title-mobile-size);
+    line-height: var(--display-section-title-mobile-line-height);
   }
 
   .mix-three-column,
