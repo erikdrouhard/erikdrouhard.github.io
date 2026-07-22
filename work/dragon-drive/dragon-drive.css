@@ -78,10 +78,10 @@
 
 .drive-content h2 {
   max-width: 24ch;
-  font-size: clamp(2.25rem, 5vw, 4.25rem);
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -0.035em;
+  font-size: var(--display-section-title-size);
+  font-weight: var(--display-section-title-weight);
+  line-height: var(--display-section-title-line-height);
+  letter-spacing: var(--display-section-title-letter-spacing);
 }
 
 .drive-content h3 {
@@ -124,7 +124,7 @@
 .drive-hero h1 {
   max-width: 12ch;
   font-family: var(--display-title-font);
-  font-size: clamp(4rem, 7vw, 5.75rem);
+  font-size: var(--display-title-size);
   font-weight: var(--display-title-weight);
   line-height: var(--display-title-line-height);
   letter-spacing: var(--display-title-letter-spacing);

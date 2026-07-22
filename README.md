@@ -16,7 +16,8 @@ Build production output with `npm run build` and preview it with `npm run previe
 - `/` — portfolio homepage
 - `/work/` — case studies index
 - `/work/dragon-drive/` — Nuance Dragon Drive automotive HUD case study
-- `/work/core-ai/` — Microsoft case study spanning Copilot Studio and Core AI
+- `/work/microsoft/` — Microsoft case study spanning Copilot Studio and Core AI
+- `/work/core-ai/` — compatibility redirect to `/work/microsoft/`
 - `/work/mix-dialog/` — Nuance Mix.dialog case study
 
 The Mix.dialog route and its optimized case-study imagery are served entirely from this repository; it does not depend on Framer at runtime.

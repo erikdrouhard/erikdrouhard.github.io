@@ -71,9 +71,10 @@
 }
 
 .mix-content h2 {
-  font-size: 1.875rem;
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: var(--display-section-title-size);
+  font-weight: var(--display-section-title-weight);
+  line-height: var(--display-section-title-line-height);
+  letter-spacing: var(--display-section-title-letter-spacing);
 }
 
 .mix-content h3 {
@@ -113,7 +114,7 @@
 
 .mix-hero h1 {
   font-family: var(--display-title-font);
-  font-size: clamp(4rem, 7vw, 5.75rem);
+  font-size: var(--display-title-size);
   font-weight: var(--display-title-weight);
   line-height: var(--display-title-line-height);
   letter-spacing: var(--display-title-letter-spacing);
@@ -603,8 +604,7 @@
   }
 
   .mix-content h2 {
-    font-size: 1.5rem;
-    line-height: 1.2;
+    font-size: var(--display-section-title-mobile-size);
   }
 
   .mix-three-column,
