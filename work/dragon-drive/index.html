@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Dragon Drive case study: leading UI and interaction design for a gaze-driven automotive HUD and translating motion prototypes into embedded behavior."
+      content="Dragon Drive case study: exploring gaze as context for voice commands in a future autonomous-vehicle technology demonstrator."
     />
     <meta name="theme-color" content="#f4f9f8" />
     <title>Dragon Drive Case Study | Erik Drouhard</title>
@@ -88,7 +88,7 @@
               <p class="drive-eyebrow">NUANCE · 2017–2019</p>
               <h1>Dragon Drive</h1>
               <p class="drive-deck">
-                Designing a gaze-driven windshield HUD that made an intelligent car’s behavior legible without asking drivers to leave the road.
+                Exploring how gaze could give context to voice commands in a future autonomous vehicle—and make a multimodal system’s response visible.
               </p>
               <ul class="drive-badges" role="list" aria-label="Project details">
                 <li>TECHNICAL DESIGNER</li>
@@ -122,10 +122,13 @@
           <section id="overview" class="drive-section" aria-labelledby="overview-heading">
             <div class="drive-reading">
               <p class="drive-section-label">01 · THE CHALLENGE</p>
-              <h2 id="overview-heading">Designing for a glance, not a screen</h2>
+              <h2 id="overview-heading">Exploring gaze as a new input modality</h2>
               <div class="drive-prose">
                 <p>
-                  A windshield interface sits inside the driver’s field of view. It cannot demand the same attention as a phone or dashboard app. Information has to arrive at the right moment, reveal just enough detail, and make every state change understandable while the road remains primary.
+                  Dragon Drive was a future-facing technology demonstrator, not a production interface for someone actively driving. Its UI sat prominently in the center of the windshield—effective for showing the technology, but not a claim that this was the right attention model for today’s cars.
+                </p>
+                <p>
+                  The concept looked ahead to autonomous vehicles, where occupants could interact differently once they no longer needed to watch the road continuously. Gaze gave the system context: someone could look at the phone widget, say “call someone,” and the car could understand which domain the command referred to. Motion then confirmed what the system had recognized and how it was responding.
                 </p>
                 <p>
                   Dragon Drive brought voice, gaze, a projected HUD, and an embedded center display into one real-time experience. I led the UI and interaction design for the windshield HUD and worked as the technical designer translating prototypes and animation intent into behavior the display systems could carry.
@@ -135,12 +138,12 @@
 
             <dl class="drive-context" aria-label="Project context">
               <div>
-                <dt>Environment</dt>
-                <dd>Moving vehicle, changing light, visually noisy streets.</dd>
+                <dt>Scenario</dt>
+                <dd>A future autonomous vehicle with new ways for occupants to interact.</dd>
               </div>
               <div>
-                <dt>Attention</dt>
-                <dd>Divided, time-sensitive, and anchored on the road.</dd>
+                <dt>Purpose</dt>
+                <dd>Demonstrate multimodal technology, not a production-ready driving interface.</dd>
               </div>
               <div>
                 <dt>System</dt>
@@ -148,7 +151,7 @@
               </div>
               <div>
                 <dt>Design job</dt>
-                <dd>Make focus, response, and system state readable at a glance.</dd>
+                <dd>Use gaze to establish context and make the system’s interpretation visible.</dd>
               </div>
             </dl>
 
@@ -169,56 +172,56 @@
           <section id="interaction" class="drive-section drive-section-feature" aria-labelledby="interaction-heading">
             <div class="drive-reading">
               <p class="drive-section-label">02 · INTERACTION MODEL</p>
-              <h2 id="interaction-heading">Gaze provided intent. Motion provided confidence.</h2>
+              <h2 id="interaction-heading">Gaze established context. Voice completed the command.</h2>
               <p>
-                The HUD needed to acknowledge attention without turning every look into a disruptive action. A stable overview preserved orientation; focus and motion then made the system’s response visible.
+                The HUD explored a simple multimodal pattern: look at a widget to establish the relevant domain, then speak naturally. Focus and motion showed which context was active and made the system’s interpretation visible before it responded.
               </p>
             </div>
 
             <div class="drive-moments">
               <article>
                 <p class="drive-moment-number">01</p>
-                <h3>Orient</h3>
-                <p>Keep the primary domains stable and spatially predictable so the interface can be read peripherally.</p>
+                <h3>Choose context</h3>
+                <p>Look at a stable widget—phone, music, weather, or navigation—to indicate the relevant domain.</p>
               </article>
               <article>
                 <p class="drive-moment-number">02</p>
-                <h3>Focus</h3>
-                <p>Apply gaze as selection context, making the attended region clear before revealing more information.</p>
+                <h3>Confirm focus</h3>
+                <p>Use motion to acknowledge which widget has gaze focus and what the system is ready to act on.</p>
               </article>
               <article>
                 <p class="drive-moment-number">03</p>
-                <h3>Respond</h3>
-                <p>Use motion and multimodal feedback to show what changed, what is active, and where detail moved.</p>
+                <h3>Speak naturally</h3>
+                <p>Interpret the voice command within that context, then show the response across the HUD and embedded display.</p>
               </article>
             </div>
 
             <div
               class="drive-interaction-map"
               role="img"
-              aria-label="Interaction sequence showing driver gaze establishing intent, the HUD acknowledging focus, and detailed content appearing on the embedded display"
+              aria-label="Interaction sequence showing an occupant looking at a widget, the HUD confirming context, and the system interpreting a voice command"
             >
               <div class="drive-map-step">
-                <span>DRIVER</span>
-                <strong>Attention</strong>
-                <small>Eyes remain oriented toward the road.</small>
+                <span>OCCUPANT</span>
+                <strong>Gaze + voice</strong>
+                <small>Looks at phone, then says “call someone.”</small>
               </div>
               <span class="drive-map-arrow" aria-hidden="true">→</span>
               <div class="drive-map-step drive-map-step-accent">
                 <span>HUD</span>
-                <strong>Focus</strong>
-                <small>The attended tile acknowledges gaze.</small>
+                <strong>Context</strong>
+                <small>The phone widget acknowledges gaze focus.</small>
               </div>
               <span class="drive-map-arrow" aria-hidden="true">→</span>
               <div class="drive-map-step">
                 <span>SYSTEM</span>
-                <strong>Response</strong>
-                <small>Motion and the embedded display carry detail.</small>
+                <strong>Interpretation</strong>
+                <small>The focused domain gives meaning to the command.</small>
               </div>
             </div>
 
             <p class="drive-callout">
-              The interface was not a second dashboard floating on the windshield. It was a compact layer for orientation and action, paired with a richer display when the task needed more detail.
+              The prominent windshield UI made the underlying interaction easy to see in a CES demo. It was built to explore gaze, voice, and display coordination for a future autonomous-vehicle experience—not to propose a production interface for use while a person was actively driving.
             </p>
           </section>
 
@@ -255,7 +258,7 @@
               <li>
                 <span>04 · VALIDATE</span>
                 <h3>Evaluate it in physical context</h3>
-                <p>Review the experience against road noise, divided attention, projection, and the behavior of the full in-car system.</p>
+                <p>Review projection, gaze behavior, system timing, and feedback as part of the full in-car demonstration.</p>
               </li>
             </ol>
 
@@ -271,7 +274,7 @@
           <section id="showcase" class="drive-section drive-section-showcase" aria-labelledby="showcase-heading">
             <div class="drive-reading">
               <p class="drive-section-label">04 · THE SHOWCASE</p>
-              <h2 id="showcase-heading">A working system in a moving vehicle</h2>
+              <h2 id="showcase-heading">A multimodal technology demo in a moving vehicle</h2>
               <p>
                 The HUD was featured at the Dragon Drive Innovation Showcase at CES 2019. The in-vehicle demonstration made the complete interaction visible: gaze on the windshield layer, animated feedback, voice, and the embedded display behaving as one system.
               </p>
@@ -295,7 +298,7 @@
             <div class="drive-outcome">
               <p class="drive-section-label">OUTCOME</p>
               <blockquote>
-                The project made an intelligent system’s focus and response visible where software meets the physical world.
+                The demonstration showed how gaze, voice, motion, and two displays could behave as one multimodal system.
               </blockquote>
               <p>
                 My contribution was UI and interaction-design leadership plus technical translation for the HUD and embedded experience. The underlying gaze technology, vehicle platform, and wider Dragon Drive engineering were collaborative system inputs—not my individual inventions.
