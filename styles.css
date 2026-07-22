@@ -31,6 +31,13 @@
 }
 
 :root {
+  --display-title-font: "Crimson Pro", serif;
+  --display-title-weight: 300;
+  --display-title-line-height: 0.95;
+  --display-title-letter-spacing: -0.045em;
+  --display-title-mobile-size: 3.25rem;
+  --display-title-long-mobile-size: 2.75rem;
+  --display-section-title-mobile-size: 2.5rem;
   color: #000;
   background: #f6f6f6;
   font-synthesis: none;

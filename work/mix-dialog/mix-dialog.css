@@ -112,10 +112,11 @@
 }
 
 .mix-hero h1 {
+  font-family: var(--display-title-font);
   font-size: clamp(4rem, 7vw, 5.75rem);
-  font-weight: 300;
-  line-height: 0.95;
-  letter-spacing: -0.045em;
+  font-weight: var(--display-title-weight);
+  line-height: var(--display-title-line-height);
+  letter-spacing: var(--display-title-letter-spacing);
 }
 
 .mix-deck {
@@ -583,8 +584,7 @@
   }
 
   .mix-hero h1 {
-    font-size: clamp(3.25rem, 17vw, 4.75rem);
-    line-height: 0.95;
+    font-size: var(--display-title-mobile-size);
   }
 
   .mix-deck {

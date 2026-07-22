@@ -123,10 +123,11 @@
 
 .drive-hero h1 {
   max-width: 12ch;
+  font-family: var(--display-title-font);
   font-size: clamp(4rem, 7vw, 5.75rem);
-  font-weight: 300;
-  line-height: 0.95;
-  letter-spacing: -0.045em;
+  font-weight: var(--display-title-weight);
+  line-height: var(--display-title-line-height);
+  letter-spacing: var(--display-title-letter-spacing);
 }
 
 .drive-deck {
@@ -641,7 +642,7 @@
   }
 
   .drive-hero h1 {
-    font-size: clamp(3.25rem, 17vw, 4.75rem);
+    font-size: var(--display-title-mobile-size);
   }
 
   .drive-deck {
@@ -670,7 +671,7 @@
   }
 
   .drive-content h2 {
-    font-size: 2.5rem;
+    font-size: var(--display-section-title-mobile-size);
   }
 
   .drive-reading > p:not(.drive-section-label),
