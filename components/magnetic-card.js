@@ -128,7 +128,17 @@ class MagneticCard {
   }
 }
 
-document.querySelectorAll(CARD_SELECTOR).forEach((card) => {
-  if (card.closest(".case-study-magnetic-stage")) return;
-  new MagneticCard(card);
-});
+function initializeMagneticCards() {
+  document.querySelectorAll(CARD_SELECTOR).forEach((card) => {
+    if (card.closest(".case-study-magnetic-stage")) return;
+    new MagneticCard(card);
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeMagneticCards, {
+    once: true,
+  });
+} else {
+  initializeMagneticCards();
+}
