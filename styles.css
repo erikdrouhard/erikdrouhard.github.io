@@ -44,6 +44,7 @@
   --display-section-title-letter-spacing: 0;
   --display-section-title-mobile-size: 1.125rem;
   --display-section-title-mobile-line-height: 1.35;
+  --content-link-weight: 600;
   color: #000;
   background: #f6f6f6;
   font-synthesis: none;
@@ -258,7 +259,7 @@ h1 {
 }
 
 h1 a {
-  font-weight: 600;
+  font-weight: var(--content-link-weight);
   text-decoration: underline;
 }
 
@@ -303,7 +304,7 @@ h1 a {
 }
 
 .bio a {
-  font-weight: 600;
+  font-weight: var(--content-link-weight);
   text-decoration: underline;
 }
 
@@ -450,9 +451,12 @@ h1 a:focus-visible,
   margin: 0;
   font-family: "Crimson Pro", serif;
   font-size: var(--display-section-title-size);
-  font-weight: var(--display-section-title-weight);
+  font-weight: var(--content-link-weight);
   line-height: var(--display-section-title-line-height);
   letter-spacing: var(--display-section-title-letter-spacing);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
   text-wrap: balance;
 }
 
@@ -469,6 +473,10 @@ h1 a:focus-visible,
 }
 
 .work-cta {
+  font-weight: var(--content-link-weight);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
   white-space: nowrap;
 }
 
@@ -484,13 +492,6 @@ h1 a:focus-visible,
   .mobile-nav a:hover,
   .social-links a:hover {
     opacity: 0.78;
-  }
-
-  .work-item:hover .work-item-copy h2,
-  .work-item:hover .work-cta {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 5px;
   }
 }
 
