@@ -414,7 +414,7 @@ h1 a:focus-visible,
 }
 
 .work-title {
-  max-width: 22ch;
+  max-width: 38ch;
   font-family: var(--display-title-font);
   font-size: var(--display-title-size);
   font-weight: var(--display-title-weight);
@@ -436,7 +436,7 @@ h1 a:focus-visible,
   gap: 20px;
   text-decoration: none;
   grid-template-columns: minmax(160px, 1fr) minmax(0, 2.35fr) auto;
-  align-items: start;
+  align-items: baseline;
 }
 
 .work-item-copy {
@@ -469,7 +469,6 @@ h1 a:focus-visible,
 }
 
 .work-cta {
-  padding-top: 4px;
   white-space: nowrap;
 }
 
@@ -621,6 +620,7 @@ h1 a:focus-visible,
     padding: 24px 0;
     gap: 16px;
     grid-template-columns: 1fr;
+    align-items: start;
   }
 
   .work-item-copy h2 {
@@ -632,9 +632,6 @@ h1 a:focus-visible,
     font-size: 1.125rem;
   }
 
-  .work-cta {
-    padding-top: 4px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
