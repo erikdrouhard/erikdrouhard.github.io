@@ -91,7 +91,7 @@ a {
 .desktop-header-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 28px;
 }
 
 .case-studies-link {
@@ -179,9 +179,11 @@ a {
 
 .resume-button {
   display: flex;
-  width: 237px;
+  width: max-content;
+  min-width: 237px;
   min-height: 44px;
   padding: 0 24px;
+  flex: 0 0 auto;
   align-items: center;
   gap: 12px;
   border-radius: 999px;
@@ -340,7 +342,10 @@ h1 a {
   margin: 0 auto;
   padding: 24px 24px 40px;
   border-top: 1px solid rgb(0 0 0 / 10%);
-  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: space-between;
 }
 
 .resume-button:focus-visible,
