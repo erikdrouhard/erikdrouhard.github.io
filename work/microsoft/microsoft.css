@@ -66,7 +66,7 @@
 }
 
 .core-ai-page h1 {
-  max-width: 14ch;
+  max-width: 24ch;
   margin-bottom: 30px;
   font-family: var(--display-title-font);
   font-size: var(--display-title-size);
