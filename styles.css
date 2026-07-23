@@ -49,6 +49,10 @@
   --case-study-support-title-mobile-size: 1.125rem;
   --case-study-support-title-mobile-weight: 600;
   --content-link-weight: 600;
+  --layer-content: 0;
+  --layer-sticky-nav: 1;
+  --layer-header: 2;
+  --layer-popover: 1;
   color: #000;
   background: #f6f6f6;
   font-synthesis: none;
@@ -91,6 +95,9 @@ a {
 }
 
 .site-header {
+  isolation: isolate;
+  position: relative;
+  z-index: var(--layer-header);
   display: flex;
   width: min(100%, 940px);
   height: 88px;
@@ -170,7 +177,7 @@ a {
 
 .mobile-nav {
   position: absolute;
-  z-index: 10;
+  z-index: var(--layer-popover);
   top: 52px;
   right: 0;
   display: grid;
@@ -223,11 +230,20 @@ a {
 }
 
 .site-main {
+  isolation: isolate;
+  position: relative;
+  z-index: var(--layer-content);
   display: flex;
   width: min(100%, 940px);
   padding: 0 24px 40px;
   flex-direction: column;
   align-items: center;
+}
+
+.core-main {
+  isolation: isolate;
+  position: relative;
+  z-index: var(--layer-content);
 }
 
 .content {

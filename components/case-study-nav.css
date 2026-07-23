@@ -2,7 +2,7 @@
 
 case-study-nav {
   position: sticky;
-  z-index: 10;
+  z-index: var(--layer-sticky-nav);
   top: 0;
   display: block;
   width: 100%;
