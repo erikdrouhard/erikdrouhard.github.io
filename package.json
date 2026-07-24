@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
-    "preview": "vite preview --host 127.0.0.1"
+    "preview": "vite preview --host 127.0.0.1",
+    "check:type": "node scripts/check-type-system.mjs"
   },
   "devDependencies": {
     "vite": "^7.0.0"

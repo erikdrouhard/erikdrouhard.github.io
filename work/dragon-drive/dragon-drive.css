@@ -23,9 +23,6 @@
   border-radius: 999px;
   background: var(--drive-ink);
   color: #fff;
-  font-family: "Crimson Pro", serif;
-  font-size: 0.875rem;
-  font-weight: 700;
   text-decoration: none;
   transform: translateY(-160%);
 }
@@ -52,9 +49,6 @@
 .drive-content {
   gap: 0;
   color: var(--drive-ink);
-  font-family: "Crimson Text", serif;
-  font-size: 1.125rem;
-  line-height: 1.5;
 }
 
 .drive-content h1,
@@ -68,26 +62,8 @@
   margin: 0;
 }
 
-.drive-content h1,
-.drive-content h2,
-.drive-content h3,
-.drive-content blockquote {
-  font-family: "Crimson Pro", serif;
-  text-wrap: balance;
-}
-
 .drive-content h2 {
   max-width: 24ch;
-  font-size: var(--display-section-title-size);
-  font-weight: var(--display-section-title-weight);
-  line-height: var(--display-section-title-line-height);
-  letter-spacing: var(--display-section-title-letter-spacing);
-}
-
-.drive-content h3 {
-  font-size: 1.35rem;
-  font-weight: 600;
-  line-height: 1.15;
 }
 
 .drive-content p {
@@ -113,31 +89,16 @@
 .drive-moment-number,
 .drive-translation-flow > li > span {
   color: rgb(7 30 38 / 56%);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .drive-hero h1 {
   max-width: 12ch;
-  font-family: var(--display-title-font);
-  font-size: var(--display-title-size);
-  font-weight: var(--content-link-weight);
-  line-height: var(--display-title-line-height);
-  letter-spacing: var(--display-title-letter-spacing);
   text-decoration: none;
 }
 
 .drive-deck {
   max-width: 31ch;
   color: var(--drive-ink-soft);
-  font-size: 1.125rem;
-  font-weight: 400;
-  line-height: 1.45;
-  letter-spacing: 0;
 }
 
 .drive-badges {
@@ -155,11 +116,6 @@
   border-radius: 999px;
   background: rgb(255 255 255 / 74%);
   box-shadow: 0 0 0 1px rgb(7 30 38 / 13%);
-  font-family: "Crimson Pro", serif;
-  font-size: 0.8125rem;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: 0.015em;
 }
 
 .drive-hero-visual {
@@ -202,10 +158,6 @@
   border-radius: 999px;
   background: rgb(7 30 38 / 86%);
   color: #fff;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
   pointer-events: none;
 }
 
@@ -214,8 +166,6 @@
 .drive-highlight figcaption {
   max-width: 70ch;
   color: rgb(7 30 38 / 58%);
-  font-size: 0.875rem;
-  line-height: 1.45;
 }
 
 .drive-section {
@@ -243,7 +193,6 @@
 .drive-reading > p:not(.drive-section-label),
 .drive-prose {
   color: var(--drive-ink-soft);
-  font-size: 1.2rem;
 }
 
 .drive-prose {
@@ -278,16 +227,8 @@
   border-left: 1px solid var(--drive-line);
 }
 
-.drive-context dt {
-  font-family: "Crimson Pro", serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-}
-
 .drive-context dd {
   color: var(--drive-ink-soft);
-  font-size: 1rem;
-  line-height: 1.4;
 }
 
 .drive-wide-media,
@@ -350,7 +291,6 @@
 
 .drive-moments article > p:last-child {
   color: var(--drive-ink-soft);
-  font-size: 1rem;
 }
 
 .drive-moment-number {
@@ -392,28 +332,14 @@
 
 .drive-map-step span {
   color: rgb(255 255 255 / 56%);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-}
-
-.drive-map-step strong {
-  font-family: "Crimson Pro", serif;
-  font-size: 1.45rem;
-  font-weight: 600;
 }
 
 .drive-map-step small {
   color: rgb(255 255 255 / 66%);
-  font-size: 0.875rem;
-  line-height: 1.35;
 }
 
 .drive-map-arrow {
   color: var(--drive-cyan-bright);
-  font-family: "Crimson Pro", serif;
-  font-size: 1.5rem;
   align-self: center;
 }
 
@@ -422,10 +348,6 @@
   padding-left: 24px;
   border-left: 3px solid var(--drive-cyan);
   color: var(--drive-ink);
-  font-family: "Crimson Pro", serif;
-  font-size: 1.55rem;
-  font-weight: 500;
-  line-height: 1.32;
 }
 
 .drive-translation-flow {
@@ -458,7 +380,6 @@
 .drive-translation-flow li p {
   max-width: 42ch;
   color: var(--drive-ink-soft);
-  font-size: 1rem;
 }
 
 .drive-role-note {
@@ -469,10 +390,6 @@
   background: var(--drive-cyan-soft);
   box-shadow: inset 0 0 0 1px rgb(8 127 145 / 13%);
   gap: 12px;
-}
-
-.drive-role-note h3 {
-  font-size: 1.75rem;
 }
 
 .drive-role-note > p:last-child {
@@ -522,10 +439,6 @@
   position: relative;
   z-index: 1;
   max-width: 26ch;
-  font-size: clamp(2.4rem, 5vw, 4.5rem);
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -0.035em;
 }
 
 .drive-outcome-copy {
@@ -533,7 +446,6 @@
   z-index: 1;
   max-width: 70ch;
   color: rgb(255 255 255 / 66%);
-  font-size: 1rem;
 }
 
 .drive-outcome-copy a {
@@ -581,11 +493,6 @@
   border-radius: 999px;
   background: var(--drive-ink);
   color: #fff;
-  font-family: "Crimson Pro", serif;
-  font-size: 0.875rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.025em;
   text-decoration: none;
   align-items: center;
   justify-content: center;
@@ -635,34 +542,18 @@
     padding-left: 16px;
   }
 
-  .drive-content {
-    font-size: 1.125rem;
-  }
-
   .drive-hero {
     padding: 76px 0 72px;
     gap: 44px;
     grid-template-columns: 1fr;
   }
 
-  .drive-hero h1 {
-    font-size: var(--display-title-mobile-size);
-    line-height: var(--display-title-mobile-line-height);
-  }
-
   .drive-deck {
     max-width: 34ch;
-    font-size: 1.125rem;
   }
 
   .drive-hero-visual {
     width: min(100%, 620px);
-  }
-
-  .drive-hero-visual figcaption,
-  .drive-wide-media figcaption,
-  .drive-highlight figcaption {
-    font-size: 1rem;
   }
 
   .drive-live-label {
@@ -673,22 +564,6 @@
   .drive-section {
     padding: 76px 0;
     gap: 38px;
-  }
-
-  .drive-content h2 {
-    font-size: var(--display-section-title-mobile-size);
-    line-height: var(--display-section-title-mobile-line-height);
-  }
-
-  .drive-content h3 {
-    font-size: var(--case-study-item-title-mobile-size);
-    font-weight: var(--case-study-item-title-mobile-weight);
-    line-height: 1.2;
-  }
-
-  .drive-reading > p:not(.drive-section-label),
-  .drive-prose {
-    font-size: 1.125rem;
   }
 
   .drive-context,
@@ -719,13 +594,6 @@
     border-left: 0;
   }
 
-  .drive-context dd,
-  .drive-moments article > p:last-child,
-  .drive-translation-flow li p,
-  .drive-outcome-copy {
-    font-size: 1rem;
-  }
-
   .drive-interaction-map {
     padding: 20px;
     grid-template-columns: 1fr;
@@ -742,7 +610,6 @@
 
   .drive-callout {
     padding-left: 18px;
-    font-size: 1.35rem;
   }
 
   .drive-role-note {
@@ -760,10 +627,6 @@
     padding-bottom: 80px;
   }
 
-  .drive-outcome blockquote {
-    font-size: 2.65rem;
-  }
-
   .drive-footer {
     padding-top: 76px;
     padding-bottom: calc(84px + env(safe-area-inset-bottom));
@@ -771,10 +634,6 @@
 }
 
 @media (max-width: 359.98px) {
-  .drive-content h2 {
-    font-size: var(--display-section-title-mobile-size);
-  }
-
   .drive-live-label {
     max-width: calc(100% - 36px);
     overflow: hidden;

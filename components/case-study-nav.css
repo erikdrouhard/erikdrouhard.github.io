@@ -35,12 +35,7 @@ case-study-nav[data-offset] {
   display: inline-flex;
   min-height: 48px;
   color: rgb(0 0 0 / 64%);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
   text-decoration: none;
-  text-transform: uppercase;
   white-space: nowrap;
   align-items: center;
   touch-action: manipulation;

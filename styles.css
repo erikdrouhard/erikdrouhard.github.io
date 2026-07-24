@@ -30,25 +30,71 @@
   font-display: swap;
 }
 
+/* ==========================================================================
+   TYPE SYSTEM — single source of truth
+   --------------------------------------------------------------------------
+   Every piece of text on this site resolves to one of the roles below.
+   Nothing outside this block may declare font-family, font-size, font-weight,
+   or line-height. Pages opt into a role with a `type-*` class in the markup.
+
+   To change how a role looks everywhere, edit its `--type-*` token here.
+   To change how it behaves at tablet or mobile, edit the same token inside
+   the two `:root` blocks in the breakpoint sections at the bottom of the file.
+   Those are the only three places any type value is ever written.
+
+   Token shape follows the CSS `font` shorthand:
+       --type-<role>: <weight> <size>/<leading> <family>;
+       --track-<role>: <letter-spacing>;   (only where it is non-zero)
+
+   The one sanctioned exception is the Mix.dialog condition-stack demo, which
+   simulates the product's own UI in Inter and carries its own scoped tokens.
+   ========================================================================== */
+
 :root {
-  --display-title-font: "Crimson Pro", serif;
-  --display-title-size: 2.25rem;
-  --display-title-weight: 300;
-  --display-title-line-height: 1.2;
-  --display-title-letter-spacing: 0;
-  --display-title-mobile-size: 1.125rem;
-  --display-title-mobile-line-height: 1.35;
-  --display-section-title-size: 2.25rem;
-  --display-section-title-weight: 300;
-  --display-section-title-line-height: 1.2;
-  --display-section-title-letter-spacing: 0;
-  --display-section-title-mobile-size: 1.125rem;
-  --display-section-title-mobile-line-height: 1.35;
-  --case-study-item-title-mobile-size: 1.25rem;
-  --case-study-item-title-mobile-weight: 600;
-  --case-study-support-title-mobile-size: 1.125rem;
-  --case-study-support-title-mobile-weight: 600;
-  --content-link-weight: 600;
+  /* -- Families ---------------------------------------------------------- */
+  --font-display: "Crimson Pro", serif;
+  --font-reading: "Crimson Text", serif;
+  --font-meta: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* -- Page hierarchy (Crimson Pro) -------------------------------------- */
+  --type-display: 300 2.25rem/1.2 var(--font-display);
+  --type-section: 300 2.25rem/1.2 var(--font-display);
+  --type-subsection: 600 1.5rem/1.2 var(--font-display);
+  --type-support: 600 1.125rem/1.25 var(--font-display);
+
+  /* -- Editorial emphasis (Crimson Pro) ---------------------------------- */
+  --type-callout: 400 1.5rem/1.3 var(--font-display);
+  --type-metric: 400 3rem/1 var(--font-display);
+  --track-metric: -0.035em;
+  --type-quote: 300 3.75rem/1 var(--font-display);
+  --track-quote: -0.035em;
+
+  /* -- Reading copy (Crimson Text) --------------------------------------- */
+  --type-deck: 400 1.25rem/1.5 var(--font-reading);
+  --type-body: 400 1.125rem/1.45 var(--font-reading);
+  --type-body-sm: 400 1rem/1.45 var(--font-reading);
+  --type-caption: 400 0.875rem/1.4 var(--font-reading);
+
+  /* -- Labels and controls (Crimson Pro) --------------------------------- */
+  --type-action: 800 1rem/1 var(--font-display);
+  --track-action: 0.025em;
+  --type-eyebrow: 500 1rem/1.2 var(--font-display);
+  --track-eyebrow: 0.025em;
+  --type-badge: 800 0.8125rem/1.2 var(--font-display);
+  --track-badge: 0.015em;
+
+  /* -- Metadata (monospace) ---------------------------------------------- */
+  --type-meta-lg: 600 0.8125rem/1.2 var(--font-meta);
+  --type-meta: 600 0.75rem/1.2 var(--font-meta);
+  --type-meta-sm: 600 0.6875rem/1.45 var(--font-meta);
+  --track-meta: 0.08em;
+  --track-meta-sm: 0.07em;
+
+  /* -- Shared type behaviour --------------------------------------------- */
+  --weight-strong: 700;
+  --weight-link: 600;
+  --space-paragraph: 1.45em;
+
   --layer-content: 0;
   --layer-sticky-nav: 1;
   --layer-header: 2;
@@ -59,6 +105,165 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* -- Role application -----------------------------------------------------
+   The `font` shorthand resets `font-synthesis`, so every role restates it.
+   Do not replace these with individual font-* properties; the shorthand is
+   what lets a single token carry family, size, weight, and leading together.
+   -------------------------------------------------------------------------- */
+
+.type-display,
+.type-section,
+.type-hero,
+.type-subsection,
+.type-support,
+.type-callout,
+.type-metric,
+.type-quote,
+.type-deck,
+.type-body,
+.type-body-sm,
+.type-caption,
+.type-action,
+.type-eyebrow,
+.type-badge,
+.type-meta-lg,
+.type-meta,
+.type-meta-sm {
+  font-synthesis: none;
+}
+
+.type-display {
+  font: var(--type-display);
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.type-section {
+  font: var(--type-section);
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+/* Case-study hero titles: the display scale carried at link weight.
+   Reuses the display token so the scale is still defined in one place. */
+.type-hero {
+  font: var(--type-display);
+  font-weight: var(--weight-link);
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.type-subsection {
+  font: var(--type-subsection);
+  letter-spacing: 0;
+}
+
+.type-support {
+  font: var(--type-support);
+  letter-spacing: 0;
+}
+
+.type-callout {
+  font: var(--type-callout);
+  letter-spacing: 0;
+  text-wrap: pretty;
+}
+
+.type-metric {
+  font: var(--type-metric);
+  letter-spacing: var(--track-metric);
+}
+
+.type-quote {
+  font: var(--type-quote);
+  letter-spacing: var(--track-quote);
+}
+
+.type-deck {
+  font: var(--type-deck);
+  letter-spacing: 0;
+  text-wrap: pretty;
+}
+
+.type-body {
+  font: var(--type-body);
+  letter-spacing: 0;
+}
+
+.type-body-sm {
+  font: var(--type-body-sm);
+  letter-spacing: 0;
+}
+
+.type-caption {
+  font: var(--type-caption);
+  letter-spacing: 0;
+}
+
+.type-action {
+  font: var(--type-action);
+  letter-spacing: var(--track-action);
+}
+
+.type-eyebrow {
+  font: var(--type-eyebrow);
+  letter-spacing: var(--track-eyebrow);
+}
+
+.type-badge {
+  font: var(--type-badge);
+  letter-spacing: var(--track-badge);
+}
+
+.type-meta-lg {
+  font: var(--type-meta-lg);
+  letter-spacing: var(--track-meta);
+}
+
+.type-meta {
+  font: var(--type-meta);
+  letter-spacing: var(--track-meta);
+}
+
+.type-meta-sm {
+  font: var(--type-meta-sm);
+  letter-spacing: var(--track-meta-sm);
+}
+
+/* Casing composes with any role rather than doubling the role list. */
+.type-caps {
+  text-transform: uppercase;
+}
+
+/* Inline treatments that ride on whatever role the parent established.
+   `:where()` keeps these at zero specificity for the ancestor, so a child
+   carrying its own `type-*` class always wins over the inherited treatment. */
+:where(.type-body, .type-body-sm, .type-deck, .type-caption) strong {
+  font-weight: var(--weight-strong);
+}
+
+:where(
+  .type-body,
+  .type-body-sm,
+  .type-deck,
+  .type-caption,
+  .type-display,
+  .type-section,
+  .type-hero
+) a {
+  font-weight: var(--weight-link);
+  text-decoration: underline;
+}
+
+/* Paragraph rhythm is opt-in, not automatic: most case-study containers are
+   grids that space their own children, and stacking a margin on top of a
+   `gap` double-spaces them. Add `type-prose` only where paragraphs need the
+   homepage's one-line separation. Normal specificity so it out-ranks the
+   `margin: 0` resets; `>` so it never reaches into a nested grid. */
+.type-prose > p + p {
+  margin-top: var(--space-paragraph);
 }
 
 * {
@@ -120,11 +325,6 @@ a {
 }
 
 .case-studies-link {
-  font-family: "Crimson Pro", serif;
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.025em;
   text-decoration: none;
 }
 
@@ -136,11 +336,6 @@ a {
   border-radius: 999px;
   align-items: center;
   background: transparent;
-  font-family: "Crimson Pro", serif;
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.025em;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -154,7 +349,6 @@ a {
 .mobile-menu {
   position: relative;
   display: none;
-  font-family: "Crimson Pro", serif;
 }
 
 .mobile-menu summary {
@@ -163,9 +357,6 @@ a {
   width: 48px;
   height: 48px;
   cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 800;
-  letter-spacing: 0.025em;
   list-style: none;
   align-items: center;
   justify-content: flex-end;
@@ -190,11 +381,10 @@ a {
 }
 
 .mobile-nav a {
+  display: flex;
   min-height: 48px;
   padding: 15px 12px;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1;
+  align-items: center;
   text-decoration: none;
 }
 
@@ -214,11 +404,6 @@ a {
   border-radius: 999px;
   background: #000;
   color: #fff;
-  font-family: "Crimson Pro", serif;
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.025em;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -271,26 +456,8 @@ h1,
   margin: 0;
 }
 
-h1 {
-  font-family: "Crimson Pro", serif;
-  font-size: 2.25rem;
-  font-weight: 300;
-  line-height: 1.2;
-}
-
-h1 a {
-  font-weight: var(--content-link-weight);
-  text-decoration: underline;
-}
-
 .skills {
   width: 85%;
-  font-family: "Crimson Pro", serif;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: 0.025em;
-  text-transform: uppercase;
 }
 
 .skills strong {
@@ -309,23 +476,6 @@ h1 a {
   width: min(100%, 480px);
   min-width: 0;
   flex: 0 1 480px;
-  font-family: "Crimson Text", serif;
-  font-size: 1.125rem;
-  font-weight: 400;
-  line-height: 1.45;
-}
-
-.bio p + p {
-  margin-top: 1.45em;
-}
-
-.bio strong {
-  font-weight: 700;
-}
-
-.bio a {
-  font-weight: var(--content-link-weight);
-  text-decoration: underline;
 }
 
 .portrait-frame {
@@ -420,22 +570,6 @@ h1 a:focus-visible,
   margin: 0;
 }
 
-.work-meta,
-.work-cta {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-}
-
-.work-eyebrow {
-  font-family: "Crimson Pro", serif;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: 0.025em;
-}
-
 .work-eyebrow,
 .work-meta {
   color: rgb(0 0 0 / 58%);
@@ -443,12 +577,6 @@ h1 a:focus-visible,
 
 .work-title {
   max-width: 38ch;
-  font-family: var(--display-title-font);
-  font-size: var(--display-title-size);
-  font-weight: var(--display-title-weight);
-  line-height: var(--display-title-line-height);
-  letter-spacing: var(--display-title-letter-spacing);
-  text-wrap: balance;
 }
 
 .work-list {
@@ -476,29 +604,19 @@ h1 a:focus-visible,
 .work-item-copy h2 {
   max-width: 26ch;
   margin: 0;
-  font-family: "Crimson Pro", serif;
-  font-size: var(--display-section-title-size);
-  font-weight: var(--content-link-weight);
-  line-height: var(--display-section-title-line-height);
-  letter-spacing: var(--display-section-title-letter-spacing);
+  font-weight: var(--weight-link);
   text-decoration: underline;
-  text-wrap: balance;
 }
 
 .work-item-copy > p {
   max-width: 58ch;
   margin: 0;
   color: rgb(0 0 0 / 68%);
-  font-family: "Crimson Text", serif;
-  font-size: 1.125rem;
-  font-weight: 400;
-  line-height: 1.45;
-  letter-spacing: 0;
   text-wrap: pretty;
 }
 
 .work-cta {
-  font-weight: var(--content-link-weight);
+  font-weight: var(--weight-link);
   white-space: nowrap;
 }
 
@@ -524,9 +642,12 @@ h1 a:focus-visible,
 }
 
 @media (min-width: 810px) and (max-width: 1199.98px) {
+  /* Tablet type. Only roles that actually change are restated. */
   :root {
-    --display-title-size: 1.8125rem;
-    --display-section-title-size: 1.8125rem;
+    --type-display: 300 1.8125rem/1.2 var(--font-display);
+    --type-section: 300 1.8125rem/1.2 var(--font-display);
+    --type-metric: 400 2.5rem/1 var(--font-display);
+    --type-quote: 300 2.5rem/1 var(--font-display);
   }
 
   .site-header,
@@ -544,10 +665,6 @@ h1 a:focus-visible,
   .work-content {
     gap: 40px;
     padding-top: 88px;
-  }
-
-  h1 {
-    font-size: 1.8125rem;
   }
 
   .profile {
@@ -573,9 +690,15 @@ h1 a:focus-visible,
 }
 
 @media (max-width: 809.98px) {
+  /* Mobile type. Only roles that actually change are restated. */
   :root {
-    --display-title-size: 1.125rem;
-    --display-section-title-size: 1.125rem;
+    --type-display: 300 1.125rem/1.35 var(--font-display);
+    --type-section: 300 1.125rem/1.35 var(--font-display);
+    --type-subsection: 600 1.25rem/1.2 var(--font-display);
+    --type-callout: 400 1.25rem/1.35 var(--font-display);
+    --type-metric: 400 2rem/1 var(--font-display);
+    --type-quote: 300 2rem/1 var(--font-display);
+    --type-deck: 400 1.125rem/1.5 var(--font-reading);
   }
 
   .site-header {
@@ -609,11 +732,6 @@ h1 a:focus-visible,
   .intro {
     padding-top: 40px;
     gap: 24px;
-  }
-
-  h1 {
-    font-size: 1.125rem;
-    line-height: 1.35;
   }
 
   .skills {
@@ -653,27 +771,12 @@ h1 a:focus-visible,
     gap: 24px;
   }
 
-  .work-title {
-    font-size: var(--display-title-mobile-size);
-    line-height: var(--display-title-mobile-line-height);
-  }
-
   .work-item {
     padding: 24px 0;
     gap: 16px;
     grid-template-columns: 1fr;
     align-items: start;
   }
-
-  .work-item-copy h2 {
-    font-size: var(--display-section-title-mobile-size);
-    line-height: var(--display-section-title-mobile-line-height);
-  }
-
-  .work-item-copy > p {
-    font-size: 1.125rem;
-  }
-
 }
 
 @media (prefers-reduced-motion: reduce) {

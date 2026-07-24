@@ -1,11 +1,38 @@
+/* ==========================================================================
+   Mix.dialog condition-stack demo — SANCTIONED TYPE EXCEPTION
+   --------------------------------------------------------------------------
+   This component simulates the Mix.dialog product UI, so it deliberately does
+   NOT use the portfolio's Crimson type roles. Rendering it in Crimson serif
+   would misrepresent what the product actually looked like.
+
+   The exception is bounded: it applies only inside <condition-stack-demo>,
+   and every size/weight it uses is declared once below. Do not add values
+   here that are not in this list, and do not use these tokens outside this
+   component. See wiki/portfolio-font-and-style-guidelines.md.
+   ========================================================================== */
+
+condition-stack-demo {
+  --sim-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --sim-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* weight size/leading family */
+  --sim-title: 650 0.9375rem/1.4 var(--sim-font);
+  --sim-strong: 750 0.9375rem/1.4 var(--sim-font);
+  --sim-body: 400 0.875rem/1.4 var(--sim-font);
+  --sim-control: 650 0.8125rem/1.4 var(--sim-font);
+  --sim-label: 800 0.6875rem/1.4 var(--sim-font);
+  --sim-micro: 750 0.625rem/1.4 var(--sim-font);
+  --sim-code: 400 0.75rem/1.4 var(--sim-font-mono);
+  --track-sim-label: 0.08em;
+}
+
 condition-stack-demo {
   display: block;
   width: 100%;
   min-width: 0;
   color: #19142f;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 0.875rem;
-  line-height: 1.4;
+  font: var(--sim-body);
+  font-synthesis: none;
 }
 
 .condition-demo {
@@ -35,14 +62,13 @@ condition-stack-demo {
 }
 
 .condition-demo__title strong {
-  font-size: 0.9375rem;
-  font-weight: 650;
+  font: var(--sim-title);
 }
 
 .condition-demo__title span,
 .condition-demo__legend {
   color: rgb(32 25 74 / 58%);
-  font-size: 0.75rem;
+  font: var(--sim-control);
 }
 
 .condition-demo__toolbar {
@@ -56,7 +82,6 @@ condition-stack-demo {
   border: 0;
   border-radius: 10px;
   font: inherit;
-  font-weight: 650;
   touch-action: manipulation;
   cursor: pointer;
 }
@@ -106,18 +131,16 @@ condition-stack-demo {
 }
 
 .condition-demo__invitation strong {
-  font-size: 0.9375rem;
-  font-weight: 750;
+  font: var(--sim-strong);
 }
 
 .condition-demo__invitation span {
   color: rgb(255 255 255 / 78%);
-  font-size: 0.8125rem;
+  font: var(--sim-control);
 }
 
 .condition-demo__invitation b {
   color: #fff;
-  font-weight: 750;
 }
 
 .condition-demo__legend {
@@ -144,9 +167,8 @@ condition-stack-demo {
   width: 22px;
   height: 22px;
   border-radius: 7px;
-  font-size: 0.625rem;
+  font: var(--sim-micro);
   font-style: normal;
-  font-weight: 750;
   place-items: center;
 }
 
@@ -216,14 +238,13 @@ condition-stack-demo {
 }
 
 .cs-grip {
-  font-size: 1rem;
+  font: var(--sim-strong);
   letter-spacing: -0.2em;
 }
 
 .cs-block__identity strong {
   overflow: hidden;
-  font-size: 0.8125rem;
-  font-weight: 700;
+  font: var(--sim-control);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -243,14 +264,14 @@ condition-stack-demo {
   padding-inline: 10px;
   background: transparent;
   color: #43377b;
-  font-size: 0.75rem;
+  font: var(--sim-control);
 }
 
 .condition-demo .cs-add-elseif {
   padding-inline: 12px;
   background: #eeeaff;
   color: #4b35b0;
-  font-size: 0.75rem;
+  font: var(--sim-control);
 }
 
 .cs-branches {
@@ -286,17 +307,15 @@ condition-stack-demo {
 .cs-branch__label {
   flex: 0 0 auto;
   color: #5a43c1;
-  font-size: 0.6875rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font: var(--sim-label);
+  letter-spacing: var(--track-sim-label);
   text-transform: uppercase;
 }
 
 .cs-expression {
   overflow: hidden;
   color: #28223f;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.75rem;
+  font: var(--sim-code);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -348,17 +367,15 @@ condition-stack-demo {
 
 .cs-action__copy span:first-child {
   color: rgb(32 25 74 / 55%);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font: var(--sim-label);
+  letter-spacing: var(--track-sim-label);
   text-transform: uppercase;
 }
 
 .cs-action__copy code {
   overflow: hidden;
   color: #28223f;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.75rem;
+  font: var(--sim-code);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -377,7 +394,7 @@ condition-stack-demo {
   padding-inline: 13px;
   background: transparent;
   color: #4b35b0;
-  font-size: 0.75rem;
+  font: var(--sim-control);
 }
 
 .condition-demo .cs-move-here {
@@ -412,7 +429,7 @@ condition-stack-demo {
   padding: 0 12px;
   background: transparent;
   color: #28223f;
-  font-size: 0.8125rem;
+  font: var(--sim-control);
   text-align: left;
   align-items: center;
   gap: 9px;

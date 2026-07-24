@@ -20,9 +20,6 @@
   border-radius: 999px;
   background: #000;
   color: #fff;
-  font-family: "Crimson Pro", serif;
-  font-size: 0.875rem;
-  font-weight: 700;
   text-decoration: none;
   transform: translateY(-160%);
 }
@@ -49,9 +46,6 @@
 .mix-content {
   gap: 0;
   color: #000;
-  font-family: "Crimson Text", serif;
-  font-size: 1.125rem;
-  line-height: 1.45;
 }
 
 .mix-content h1,
@@ -66,21 +60,6 @@
 .mix-content h2,
 .mix-content h3 {
   color: #000;
-  font-family: "Crimson Pro", serif;
-  text-wrap: balance;
-}
-
-.mix-content h2 {
-  font-size: var(--display-section-title-size);
-  font-weight: var(--display-section-title-weight);
-  line-height: var(--display-section-title-line-height);
-  letter-spacing: var(--display-section-title-letter-spacing);
-}
-
-.mix-content h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1.25;
 }
 
 .mix-content p {
@@ -104,30 +83,15 @@
 .mix-section-label,
 .mix-item-label {
   color: rgb(0 0 0 / 55%);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .mix-hero h1 {
-  font-family: var(--display-title-font);
-  font-size: var(--display-title-size);
-  font-weight: var(--content-link-weight);
-  line-height: var(--display-title-line-height);
-  letter-spacing: var(--display-title-letter-spacing);
   text-decoration: none;
 }
 
 .mix-deck {
   max-width: 30ch;
   color: rgb(0 0 0 / 75%);
-  font-size: 1.125rem;
-  font-weight: 400;
-  line-height: 1.45;
-  letter-spacing: 0;
 }
 
 .mix-badges {
@@ -146,11 +110,6 @@
   border-radius: 999px;
   background: rgb(255 255 255 / 72%);
   box-shadow: 0 0 0 1px rgb(0 0 0 / 11%);
-  font-family: "Crimson Pro", serif;
-  font-size: 0.8125rem;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: 0.015em;
 }
 
 .mix-hero-visual {
@@ -187,17 +146,11 @@
   border-radius: 999px;
   background: rgb(17 15 46 / 86%);
   color: #fff;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
 }
 
 .mix-hero-visual figcaption {
   padding: 0 5px 4px;
   color: rgb(255 255 255 / 72%);
-  font-size: 0.8125rem;
-  line-height: 1.35;
 }
 
 .mix-section {
@@ -283,8 +236,6 @@
 .mix-four-column p:last-child {
   margin-top: 6px;
   color: rgb(0 0 0 / 67%);
-  font-size: 1rem;
-  line-height: 1.4;
 }
 
 .mix-platform-grid {
@@ -331,8 +282,6 @@
 .mix-action-list h3 + p {
   margin-top: 4px;
   color: rgb(0 0 0 / 67%);
-  font-size: 1rem;
-  line-height: 1.4;
 }
 
 .mix-condition-demo {
@@ -347,15 +296,8 @@
   gap: 12px;
 }
 
-.mix-condition-demo-heading h3 {
-  font-size: 1.5rem;
-  line-height: 1.15;
-}
-
 .mix-condition-demo-heading > p:last-child {
   color: rgb(0 0 0 / 67%);
-  font-size: 1rem;
-  line-height: 1.45;
 }
 
 .mix-media-scroller {
@@ -398,11 +340,6 @@
   max-width: 892px;
   margin-bottom: -24px;
   color: rgb(0 0 0 / 56%);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
   justify-content: space-between;
 }
 
@@ -451,26 +388,17 @@
 }
 
 .mix-metrics strong {
-  font-family: "Crimson Pro", serif;
-  font-size: clamp(2rem, 4vw, 3.25rem);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.035em;
   white-space: nowrap;
 }
 
 .mix-metrics span {
   color: rgb(255 255 255 / 68%);
-  font-size: 0.9375rem;
-  line-height: 1.35;
 }
 
 .mix-metric-note {
   max-width: 76ch;
   margin-top: -24px;
   color: rgb(0 0 0 / 58%);
-  font-size: 0.875rem;
-  line-height: 1.5;
 }
 
 .mix-footer {
@@ -513,11 +441,6 @@
   border-radius: 999px;
   background: var(--mix-accent-deep);
   color: #fff;
-  font-family: "Crimson Pro", serif;
-  font-size: 0.875rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.025em;
   text-decoration: none;
   align-items: center;
   justify-content: center;
@@ -577,24 +500,14 @@
     padding-left: 16px;
   }
 
-  .mix-content {
-    font-size: 1.125rem;
-  }
-
   .mix-hero {
     padding: 78px 0 72px;
     gap: 44px;
     grid-template-columns: 1fr;
   }
 
-  .mix-hero h1 {
-    font-size: var(--display-title-mobile-size);
-    line-height: var(--display-title-mobile-line-height);
-  }
-
   .mix-deck {
     max-width: 34ch;
-    font-size: 1.125rem;
   }
 
   .mix-hero-visual {
@@ -605,18 +518,6 @@
   .mix-section {
     padding: 76px 0;
     gap: 36px;
-  }
-
-  .mix-content h2 {
-    font-size: var(--display-section-title-mobile-size);
-    line-height: var(--display-section-title-mobile-line-height);
-  }
-
-  .mix-content h3,
-  .mix-content .mix-condition-demo-heading h3 {
-    font-size: var(--case-study-item-title-mobile-size);
-    font-weight: var(--case-study-item-title-mobile-weight);
-    line-height: 1.2;
   }
 
   .mix-three-column,
@@ -653,10 +554,6 @@
     grid-template-columns: 105px minmax(0, 1fr);
   }
 
-  .mix-action-list h3 + p {
-    font-size: 1rem;
-  }
-
   .mix-media-scroller {
     width: calc(100% + 16px);
   }
@@ -680,15 +577,6 @@
 
   .mix-metrics article {
     padding: 24px;
-  }
-
-  .mix-metrics span,
-  .mix-metric-note {
-    font-size: 1rem;
-  }
-
-  .mix-hero-visual figcaption {
-    font-size: 0.9375rem;
   }
 
   .mix-metrics article + article {
