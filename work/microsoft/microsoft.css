@@ -262,6 +262,13 @@
   padding-top: 0;
 }
 
+/* A tinted band already ends itself with a change of background, the same way
+   `.section-dark` does. Drawing the rule on top of that boundary reads as a
+   second, redundant divider. */
+.core-ai-page .recommendation-section-lower + .section-rule .shell {
+  border-top: 0;
+}
+
 .core-ai-page .recommendation-section {
   padding: 0 0 112px;
 }
