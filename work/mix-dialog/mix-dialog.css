@@ -170,6 +170,13 @@
   scroll-margin-top: 72px;
 }
 
+/* The band's own full-bleed `border-block` is its top edge. Keeping the
+   section's content-width rule as well stacks a short grey line on top of the
+   long tinted one. */
+.mix-section-feature {
+  border-top: 0;
+}
+
 .mix-section-feature::before {
   position: absolute;
   z-index: -1;

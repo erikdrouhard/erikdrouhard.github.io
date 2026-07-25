@@ -173,6 +173,8 @@
 }
 
 .drive-section {
+  --drive-section-gap: 48px;
+
   position: relative;
   isolation: isolate;
   display: grid;
@@ -180,7 +182,7 @@
   min-width: 0;
   padding: 104px 0;
   border-top: 1px solid var(--drive-line);
-  gap: 48px;
+  gap: var(--drive-section-gap);
   scroll-margin-top: 72px;
 }
 
@@ -254,6 +256,13 @@
 
 .drive-wide-media img {
   aspect-ratio: 3 / 2;
+}
+
+/* The band's own full-bleed `border-block` is its top edge. Keeping the
+   section's content-width rule as well stacks a short grey line on top of the
+   long tinted one. */
+.drive-section-feature {
+  border-top: 0;
 }
 
 .drive-section-feature::before {
@@ -415,6 +424,10 @@
   position: relative;
   display: grid;
   width: 100cqi;
+  /* The showcase section zeroes its bottom padding so this full-bleed panel sits
+     flush with the footer below. Cancel the section's row gap too, otherwise a
+     strip of page background is left above the panel but not below it. */
+  margin-top: calc(-1 * var(--drive-section-gap));
   margin-left: calc((100% - 100cqi) / 2);
   padding: 96px max(24px, calc((100cqi - 892px) / 2));
   overflow: hidden;
@@ -566,8 +579,9 @@
   }
 
   .drive-section {
+    --drive-section-gap: 38px;
+
     padding: 76px 0;
-    gap: 38px;
   }
 
   .drive-context,
