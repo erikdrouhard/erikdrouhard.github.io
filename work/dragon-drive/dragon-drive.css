@@ -1,6 +1,10 @@
 .drive-page {
   --drive-ink: #071e26;
   --drive-ink-soft: rgb(7 30 38 / 68%);
+  /* Surfaces that read as dark panels against the page. Split from
+     --drive-ink because the two invert in opposite directions in dark mode:
+     ink flips to near-white, panels lift to a lighter shade of the page. */
+  --drive-panel: #071e26;
   --drive-cyan: #087f91;
   --drive-cyan-bright: #29d3df;
   --drive-cyan-soft: #e2f7f7;
@@ -131,7 +135,7 @@
   overflow: hidden;
   padding: var(--frame-padding);
   border-radius: var(--frame-radius);
-  background: var(--drive-ink);
+  background: var(--drive-panel);
   box-shadow:
     0 0 0 1px rgb(7 30 38 / 16%),
     0 30px 72px rgb(7 30 38 / 18%),
@@ -302,7 +306,7 @@
   min-width: 0;
   padding: 28px;
   border-radius: 18px;
-  background: var(--drive-ink);
+  background: var(--drive-panel);
   box-shadow:
     0 0 0 1px rgb(7 30 38 / 16%),
     0 24px 56px rgb(7 30 38 / 13%);
@@ -403,7 +407,7 @@
 
 .drive-highlight video {
   aspect-ratio: 16 / 9;
-  background: var(--drive-ink);
+  background: var(--drive-panel);
   box-shadow: 0 20px 54px rgb(7 30 38 / 13%);
 }
 
@@ -414,7 +418,7 @@
   margin-left: calc((100% - 100cqi) / 2);
   padding: 96px max(24px, calc((100cqi - 892px) / 2));
   overflow: hidden;
-  background: var(--drive-ink);
+  background: var(--drive-panel);
   color: #fff;
   gap: 20px;
 }
@@ -647,4 +651,77 @@
   .drive-skip-link {
     transition: none;
   }
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Remapping the tokens carries most of the page on its own: everything
+     that reads `var(--drive-ink)` for text, buttons, or focus rings flips
+     here, and the panel surfaces lift instead of staying near-black. */
+  .drive-page {
+    --drive-ink: #e8f8f9;
+    --drive-ink-soft: rgb(232 248 249 / 72%);
+    --drive-panel: #142c33;
+    --drive-cyan-soft: #102a2e;
+    --drive-line: rgb(232 248 249 / 14%);
+    background:
+      radial-gradient(circle at 84% 8%, rgb(41 211 223 / 15%), transparent 28rem),
+      linear-gradient(170deg, #0b1a1d 0%, #060d0f 100%);
+  }
+
+  /* These two take --drive-ink as a background, so their white label text
+     has to flip with it. */
+  .drive-skip-link,
+  .drive-contact {
+    color: #071e26;
+  }
+
+  /* The light-mode rings are near-black and vanish on a dark page. */
+  .drive-video-frame,
+  .drive-interaction-map {
+    box-shadow: 0 0 0 1px rgb(232 248 249 / 12%);
+  }
+
+  .drive-eyebrow,
+  .drive-section-label,
+  .drive-moment-number,
+  .drive-translation-flow > li > span,
+  .drive-hero-visual figcaption,
+  .drive-wide-media figcaption,
+  .drive-highlight figcaption {
+    color: rgb(232 248 249 / 62%);
+  }
+
+  .drive-badges li {
+    background: rgb(255 255 255 / 7%);
+    box-shadow: 0 0 0 1px rgb(232 248 249 / 14%);
+  }
+
+  .drive-wide-media img,
+  .drive-highlight video {
+    outline-color: rgb(232 248 249 / 12%);
+  }
+
+  .drive-section-feature::before {
+    border-color: rgb(41 211 223 / 16%);
+    background:
+      radial-gradient(circle at 92% 10%, rgb(41 211 223 / 14%), transparent 24rem),
+      linear-gradient(150deg, rgb(16 62 68 / 66%), rgb(255 255 255 / 2%));
+  }
+
+  .drive-role-note {
+    box-shadow: inset 0 0 0 1px rgb(41 211 223 / 18%);
+  }
+
+  .drive-footer {
+    background:
+      radial-gradient(circle at 88% 0%, rgb(41 211 223 / 14%), transparent 24rem),
+      var(--drive-cyan-soft);
+  }
+
+  .drive-contact-secondary {
+    background: transparent;
+    color: #a9eef2;
+    box-shadow: inset 0 0 0 1px rgb(169 238 242 / 42%);
+  }
+
 }

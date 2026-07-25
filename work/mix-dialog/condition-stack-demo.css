@@ -548,3 +548,153 @@ condition-stack-demo {
     transition: none;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  condition-stack-demo {
+    color: #f1edff;
+  }
+
+  .condition-demo {
+    background: #13111a;
+    box-shadow:
+      0 0 0 1px rgb(195 184 255 / 16%),
+      0 24px 70px rgb(0 0 0 / 30%);
+  }
+
+  .condition-demo__topbar {
+    border-color: rgb(255 255 255 / 10%);
+    background: rgb(28 24 39 / 92%);
+  }
+
+  .condition-demo__title span,
+  .condition-demo__legend,
+  .cs-drag-handle,
+  .cs-action__copy span:first-child {
+    color: rgb(241 237 255 / 60%);
+  }
+
+  .condition-demo button:focus-visible,
+  .cs-action:focus-visible,
+  .cs-block:focus-visible,
+  .cs-branch:focus-visible {
+    outline-color: #f1edff;
+  }
+
+  .condition-demo__reset {
+    background: #29243a;
+    color: #d5ccff;
+    box-shadow: inset 0 0 0 1px rgb(195 184 255 / 22%);
+  }
+
+  .condition-demo__cancel {
+    background: #a794ff;
+    color: #100c20;
+  }
+
+  .condition-demo__canvas {
+    background:
+      radial-gradient(circle at 90% 0%, rgb(101 72 232 / 20%), transparent 28rem),
+      linear-gradient(145deg, #181420, #10171d);
+  }
+
+  .condition-demo__invitation {
+    background: #392d73;
+    box-shadow: 0 10px 24px rgb(0 0 0 / 24%);
+  }
+
+  .condition-demo__legend {
+    border-color: rgb(255 255 255 / 10%);
+    background: rgb(25 22 34 / 88%);
+  }
+
+  .is-message .cs-action__icon,
+  .condition-demo__legend .is-message {
+    background: #183447;
+    color: #8fd5ff;
+  }
+
+  .is-variable .cs-action__icon,
+  .condition-demo__legend .is-variable {
+    background: #30275a;
+    color: #c3b1ff;
+  }
+
+  .is-event .cs-action__icon,
+  .condition-demo__legend .is-event {
+    background: #18392c;
+    color: #85ddb1;
+  }
+
+  .cs-block {
+    background: #1d1928;
+    box-shadow:
+      0 0 0 1px rgb(195 184 255 / 14%),
+      0 10px 28px rgb(0 0 0 / 22%);
+  }
+
+  .cs-block.is-nested {
+    box-shadow:
+      -3px 0 0 #8f7bea,
+      0 0 0 1px rgb(195 184 255 / 14%),
+      0 10px 28px rgb(0 0 0 / 22%);
+  }
+
+  .cs-block__header {
+    border-color: rgb(255 255 255 / 10%);
+  }
+
+  .condition-demo .cs-tool,
+  .condition-demo .cs-branch__move,
+  .condition-demo .cs-add-trigger,
+  .condition-demo .cs-move-here {
+    color: #c3b8ff;
+  }
+
+  .condition-demo .cs-add-elseif {
+    background: #30275a;
+    color: #d7ceff;
+  }
+
+  .cs-branch {
+    background: #17151e;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
+  }
+
+  .cs-branch__label {
+    color: #ad9bff;
+  }
+
+  .cs-expression,
+  .cs-action__copy code,
+  .condition-demo .cs-add-menu button {
+    color: #eeeaff;
+  }
+
+  .cs-action {
+    background: #211e2b;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
+  }
+
+  .condition-demo .cs-move-here {
+    border-color: rgb(195 184 255 / 48%);
+    background: rgb(101 72 232 / 16%);
+  }
+
+  .cs-add-menu {
+    background: #211d2c;
+    box-shadow:
+      0 0 0 1px rgb(195 184 255 / 16%),
+      0 18px 42px rgb(0 0 0 / 34%);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .condition-demo button:hover {
+      background-color: #342b5c;
+    }
+
+    .cs-action:hover,
+    .cs-branch:hover {
+      box-shadow: inset 0 0 0 1px rgb(173 155 255 / 38%);
+    }
+  }
+}

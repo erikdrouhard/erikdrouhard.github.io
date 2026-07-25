@@ -100,3 +100,30 @@ case-study-nav[data-offset] {
     transition: none;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  case-study-nav {
+    border-color: rgb(255 255 255 / 12%);
+    background: rgb(14 16 19 / 88%);
+  }
+
+  .case-study-nav__inner a {
+    color: rgb(255 255 255 / 68%);
+  }
+
+  .case-study-nav__inner a[aria-current="location"] {
+    color: #f4f4f5;
+  }
+
+  .case-study-nav__inner a:focus-visible {
+    outline-color: #f4f4f5;
+  }
+
+  /* Guarded to match the light-mode hover rule, so the colour never sticks
+     on touch devices after a tap. */
+  @media (hover: hover) and (pointer: fine) {
+    .case-study-nav__inner a:hover {
+      color: #f4f4f5;
+    }
+  }
+}

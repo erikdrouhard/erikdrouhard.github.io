@@ -1,6 +1,10 @@
 .mix-page {
   --mix-accent: #6548e8;
   --mix-accent-deep: #20194a;
+  /* Surfaces that read as dark panels against the page. Split from
+     --mix-accent-deep because the button using that token inverts to
+     near-white in dark mode while these panels lift instead. */
+  --mix-panel: #20194a;
   --mix-accent-soft: #eeeaff;
   --mix-cyan: #28b9d8;
   --mix-ink-muted: rgb(0 0 0 / 67%);
@@ -118,7 +122,7 @@
   min-width: 0;
   padding: 10px;
   border-radius: 22px;
-  background: var(--mix-accent-deep);
+  background: var(--mix-panel);
   box-shadow:
     0 0 0 1px rgb(31 25 73 / 16%),
     0 28px 70px rgb(43 30 106 / 17%),
@@ -368,7 +372,7 @@
   display: grid;
   overflow: hidden;
   border-radius: 18px;
-  background: var(--mix-accent-deep);
+  background: var(--mix-panel);
   box-shadow:
     0 0 0 1px rgb(32 25 74 / 15%),
     0 22px 54px rgb(32 25 74 / 14%);
@@ -608,5 +612,122 @@
 @media (prefers-reduced-motion: reduce) {
   .mix-contact {
     transition: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .mix-page {
+    --mix-ink-muted: rgb(255 255 255 / 70%);
+    --mix-panel: #2f2760;
+    background:
+      radial-gradient(circle at 84% 9%, rgb(101 72 232 / 18%), transparent 27rem),
+      linear-gradient(172deg, #15131d 0%, #09090d 100%);
+    color: #f5f3fa;
+  }
+
+  .mix-skip-link {
+    background: #f5f3fa;
+    color: #0c0a12;
+  }
+
+  .mix-content,
+  .mix-content h1,
+  .mix-content h2,
+  .mix-content h3 {
+    color: #f5f3fa;
+  }
+
+  .mix-eyebrow,
+  .mix-section-label,
+  .mix-item-label,
+  .mix-gallery-label,
+  .mix-metric-note {
+    color: rgb(255 255 255 / 60%);
+  }
+
+  .mix-deck,
+  .mix-three-column p:last-child,
+  .mix-four-column p:last-child,
+  .mix-action-list h3 + p,
+  .mix-condition-demo-heading > p:last-child {
+    color: rgb(255 255 255 / 74%);
+  }
+
+  .mix-badges li,
+  .mix-three-column > div,
+  .mix-four-column > div,
+  .mix-action-list > article,
+  .mix-callout {
+    background: rgb(255 255 255 / 6%);
+  }
+
+  /* Ring weights mirror light mode, where the badge and the callout carry
+     deliberately different values. */
+  .mix-badges li {
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 11%);
+  }
+
+  .mix-callout {
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 7%);
+  }
+
+  .mix-three-column > div,
+  .mix-four-column > div,
+  .mix-action-list > article {
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 10%),
+      0 12px 30px rgb(0 0 0 / 18%);
+  }
+
+  /* The light-mode rings on these panels are near-black and vanish here. */
+  .mix-hero-visual,
+  .mix-metrics {
+    box-shadow: 0 0 0 1px rgb(195 184 255 / 16%);
+  }
+
+  .mix-section {
+    border-color: rgb(255 255 255 / 12%);
+  }
+
+  .mix-section-feature::before {
+    border-color: rgb(139 116 240 / 18%);
+    background:
+      radial-gradient(circle at 92% 8%, rgb(40 185 216 / 12%), transparent 24rem),
+      linear-gradient(145deg, rgb(62 47 126 / 28%), rgb(255 255 255 / 2%));
+  }
+
+  .mix-media-scroller {
+    scrollbar-color: rgb(255 255 255 / 28%) transparent;
+  }
+
+  .mix-media-scroller img {
+    outline-color: rgb(255 255 255 / 12%);
+  }
+
+  .mix-footer {
+    border-color: rgb(255 255 255 / 12%);
+    background:
+      radial-gradient(circle at 50% 0%, rgb(101 72 232 / 18%), transparent 28rem),
+      linear-gradient(145deg, #17131f, #0d1017);
+    color: #f5f3fa;
+  }
+
+  .mix-footer p {
+    color: rgb(255 255 255 / 68%);
+  }
+
+  .mix-contact {
+    background: #f5f3fa;
+    color: #100c20;
+  }
+
+  .mix-contact-secondary {
+    background: transparent;
+    color: #c3b8ff;
+    box-shadow: inset 0 0 0 1px rgb(195 184 255 / 42%);
+  }
+
+  .mix-contact:focus-visible {
+    outline-color: #f5f3fa;
   }
 }

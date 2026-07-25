@@ -3,6 +3,10 @@
   --core-cyan: #35b7d6;
   --core-ink: #0b162b;
   --core-soft: #edf2ff;
+  /* Surfaces that read as dark panels against the page. Split from
+     --core-ink, which stays a near-black text colour in both modes
+     (the white prototype-loop output card still sits on it). */
+  --core-panel: #0b162b;
   min-width: 320px;
   color: #000;
   background:
@@ -144,7 +148,7 @@
   border-radius: 24px;
   background:
     radial-gradient(circle at 100% 0%, rgb(53 183 214 / 34%), transparent 15rem),
-    var(--core-ink);
+    var(--core-panel);
   box-shadow:
     0 0 0 1px rgb(10 22 43 / 14%),
     0 30px 72px rgb(19 42 102 / 18%),
@@ -499,7 +503,7 @@
   overflow: hidden;
   background:
     radial-gradient(circle at 85% 0%, rgb(53 183 214 / 27%), transparent 28rem),
-    var(--core-ink);
+    var(--core-panel);
   color: #fff;
 }
 
@@ -877,5 +881,119 @@
 @media (prefers-reduced-motion: reduce) {
   .core-ai-page .button {
     transition: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .core-ai-page {
+    --core-soft: #182344;
+    --core-panel: #1f2949;
+    color: #f2f5fb;
+    background:
+      radial-gradient(circle at 84% 8%, rgb(49 91 232 / 18%), transparent 29rem),
+      linear-gradient(172deg, #101522 0%, #080a0f 100%);
+  }
+
+  .core-ai-page .skip-link,
+  .core-ai-page .button-primary {
+    background: #f2f5fb;
+    color: #0b162b;
+  }
+
+  .core-ai-page .button {
+    border-color: #f2f5fb;
+  }
+
+  .core-ai-page .eyebrow,
+  .core-ai-page .number,
+  .core-ai-page time,
+  .core-ai-page figcaption,
+  .core-ai-page .footer-inner {
+    color: rgb(255 255 255 / 62%);
+  }
+
+  .core-ai-page .hero {
+    border-color: rgb(72 112 240 / 18%);
+    background:
+      radial-gradient(circle at 83% 42%, rgb(53 183 214 / 16%), transparent 22rem),
+      radial-gradient(circle at 68% 4%, rgb(49 91 232 / 18%), transparent 26rem);
+  }
+
+  .core-ai-page .hero-deck,
+  .core-ai-page .section-heading > p:last-child,
+  .core-ai-page .timeline p,
+  .core-ai-page .body-copy p,
+  .core-ai-page .prototype p,
+  .core-ai-page .outcome p,
+  .core-ai-page .public-link p,
+  .core-ai-page .sprint-step p,
+  .core-ai-page .scope-note p,
+  .core-ai-page .applied-work p,
+  .core-ai-page .map-of-truth p {
+    color: rgb(255 255 255 / 72%);
+  }
+
+  .core-ai-page .snapshot,
+  .core-ai-page .recommendation,
+  .core-ai-page .sprint-step,
+  .core-ai-page .outcome,
+  .core-ai-page .bridge,
+  .core-ai-page .map-of-truth,
+  .core-ai-page .prototype {
+    background: rgb(255 255 255 / 6%);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 10%),
+      0 18px 44px rgb(0 0 0 / 22%);
+  }
+
+  .core-ai-page .snapshot li + li,
+  .core-ai-page .section-rule .shell,
+  .core-ai-page .timeline li,
+  .core-ai-page .prototype-grid,
+  .core-ai-page .link-grid,
+  .core-ai-page .public-link,
+  /* Kept: the light-mode `border-left` shorthand on this selector outranks
+     the plain `.public-link` above it. */
+  .core-ai-page .public-link:nth-child(even),
+  .core-ai-page .applied-work,
+  .core-ai-page .applied-work-link,
+  .core-ai-page .scope-note,
+  .core-ai-page .map-flow,
+  .core-ai-page .map-node,
+  .core-ai-page .footer-inner {
+    border-color: rgb(255 255 255 / 14%);
+  }
+
+  .core-ai-page .snapshot span,
+  .core-ai-page .recommendation-attribution > p:not(.eyebrow),
+  .core-ai-page .applied-work-link span,
+  .core-ai-page .map-node span {
+    color: rgb(255 255 255 / 66%);
+  }
+
+  .core-ai-page .recommendation-section-lower {
+    background:
+      radial-gradient(circle at 12% 14%, rgb(53 183 214 / 12%), transparent 24rem),
+      rgb(49 91 232 / 7%);
+  }
+
+  .core-ai-page .timeline li::before {
+    border-color: #0c1019;
+  }
+
+  .core-ai-page .pullquote {
+    border-color: rgb(255 255 255 / 24%);
+  }
+
+  .core-ai-page .media-frame {
+    background: rgb(255 255 255 / 5%);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 10%),
+      0 18px 44px rgb(0 0 0 / 24%);
+  }
+
+  .core-ai-page .label {
+    color: rgb(255 255 255 / 66%);
+    box-shadow: inset 0 0 0 1px rgb(92 124 238 / 28%);
   }
 }

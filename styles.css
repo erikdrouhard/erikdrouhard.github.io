@@ -99,6 +99,7 @@
   --layer-sticky-nav: 1;
   --layer-header: 2;
   --layer-popover: 1;
+  color-scheme: light;
   color: #000;
   background: #f6f6f6;
   font-synthesis: none;
@@ -784,5 +785,57 @@ h1 a:focus-visible,
   *::before,
   *::after {
     scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    color: #f4f4f5;
+    background: #090a0c;
+  }
+
+  body {
+    background: linear-gradient(172deg, #121417 0%, #08090b 100%);
+    color: #f4f4f5;
+  }
+
+  .contact-button {
+    border-color: rgb(255 255 255 / 28%);
+  }
+
+  .mobile-nav {
+    border-color: rgb(255 255 255 / 12%);
+    background: rgb(22 24 28 / 98%);
+    box-shadow: 0 16px 36px rgb(0 0 0 / 34%);
+  }
+
+  .mobile-nav a + a {
+    border-color: rgb(255 255 255 / 10%);
+  }
+
+  .resume-button {
+    background: #f4f4f5;
+    color: #090a0c;
+  }
+
+  .brand-mark,
+  .social-links img,
+  .resume-button img {
+    filter: invert(1);
+  }
+
+  .work-eyebrow,
+  .work-meta {
+    color: rgb(255 255 255 / 62%);
+  }
+
+  .work-list,
+  .work-item {
+    border-color: rgb(255 255 255 / 18%);
+  }
+
+  .work-item-copy > p {
+    color: rgb(255 255 255 / 72%);
   }
 }
