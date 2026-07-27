@@ -1,0 +1,351 @@
+/* ==========================================================================
+   PROTOTYPE — Verse case-study page chrome
+   --------------------------------------------------------------------------
+   Throwaway. Branch-only. Not published, not linked from the work index.
+
+   This file carries layout, colour, and spacing only. All type resolves
+   through the portfolio's `type-*` roles, exactly as the real case studies do.
+   The one type exception lives inside <verse-assembly> and is declared there.
+
+   Accent family: the Verse/Bolt deck's own cyan + magenta on deep ink. Used
+   for the specimen, the ladder, and contained diagram moments only — the page
+   itself stays on the portfolio's neutral editorial field.
+   ========================================================================== */
+
+.verse-page {
+  --verse-cyan: #109fb4;
+  --verse-magenta: #b4239f;
+  --verse-ink: #22222e;
+  --verse-soft: #eaf7fa;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 86% 7%, rgb(16 159 180 / 11%), transparent 27rem),
+    radial-gradient(circle at 4% 62%, rgb(180 35 159 / 7%), transparent 24rem),
+    linear-gradient(172deg, #fcfeff 0%, #f6f6f6 100%);
+}
+
+.verse-skip-link {
+  position: fixed;
+  z-index: 30;
+  top: 12px;
+  left: 12px;
+  min-height: 44px;
+  padding: 13px 16px;
+  border-radius: 999px;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+
+.verse-skip-link:focus {
+  transform: translateY(0);
+}
+
+.verse-shell {
+  align-items: center;
+}
+
+.verse-header {
+  flex: 0 0 auto;
+  margin-bottom: 48px;
+}
+
+.verse-main {
+  padding-bottom: 0;
+  align-items: stretch;
+}
+
+.verse-content {
+  gap: 0;
+  color: #000;
+}
+
+.verse-content h1,
+.verse-content h2,
+.verse-content h3,
+.verse-content p,
+.verse-content figure,
+.verse-content ul,
+.verse-content ol {
+  margin: 0;
+}
+
+.verse-content p {
+  text-wrap: pretty;
+}
+
+/* -- The branch banner. This page must never be mistaken for the live site. */
+
+.verse-banner {
+  display: flex;
+  margin-top: 24px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  background: rgb(180 35 159 / 8%);
+  box-shadow: inset 0 0 0 1px rgb(180 35 159 / 34%);
+}
+
+.verse-banner strong {
+  color: var(--verse-magenta);
+}
+
+.verse-banner p {
+  max-width: 70ch;
+  color: rgb(0 0 0 / 72%);
+}
+
+/* -- Hero ------------------------------------------------------------------ */
+
+.verse-hero {
+  display: grid;
+  padding: 64px 0 72px;
+  gap: 22px;
+  max-width: 46rem;
+}
+
+.verse-eyebrow,
+.verse-section-label,
+.verse-item-label {
+  color: rgb(0 0 0 / 55%);
+}
+
+.verse-deck {
+  max-width: 44ch;
+  color: rgb(0 0 0 / 75%);
+}
+
+.verse-badges {
+  display: flex;
+  margin-top: 4px;
+  padding: 0;
+  flex-wrap: wrap;
+  gap: 7px;
+  list-style: none;
+}
+
+.verse-badges li {
+  min-height: 28px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 72%);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 11%);
+}
+
+/* -- Sections --------------------------------------------------------------- */
+
+.verse-section {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  padding: 84px 0;
+  border-top: 1px solid rgb(0 0 0 / 11%);
+  gap: 32px;
+  scroll-margin-top: 72px;
+}
+
+.verse-reading {
+  display: grid;
+  max-width: 720px;
+  gap: 16px;
+}
+
+.verse-callout {
+  max-width: 680px;
+  padding: 18px 22px;
+  border-left: 2px solid var(--verse-cyan);
+  background: rgb(16 159 180 / 6%);
+  color: rgb(0 0 0 / 80%);
+}
+
+/* -- The specimen escapes the reading column, not the shell. ---------------- */
+
+.verse-specimen {
+  display: grid;
+  gap: 18px;
+}
+
+.verse-specimen-heading {
+  display: grid;
+  max-width: 720px;
+  gap: 12px;
+}
+
+.verse-specimen-note {
+  max-width: 720px;
+  color: rgb(0 0 0 / 62%);
+}
+
+/* -- The ladder, stated in editorial terms before the specimen -------------- */
+
+.verse-ladder {
+  display: grid;
+  padding: 0;
+  gap: 12px;
+  list-style: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.verse-ladder li {
+  display: grid;
+  padding: 16px 16px 18px;
+  border-radius: 14px;
+  gap: 6px;
+  align-content: start;
+  background: rgb(255 255 255 / 62%);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
+}
+
+.verse-ladder li::before {
+  width: 34px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--rung);
+  content: "";
+}
+
+.verse-ladder li:nth-child(1) { --rung: #109fb4; }
+.verse-ladder li:nth-child(2) { --rung: #2f9e42; }
+.verse-ladder li:nth-child(3) { --rung: #b4239f; }
+.verse-ladder li:nth-child(4) { --rung: #1e6fc4; }
+
+.verse-ladder-name { color: #000; }
+
+.verse-ladder p { color: rgb(0 0 0 / 68%); }
+
+/* -- Decision block: what this prototype is asking Erik to settle ----------- */
+
+.verse-decision {
+  display: grid;
+  padding: 32px;
+  border-radius: 20px;
+  gap: 20px;
+  background: var(--verse-ink);
+  color: #f1f2f6;
+}
+
+.verse-decision h2,
+.verse-decision h3 { color: #fff; }
+
+.verse-decision .verse-section-label { color: rgb(255 255 255 / 62%); }
+
+.verse-decision p { color: rgb(255 255 255 / 78%); }
+
+.verse-decision-list {
+  display: grid;
+  padding: 0;
+  gap: 16px;
+  list-style: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.verse-decision-list li {
+  display: grid;
+  padding-left: 14px;
+  border-left: 2px solid var(--verse-cyan);
+  gap: 4px;
+}
+
+.verse-decision-list strong { color: #6fdcec; }
+
+/* -- Provenance ------------------------------------------------------------- */
+
+.verse-provenance {
+  display: grid;
+  max-width: 720px;
+  gap: 10px;
+  padding: 20px 22px;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 62%);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
+}
+
+.verse-provenance li {
+  color: rgb(0 0 0 / 72%);
+}
+
+.verse-provenance ul {
+  display: grid;
+  gap: 8px;
+  padding-left: 18px;
+}
+
+/* -- Footer ----------------------------------------------------------------- */
+
+.verse-footer {
+  display: grid;
+  padding: 72px 0 56px;
+  border-top: 1px solid rgb(0 0 0 / 11%);
+  gap: 14px;
+  max-width: 720px;
+}
+
+/* -- Responsive ------------------------------------------------------------- */
+
+@media (max-width: 1199.98px) {
+  .verse-ladder { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 809.98px) {
+  .verse-header { margin-bottom: 24px; }
+
+  .verse-hero { padding: 32px 0 44px; }
+
+  .verse-section { padding: 56px 0; gap: 24px; }
+
+  .verse-ladder { grid-template-columns: minmax(0, 1fr); }
+
+  .verse-decision { padding: 22px 18px; }
+
+  .verse-decision-list { grid-template-columns: minmax(0, 1fr); }
+
+  .verse-footer { padding: 48px 0 40px; }
+}
+
+/* -- Dark mode, matching the site's OS-level treatment ---------------------- */
+
+@media (prefers-color-scheme: dark) {
+  .verse-page {
+    background:
+      radial-gradient(circle at 86% 7%, rgb(16 159 180 / 16%), transparent 27rem),
+      radial-gradient(circle at 4% 62%, rgb(180 35 159 / 12%), transparent 24rem),
+      linear-gradient(172deg, #121417 0%, #08090b 100%);
+  }
+
+  .verse-content { color: #f4f4f5; }
+
+  .verse-content h1,
+  .verse-content h2,
+  .verse-content h3,
+  .verse-ladder-name { color: #fff; }
+
+  .verse-eyebrow,
+  .verse-section-label,
+  .verse-item-label { color: rgb(255 255 255 / 58%); }
+
+  .verse-deck,
+  .verse-callout,
+  .verse-ladder p,
+  .verse-provenance li,
+  .verse-specimen-note,
+  .verse-banner p { color: rgb(255 255 255 / 74%); }
+
+  .verse-section,
+  .verse-footer { border-color: rgb(255 255 255 / 16%); }
+
+  .verse-badges li,
+  .verse-ladder li,
+  .verse-provenance {
+    background: rgb(255 255 255 / 6%);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 14%);
+  }
+
+  .verse-callout { background: rgb(16 159 180 / 12%); }
+
+  .verse-skip-link { background: #f4f4f5; color: #090a0c; }
+}

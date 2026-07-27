@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="description"
+      content="Throwaway interaction prototype: assembling a Mix interface from product requirements through the Verse system layers."
+    />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcfeff" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121417" />
+    <title>PROTOTYPE · Verse assembly journey</title>
+    <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/components/case-study-nav.css" />
+    <link rel="stylesheet" href="/work/verse-prototype/verse-prototype.css" />
+    <link rel="stylesheet" href="/work/verse-prototype/verse-assembly.css" />
+    <script type="module" src="/components/case-study-nav.js"></script>
+    <script type="module" src="/work/verse-prototype/verse-assembly.js"></script>
+  </head>
+  <body class="verse-page">
+    <a class="verse-skip-link type-action" href="#main">Skip to prototype</a>
+
+    <div class="page-shell verse-shell">
+      <header class="site-header verse-header">
+        <a class="brand-link" href="/" aria-label="Homepage">
+          <img class="brand-mark" src="/assets/erikdrouhard-logomark.svg" width="48" height="48" alt="" />
+        </a>
+
+        <div class="desktop-header-actions">
+          <a class="case-studies-link type-action" href="/work/">CASE STUDIES</a>
+          <a
+            class="resume-button type-action"
+            href="/assets/erik-drouhard-resume.pdf"
+            download="Erik-Drouhard-Resume.pdf"
+          >
+            <img src="/assets/download.svg" width="16" height="16" alt="" />
+            <span>DOWNLOAD RESUME</span>
+          </a>
+        </div>
+
+        <details class="mobile-menu">
+          <summary class="type-action">MENU</summary>
+          <nav class="mobile-nav" aria-label="Mobile navigation">
+            <a class="type-action" href="/work/">CASE STUDIES</a>
+            <a class="type-action" href="/assets/erik-drouhard-resume.pdf" download="Erik-Drouhard-Resume.pdf">DOWNLOAD RESUME</a>
+          </nav>
+        </details>
+      </header>
+
+      <case-study-nav>
+        <nav class="case-study-nav__inner" aria-label="Prototype sections">
+          <a class="type-meta type-caps" href="#question">Question</a>
+          <a class="type-meta type-caps" href="#ladder">Ladder</a>
+          <a class="type-meta type-caps" href="#specimen">Specimen</a>
+          <a class="type-meta type-caps" href="#decide">Decide</a>
+        </nav>
+      </case-study-nav>
+
+      <main id="main" class="site-main verse-main">
+        <article class="content verse-content type-body">
+          <div class="verse-banner">
+            <strong class="type-badge type-caps">PROTOTYPE · BRANCH ONLY</strong>
+            <p class="type-body-sm">
+              Throwaway reaction prototype on <code class="type-meta">prototype/verse-assembly</code>. Not published, not linked from the work index, not the finished Verse case study. Every specimen below is a reconstruction built for this page.
+            </p>
+          </div>
+
+          <header class="verse-hero">
+            <p class="verse-eyebrow type-meta type-caps">NUANCE · 2021–2023 · PUBLICLY: VERSE</p>
+            <h1 class="type-hero">Assembling a Mix interface out of requirements</h1>
+            <p class="verse-deck type-deck">
+              A design system is not a theme. This prototype tests whether a visitor can answer five product requirements, watch Verse translate them down through tokens, components, and layout, and arrive at a finished Mix surface that could not have been anything else.
+            </p>
+            <ul class="verse-badges" role="list" aria-label="Prototype details">
+              <li class="type-badge">DESIGN SYSTEM ARCHITECTURE</li>
+              <li class="type-badge">FRONT-END ARCHITECTURE</li>
+              <li class="type-badge">TOKENS + COMPONENTS</li>
+              <li class="type-badge">ACCESSIBILITY</li>
+            </ul>
+          </header>
+
+          <section id="question" class="verse-section" aria-labelledby="question-heading">
+            <div class="verse-reading">
+              <p class="verse-section-label type-meta type-caps">01 · THE QUESTION UNDER TEST</p>
+              <h2 id="question-heading" class="type-section">Should the visitor choose requirements, or preferences?</h2>
+              <p>
+                The easy version of this page is a configurator: pick a colour, pick a radius, watch a button change. It reads as a theme generator, and it explains nothing about why anyone built a design system.
+              </p>
+              <p>
+                The version below asks a visitor to answer the questions a Mix feature team actually had to answer — what is the author doing, where does it live, how much is on screen, what state are they in, who is driving — and then shows Verse deriving the interface from those answers. The button variant is an <em>output</em>, never an input.
+              </p>
+              <p class="verse-callout type-callout">
+                If the derivation is legible, the visitor learns what a design system is for. If it is not, this is an expensive Storybook and the branching model is wrong.
+              </p>
+            </div>
+          </section>
+
+          <section id="ladder" class="verse-section" aria-labelledby="ladder-heading">
+            <div class="verse-reading">
+              <p class="verse-section-label type-meta type-caps">02 · THE SYSTEM LADDER</p>
+              <h2 id="ladder-heading" class="type-section">Four layers, in the system's own vocabulary</h2>
+              <p>
+                Verse was structured so a team could take one layer and leave the rest — tokens without components, components without layouts. These are the system's real names, kept as they were rather than translated into generic atomic-design terms.
+              </p>
+            </div>
+
+            <ul class="verse-ladder" role="list">
+              <li>
+                <p class="verse-item-label type-meta type-caps">01</p>
+                <h3 class="verse-ladder-name type-support">Verse Tokens</h3>
+                <p class="type-body-sm">Colour, space, radius, type, focus, and target size as named values. Composable as utility classes, platform agnostic, and a shared vocabulary between design and front-end.</p>
+              </li>
+              <li>
+                <p class="verse-item-label type-meta type-caps">02</p>
+                <h3 class="verse-ladder-name type-support">Core Components</h3>
+                <p class="type-body-sm">Button, Input, Textbox, Select, Label, Text, Popover. Each one owns its interactive and accessible states — the states static design files kept leaving out.</p>
+              </li>
+              <li>
+                <p class="verse-item-label type-meta type-caps">03</p>
+                <h3 class="verse-ladder-name type-support">Layout Components</h3>
+                <p class="type-body-sm">HStack and VStack. One composition model shared by Figma auto layout and the React implementation, so a design and its code described the same structure.</p>
+              </li>
+              <li>
+                <p class="verse-item-label type-meta type-caps">04</p>
+                <h3 class="verse-ladder-name type-support">Mix Pages</h3>
+                <p class="type-body-sm">The product surfaces built on top. Mix.dialog and the surrounding platform consumed the layers above rather than restating them.</p>
+              </li>
+            </ul>
+          </section>
+
+          <section id="specimen" class="verse-section" aria-labelledby="specimen-heading">
+            <div class="verse-specimen">
+              <div class="verse-specimen-heading">
+                <p class="verse-section-label type-meta type-caps">03 · INTERACTIVE SPECIMEN</p>
+                <h2 id="specimen-heading" class="type-section">Set the requirements. Watch the system answer.</h2>
+                <p>
+                  Change any requirement on the right. The ladder on the left recomputes, and the panel below reports what moved and why. Move between the four layers to see the same decision expressed as tokens, as components, as composition, and as a finished Mix page.
+                </p>
+              </div>
+
+              <verse-assembly>
+                <p class="type-body-sm">Enable JavaScript to explore the interactive Verse assembly specimen.</p>
+              </verse-assembly>
+
+              <p class="verse-specimen-note type-caption">
+                Reconstruction, not a production screenshot. The token names, component names, and the <code class="type-meta">HStack</code> / <code class="type-meta">VStack</code> / <code class="type-meta">Button.Primary</code> / <code class="type-meta">Popover</code> syntax follow the system as presented at Nuance's i3 conference in 2022. The Mix page around the specimen is drawn for this prototype to give the composition somewhere to land.
+              </p>
+            </div>
+          </section>
+
+          <section id="decide" class="verse-section" aria-labelledby="decide-heading">
+            <div class="verse-decision">
+              <p class="verse-section-label type-meta type-caps">04 · WHAT THIS PROTOTYPE IS ASKING YOU</p>
+              <h2 id="decide-heading" class="type-section">Does the branching model hold?</h2>
+              <p class="type-body">
+                Five open items. The prototype exists to make these answerable by reacting rather than by arguing.
+              </p>
+              <ul class="verse-decision-list" role="list">
+                <li>
+                  <strong class="type-support">Requirements over preferences</strong>
+                  <p class="type-body-sm">Does answering “what is the author doing?” feel more revealing than picking a variant — or does it feel like a quiz before the payoff?</p>
+                </li>
+                <li>
+                  <strong class="type-support">Five dimensions, or fewer</strong>
+                  <p class="type-body-sm">Task, context, density, state, and input method are all here. Two or three may carry the argument on their own, and the rest may be noise.</p>
+                </li>
+                <li>
+                  <strong class="type-support">Three outcomes</strong>
+                  <p class="type-body-sm">Interaction context produces the inline, panel, and overlay endings. Are those distinct enough to feel like arriving somewhere?</p>
+                </li>
+                <li>
+                  <strong class="type-support">The conflict case</strong>
+                  <p class="type-body-sm">Inline plus data-dense deliberately does not fit, and the system says so instead of reflowing quietly. Is that the most convincing moment here, or a distraction?</p>
+                </li>
+                <li>
+                  <strong class="type-support">Layer navigation</strong>
+                  <p class="type-body-sm">The four layers are a rail you move between. A single scroll that descends the ladder is the obvious alternative.</p>
+                </li>
+                <li>
+                  <strong class="type-support">Where the buttons live</strong>
+                  <p class="type-body-sm">The variant-by-state matrix sits inside Core Components. It could instead be the finale, since states were the thing static design kept dropping.</p>
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="verse-section" aria-labelledby="provenance-heading">
+            <div class="verse-reading">
+              <p class="verse-section-label type-meta type-caps">PROVENANCE</p>
+              <h2 id="provenance-heading" class="type-section">What is original, and what is reconstructed</h2>
+              <div class="verse-provenance">
+                <ul class="type-body-sm">
+                  <li><strong>Original.</strong> The layer names, the <code class="type-meta">HStack</code> / <code class="type-meta">VStack</code> composition model, the <code class="type-meta">Button.Primary</code> and <code class="type-meta">Popover</code> component syntax, the token-as-utility-class approach, and the accessibility motivation all come from the system and from Erik's i3 2022 talk, “Design like a developer… Develop like a designer!”</li>
+                  <li><strong>Reconstructed.</strong> Every pixel in the specimen. The token values, the field content, the Mix page around it, and the derivation rules were written for this prototype to demonstrate the model. None of it is a production screenshot.</li>
+                  <li><strong>Attribution.</strong> Verse was a shared initiative. Erik led its design and front-end architecture — components, patterns, tokens, implementation practices, and adoption guidance — working as the design–engineering liaison across multiple engineering teams and a second design group. He did not build it alone.</li>
+                  <li><strong>Chronology.</strong> Verse is the public name. Bolt was the earlier name, which is why the source slides say Bolt. Verse is a later chapter in the broader Mix.dialog and platform arc, and was migrated to Fluent 2 after the Microsoft acquisition.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <footer class="verse-footer">
+            <h2 class="type-section">This branch is disposable. The decision is not.</h2>
+            <p class="type-body-sm">
+              Fold whatever survives into the real Verse case study, then delete <code class="type-meta">prototype/verse-assembly</code>.
+            </p>
+          </footer>
+        </article>
+      </main>
+
+      <footer class="social-footer">
+        <nav class="social-links" aria-label="Social links">
+          <a href="https://www.linkedin.com/in/erikdrouhard" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img src="/assets/linkedin.svg" width="24" height="24" alt="" /></a>
+          <a href="https://github.com/erikdrouhard" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><img src="/assets/github.svg" width="24" height="24" alt="" /></a>
+        </nav>
+        <a class="contact-button type-action" href="mailto:erikdrouhard@gmail.com">CONTACT ME</a>
+      </footer>
+    </div>
+  </body>
+</html>

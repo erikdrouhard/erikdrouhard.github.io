@@ -1,0 +1,959 @@
+/* ==========================================================================
+   PROTOTYPE — Verse assembly specimen
+   --------------------------------------------------------------------------
+   Throwaway. Branch-only. Not published.
+
+   Type note: this component simulates the Verse/Mix product UI, so — like the
+   sanctioned Mix.dialog condition-stack demo — it renders in Inter rather than
+   the portfolio's Crimson roles. Setting a product reconstruction in editorial
+   serif would misrepresent what Verse and Mix actually looked like.
+
+   The exception is bounded exactly as the existing one is: every size and
+   weight is declared once in the `--sim-verse-*` set below, those tokens are
+   never used outside <verse-assembly>, and no `type-*` role is used inside it.
+   The surrounding page chrome uses the portfolio roles normally.
+
+   Layer colours are taken from the original i3 2022 deck, which colour-coded
+   the ladder: Tokens cyan, Core green, Layouts magenta.
+   ========================================================================== */
+
+verse-assembly {
+  --sim-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --sim-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* weight size/leading family */
+  --sim-verse-title: 650 0.9375rem/1.4 var(--sim-font);
+  --sim-verse-strong: 700 0.8125rem/1.4 var(--sim-font);
+  --sim-verse-body: 400 0.875rem/1.45 var(--sim-font);
+  --sim-verse-control: 600 0.8125rem/1.4 var(--sim-font);
+  --sim-verse-label: 800 0.6875rem/1.4 var(--sim-font);
+  --sim-verse-micro: 600 0.75rem/1.45 var(--sim-font);
+  --sim-verse-code: 400 0.75rem/1.6 var(--sim-font-mono);
+  --sim-verse-code-sm: 400 0.6875rem/1.5 var(--sim-font-mono);
+  --track-sim-label: 0.09em;
+
+  /* Deck ladder colours */
+  --va-tokens: #2fd2e4;
+  --va-core: #86e08f;
+  --va-layout: #e666d8;
+  --va-page: #4aa8ff;
+
+  --va-ink: #eef0f6;
+  --va-ink-muted: rgb(238 240 246 / 62%);
+  --va-field: #22222e;
+  --va-field-2: #2b2b3a;
+  --va-hairline: rgb(255 255 255 / 12%);
+
+  display: block;
+  width: 100%;
+  min-width: 0;
+  color: var(--va-ink);
+  font: var(--sim-verse-body);
+  font-synthesis: none;
+}
+
+.va {
+  overflow: hidden;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 88% 4%, rgb(47 210 228 / 10%), transparent 26rem),
+    radial-gradient(circle at 6% 96%, rgb(230 102 216 / 10%), transparent 24rem),
+    linear-gradient(160deg, #262633 0%, #1c1c26 100%);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 22%),
+    0 30px 80px rgb(20 16 45 / 22%);
+}
+
+/* -- Prototype flag -------------------------------------------------------- */
+
+.va__bar {
+  display: flex;
+  min-height: 56px;
+  padding: 10px 16px 10px 20px;
+  border-bottom: 1px solid var(--va-hairline);
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  background: rgb(0 0 0 / 16%);
+}
+
+.va__flag {
+  margin: 0;
+  color: var(--va-tokens);
+  font: var(--sim-verse-label);
+  letter-spacing: var(--track-sim-label);
+}
+
+.va__reset {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 8%);
+  box-shadow: inset 0 0 0 1px var(--va-hairline);
+  color: var(--va-ink);
+  font: var(--sim-verse-control);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* -- Three-column body ----------------------------------------------------- */
+
+.va__body {
+  display: grid;
+  gap: 1px;
+  background: var(--va-hairline);
+  grid-template-columns: minmax(190px, 220px) minmax(0, 1fr) minmax(240px, 280px);
+}
+
+.va__rail,
+.va__stage,
+.va__controls {
+  min-width: 0;
+  padding: 22px 20px;
+  background: linear-gradient(160deg, #262633 0%, #1c1c26 100%);
+}
+
+/* -- Rail: the four authentic layers -------------------------------------- */
+
+.va__rail-title,
+.va__controls-title {
+  margin: 0 0 4px;
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-label);
+  letter-spacing: var(--track-sim-label);
+  text-transform: uppercase;
+}
+
+.va__rail-note,
+.va__controls-note {
+  margin: 14px 0 0;
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-micro);
+}
+
+.va__ladder {
+  display: grid;
+  margin: 14px 0 0;
+  padding: 0;
+  gap: 6px;
+  list-style: none;
+  counter-reset: none;
+}
+
+.va-rung {
+  position: relative;
+  display: grid;
+  width: 100%;
+  padding: 12px 12px 12px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  gap: 2px;
+  text-align: left;
+  cursor: pointer;
+  grid-template-columns: auto 1fr;
+  touch-action: manipulation;
+}
+
+/* The vertical spine that makes the four rungs read as one ladder. */
+.va-rung::before {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 0;
+  width: 3px;
+  border-radius: 3px;
+  background: currentcolor;
+  content: "";
+  opacity: 0.34;
+}
+
+.va-rung--tokens { --rung: var(--va-tokens); }
+.va-rung--core { --rung: var(--va-core); }
+.va-rung--layout { --rung: var(--va-layout); }
+.va-rung--page { --rung: var(--va-page); }
+
+.va-rung::before { color: var(--rung); }
+
+.va-rung.is-current {
+  background: rgb(255 255 255 / 7%);
+}
+
+.va-rung.is-current::before {
+  opacity: 1;
+}
+
+.va-rung__ordinal {
+  color: var(--rung);
+  font: var(--sim-verse-code-sm);
+  grid-row: 1;
+}
+
+.va-rung__name {
+  font: var(--sim-verse-title);
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.va-rung__count {
+  color: var(--rung);
+  font: var(--sim-verse-micro);
+  grid-column: 2;
+}
+
+.va-rung__blurb {
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-micro);
+  grid-column: 2;
+}
+
+/* -- Stage ----------------------------------------------------------------- */
+
+.va__stage {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.va__stage-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--va-hairline);
+}
+
+.va__stage-label {
+  margin: 0;
+  font: var(--sim-verse-label);
+  letter-spacing: var(--track-sim-label);
+}
+
+.va__stage--tokens .va__stage-label { color: var(--va-tokens); }
+.va__stage--core .va__stage-label { color: var(--va-core); }
+.va__stage--layout .va__stage-label { color: var(--va-layout); }
+.va__stage--page .va__stage-label { color: var(--va-page); }
+
+.va__stage-outcome {
+  margin: 0;
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-control);
+}
+
+.va__stage-intro {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-body);
+}
+
+/* -- Tokens view ----------------------------------------------------------- */
+
+.va-tokens {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 1px;
+  list-style: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--va-hairline);
+}
+
+.va-token {
+  display: grid;
+  padding: 10px 12px;
+  align-items: center;
+  gap: 4px 12px;
+  background: rgb(0 0 0 / 20%);
+  grid-template-columns: 18px minmax(0, 15rem) auto;
+}
+
+.va-token__swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 22%);
+  display: grid;
+  place-items: center;
+  color: var(--va-tokens);
+  font: var(--sim-verse-code-sm);
+  grid-row: span 2;
+}
+
+.va-token__name {
+  color: var(--va-tokens);
+  font: var(--sim-verse-code);
+}
+
+.va-token__value {
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-code-sm);
+  justify-self: end;
+}
+
+.va-token__why {
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-micro);
+  grid-column: 2 / -1;
+}
+
+/* -- Core view ------------------------------------------------------------- */
+
+.va-matrix {
+  display: grid;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgb(0 0 0 / 22%);
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.va-matrix__row {
+  display: grid;
+  align-items: center;
+  gap: 8px;
+  grid-template-columns: minmax(9.5rem, auto) repeat(5, minmax(6.5rem, 1fr));
+}
+
+.va-matrix__head {
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-label);
+  letter-spacing: var(--track-sim-label);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.va-matrix__label {
+  color: var(--va-core);
+  font: var(--sim-verse-code-sm);
+}
+
+.va-matrix__cell {
+  display: grid;
+  padding: 6px;
+  border-radius: 10px;
+  place-items: center;
+}
+
+.va-matrix__cell.is-selected {
+  box-shadow: 0 0 0 2px var(--va-core);
+  background: rgb(134 224 143 / 10%);
+}
+
+.va-core-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 10px;
+  list-style: none;
+}
+
+.va-core-list li {
+  display: grid;
+  padding-left: 12px;
+  border-left: 2px solid rgb(134 224 143 / 45%);
+  gap: 2px;
+}
+
+.va-core-list code {
+  color: var(--va-core);
+  font: var(--sim-verse-code);
+}
+
+.va-core-list__note {
+  font: var(--sim-verse-control);
+}
+
+.va-core-list__why {
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-micro);
+}
+
+/* -- Layout view ----------------------------------------------------------- */
+
+.va-layout-split {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+}
+
+.va-layout-annotated {
+  padding: 26px 18px 18px;
+  border-radius: 14px;
+  background: rgb(0 0 0 / 22%);
+}
+
+.va-jsx {
+  margin: 0;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgb(0 0 0 / 34%);
+  color: rgb(238 240 246 / 88%);
+  font: var(--sim-verse-code);
+  overflow-x: auto;
+}
+
+.va-stack {
+  position: relative;
+  display: flex;
+}
+
+.va-stack--v { flex-direction: column; }
+.va-stack--h { flex-direction: row; align-items: center; }
+
+.va-layout-annotated .va-stack {
+  padding: 18px 12px 12px;
+  border: 1px dashed rgb(230 102 216 / 62%);
+  border-radius: 10px;
+}
+
+.va-stack__tag {
+  position: absolute;
+  top: -9px;
+  left: 10px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: #26202f;
+  color: var(--va-layout);
+  font: var(--sim-verse-code-sm);
+  white-space: nowrap;
+}
+
+.va-stack__tag--popover {
+  top: -9px;
+  background: #26202f;
+}
+
+.va-popover.is-annotated {
+  position: relative;
+  border: 1px dashed rgb(230 102 216 / 62%);
+}
+
+/* -- The simulated product controls ---------------------------------------- */
+/* These render on a LIGHT surface — the Mix product was light. The dark field
+   around them is the Verse deck's own identity, not the product's. */
+
+.va-btn {
+  display: inline-flex;
+  min-height: 32px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 6px;
+  align-items: center;
+  gap: 8px;
+  background: #e7eaee;
+  color: #1b1f24;
+  font: var(--sim-verse-control);
+  cursor: pointer;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.va-btn.is-touch {
+  min-height: 44px;
+  padding: 0 18px;
+}
+
+.va-btn--primary { background: #0078b8; color: #fff; }
+.va-btn--danger { background: #c62828; color: #fff; }
+.va-btn--secondary { background: #fff; box-shadow: inset 0 0 0 1px #d5dbe1; }
+
+.va-btn.is-hover.va-btn--primary { background: #0089d1; }
+.va-btn.is-hover.va-btn--danger { background: #d63535; }
+.va-btn.is-hover.va-btn--secondary { background: #f3f5f7; }
+
+.va-btn.is-focus,
+.va-btn.is-keyboard:focus-visible,
+.va-btn:focus-visible {
+  outline: 2px solid #0078b8;
+  outline-offset: 2px;
+}
+
+/* Styled from aria-disabled, not :disabled — the control stays focusable so
+   its reason can be announced. See the note in verse-assembly.js. */
+.va-btn.is-disabled,
+.va-btn[aria-disabled="true"],
+.va-btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.va-spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid currentcolor;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: va-spin 720ms linear infinite;
+}
+
+@keyframes va-spin {
+  to { transform: rotate(360deg); }
+}
+
+.va-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.va-field--compact {
+  max-width: 11rem;
+}
+
+.va-field__label {
+  color: #1b1f24;
+  font: var(--sim-verse-strong);
+}
+
+.va-input {
+  display: flex;
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid #d5dbe1;
+  border-radius: 6px;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: #1b1f24;
+  font: var(--sim-verse-body);
+  justify-content: space-between;
+}
+
+.va-input--textbox {
+  min-height: 54px;
+  resize: none;
+}
+
+.va-input.is-invalid {
+  border-color: #c62828;
+  box-shadow: 0 0 0 1px #c62828;
+}
+
+.va-input:disabled,
+.va-input.is-disabled {
+  background: #f3f5f7;
+  color: #5b6570;
+}
+
+.va-input:focus-visible {
+  outline: 2px solid #0078b8;
+  outline-offset: 1px;
+}
+
+.va-readonly {
+  padding: 6px 0;
+  color: #5b6570;
+  font: var(--sim-verse-body);
+}
+
+.va-field__error {
+  color: #c62828;
+  font: var(--sim-verse-micro);
+}
+
+.va-popover {
+  min-width: min(100%, 21rem);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 10%),
+    0 22px 48px rgb(0 0 0 / 34%);
+  overflow: hidden;
+}
+
+.va-popover__head {
+  display: flex;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e7eaee;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  color: #1b1f24;
+  font: var(--sim-verse-title);
+}
+
+.va-popover__close { color: #5b6570; }
+
+.va-popover__body { padding: 14px; }
+
+.va-overflow { position: relative; }
+
+.va-popover--overflow {
+  position: absolute;
+  z-index: 3;
+  top: calc(100% + 6px);
+  left: 0;
+  display: grid;
+  width: 17rem;
+  padding: 12px;
+  gap: 10px;
+}
+
+/* Light-surface contexts: the panel and inline slots paint white behind the
+   controls so the simulated product reads as the product. */
+.va-mix__slot--panel,
+.va-mix__slot--inline,
+.va-layout-annotated .va-field,
+.va-layout-annotated .va-field__label {
+  color: #1b1f24;
+}
+
+.va-layout-annotated .va-field__label {
+  color: var(--va-ink);
+}
+
+.va-layout-annotated .va-readonly {
+  color: var(--va-ink-muted);
+}
+
+/* -- Mix page reconstruction ------------------------------------------------ */
+
+.va-mix {
+  border-radius: 14px;
+  background: #f3f5f7;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 26%);
+  color: #1b1f24;
+  overflow: hidden;
+}
+
+.va-mix__chrome {
+  display: flex;
+  min-height: 38px;
+  padding: 0 14px;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #e0e4e9;
+  background: #fff;
+  font: var(--sim-verse-micro);
+  color: #5b6570;
+}
+
+.va-mix__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #0078b8;
+  flex: 0 0 9px;
+}
+
+.va-mix__crumb strong { color: #1b1f24; }
+
+.va-mix__frame {
+  display: grid;
+  min-height: 21rem;
+  grid-template-columns: 9.5rem minmax(0, 1fr) 15rem;
+}
+
+.va-mix__tree {
+  display: grid;
+  padding: 12px 10px;
+  align-content: start;
+  gap: 2px;
+  border-right: 1px solid #e0e4e9;
+  background: #fff;
+  font: var(--sim-verse-micro);
+  color: #5b6570;
+}
+
+.va-mix__tree span {
+  padding: 6px 8px;
+  border-radius: 5px;
+}
+
+.va-mix__tree .is-active {
+  background: #e6f1f8;
+  color: #0078b8;
+  font: var(--sim-verse-strong);
+}
+
+.va-mix__canvas {
+  position: relative;
+  display: grid;
+  padding: 12px;
+  align-content: start;
+  gap: 12px;
+  background:
+    radial-gradient(circle at 1px 1px, rgb(0 0 0 / 10%) 1px, transparent 0) 0 0 / 16px 16px;
+}
+
+.va-mix__toolbar {
+  display: flex;
+  min-height: 44px;
+  padding: 6px 8px;
+  border: 1px solid #e0e4e9;
+  border-radius: 8px;
+  align-items: center;
+  background: #fff;
+}
+
+.va-mix__toolbar-ghost {
+  color: #98a2ad;
+  font: var(--sim-verse-micro);
+}
+
+.va-mix__node {
+  display: grid;
+  padding: 12px 14px;
+  border: 1px solid #d5dbe1;
+  border-radius: 8px;
+  gap: 4px;
+  background: #fff;
+}
+
+.va-mix__node-title { margin: 0; font: var(--sim-verse-title); }
+
+.va-mix__node-line {
+  margin: 0;
+  color: #5b6570;
+  font: var(--sim-verse-micro);
+}
+
+.va-mix__node-line em { color: #0078b8; font-style: normal; }
+
+.va-mix__scrim {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: grid;
+  padding: 16px;
+  place-items: center;
+  background: rgb(20 24 30 / 42%);
+  backdrop-filter: blur(1px);
+}
+
+.va-mix__panel {
+  padding: 12px;
+  border-left: 1px solid #e0e4e9;
+  background: #fff;
+  overflow: auto;
+}
+
+.va-mix__panel--ghost {
+  display: grid;
+  align-content: start;
+  color: #98a2ad;
+  font: var(--sim-verse-micro);
+}
+
+.va-mix__slot--inline { flex: 1; min-width: 0; }
+
+/* Highlight where the assembled composition landed. */
+.va-mix__slot--panel,
+.va-mix__slot--inline,
+.va-mix__slot--overlay {
+  position: relative;
+  border-radius: 8px;
+  outline: 2px dashed rgb(74 168 255 / 70%);
+  outline-offset: 6px;
+}
+
+/* -- Requirement controls --------------------------------------------------- */
+
+.va__controls {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.va-group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid var(--va-hairline);
+  padding-top: 12px;
+}
+
+.va-group.is-changed .va-group__legend {
+  color: var(--va-tokens);
+}
+
+.va-group__legend {
+  padding: 0;
+  font: var(--sim-verse-label);
+  letter-spacing: var(--track-sim-label);
+  text-transform: uppercase;
+}
+
+.va-group__question {
+  margin: 2px 0 8px;
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-micro);
+}
+
+.va-group__options {
+  display: grid;
+  gap: 4px;
+}
+
+.va-chip {
+  display: grid;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 10px;
+  align-content: center;
+  gap: 1px;
+  background: rgb(255 255 255 / 5%);
+  box-shadow: inset 0 0 0 1px var(--va-hairline);
+  color: var(--va-ink);
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.va-chip.is-selected {
+  background: rgb(47 210 228 / 14%);
+  box-shadow: inset 0 0 0 1px rgb(47 210 228 / 62%);
+}
+
+.va-chip__label { font: var(--sim-verse-control); }
+
+.va-chip__hint {
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-micro);
+}
+
+.va-chip.is-selected .va-chip__label { color: var(--va-tokens); }
+
+/* -- Causality trace -------------------------------------------------------- */
+
+.va__trace {
+  padding: 20px;
+  border-top: 1px solid var(--va-hairline);
+  background: rgb(0 0 0 / 20%);
+}
+
+.va__trace-title {
+  margin: 0;
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-label);
+  letter-spacing: var(--track-sim-label);
+  text-transform: uppercase;
+}
+
+.va__trace-live {
+  max-width: 78ch;
+  margin: 8px 0 0;
+  color: var(--va-tokens);
+  font: var(--sim-verse-title);
+}
+
+.va__trace-conflict {
+  max-width: 78ch;
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgb(230 102 216 / 12%);
+  box-shadow: inset 0 0 0 1px rgb(230 102 216 / 42%);
+  font: var(--sim-verse-body);
+}
+
+.va__trace-conflict strong { color: var(--va-layout); }
+
+.va__trace-aside {
+  margin: 10px 0 0;
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-micro);
+}
+
+.va__trace-list {
+  display: grid;
+  margin: 14px 0 0;
+  padding: 0;
+  gap: 6px;
+  list-style: none;
+}
+
+.va__trace-list li {
+  display: grid;
+  gap: 2px 12px;
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-micro);
+  grid-template-columns: 9.5rem minmax(0, 1fr);
+}
+
+.va__trace-list li.is-changed { color: var(--va-ink); }
+
+.va__trace-dim {
+  font: var(--sim-verse-label);
+  letter-spacing: var(--track-sim-label);
+  text-transform: uppercase;
+}
+
+/* -- Focus ------------------------------------------------------------------ */
+
+.va button:focus-visible {
+  outline: 2px solid var(--va-tokens);
+  outline-offset: 2px;
+}
+
+/* -- Hover is an enhancement, never the only affordance --------------------- */
+
+@media (hover: hover) and (pointer: fine) {
+  .va-chip:hover,
+  .va-rung:hover,
+  .va__reset:hover { background: rgb(255 255 255 / 11%); }
+  .va-chip.is-selected:hover { background: rgb(47 210 228 / 20%); }
+}
+
+/* -- Responsive ------------------------------------------------------------- */
+
+@media (max-width: 1199.98px) {
+  .va__body {
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 260px);
+  }
+
+  .va__rail {
+    grid-column: 1 / -1;
+  }
+
+  .va__ladder {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .va__rail-note { max-width: 60ch; }
+
+  .va-layout-split { grid-template-columns: minmax(0, 1fr); }
+
+  .va-mix__frame { grid-template-columns: 8rem minmax(0, 1fr) 13rem; }
+}
+
+@media (max-width: 809.98px) {
+  .va { border-radius: 16px; }
+
+  .va__body { grid-template-columns: minmax(0, 1fr); }
+
+  .va__ladder { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .va__rail,
+  .va__stage,
+  .va__controls,
+  .va__trace { padding: 18px 14px; }
+
+  .va-mix__frame {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .va-mix__tree,
+  .va-mix__panel--ghost { display: none; }
+
+  .va-mix__panel { border-left: 0; border-top: 1px solid #e0e4e9; }
+
+  .va__trace-list li { grid-template-columns: minmax(0, 1fr); }
+
+  .va-matrix__row { grid-template-columns: minmax(8rem, auto) repeat(5, minmax(5.5rem, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .va-spinner { animation-duration: 2400ms; }
+}

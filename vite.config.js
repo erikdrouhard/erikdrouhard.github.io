@@ -11,6 +11,8 @@ export default defineConfig({
         microsoft: resolve(__dirname, "work/microsoft/index.html"),
         coreAIRedirect: resolve(__dirname, "work/core-ai/index.html"),
         mixDialog: resolve(__dirname, "work/mix-dialog/index.html"),
+        // PROTOTYPE — throwaway, branch-only. Remove with the branch.
+        versePrototype: resolve(__dirname, "work/verse-prototype/index.html"),
       },
     },
   },
