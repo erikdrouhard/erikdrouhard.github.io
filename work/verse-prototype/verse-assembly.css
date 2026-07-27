@@ -1155,6 +1155,54 @@ verse-assembly {
 
 /* -- Responsive ------------------------------------------------------------- */
 
+/* Wide tier. The specimen breaks out of the page's reading column here, so the
+   room has to be spent rather than absorbed: lists that were single-file become
+   ledgers, the state matrix stops scrolling sideways, and the Mix frame gets
+   proportions closer to the real product. Prose stays capped at 62ch. */
+@media (min-width: 1280px) {
+  .va__descent { grid-template-columns: minmax(230px, 272px) minmax(0, 1fr); }
+
+  .va__bar { padding: 12px 24px 12px 30px; }
+  .va__spine { padding: 30px 26px; }
+  .va__chapter { padding: 30px 34px; }
+  .va__trace { padding: 26px 34px; }
+  .va__rewind { margin: 26px 34px 0; }
+
+  /* All five requirements side by side, so chapter 00 reads as one problem
+     statement rather than a scrolling questionnaire. */
+  .va__controls { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+  /* At this width a single-file token list strands each value at the far right
+     of the row. Two columns of self-contained rows keeps name and value near
+     each other, so the hairline-gap divider trick gives way to per-row rules. */
+  .va-tokens {
+    background: transparent;
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .va-token {
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 1px var(--va-hairline);
+  }
+
+  .va-core-list { gap: 12px 26px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .va__trace-list { gap: 8px 26px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .va-matrix { padding: 18px; }
+
+  .va-matrix__row { grid-template-columns: minmax(11rem, auto) repeat(5, minmax(8rem, 1fr)); }
+
+  .va-layout-split { gap: 22px; }
+
+  .va-mix__frame {
+    min-height: 27rem;
+    grid-template-columns: 12rem minmax(0, 1fr) 19rem;
+  }
+}
+
 @media (max-width: 1199.98px) {
   .va__descent { grid-template-columns: minmax(0, 1fr); }
 

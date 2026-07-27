@@ -163,11 +163,28 @@
   color: rgb(0 0 0 / 80%);
 }
 
-/* -- The specimen escapes the reading column, not the shell. ---------------- */
+/* -- The specimen escapes the reading column AND the shell. -----------------
+   The assembly is the argument this page makes, and it carries a four-rung
+   ladder beside an accumulating story column. Inside the 940px shell both are
+   cramped, so it breaks out to a viewport-wide band. The heading above it and
+   the provenance note below it stay in the editorial column, the way a wide
+   figure keeps a narrow caption. */
 
 .verse-specimen {
+  --specimen-width: min(100vw - 64px, 1440px);
   display: grid;
   gap: 18px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.verse-specimen verse-assembly {
+  /* Equal negative margins on an already-centred parent centre the wider band
+     without needing to know the shell's own width. `min(0px, …)` keeps the
+     margins from ever going positive, so at narrow viewports — where 100vw
+     includes a classic scrollbar — the band lines up with the column instead
+     of inseting itself or overflowing into the clipped gutter. */
+  width: auto;
+  margin-inline: min(0px, calc((100% - var(--specimen-width)) / 2));
 }
 
 .verse-specimen-heading {
