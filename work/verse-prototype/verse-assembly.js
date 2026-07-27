@@ -72,11 +72,19 @@ const REQUIREMENTS = [
 ];
 
 const LAYERS = [
-  { id: "tokens", name: "Verse Tokens", ordinal: "01", blurb: "Values, not decisions." },
-  { id: "core", name: "Core Components", ordinal: "02", blurb: "Behavior and accessible states." },
-  { id: "layout", name: "Layout Components", ordinal: "03", blurb: "HStack and VStack composition." },
-  { id: "page", name: "Mix Page", ordinal: "04", blurb: "The finished product surface." },
+  { id: "tokens", name: "Verse Tokens", ordinal: "01", blurb: "Values, not decisions.", claim: "These are the only values anything below is allowed to use." },
+  { id: "core", name: "Core Components", ordinal: "02", blurb: "Behavior and accessible states.", claim: "The values are now spent. Nothing below re-picks a colour or a size." },
+  { id: "layout", name: "Layout Components", ordinal: "03", blurb: "HStack and VStack composition.", claim: "Structure only. A stack has no opinion about what it holds." },
+  { id: "page", name: "Mix Page", ordinal: "04", blurb: "The finished product surface.", claim: "Nothing new was invented here. Every part of this arrived from a rung above." },
 ];
+
+/* The descent: step 0 states the problem, steps 1-4 are the ladder. */
+const STEPS = ["requirements", ...LAYERS.map((l) => l.id)];
+
+/* Where each requirement first bites. Changing one rewinds the descent to that
+   rung, because everything below it was derived from an answer that changed.
+   Interaction context is the interesting one: it costs no tokens at all. */
+const REQ_ENTRY = { task: 1, context: 2, density: 1, state: 1, input: 1 };
 
 /* Reconstructed token set. Names follow the Verse/Bolt convention; values are
    representative, taken from the i3 2022 deck's own specimens. */
@@ -266,11 +274,16 @@ function derive(state) {
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
+const DEFAULTS = { task: "create", context: "panel", density: "focused", state: "default", input: "pointer" };
+
 class VerseAssembly extends HTMLElement {
   connectedCallback() {
-    this.state = { task: "create", context: "panel", density: "focused", state: "default", input: "pointer" };
-    this.layer = "page";
+    this.state = { ...DEFAULTS };
+    this.step = 0;
+    this.deepest = 0;
+    this.rewoundTo = null;
     this.lastChanged = null;
+    this.editing = null;
     this.openOverflow = false;
     this.reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     this.onClick = this.onClick.bind(this);
@@ -285,6 +298,26 @@ class VerseAssembly extends HTMLElement {
     this.removeEventListener("keydown", this.onKeydown);
   }
 
+  /* A requirement change invalidates every rung derived below where it bites,
+     so the descent rewinds to that rung and is walked again. */
+  applyRequirement(key, value) {
+    if (this.state[key] === value) return;
+    this.state[key] = value;
+    this.lastChanged = key;
+    this.openOverflow = false;
+    const entry = REQ_ENTRY[key];
+    this.rewoundTo = this.step > entry ? entry : null;
+    if (this.step > entry) this.step = entry;
+  }
+
+  goto(step, focus) {
+    this.step = Math.max(0, Math.min(STEPS.length - 1, step));
+    this.deepest = Math.max(this.deepest, this.step);
+    this.rewoundTo = null;
+    this.openOverflow = false;
+    this.render({ focus, scroll: true });
+  }
+
   onClick(event) {
     const button = event.target.closest("button[data-command]");
     if (!button || !this.contains(button)) return;
@@ -292,25 +325,30 @@ class VerseAssembly extends HTMLElement {
 
     if (command === "set-requirement") {
       const { key, value } = button.dataset;
-      if (this.state[key] === value) return;
-      this.state[key] = value;
-      this.lastChanged = key;
-      this.openOverflow = false;
+      this.applyRequirement(key, value);
       this.render({ focus: `req-${key}-${value}` });
     }
-    if (command === "set-layer") {
-      this.layer = button.dataset.layer;
-      this.render({ focus: `layer-${this.layer}` });
+    if (command === "descend") this.goto(this.step + 1, "descend");
+    if (command === "ascend") this.goto(this.step - 1, "descend");
+    if (command === "goto") this.goto(Number(button.dataset.step), `spine-${button.dataset.step}`);
+    if (command === "edit") {
+      const { key } = button.dataset;
+      this.editing = this.editing === key ? null : key;
+      this.render({ focus: `receipt-${key}` });
     }
     if (command === "toggle-overflow") {
       this.openOverflow = !this.openOverflow;
       this.render({ focus: "overflow-trigger" });
     }
     if (command === "reset") {
-      this.state = { task: "create", context: "panel", density: "focused", state: "default", input: "pointer" };
+      this.state = { ...DEFAULTS };
+      this.step = 0;
+      this.deepest = 0;
+      this.rewoundTo = null;
       this.lastChanged = null;
+      this.editing = null;
       this.openOverflow = false;
-      this.render({ focus: "reset" });
+      this.render({ focus: "reset", scroll: true });
     }
   }
 
@@ -329,91 +367,224 @@ class VerseAssembly extends HTMLElement {
     const group = REQUIREMENTS.find((r) => r.key === chip.dataset.key);
     const index = group.options.findIndex((o) => o.id === chip.dataset.value);
     const next = group.options[(index + keys[event.key] + group.options.length) % group.options.length];
-    this.state[group.key] = next.id;
-    this.lastChanged = group.key;
-    this.openOverflow = false;
+    this.applyRequirement(group.key, next.id);
     this.render({ focus: `req-${group.key}-${next.id}` });
   }
 
-  render({ focus = null } = {}) {
+  render({ focus = null, scroll = false } = {}) {
     const d = derive(this.state);
     this.derived = d;
+    const here = STEPS[this.step];
+
+    /* The story so far: every rung already descended stays on the page, in
+       order, so the visitor can see what they built and how they got there. */
+    const told = [];
+    for (let i = 0; i <= this.step; i += 1) {
+      const current = i === this.step;
+      const body = i === 0 ? this.renderProblem(d, current) : this.renderRung(d, i, current);
+      told.push(`
+        <section class="va__chapter${current ? " is-current" : " is-past"}" data-step="${i}" aria-current="${current ? "step" : "false"}">
+          ${body}
+          ${current ? this.renderNav(d) : `<div class="va__seam" aria-hidden="true"><span></span></div>`}
+        </section>`);
+    }
 
     this.innerHTML = `
-      <section class="va" aria-label="Verse assembly prototype">
+      <section class="va va--step-${here}" aria-label="Verse assembly prototype">
         <header class="va__bar">
           <p class="va__flag">PROTOTYPE · RECONSTRUCTION · NOT PRODUCTION UI</p>
-          <button class="va__reset" type="button" data-command="reset" data-focus-id="reset">Reset requirements</button>
+          <button class="va__reset" type="button" data-command="reset" data-focus-id="reset">Start over</button>
         </header>
 
-        <div class="va__body">
-          ${this.renderRail(d)}
-          ${this.renderStage(d)}
-          ${this.renderControls(d)}
+        <div class="va__descent">
+          ${this.renderSpine(d)}
+          <div class="va__story">
+            ${this.rewoundTo !== null ? `<p class="va__rewind" role="status">Requirement changed. The story rewound to ${LAYERS[this.rewoundTo - 1].ordinal} ${LAYERS[this.rewoundTo - 1].name} — every rung below it was derived from the answer you just replaced, so it no longer exists.</p>` : ""}
+            ${told.join("")}
+            ${this.step > 0 ? this.renderTrace(d) : ""}
+          </div>
         </div>
-
-        ${this.renderTrace(d)}
       </section>`;
 
     if (focus) {
       requestAnimationFrame(() => {
         const target = this.querySelector(`[data-focus-id="${focus}"]`);
-        if (target) target.focus({ preventScroll: true });
+        if (!target) return;
+        target.focus({ preventScroll: true });
+        if (scroll) target.scrollIntoView({ block: "center", behavior: this.reduceMotion.matches ? "auto" : "smooth" });
       });
     }
   }
 
-  /* -- The narrative rail: the four authentic Verse layers ----------------- */
-  renderRail(d) {
-    const counts = {
-      tokens: `${d.tokens.length} active`,
-      core: `${d.core.length} in play`,
-      layout: d.layout.context === "overlay" ? "Popover · VStack · HStack" : d.layout.context === "panel" ? "VStack · HStack" : "HStack",
-      page: d.outcome,
-    };
-
+  /* -- Chapter 00: state the problem --------------------------------------- */
+  renderProblem(d, current) {
     return `
-      <nav class="va__rail" aria-label="System layers">
-        <p class="va__rail-title">The system underneath</p>
-        <ol class="va__ladder">
-          ${LAYERS.map((layer) => `
-            <li>
-              <button
-                class="va-rung va-rung--${layer.id}${this.layer === layer.id ? " is-current" : ""}"
-                type="button"
-                data-command="set-layer"
-                data-layer="${layer.id}"
-                data-focus-id="layer-${layer.id}"
-                aria-current="${this.layer === layer.id ? "true" : "false"}"
-              >
-                <span class="va-rung__ordinal">${layer.ordinal}</span>
-                <span class="va-rung__name">${layer.name}</span>
-                <span class="va-rung__count">${esc(counts[layer.id])}</span>
-                <span class="va-rung__blurb">${layer.blurb}</span>
-              </button>
-            </li>`).join("")}
-        </ol>
-        <p class="va__rail-note">Each layer is assembled from the requirements on the right. Nothing here is a theme.</p>
-      </nav>`;
+      <div class="va__stage va__stage--problem">
+        <header class="va__stage-head">
+          <p class="va__stage-label">00 · THE PROBLEM</p>
+          <p class="va__stage-outcome">${current ? "Nothing is built yet" : "Five requirements stated"}</p>
+        </header>
+        <div class="va__stage-body">
+          ${current
+            ? `<p class="va__stage-intro">Answer as a product person, not as a designer. None of these ask what it should look like — Verse decides that on the way down.</p>
+               ${this.renderControls(d)}`
+            : `<p class="va__stage-intro">These are the answers the rest of the story was built from. Change one and everything derived from it is rebuilt.</p>
+               ${this.renderReceipt()}`}
+        </div>
+      </div>`;
   }
 
-  /* -- The large live preview, focused on one layer ------------------------ */
-  renderStage(d) {
+  /* -- Chapters 01-04: one rung of the ladder ------------------------------ */
+  renderRung(d, step, current) {
+    const layer = LAYERS[step - 1];
     const views = {
       tokens: () => this.renderTokens(d),
       core: () => this.renderCore(d),
       layout: () => this.renderLayout(d),
       page: () => this.renderPage(d),
     };
-    const layer = LAYERS.find((l) => l.id === this.layer);
 
     return `
-      <div class="va__stage va__stage--${this.layer}">
+      <div class="va__stage va__stage--${layer.id}">
         <header class="va__stage-head">
           <p class="va__stage-label">${layer.ordinal} · ${layer.name.toUpperCase()}</p>
-          <p class="va__stage-outcome">${esc(d.outcome)}</p>
+          <p class="va__stage-outcome">${esc(current ? d.outcome : layer.blurb)}</p>
         </header>
-        <div class="va__stage-body">${views[this.layer]()}</div>
+        ${this.renderArrival(d, step)}
+        <div class="va__stage-body">${views[layer.id]()}</div>
+        <p class="va__stage-claim">${esc(layer.claim)}</p>
+      </div>`;
+  }
+
+  /* -- What each rung receives from the rung above it ---------------------- */
+  renderArrival(d, step) {
+    const layer = LAYERS[step - 1];
+    const chip = (t, cls) => `<code class="va-arrival__chip va-arrival__chip--${cls}">${esc(t)}</code>`;
+    const stacks = d.layout.context === "overlay" ? ["Popover", "VStack", "HStack"] : d.layout.context === "panel" ? ["VStack", "HStack"] : ["HStack"];
+
+    const arrivals = {
+      tokens: {
+        from: "your five requirements",
+        chips: REQUIREMENTS.map((r) => chip(r.options.find((o) => o.id === this.state[r.key]).label, "req")).join(""),
+      },
+      core: {
+        from: `${d.tokens.length} Verse Tokens`,
+        chips: d.tokens.map((t) => chip(t.name, "tokens")).join(""),
+      },
+      layout: {
+        from: `${d.core.length} Core Components`,
+        chips: d.core.map((c) => chip(`<${c.name} />`, "core")).join(""),
+      },
+      page: {
+        from: "one assembled composition",
+        chips: stacks.map((s) => chip(`<${s} />`, "layout")).join(""),
+      },
+    }[layer.id];
+
+    return `
+      <div class="va-arrival">
+        <p class="va-arrival__label">Arrives from above · ${esc(arrivals.from)}</p>
+        <div class="va-arrival__chips">${arrivals.chips}</div>
+      </div>`;
+  }
+
+  /* -- The spine: where you are on the ladder ------------------------------ */
+  renderSpine(d) {
+    const counts = [
+      this.step === 0 ? "in progress" : "5 answered",
+      `${d.tokens.length} values`,
+      `${d.core.length} components`,
+      d.layout.context === "overlay" ? "Popover · VStack · HStack" : d.layout.context === "panel" ? "VStack · HStack" : "HStack",
+      d.outcome,
+    ];
+
+    const rows = STEPS.map((id, i) => {
+      const layer = i === 0 ? { ordinal: "00", name: "Requirements", id: "problem" } : LAYERS[i - 1];
+      const here = i === this.step;
+      const done = i < this.step;
+      const locked = i > this.deepest;
+      const cls = ["va-rung", `va-rung--${layer.id}`, here ? "is-current" : "", done ? "is-done" : "", locked ? "is-locked" : ""].filter(Boolean).join(" ");
+
+      return `
+        <li>
+          <button
+            class="${cls}"
+            type="button"
+            data-command="goto"
+            data-step="${i}"
+            data-focus-id="spine-${i}"
+            ${locked ? 'aria-disabled="true" tabindex="-1"' : ""}
+            aria-current="${here ? "step" : "false"}"
+          >
+            <span class="va-rung__ordinal">${layer.ordinal}</span>
+            <span class="va-rung__name">${layer.name}</span>
+            <span class="va-rung__count">${locked ? "not reached yet" : esc(counts[i])}</span>
+          </button>
+        </li>`;
+    }).join("");
+
+    return `
+      <nav class="va__spine" aria-label="Assembly progress">
+        <p class="va__spine-title">The descent</p>
+        <ol class="va__ladder">${rows}</ol>
+        <p class="va__spine-note">Each rung is built only from the rung above it. Change a requirement at any point and the descent rewinds to where that answer first mattered.</p>
+      </nav>`;
+  }
+
+  /* -- Forward motion ------------------------------------------------------ */
+  renderNav(d) {
+    const next = LAYERS[this.step];
+    const prev = this.step === 1 ? { ordinal: "00", name: "Requirements" } : LAYERS[this.step - 2];
+
+    return `
+      <div class="va__nav">
+        ${this.step > 0
+          ? `<button class="va__nav-back" type="button" data-command="ascend">↑ Back to ${prev.ordinal} ${esc(prev.name)}</button>`
+          : "<span></span>"}
+        ${next
+          ? `<button class="va__nav-next" type="button" data-command="descend" data-focus-id="descend">
+               <span class="va__nav-kicker">${this.step === 0 ? "Hand these to Verse" : "Next rung down"}</span>
+               <span class="va__nav-main">${next.ordinal} · ${esc(next.name)} ↓</span>
+             </button>`
+          : `<button class="va__nav-next va__nav-next--done" type="button" data-command="goto" data-step="0" data-focus-id="descend">
+               <span class="va__nav-kicker">Interface assembled</span>
+               <span class="va__nav-main">Change the requirements ↑</span>
+             </button>`}
+      </div>`;
+  }
+
+  /* -- The requirements you already gave, editable in place ---------------- */
+  renderReceipt() {
+    return `
+      <div class="va__receipt">
+        <div class="va__receipt-chips">
+          ${REQUIREMENTS.map((r) => {
+            const chosen = r.options.find((o) => o.id === this.state[r.key]);
+            const open = this.editing === r.key;
+            return `
+              <div class="va-receipt${open ? " is-open" : ""}${this.lastChanged === r.key ? " is-changed" : ""}">
+                <button class="va-receipt__btn" type="button" data-command="edit" data-key="${r.key}" data-focus-id="receipt-${r.key}" aria-expanded="${open}">
+                  <span class="va-receipt__dim">${r.label}</span>
+                  <span class="va-receipt__val">${chosen.label}</span>
+                </button>
+                ${open ? `
+                  <div class="va-receipt__pop" role="radiogroup" aria-label="${r.label}">
+                    ${r.options.map((o) => `
+                      <button
+                        class="va-mini${o.id === this.state[r.key] ? " is-selected" : ""}"
+                        type="button"
+                        role="radio"
+                        aria-checked="${o.id === this.state[r.key]}"
+                        tabindex="${o.id === this.state[r.key] ? "0" : "-1"}"
+                        data-command="set-requirement"
+                        data-key="${r.key}"
+                        data-value="${o.id}"
+                        data-focus-id="req-${r.key}-${o.id}"
+                      >${o.label}</button>`).join("")}
+                  </div>` : ""}
+              </div>`;
+          }).join("")}
+        </div>
       </div>`;
   }
 

@@ -98,26 +98,91 @@ verse-assembly {
   touch-action: manipulation;
 }
 
-/* -- Three-column body ----------------------------------------------------- */
+/* -- Descent: sticky spine beside an accumulating story -------------------- */
 
-.va__body {
+.va__descent {
   display: grid;
   gap: 1px;
   background: var(--va-hairline);
-  grid-template-columns: minmax(190px, 220px) minmax(0, 1fr) minmax(240px, 280px);
+  grid-template-columns: minmax(190px, 230px) minmax(0, 1fr);
 }
 
-.va__rail,
-.va__stage,
-.va__controls {
+.va__spine,
+.va__story {
   min-width: 0;
-  padding: 22px 20px;
   background: linear-gradient(160deg, #262633 0%, #1c1c26 100%);
 }
 
-/* -- Rail: the four authentic layers -------------------------------------- */
+.va__spine {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  padding: 22px 20px;
+}
 
-.va__rail-title,
+.va__story {
+  display: grid;
+  align-content: start;
+  padding: 0;
+}
+
+/* Each chapter stays on the page once told. */
+.va__chapter {
+  padding: 22px 20px;
+}
+
+.va__chapter + .va__chapter {
+  border-top: 1px solid var(--va-hairline);
+}
+
+.va__chapter.is-past {
+  opacity: 0.62;
+}
+
+.va__chapter.is-past:hover,
+.va__chapter.is-past:focus-within {
+  opacity: 1;
+}
+
+.va__chapter.is-current {
+  animation: va-arrive 320ms ease-out both;
+}
+
+@keyframes va-arrive {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* The connective tissue between a told chapter and the next. */
+.va__seam {
+  display: grid;
+  height: 26px;
+  margin-bottom: -12px;
+  justify-content: center;
+  align-content: center;
+}
+
+.va__seam span {
+  display: block;
+  width: 2px;
+  height: 26px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--va-hairline), transparent);
+}
+
+.va__rewind {
+  margin: 20px 20px 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--va-layout);
+  border-radius: 0 8px 8px 0;
+  background: rgb(230 102 216 / 12%);
+  color: var(--va-ink);
+  font: var(--sim-verse-micro);
+}
+
+/* -- Spine: the four authentic layers ------------------------------------- */
+
+.va__spine-title,
 .va__controls-title {
   margin: 0 0 4px;
   color: var(--va-ink-muted);
@@ -126,7 +191,7 @@ verse-assembly {
   text-transform: uppercase;
 }
 
-.va__rail-note,
+.va__spine-note,
 .va__controls-note {
   margin: 14px 0 0;
   color: var(--va-ink-muted);
@@ -171,6 +236,7 @@ verse-assembly {
   opacity: 0.34;
 }
 
+.va-rung--problem { --rung: #9aa3b2; }
 .va-rung--tokens { --rung: var(--va-tokens); }
 .va-rung--core { --rung: var(--va-core); }
 .va-rung--layout { --rung: var(--va-layout); }
@@ -208,6 +274,178 @@ verse-assembly {
   color: var(--va-ink-muted);
   font: var(--sim-verse-micro);
   grid-column: 2;
+}
+
+/* Rungs already descended stay lit; rungs not yet reached stay dark. */
+.va-rung.is-done::before { opacity: 0.8; }
+
+.va-rung.is-locked {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.va-rung.is-locked .va-rung__count,
+.va-rung.is-locked .va-rung__ordinal { color: var(--va-ink-muted); }
+
+.va-rung.is-locked::before { opacity: 0.14; }
+
+/* -- Arrival: what this rung received from the rung above ------------------ */
+
+.va-arrival {
+  display: grid;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 4%);
+  gap: 8px;
+}
+
+.va-arrival__label {
+  margin: 0;
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-label);
+  letter-spacing: var(--track-sim-label);
+  text-transform: uppercase;
+}
+
+.va-arrival__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.va-arrival__chip {
+  padding: 3px 7px;
+  border: 1px solid currentcolor;
+  border-radius: 999px;
+  font: var(--sim-verse-code-sm);
+  opacity: 0.85;
+}
+
+.va-arrival__chip--req { color: #9aa3b2; }
+.va-arrival__chip--tokens { color: var(--va-tokens); }
+.va-arrival__chip--core { color: var(--va-core); }
+.va-arrival__chip--layout { color: var(--va-layout); }
+
+.va__stage-claim {
+  max-width: 62ch;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--va-hairline);
+  color: var(--va-ink);
+  font: var(--sim-verse-control);
+}
+
+/* -- Forward motion -------------------------------------------------------- */
+
+.va__nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.va__nav-back {
+  padding: 10px 14px;
+  border: 1px solid var(--va-hairline);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-control);
+  cursor: pointer;
+}
+
+.va__nav-next {
+  display: grid;
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--va-page);
+  color: #0c1420;
+  gap: 1px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.va__nav-next--done {
+  background: transparent;
+  border: 1px solid var(--va-hairline);
+  color: var(--va-ink);
+}
+
+.va__nav-kicker {
+  font: var(--sim-verse-micro);
+  opacity: 0.75;
+}
+
+.va__nav-main {
+  font: var(--sim-verse-strong);
+}
+
+/* -- Receipt: the answers, editable in place ------------------------------- */
+
+.va__receipt-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.va-receipt { position: relative; }
+
+.va-receipt__btn {
+  display: grid;
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 1px solid var(--va-hairline);
+  border-radius: 10px;
+  background: rgb(255 255 255 / 4%);
+  color: var(--va-ink);
+  gap: 1px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.va-receipt.is-changed .va-receipt__btn { border-color: var(--va-layout); }
+
+.va-receipt__dim {
+  color: var(--va-ink-muted);
+  font: var(--sim-verse-micro);
+}
+
+.va-receipt__val { font: var(--sim-verse-strong); }
+
+.va-receipt__pop {
+  position: absolute;
+  z-index: 2;
+  top: calc(100% + 6px);
+  left: 0;
+  display: grid;
+  min-width: 100%;
+  padding: 6px;
+  border: 1px solid var(--va-hairline);
+  border-radius: 10px;
+  background: #2b2b39;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 38%);
+  gap: 2px;
+}
+
+.va-mini {
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--va-ink);
+  font: var(--sim-verse-control);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.va-mini.is-selected {
+  background: rgb(255 255 255 / 12%);
 }
 
 /* -- Stage ----------------------------------------------------------------- */
@@ -761,7 +999,13 @@ verse-assembly {
   display: grid;
   align-content: start;
   gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 }
+
+.va__controls-title,
+.va__controls-note { grid-column: 1 / -1; }
+
+.va__controls-note { margin-top: 0; }
 
 .va-group {
   margin: 0;
@@ -900,27 +1144,29 @@ verse-assembly {
 
 @media (hover: hover) and (pointer: fine) {
   .va-chip:hover,
-  .va-rung:hover,
+  .va-mini:hover,
+  .va-receipt__btn:hover,
+  .va__nav-back:hover,
+  .va-rung:not(.is-locked):hover,
   .va__reset:hover { background: rgb(255 255 255 / 11%); }
   .va-chip.is-selected:hover { background: rgb(47 210 228 / 20%); }
+  .va__nav-next:hover { filter: brightness(1.08); }
 }
 
 /* -- Responsive ------------------------------------------------------------- */
 
 @media (max-width: 1199.98px) {
-  .va__body {
-    grid-template-columns: minmax(0, 1fr) minmax(230px, 260px);
-  }
+  .va__descent { grid-template-columns: minmax(0, 1fr); }
 
-  .va__rail {
-    grid-column: 1 / -1;
+  .va__spine {
+    position: static;
   }
 
   .va__ladder {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
-  .va__rail-note { max-width: 60ch; }
+  .va__spine-note { max-width: 60ch; }
 
   .va-layout-split { grid-template-columns: minmax(0, 1fr); }
 
@@ -930,14 +1176,15 @@ verse-assembly {
 @media (max-width: 809.98px) {
   .va { border-radius: 16px; }
 
-  .va__body { grid-template-columns: minmax(0, 1fr); }
-
   .va__ladder { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-  .va__rail,
-  .va__stage,
-  .va__controls,
+  .va__spine,
+  .va__chapter,
   .va__trace { padding: 18px 14px; }
+
+  .va__nav { flex-direction: column-reverse; align-items: stretch; }
+
+  .va-receipt__pop { position: static; margin-top: 6px; }
 
   .va-mix__frame {
     min-height: 0;
@@ -956,4 +1203,5 @@ verse-assembly {
 
 @media (prefers-reduced-motion: reduce) {
   .va-spinner { animation-duration: 2400ms; }
+  .va__chapter.is-current { animation: none; }
 }
