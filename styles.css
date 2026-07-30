@@ -94,6 +94,7 @@
   --weight-strong: 700;
   --weight-link: 600;
   --space-paragraph: 1.45em;
+  --link-shimmer-highlight: #1677ff;
 
   --layer-content: 0;
   --layer-sticky-nav: 1;
@@ -626,6 +627,55 @@ h1 a:focus-visible,
   outline-offset: 8px;
 }
 
+/* Keep underlined link text fully visible while a narrow highlight sweeps
+   across its existing color. The selector list mirrors every place the shared
+   and case-study styles opt a link into an underline treatment. */
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  :where(
+    .type-body,
+    .type-body-sm,
+    .type-deck,
+    .type-caption,
+    .type-display,
+    .type-section,
+    .type-hero
+  ) a,
+  .case-studies-link[aria-current="page"],
+  .work-item-copy h2,
+  .work-cta,
+  .core-ai-page figcaption a,
+  .core-ai-page .public-link a,
+  .core-ai-page .applied-work-link a {
+    background-image: linear-gradient(
+      110deg,
+      currentColor 0%,
+      currentColor 40%,
+      var(--link-shimmer-highlight) 50%,
+      currentColor 60%,
+      currentColor 100%
+    );
+    background-position: 100% 0;
+    background-size: 250% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+@keyframes link-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: 0 0;
+  }
+}
+
+.drive-outcome-copy {
+  --link-shimmer-highlight: var(--drive-cyan-bright, #8fc7ff);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .resume-button:hover,
   .contact-button:hover,
@@ -639,6 +689,26 @@ h1 a:focus-visible,
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 5px;
+  }
+
+  @supports (-webkit-background-clip: text) or (background-clip: text) {
+    :where(
+      .type-body,
+      .type-body-sm,
+      .type-deck,
+      .type-caption,
+      .type-display,
+      .type-section,
+      .type-hero
+    ) a:is(:hover, :focus-visible),
+    .case-studies-link[aria-current="page"]:is(:hover, :focus-visible),
+    .work-item:is(:hover, :focus-visible) .work-item-copy h2,
+    .work-item:is(:hover, :focus-visible) .work-cta,
+    .core-ai-page figcaption a:is(:hover, :focus-visible),
+    .core-ai-page .public-link a:is(:hover, :focus-visible),
+    .core-ai-page .applied-work-link a:is(:hover, :focus-visible) {
+      animation: link-shimmer 550ms ease-out;
+    }
   }
 }
 
@@ -786,10 +856,29 @@ h1 a:focus-visible,
   *::after {
     scroll-behavior: auto !important;
   }
+
+  :where(
+    .type-body,
+    .type-body-sm,
+    .type-deck,
+    .type-caption,
+    .type-display,
+    .type-section,
+    .type-hero
+  ) a,
+  .case-studies-link[aria-current="page"],
+  .work-item-copy h2,
+  .work-cta,
+  .core-ai-page figcaption a,
+  .core-ai-page .public-link a,
+  .core-ai-page .applied-work-link a {
+    animation: none;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --link-shimmer-highlight: #8fc7ff;
     color-scheme: dark;
     color: #f4f4f5;
     background: #090a0c;
@@ -837,5 +926,26 @@ h1 a:focus-visible,
 
   .work-item-copy > p {
     color: rgb(255 255 255 / 72%);
+  }
+}
+
+@media (forced-colors: active) {
+  :where(
+    .type-body,
+    .type-body-sm,
+    .type-deck,
+    .type-caption,
+    .type-display,
+    .type-section,
+    .type-hero
+  ) a,
+  .case-studies-link[aria-current="page"],
+  .work-item-copy h2,
+  .work-cta,
+  .core-ai-page figcaption a,
+  .core-ai-page .public-link a,
+  .core-ai-page .applied-work-link a {
+    background: none;
+    -webkit-text-fill-color: currentColor;
   }
 }
