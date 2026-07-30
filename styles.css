@@ -327,6 +327,7 @@ a {
 }
 
 .case-studies-link {
+  position: relative;
   text-decoration: none;
 }
 
@@ -343,9 +344,20 @@ a {
 }
 
 .case-studies-link[aria-current="page"] {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 5px;
+  text-decoration: none;
+}
+
+/* Paint the active-page marker independently from the text. The shimmer uses
+   transparent text fill in supporting browsers, which can also make a native
+   text-decoration disappear in Chrome. */
+.case-studies-link[aria-current="page"]::after {
+  position: absolute;
+  right: 0;
+  bottom: -5px;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: "";
 }
 
 .mobile-menu {
@@ -388,6 +400,12 @@ a {
   padding: 15px 12px;
   align-items: center;
   text-decoration: none;
+}
+
+.mobile-nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
 }
 
 .mobile-nav a + a {
