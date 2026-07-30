@@ -4,8 +4,8 @@
  *
  * The shimmer uses transparent text fill in supporting browsers, so its
  * active-page underline must be painted independently from the text.
- * Every published work page also needs the active state in both the desktop
- * and mobile navigation.
+ * The work index owns that active state; individual case studies keep normal
+ * links back to the index without claiming to be the current page.
  *
  * Run with `npm run check:navigation`.
  */
@@ -17,10 +17,10 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const STYLES = readFileSync(join(ROOT, "styles.css"), "utf8");
 const WORK_PAGES = [
-  "work/index.html",
-  "work/microsoft/index.html",
-  "work/mix-dialog/index.html",
-  "work/dragon-drive/index.html",
+  { path: "work/index.html", expectedActiveLinks: 2 },
+  { path: "work/microsoft/index.html", expectedActiveLinks: 0 },
+  { path: "work/mix-dialog/index.html", expectedActiveLinks: 0 },
+  { path: "work/dragon-drive/index.html", expectedActiveLinks: 0 },
 ];
 
 const violations = [];
@@ -49,8 +49,8 @@ if (
   );
 }
 
-for (const page of WORK_PAGES) {
-  const source = readFileSync(join(ROOT, page), "utf8");
+for (const { path, expectedActiveLinks } of WORK_PAGES) {
+  const source = readFileSync(join(ROOT, path), "utf8");
   const workLinks = [...source.matchAll(/<a\b[^>]*>/g)]
     .map(([tag]) => tag)
     .filter((tag) => /href="\/work\/"/.test(tag));
@@ -58,9 +58,17 @@ for (const page of WORK_PAGES) {
     /aria-current="page"/.test(tag),
   );
 
-  if (activeLinks.length !== 2) {
+  if (workLinks.length !== 2) {
     violations.push(
-      `${page} must mark both desktop and mobile Case Studies links as current`,
+      `${path} must retain desktop and mobile links back to Case Studies`,
+    );
+  }
+
+  if (activeLinks.length !== expectedActiveLinks) {
+    violations.push(
+      expectedActiveLinks
+        ? `${path} must mark both Case Studies links as current`
+        : `${path} must not mark Case Studies links as current`,
     );
   }
 }
@@ -73,5 +81,5 @@ if (violations.length) {
 }
 
 console.log(
-  "✓ Case Studies active state is present in desktop and mobile navigation",
+  "✓ Case Studies is active only on the work index",
 );
