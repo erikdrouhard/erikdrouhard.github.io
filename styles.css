@@ -628,8 +628,9 @@ h1 a:focus-visible,
 }
 
 /* Keep underlined link text fully visible while a narrow highlight sweeps
-   across its existing color. The selector list mirrors every place the shared
-   and case-study styles opt a link into an underline treatment. */
+   across its existing color. Classless anchors are editorial links; named
+   selectors below cover the other intentionally underlined treatments without
+   reaching button-like links whose background owns the full element. */
 @supports (-webkit-background-clip: text) or (background-clip: text) {
   :where(
     .type-body,
@@ -639,7 +640,7 @@ h1 a:focus-visible,
     .type-display,
     .type-section,
     .type-hero
-  ) a,
+  ) a:not([class]),
   .case-studies-link[aria-current="page"],
   .work-item-copy h2,
   .work-cta,
@@ -700,7 +701,7 @@ h1 a:focus-visible,
       .type-display,
       .type-section,
       .type-hero
-    ) a:is(:hover, :focus-visible),
+    ) a:not([class]):is(:hover, :focus-visible),
     .case-studies-link[aria-current="page"]:is(:hover, :focus-visible),
     .work-item:is(:hover, :focus-visible) .work-item-copy h2,
     .work-item:is(:hover, :focus-visible) .work-cta,
@@ -865,7 +866,7 @@ h1 a:focus-visible,
     .type-display,
     .type-section,
     .type-hero
-  ) a,
+  ) a:not([class]),
   .case-studies-link[aria-current="page"],
   .work-item-copy h2,
   .work-cta,
@@ -938,7 +939,7 @@ h1 a:focus-visible,
     .type-display,
     .type-section,
     .type-hero
-  ) a,
+  ) a:not([class]),
   .case-studies-link[aria-current="page"],
   .work-item-copy h2,
   .work-cta,
