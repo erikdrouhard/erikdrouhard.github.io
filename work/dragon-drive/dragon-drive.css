@@ -424,10 +424,8 @@
   position: relative;
   display: grid;
   width: 100cqi;
-  /* The showcase section zeroes its bottom padding so this full-bleed panel sits
-     flush with the footer below. Cancel the section's row gap too, otherwise a
-     strip of page background is left above the panel but not below it. */
-  margin-top: calc(-1 * var(--drive-section-gap));
+  /* Preserve the section's row gap below the video caption. The showcase's
+     zero bottom padding still keeps this panel flush with the footer below. */
   margin-left: calc((100% - 100cqi) / 2);
   padding: 64px max(24px, calc((100cqi - 892px) / 2)) 96px;
   overflow: hidden;
