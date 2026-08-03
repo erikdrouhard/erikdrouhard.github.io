@@ -58,7 +58,6 @@
 
 .core-ai-page h1 {
   max-width: 24ch;
-  margin-bottom: 30px;
   text-decoration: none;
 }
 
@@ -80,10 +79,6 @@
   color: rgb(0 0 0 / 58%);
 }
 
-.core-ai-page .eyebrow {
-  margin-bottom: 28px;
-}
-
 .core-ai-page .hero {
   position: relative;
   overflow: hidden;
@@ -101,9 +96,18 @@
   align-items: center;
 }
 
+.core-ai-page .hero-copy {
+  display: grid;
+  min-width: 0;
+  gap: 24px;
+}
+
+.core-ai-page .hero-copy > * {
+  margin-bottom: 0;
+}
+
 .core-ai-page .hero-deck {
   max-width: 670px;
-  margin-bottom: 32px;
   color: rgb(0 0 0 / 72%);
 }
 
