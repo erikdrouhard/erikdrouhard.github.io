@@ -85,7 +85,7 @@
 .drive-hero-copy {
   display: grid;
   min-width: 0;
-  gap: 22px;
+  gap: 24px;
 }
 
 .drive-eyebrow,
@@ -107,7 +107,7 @@
 
 .drive-badges {
   display: flex;
-  margin: 4px 0 0;
+  margin: 0;
   padding: 0;
   flex-wrap: wrap;
   gap: 7px;
