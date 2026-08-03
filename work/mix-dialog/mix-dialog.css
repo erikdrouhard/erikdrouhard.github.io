@@ -94,26 +94,34 @@
 }
 
 .mix-deck {
-  max-width: 30ch;
+  max-width: 34ch;
   color: rgb(0 0 0 / 75%);
 }
 
-.mix-badges {
-  display: flex;
+.mix-project-meta {
+  display: grid;
   margin: 0;
-  padding: 0;
-  flex-wrap: wrap;
-  gap: 7px;
-  list-style: none;
+  padding: 24px 0;
+  border-top: 1px solid rgb(0 0 0 / 12%);
+  border-bottom: 1px solid rgb(0 0 0 / 12%);
+  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.mix-badges li {
-  min-height: 28px;
-  padding: 5px 14px;
-  border: 0;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 72%);
-  box-shadow: 0 0 0 1px rgb(0 0 0 / 11%);
+.mix-project-meta > div {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 8px;
+}
+
+.mix-project-meta dt,
+.mix-project-meta dd {
+  margin: 0;
+}
+
+.mix-project-meta dt {
+  color: rgb(0 0 0 / 55%);
 }
 
 .mix-hero-visual {
@@ -501,6 +509,18 @@
   }
 }
 
+@media (min-width: 810px) and (max-width: 1199.98px) {
+  .mix-project-meta {
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+
+  .mix-project-meta > div {
+    gap: 16px;
+    grid-template-columns: minmax(80px, 1fr) minmax(0, 3fr);
+  }
+}
+
 @media (max-width: 809.98px) {
   .mix-header {
     display: flex;
@@ -519,6 +539,16 @@
 
   .mix-deck {
     max-width: 34ch;
+  }
+
+  .mix-project-meta {
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+
+  .mix-project-meta > div {
+    gap: 16px;
+    grid-template-columns: minmax(80px, 1fr) minmax(0, 3fr);
   }
 
   .mix-hero-visual {
@@ -645,6 +675,7 @@
   }
 
   .mix-eyebrow,
+  .mix-project-meta dt,
   .mix-section-label,
   .mix-item-label,
   .mix-gallery-label,
@@ -660,18 +691,11 @@
     color: rgb(255 255 255 / 74%);
   }
 
-  .mix-badges li,
   .mix-three-column > div,
   .mix-four-column > div,
   .mix-action-list > article,
   .mix-callout {
     background: rgb(255 255 255 / 6%);
-  }
-
-  /* Ring weights mirror light mode, where the badge and the callout carry
-     deliberately different values. */
-  .mix-badges li {
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 11%);
   }
 
   .mix-callout {
@@ -693,6 +717,10 @@
   }
 
   .mix-section {
+    border-color: rgb(255 255 255 / 12%);
+  }
+
+  .mix-project-meta {
     border-color: rgb(255 255 255 / 12%);
   }
 

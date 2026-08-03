@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Mix.dialog case study: designing a multimodal authoring system for complex enterprise IVR conversations."
+      content="How Erik Drouhard led interaction design for Mix.dialog’s behavior-authoring, condition-building, and QA workflows for enterprise IVR teams."
     />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcfeff" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#15131d" />
-    <title>Mix.dialog Case Study | Erik Drouhard</title>
+    <title>Mix.dialog: Making Complex Conversation Logic Legible | Erik Drouhard</title>
     <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
     <link
       rel="preload"
@@ -66,7 +66,7 @@
           <a class="type-meta type-caps" href="#problem">Problem</a>
           <a class="type-meta type-caps" href="#process">Process</a>
           <a class="type-meta type-caps" href="#results">Results</a>
-          <a class="type-meta type-caps" href="#verse">Verse</a>
+          <a class="type-meta type-caps" href="#verse">Verse epilogue</a>
         </nav>
       </case-study-nav>
 
@@ -74,17 +74,25 @@
         <article class="content mix-content type-body">
           <header class="mix-hero">
             <div class="mix-hero-copy">
-              <p class="mix-eyebrow type-meta type-caps">NUANCE · 2019–2022</p>
-              <h1 class="type-hero">Mix.dialog</h1>
+              <p class="mix-eyebrow type-meta type-caps">Mix.dialog · Nuance · 2019–2022</p>
+              <h1 class="type-hero">Making complex conversation logic visible and controllable</h1>
               <p class="mix-deck type-deck">
-                Designing a multimodal authoring system for the conditional conversations enterprise IVR teams could not safely express in chatbot tools.
+                I led interaction design for behavior authoring, condition building, and QA workflows so enterprise conversation designers could build, understand, and verify deeply nested IVR logic.
               </p>
-              <ul class="mix-badges" role="list" aria-label="Project details">
-                <li class="type-badge">SENIOR UX DESIGNER</li>
-                <li class="type-badge">INTERACTION DESIGN LEAD</li>
-                <li class="type-badge">BEHAVIOR AUTHORING</li>
-                <li class="type-badge">RESEARCH + PROTOTYPING</li>
-              </ul>
+              <dl class="mix-project-meta" aria-label="Project details">
+                <div>
+                  <dt class="type-meta type-caps">Role</dt>
+                  <dd class="type-body-sm">Senior UX Designer · Interaction design lead</dd>
+                </div>
+                <div>
+                  <dt class="type-meta type-caps">Focus</dt>
+                  <dd class="type-body-sm">Behavior authoring · Condition building · QA workflows</dd>
+                </div>
+                <div>
+                  <dt class="type-meta type-caps">Partners</dt>
+                  <dd class="type-body-sm">Conversation designers · Product · Engineering · Research</dd>
+                </div>
+              </dl>
             </div>
 
             <figure class="mix-hero-visual">
@@ -103,17 +111,17 @@
           <section id="problem" class="mix-section" aria-labelledby="situation-heading">
             <div class="mix-reading">
               <p class="mix-section-label type-meta type-caps">01 · SITUATION</p>
-              <h2 id="situation-heading" class="type-section">IVR logic is not a chatbot flow</h2>
+              <h2 id="situation-heading" class="type-section">Enterprise IVR teams needed behavior they could inspect and control</h2>
               <div class="mix-prose">
                 <p>
-                  Before large language models, enterprise voice systems depended on deep conditional logic and intent recognition to decide what a conversation should do next—and what should happen when it failed.
+                  Conversation designers specified deterministic voice experiences: explicit rules decided what the system said or did after a recognized intent, a no-match or no-input event, a retry, or an escalation.
                 </p>
                 <p>
-                  Most authoring tools in the space focused on virtual assistants. IVR teams carried a harder operational burden: no-match and no-input paths, retries, escalation, channel differences, nested business rules, and graceful recovery when recognition broke down.
+                  Unlike simpler chatbot flows, that behavior could vary by channel and modality and sit inside deeply nested business rules. Authors needed to predict and verify each path because a wrong branch could misroute a call or interrupt a transaction.
                 </p>
               </div>
               <p class="mix-callout">
-                The existing workaround was a handoff artifact. Conversation designers built long conditional spreadsheets to explain intended behavior to customers and engineers. The logic was difficult to read, expensive to change, and separated design intent from implementation.
+                The workaround was a long conditional spreadsheet passed between conversation designers, customers, and engineers. It was difficult to read and change, and it separated design intent from implementation.
               </p>
             </div>
           </section>
@@ -121,9 +129,9 @@
           <section class="mix-section" aria-labelledby="platform-heading">
             <div class="mix-reading">
               <p class="mix-section-label type-meta type-caps">02 · PLATFORM CONTEXT</p>
-              <h2 id="platform-heading" class="type-section">One authoring experience in a connected platform</h2>
+              <h2 id="platform-heading" class="type-section">Mix.dialog turned intent recognition into authored behavior</h2>
               <p>
-                Mix.dialog was the multimodal behavior layer—not a standalone chatbot builder. It connected language understanding to deployable conversation logic across voice and digital channels.
+                Within the connected Mix platform, Mix.dialog was the product conversation designers used to author deterministic prompts, conditions, actions, and recovery behavior across voice and digital channels.
               </p>
             </div>
             <div class="mix-three-column mix-platform-grid type-body-sm">
@@ -148,9 +156,9 @@
           <section class="mix-section" aria-labelledby="role-heading">
             <div class="mix-reading">
               <p class="mix-section-label type-meta type-caps">03 · MY ROLE</p>
-              <h2 id="role-heading" class="type-section">Designing at the boundary of UX and architecture</h2>
+              <h2 id="role-heading" class="type-section">I led interaction design for the behavior-authoring model</h2>
               <p>
-                I led designs with conversation designers, product leadership, and engineering directors. My technical background made me uniquely useful in a space where interface decisions changed how the underlying product had to represent and generate logic. Along the way I led formative interviews with dozens of voice and IVR designers to understand their pain points and workflows, prototyped interaction models and failure states, partnered with engineering on feasible data and UI structures, and created patterns that became templates for the wider tool.
+                I worked with conversation designers, product leadership, and engineering directors to translate authoring needs into feasible data and interface structures. I led the condition-building model and core node, modality, and channel patterns; prototyped interaction and failure states; and defined reusable patterns for the wider tool.
               </p>
             </div>
 
@@ -158,23 +166,23 @@
               <p class="mix-section-label type-meta type-caps">SCOPE</p>
               <h2 class="type-section">The core authoring surfaces I shaped</h2>
               <p>
-                The work crossed node behavior, shared properties, and the connection between NLU recognition and actions in the dialog.
+                I designed the authoring primitives and verification surfaces that conversation designers built on—not the conversations themselves.
               </p>
               <div class="mix-three-column type-body-sm">
                 <div>
                   <p class="mix-item-label type-meta type-caps">ANCHOR PATTERN</p>
-                  <h3 class="type-support">Question &amp; Answer node</h3>
-                  <p>Reworked the central intent-discovery loop and used its complex properties as a model for the rest of the authoring experience.</p>
+                  <h3 class="type-support">Question + QA nodes</h3>
+                  <p>Shaped question behavior and the QA verification surface, using their complex properties to inform the wider authoring experience.</p>
                 </div>
                 <div>
                   <p class="mix-item-label type-meta type-caps">BEHAVIOR BUILDING</p>
                   <h3 class="type-support">Messages + conditions</h3>
-                  <p>Designed how authors created conditional prompts, nested logic, and channel-aware messages without reading or writing generated code.</p>
+                  <p>Designed how authors created prompts and nested conditional logic without translating spreadsheets or writing generated code.</p>
                 </div>
                 <div>
-                  <p class="mix-item-label type-meta type-caps">SYSTEM CONNECTION</p>
-                  <h3 class="type-support">NLU + actions</h3>
-                  <p>Integrated intents and entities into the QA node so recognized information could map to downstream behavior and actions.</p>
+                  <p class="mix-item-label type-meta type-caps">CHANNEL SEMANTICS</p>
+                  <h3 class="type-support">Modalities + actions</h3>
+                  <p>Defined rich text, audio, DTMF, and per-channel output patterns that connected recognized intents to downstream behavior.</p>
                 </div>
               </div>
             </div>
@@ -185,7 +193,7 @@
               <p class="mix-section-label type-meta type-caps">04 · ACTION</p>
               <h2 id="action-heading" class="type-section">Making conditional logic visible and direct</h2>
               <p>
-                The condition stack became a focused design program: understand the failure, test multiple structures, and let feedback shape the product’s architecture as well as its interface.
+                For the condition stack, I tested interaction models with conversation designers and engineering, then used what we learned to shape both the interface and its underlying logic structure.
               </p>
             </div>
 
@@ -193,29 +201,29 @@
               <article>
                 <p class="mix-item-label type-meta type-caps">01 · DIVERGE</p>
                 <div>
-                  <h3 class="type-support">We failed a lot—and learned why</h3>
-                  <p>Code-forward concepts were powerful but alienating. Form-heavy designs hid context. Other versions were hard to scan or too rigid for the depth IVR teams needed.</p>
+                  <h3 class="type-support">Test competing interaction models</h3>
+                  <p>Code-forward concepts exposed power but raised the learning burden. Form-heavy designs hid context, while flatter structures could not express the depth IVR teams needed.</p>
                 </div>
               </article>
               <article>
                 <p class="mix-item-label type-meta type-caps">02 · LISTEN</p>
                 <div>
-                  <h3 class="type-support">Designers needed context before power</h3>
-                  <p>Research showed that nested conditions were not only a syntax problem. Authors needed clear starting zones, visible hierarchy, readable content, and confidence about what an edit would affect.</p>
+                  <h3 class="type-support">Find the real comprehension problem</h3>
+                  <p>Feedback showed that syntax was only part of the problem. Authors needed clear starting points, visible hierarchy, readable content, and confidence about what an edit would affect.</p>
                 </div>
               </article>
               <article>
                 <p class="mix-item-label type-meta type-caps">03 · CONVERGE</p>
                 <div>
-                  <h3 class="type-support">A visual structure that still mapped to valid logic</h3>
-                  <p>The final direction treated conditional groups as directly manipulable objects. Authors could read hierarchy, add branches, move content, and understand the output without translating a spreadsheet or writing code.</p>
+                  <h3 class="type-support">Make valid logic directly manipulable</h3>
+                  <p>The selected direction treated conditional groups as objects. Authors could read hierarchy, add branches, move content, and understand the output without translating a spreadsheet or writing code.</p>
                 </div>
               </article>
               <article>
                 <p class="mix-item-label type-meta type-caps">04 · REFINE</p>
                 <div>
-                  <h3 class="type-support">Small behaviors carried architectural weight</h3>
-                  <p>Adding, deleting, reordering, and changing an if branch into an else-if branch all needed predictable rules. These details were essential to making a deep system feel safe rather than fragile.</p>
+                  <h3 class="type-support">Define predictable editing rules</h3>
+                  <p>Adding, deleting, reordering, and changing an if branch into an else-if branch each needed explicit rules so deep logic felt safe to edit.</p>
                 </div>
               </article>
             </div>
@@ -348,37 +356,23 @@
 
           <section id="verse" class="mix-section" aria-labelledby="verse-heading">
             <div class="mix-reading">
-              <p class="mix-section-label type-meta type-caps">06 · LATER CHAPTER · 2021–2023</p>
-              <h2 id="verse-heading" class="type-section">From product patterns to a shared system</h2>
+              <p class="mix-section-label type-meta type-caps">06 · EPILOGUE · 2021–2023</p>
+              <h2 id="verse-heading" class="type-section">The product patterns became a shared system</h2>
               <p>
-                The Mix.dialog work exposed a broader need for consistency, accessibility, and a shared language between design and engineering. I made the case for a platform design system over several years before securing leadership buy-in, then led its architecture from 2021 — an accessible React system built on Radix and vanilla-extract, implemented across Mix.dialog and the surrounding platform by multiple engineering teams. After the Microsoft acquisition we migrated it to Fluent 2 to align with the parent company&rsquo;s design language.
+                Mix.dialog exposed a broader need for consistency, accessibility, and shared language between design and engineering. I made the case for a platform design system over several years, secured leadership buy-in, and led the architecture of what became Verse. Built with React, Radix, and vanilla-extract, the system was implemented across Mix.dialog and the surrounding platform by multiple engineering teams.
               </p>
               <p>
-                I worked as the design–engineering liaison rather than a manager, aligning those teams and a second design group brought on to meet engineering demand around what the system needed to be for both disciplines. The work became Verse.
-              </p>
-              <p>
-                I presented it to 60+ people at Nuance&rsquo;s i3 conference in 2022, in a talk called &ldquo;Design like a developer&hellip; Develop like a designer!&rdquo; The slides below are from that session. A fuller Verse case study is in progress.
+                As the design–engineering liaison, I aligned teams around shared components, interaction patterns, tokens, and implementation practices. After the Microsoft acquisition, we migrated Verse to Fluent 2 to align with Microsoft&rsquo;s design language. The representative slides below are from my 2022 Nuance i3 talk, &ldquo;Design like a developer&hellip; Develop like a designer!&rdquo;
               </p>
             </div>
 
             <p class="mix-gallery-label type-meta-sm type-caps">
-              Verse talk · Nuance i3 2022 <span>Scroll to compare →</span>
+              Three views from Verse · Nuance i3 2022 <span>Scroll to compare →</span>
             </p>
-            <div class="mix-media-scroller mix-media-wide" role="region" aria-label="Verse talk slides from Nuance i3 2022" tabindex="0">
-              <figure><img src="./assets/media/image-15.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 1 of 14 — title slide, Design like a developer, develop like a designer." /></figure>
-              <figure><img src="./assets/media/image-16.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 2 of 14." /></figure>
-              <figure><img src="./assets/media/image-17.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 3 of 14." /></figure>
-              <figure><img src="./assets/media/image-18.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 4 of 14." /></figure>
-              <figure><img src="./assets/media/image-19.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 5 of 14." /></figure>
-              <figure><img src="./assets/media/image-20.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 6 of 14." /></figure>
-              <figure><img src="./assets/media/image-26.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 7 of 14." /></figure>
-              <figure><img src="./assets/media/image-27.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 8 of 14." /></figure>
-              <figure><img src="./assets/media/image-28.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 9 of 14." /></figure>
-              <figure><img src="./assets/media/image-29.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 10 of 14." /></figure>
-              <figure><img src="./assets/media/image-30.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 11 of 14." /></figure>
-              <figure><img src="./assets/media/image-31.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 12 of 14." /></figure>
-              <figure><img src="./assets/media/image-32.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 13 of 14." /></figure>
-              <figure><img src="./assets/media/image-33.avif" width="380" height="214" alt="Verse talk at Nuance i3 2022, slide 14 of 14." /></figure>
+            <div class="mix-media-scroller mix-media-wide" role="region" aria-label="Three representative slides from the Verse talk at Nuance i3 2022" tabindex="0">
+              <figure><img src="./assets/media/image-15.avif" width="380" height="214" alt="Verse talk, slide 1 of 3 — title: Design like a developer, develop like a designer." /></figure>
+              <figure><img src="./assets/media/image-16.avif" width="380" height="214" alt="Verse talk, slide 2 of 3 — reasons for a design system: consistency, accessibility, extensibility, speed, scale, usability, and prototyping." /></figure>
+              <figure><img src="./assets/media/image-32.avif" width="380" height="214" alt="Verse talk, slide 3 of 3 — component composition code beside the rendered popover interface." /></figure>
             </div>
           </section>
 
