@@ -94,25 +94,29 @@
 }
 
 .mix-deck {
-  max-width: 34ch;
+  max-width: none;
   color: rgb(0 0 0 / 75%);
 }
 
 .mix-project-meta {
   display: grid;
   margin: 0;
-  padding: 24px 0;
+  padding: 0;
   border-top: 1px solid rgb(0 0 0 / 12%);
   border-bottom: 1px solid rgb(0 0 0 / 12%);
-  gap: 24px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .mix-project-meta > div {
   display: grid;
   min-width: 0;
-  align-content: start;
-  gap: 8px;
+  padding: 14px 0;
+  gap: 24px;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: baseline;
+}
+
+.mix-project-meta > div + div {
+  border-top: 1px solid rgb(0 0 0 / 8%);
 }
 
 .mix-project-meta dt,
@@ -121,7 +125,11 @@
 }
 
 .mix-project-meta dt {
-  color: rgb(0 0 0 / 55%);
+  color: rgb(0 0 0 / 82%);
+}
+
+.mix-project-meta dd {
+  color: rgb(0 0 0 / 72%);
 }
 
 .mix-hero-visual {
@@ -509,18 +517,6 @@
   }
 }
 
-@media (min-width: 810px) and (max-width: 1199.98px) {
-  .mix-project-meta {
-    gap: 16px;
-    grid-template-columns: 1fr;
-  }
-
-  .mix-project-meta > div {
-    gap: 16px;
-    grid-template-columns: minmax(80px, 1fr) minmax(0, 3fr);
-  }
-}
-
 @media (max-width: 809.98px) {
   .mix-header {
     display: flex;
@@ -537,18 +533,9 @@
     grid-template-columns: 1fr;
   }
 
-  .mix-deck {
-    max-width: 34ch;
-  }
-
-  .mix-project-meta {
-    gap: 16px;
-    grid-template-columns: 1fr;
-  }
-
   .mix-project-meta > div {
     gap: 16px;
-    grid-template-columns: minmax(80px, 1fr) minmax(0, 3fr);
+    grid-template-columns: 80px minmax(0, 1fr);
   }
 
   .mix-hero-visual {
@@ -675,7 +662,6 @@
   }
 
   .mix-eyebrow,
-  .mix-project-meta dt,
   .mix-section-label,
   .mix-item-label,
   .mix-gallery-label,
@@ -722,6 +708,18 @@
 
   .mix-project-meta {
     border-color: rgb(255 255 255 / 12%);
+  }
+
+  .mix-project-meta > div + div {
+    border-color: rgb(255 255 255 / 8%);
+  }
+
+  .mix-project-meta dt {
+    color: rgb(255 255 255 / 82%);
+  }
+
+  .mix-project-meta dd {
+    color: rgb(255 255 255 / 74%);
   }
 
   .mix-section-feature::before {
