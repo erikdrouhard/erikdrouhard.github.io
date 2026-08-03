@@ -511,12 +511,6 @@
   transform: scale(0.98);
 }
 
-@media (min-width: 810px) {
-  .mix-section:last-of-type {
-    padding-bottom: 0;
-  }
-}
-
 @media (max-width: 809.98px) {
   .mix-header {
     display: flex;
