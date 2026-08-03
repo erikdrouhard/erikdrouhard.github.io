@@ -429,7 +429,7 @@
      strip of page background is left above the panel but not below it. */
   margin-top: calc(-1 * var(--drive-section-gap));
   margin-left: calc((100% - 100cqi) / 2);
-  padding: 96px max(24px, calc((100cqi - 892px) / 2));
+  padding: 64px max(24px, calc((100cqi - 892px) / 2)) 96px;
   overflow: hidden;
   background: var(--drive-panel);
   color: #fff;
@@ -641,7 +641,6 @@
   }
 
   .drive-outcome {
-    padding-top: 76px;
     padding-bottom: 80px;
   }
 
