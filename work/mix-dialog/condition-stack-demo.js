@@ -125,6 +125,11 @@ class ConditionStackDemo extends HTMLElement {
 
   render(focusId = null) {
     this.innerHTML = `
+      <button class="condition-demo__invitation" id="condition-demo-invitation" type="button" data-command="try-demo">
+        <span class="condition-demo__invitation-kicker">Interactive demo</span>
+        <strong>Try it live <span aria-hidden="true">↘</span></strong>
+        <span>Build, move, and reorder actions.</span>
+      </button>
       <section class="condition-demo" aria-labelledby="condition-demo-title" aria-describedby="condition-demo-invitation">
         <header class="condition-demo__topbar">
           <div class="condition-demo__title">
@@ -137,10 +142,6 @@ class ConditionStackDemo extends HTMLElement {
           </div>
         </header>
         <div class="condition-demo__canvas">
-          <div class="condition-demo__invitation" id="condition-demo-invitation">
-            <strong>Try the interactive demo</strong>
-            <span>Choose <b>+ Add action</b> below, or move and reorder the existing actions to reshape the conversation.</span>
-          </div>
           ${this.renderBlock(this.root, true)}
         </div>
         <ul class="condition-demo__legend" aria-label="Action types">
@@ -273,6 +274,18 @@ class ConditionStackDemo extends HTMLElement {
     }
 
     this.closeMenus();
+    if (command === "try-demo") {
+      const addButton = this.querySelector('[data-command="toggle-add"]');
+      if (!addButton) return;
+      addButton.setAttribute("aria-expanded", "true");
+      this.querySelector(`[data-add-menu="${addButton.dataset.branchId}"]`).hidden = false;
+      addButton.focus({ preventScroll: true });
+      addButton.scrollIntoView({
+        behavior: this.reduceMotion.matches ? "auto" : "smooth",
+        block: "center",
+      });
+      return;
+    }
     if (command === "reset") return this.reset();
     if (command === "cancel-move") {
       this.movingId = null;

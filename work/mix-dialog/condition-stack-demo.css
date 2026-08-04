@@ -18,6 +18,7 @@ condition-stack-demo {
   /* weight size/leading family */
   --sim-title: 650 0.9375rem/1.4 var(--sim-font);
   --sim-strong: 750 0.9375rem/1.4 var(--sim-font);
+  --sim-cta: 850 1.25rem/1.05 var(--sim-font);
   --sim-body: 400 0.875rem/1.4 var(--sim-font);
   --sim-control: 650 0.8125rem/1.4 var(--sim-font);
   --sim-label: 800 0.6875rem/1.4 var(--sim-font);
@@ -27,6 +28,7 @@ condition-stack-demo {
 }
 
 condition-stack-demo {
+  position: relative;
   display: block;
   width: 100%;
   min-width: 0;
@@ -113,34 +115,63 @@ condition-stack-demo {
 }
 
 .condition-demo__canvas {
-  padding: clamp(16px, 3vw, 28px);
+  padding: 116px clamp(16px, 3vw, 28px) clamp(16px, 3vw, 28px);
   background:
     radial-gradient(circle at 90% 0%, rgb(101 72 232 / 10%), transparent 28rem),
     linear-gradient(145deg, #f6f3ff, #f5f8fb);
 }
 
 .condition-demo__invitation {
+  position: absolute;
+  z-index: 2;
+  top: 80px;
+  right: -18px;
   display: grid;
-  margin: 0 0 18px;
-  padding: 14px 16px;
-  border-radius: 14px;
-  background: #302663;
-  color: #fff;
-  box-shadow: 0 10px 24px rgb(48 38 99 / 16%);
-  gap: 3px;
+  width: min(340px, calc(100% - 48px));
+  min-height: 44px;
+  padding: 16px 20px 18px;
+  border: 3px solid #19142f;
+  border-radius: 18px;
+  appearance: none;
+  background: #ffd84a;
+  color: #19142f;
+  box-shadow: 7px 7px 0 #19142f;
+  font: inherit;
+  text-align: left;
+  touch-action: manipulation;
+  cursor: pointer;
+  gap: 4px;
+  transform: rotate(2deg);
+  transform-origin: center;
+  transition: transform 150ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .condition-demo__invitation strong {
-  font: var(--sim-strong);
+  font: var(--sim-cta);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
 }
 
 .condition-demo__invitation span {
-  color: rgb(255 255 255 / 78%);
+  color: #332a20;
   font: var(--sim-control);
 }
 
-.condition-demo__invitation b {
-  color: #fff;
+.condition-demo__invitation .condition-demo__invitation-kicker {
+  color: #5b4710;
+  font: var(--sim-micro);
+  letter-spacing: var(--track-sim-label);
+  text-transform: uppercase;
+}
+
+.condition-demo__invitation strong span {
+  color: inherit;
+  font: inherit;
+}
+
+.condition-demo__invitation:focus-visible {
+  outline: 3px solid #6548e8;
+  outline-offset: 5px;
 }
 
 .condition-demo__legend {
@@ -476,6 +507,10 @@ condition-stack-demo {
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .condition-demo__invitation:hover {
+    transform: rotate(2deg) translateY(-3px);
+  }
+
   .condition-demo button:hover {
     background-color: #eeeaff;
   }
@@ -487,6 +522,16 @@ condition-stack-demo {
 }
 
 @media (max-width: 809.98px) {
+  .condition-demo__invitation {
+    position: relative;
+    top: auto;
+    right: auto;
+    z-index: 2;
+    width: calc(100% - 28px);
+    margin: 0 14px 20px;
+    transform: rotate(-1deg);
+  }
+
   .condition-demo {
     width: calc(100% + 16px);
     border-radius: 18px 0 0 18px;
@@ -542,6 +587,10 @@ condition-stack-demo {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .condition-demo__invitation {
+    transition: none;
+  }
+
   .cs-branch__body,
   .is-entering {
     animation: none;
@@ -598,8 +647,22 @@ condition-stack-demo {
   }
 
   .condition-demo__invitation {
-    background: #392d73;
-    box-shadow: 0 10px 24px rgb(0 0 0 / 24%);
+    border-color: #100c20;
+    background: #ffd84a;
+    color: #100c20;
+    box-shadow: 7px 7px 0 #a794ff;
+  }
+
+  .condition-demo__invitation span {
+    color: #332a20;
+  }
+
+  .condition-demo__invitation .condition-demo__invitation-kicker {
+    color: #5b4710;
+  }
+
+  .condition-demo__invitation:focus-visible {
+    outline-color: #f1edff;
   }
 
   .condition-demo__legend {
