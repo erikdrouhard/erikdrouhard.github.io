@@ -374,6 +374,19 @@
   color: var(--mix-accent);
 }
 
+/* Three Verse slides read as a complete row on desktop, so the scroll cue is
+   only useful at the site's tablet and mobile widths. */
+#verse .mix-gallery-label span {
+  display: none;
+  white-space: nowrap;
+}
+
+/* Keep the final media-to-footer handoff on the shared 24px micro rhythm
+   instead of repeating a full case-study section inset. */
+#verse.mix-section {
+  padding-bottom: 24px;
+}
+
 .mix-media-wide img {
   aspect-ratio: 16 / 9;
 }
@@ -593,6 +606,10 @@
     display: none;
   }
 
+  #verse .mix-gallery-label {
+    column-gap: 16px;
+  }
+
   .mix-metrics {
     grid-template-columns: 1fr;
   }
@@ -618,6 +635,12 @@
     max-width: 16ch;
   }
 
+}
+
+@media (max-width: 1199.98px) {
+  #verse .mix-gallery-label span {
+    display: inline;
+  }
 }
 
 @media (max-width: 359.98px) {
