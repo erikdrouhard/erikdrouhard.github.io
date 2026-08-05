@@ -627,6 +627,10 @@ h1 a:focus-visible,
   text-decoration: underline;
 }
 
+.work-item-copy h2.work-item-title-wide {
+  max-width: none;
+}
+
 .work-item-copy > p {
   max-width: 58ch;
   margin: 0;
