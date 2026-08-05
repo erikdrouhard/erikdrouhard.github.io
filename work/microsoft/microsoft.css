@@ -371,6 +371,10 @@
   align-items: start;
 }
 
+.core-ai-page .timeline li:last-child {
+  border-bottom: 0;
+}
+
 .core-ai-page .timeline li::before {
   position: absolute;
   top: 36px;
@@ -617,6 +621,7 @@
   border-top: 1px solid rgb(0 0 0 / 14%);
   gap: 64px;
   grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
+  align-items: start;
 }
 
 .core-ai-page .applied-work-link,
@@ -630,6 +635,15 @@
 .core-ai-page .applied-work-link span,
 .core-ai-page .map-node span {
   color: rgb(0 0 0 / 62%);
+}
+
+.core-ai-page .applied-work-link {
+  margin-top: 49px;
+  align-content: start;
+}
+
+.core-ai-page .applied-work-link span {
+  margin-top: 10px;
 }
 
 .core-ai-page .map-of-truth {
@@ -728,6 +742,15 @@
 
   .core-ai-page .timeline li {
     grid-template-columns: 130px minmax(180px, 0.9fr) minmax(240px, 1.3fr);
+  }
+
+  .core-ai-page .split {
+    gap: 40px;
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  }
+
+  .core-ai-page .applied-work-link span {
+    margin-top: 39px;
   }
 
   .core-ai-page .bridge,
@@ -853,6 +876,14 @@
     padding: 24px 0 0;
     border-top: 1px solid rgb(0 0 0 / 18%);
     border-left: 0;
+  }
+
+  .core-ai-page .applied-work-link {
+    margin-top: 0;
+  }
+
+  .core-ai-page .applied-work-link span {
+    margin-top: 0;
   }
 
   .core-ai-page .sprint-step,
