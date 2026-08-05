@@ -1,0 +1,130 @@
+.experiment-skip-link {
+  position: fixed;
+  z-index: 30;
+  top: 8px;
+  left: 8px;
+  padding: 10px 14px;
+  border: 2px solid var(--experiment-shell-focus, #4fd1c5);
+  border-radius: 8px;
+  background: var(--experiment-shell-background, var(--bg, #0a0e13));
+  color: var(--experiment-shell-foreground, var(--text, #dde8f2));
+  font: 700 0.8125rem/1 ui-sans-serif, system-ui, sans-serif;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+
+.experiment-skip-link:focus {
+  transform: translateY(0);
+}
+
+.experiment-nav-shell {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  margin: 0 -20px 20px;
+  border-bottom: 1px solid var(--experiment-shell-border, var(--line, rgb(255 255 255 / 14%)));
+  background: color-mix(in srgb, var(--experiment-shell-background, var(--bg, #0a0e13)) 92%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.experiment-nav {
+  display: flex;
+  width: min(100%, 1220px);
+  min-height: 72px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.experiment-home-link {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border-radius: 8px;
+  place-items: center;
+}
+
+.experiment-brand-mark {
+  display: block;
+  width: 48px;
+  height: 48px;
+  background: var(--experiment-shell-foreground, var(--text, #dde8f2));
+  -webkit-mask: url("/assets/erikdrouhard-logomark.svg") center / contain no-repeat;
+  mask: url("/assets/erikdrouhard-logomark.svg") center / contain no-repeat;
+}
+
+.experiment-back-link {
+  display: flex;
+  min-height: 44px;
+  min-width: 0;
+  padding: 0 2px;
+  align-items: center;
+  gap: 8px;
+  color: var(--experiment-shell-foreground, var(--text, #dde8f2));
+  font: 700 0.8125rem/1 ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.06em;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
+
+.experiment-home-link:focus-visible,
+.experiment-back-link:focus-visible {
+  outline: 2px solid var(--experiment-shell-focus, #4fd1c5);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .experiment-home-link:hover,
+  .experiment-back-link:hover {
+    opacity: 0.76;
+  }
+}
+
+@media (max-width: 600px) {
+  .experiment-nav-shell {
+    margin-right: -12px;
+    margin-left: -12px;
+  }
+
+  .experiment-nav {
+    min-height: 64px;
+    padding: 8px 12px;
+    gap: 16px;
+  }
+
+  .experiment-home-link,
+  .experiment-brand-mark {
+    width: 44px;
+    height: 44px;
+  }
+
+  .experiment-home-link {
+    flex-basis: 44px;
+  }
+
+  .experiment-back-link {
+    font: 700 0.75rem/1 ui-sans-serif, system-ui, sans-serif;
+    text-align: right;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experiment-skip-link {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .experiment-nav-shell {
+    background: Canvas;
+  }
+
+  .experiment-brand-mark {
+    background: CanvasText;
+  }
+}

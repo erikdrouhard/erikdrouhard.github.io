@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="antialiased">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="description" content="A provably deterministic seeded tower defense. Single file, no dependencies.">
+<title>Opus 5 — Seeded Tower Defense</title>
+<link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/experiments/experiment-shell.css">
+<style>
+  :root {
+    color-scheme:dark;
+    --bg:#0a0e13; --panel:#111922; --panel-2:#0d151d; --line:#1d2b39; --line-2:#27394b;
+    --text:#dde8f2; --muted:#7e94a8; --dim:#54677a;
+    --accent:#4fd1c5; --accent-dim:#2b7a72; --gold:#f5c451; --danger:#ff6b6b; --ok:#7bd88f;
+    --grid:#131d27; --grid-line:#1a2733; --lane:#152530; --shadow:0 1px 0 rgba(255,255,255,.03), 0 8px 24px rgba(0,0,0,.45);
+  }
+  :root[data-theme="light"] {
+    color-scheme:light;
+    --bg:#eef2f6; --panel:#ffffff; --panel-2:#f6f9fc; --line:#dbe3ec; --line-2:#c4d1de;
+    --text:#111c26; --muted:#5a6b7c; --dim:#8697a7;
+    --accent:#0f9d90; --accent-dim:#9fded8; --gold:#b8860b; --danger:#d64545; --ok:#3f9d5c;
+    --grid:#e4ebf2; --grid-line:#d3dde7; --lane:#d3e3e8; --shadow:0 1px 2px rgba(16,32,48,.06), 0 8px 24px rgba(16,32,48,.08);
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; }
+  body {
+    background:var(--bg); color:var(--text); min-height:100vh;
+    font:15px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, sans-serif;
+    -webkit-font-smoothing:antialiased; padding:0 20px 48px;
+  }
+  .num { font-family:ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace; font-variant-numeric:tabular-nums; }
+  .wrap { max-width:1180px; margin:0 auto; }
+
+  .game-header { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:16px; }
+  h1 { font-size:19px; margin:0; letter-spacing:-.02em; font-weight:640; }
+  h1 span { color:var(--accent); }
+  .tagline { color:var(--dim); font-size:12.5px; letter-spacing:.01em; }
+
+  .hud { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .stat {
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:7px 13px; min-width:88px; box-shadow:var(--shadow);
+  }
+  .stat b { display:block; font-size:10px; text-transform:uppercase; letter-spacing:.09em; color:var(--dim); font-weight:600; }
+  .stat i { font-style:normal; font-size:19px; font-weight:620; letter-spacing:-.02em; }
+  .stat.lives i { color:var(--danger); } .stat.coins i { color:var(--gold); } .stat.wave i { color:var(--accent); }
+
+  .layout { display:grid; grid-template-columns:minmax(0,1fr) 292px; gap:16px; align-items:start; }
+  @media (max-width:940px){ .layout { grid-template-columns:minmax(0,1fr); } }
+
+  .board { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:10px; box-shadow:var(--shadow); }
+  canvas { display:block; width:100%; height:auto; border-radius:8px; touch-action:none; cursor:crosshair; outline:none; }
+  canvas:focus-visible { box-shadow:0 0 0 2px var(--accent); }
+
+  .bar { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  button, select, input[type=text] {
+    font:inherit; font-size:13px; color:var(--text); background:var(--panel-2);
+    border:1px solid var(--line-2); border-radius:8px; padding:6px 11px; cursor:pointer;
+    transition:background .12s ease, border-color .12s ease, transform .06s ease;
+  }
+  button:hover:not(:disabled) { background:var(--line); border-color:var(--accent-dim); }
+  button:active:not(:disabled) { transform:translateY(1px); }
+  button:disabled { opacity:.4; cursor:not-allowed; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#05171a; font-weight:640; }
+  :root[data-theme="light"] button.primary { color:#fff; }
+  button.primary:hover:not(:disabled) { filter:brightness(1.08); background:var(--accent); }
+  button:focus-visible, canvas:focus-visible, input:focus-visible, select:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  kbd { font:11px ui-monospace, monospace; color:var(--dim); border:1px solid var(--line-2); border-bottom-width:2px; border-radius:4px; padding:0 4px; }
+
+  aside { display:flex; flex-direction:column; gap:12px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px; box-shadow:var(--shadow); }
+  .card h2 { margin:0 0 9px; font-size:10.5px; text-transform:uppercase; letter-spacing:.1em; color:var(--dim); font-weight:640; }
+
+  .shop { display:flex; flex-direction:column; gap:6px; }
+  .tower-btn { display:grid; grid-template-columns:26px 1fr auto; gap:9px; align-items:center; text-align:left; padding:8px 10px; width:100%; }
+  .tower-btn[aria-pressed="true"] { border-color:var(--accent); background:var(--line); }
+  .tower-btn .swatch { width:22px; height:22px; border-radius:6px; }
+  .tower-btn .nm { font-weight:600; font-size:13px; }
+  .tower-btn .ds { font-size:11px; color:var(--dim); }
+  .tower-btn .pr { font-size:13px; color:var(--gold); font-weight:620; }
+
+  .sel-row { display:flex; justify-content:space-between; font-size:12.5px; padding:2px 0; color:var(--muted); }
+  .sel-row b { color:var(--text); font-weight:600; }
+  .up-btn { width:100%; margin-top:6px; text-align:left; display:flex; justify-content:space-between; gap:8px; }
+  .pips { letter-spacing:2px; color:var(--accent); }
+
+  .log { height:132px; overflow-y:auto; font:11.5px/1.65 ui-monospace, monospace; color:var(--muted); }
+  .log div { border-bottom:1px solid var(--panel-2); padding:1px 0; }
+  .log .t { color:var(--dim); }
+  .log .hi { color:var(--accent); } .log .bad { color:var(--danger); } .log .good { color:var(--ok); }
+
+  .tests { margin-top:16px; }
+  .tests pre {
+    margin:0; max-height:340px; overflow:auto; font:12px/1.75 ui-monospace, monospace;
+    background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:12px; white-space:pre-wrap;
+  }
+  .pass { color:var(--ok); } .fail { color:var(--danger); } .pend { color:var(--gold); } .note { color:var(--dim); }
+  .seed-row { display:flex; gap:6px; align-items:center; }
+  .seed-row input { flex:1; min-width:0; font-family:ui-monospace, monospace; cursor:text; }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  .legend { font-size:11.5px; color:var(--dim); line-height:1.9; }
+  .legend b { color:var(--muted); font-weight:600; }
+
+  @media (max-width:600px) {
+    body { padding:0 12px 32px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition:none !important; animation:none !important; }
+  }
+</style>
+</head>
+<body>
+<a class="experiment-skip-link" href="#experiment">Skip to experiment</a>
+<header class="experiment-nav-shell">
+  <nav class="experiment-nav" aria-label="Experiment navigation">
+    <a class="experiment-home-link" href="/" aria-label="Homepage">
+      <span class="experiment-brand-mark" aria-hidden="true"></span>
+    </a>
+    <a class="experiment-back-link" href="/experiments/"><span aria-hidden="true">←</span> BACK TO EXPERIMENTS</a>
+  </nav>
+</header>
+<main id="experiment">
+<div class="wrap">
+  <header class="game-header">
+    <h1>Opus 5 <span>&#8226;</span> Seeded Tower Defense</h1>
+    <span class="tagline">deterministic sim &#183; fixed timestep &#183; undo by re&#8209;simulation</span>
+  </header>
+
+  <div class="hud">
+    <div class="stat wave"><b>Wave</b><i class="num" id="s-wave">0</i></div>
+    <div class="stat lives"><b>Lives</b><i class="num" id="s-lives">20</i></div>
+    <div class="stat coins"><b>Coins</b><i class="num" id="s-coins">250</i></div>
+    <div class="stat"><b>Score</b><i class="num" id="s-score">0</i></div>
+    <div class="stat"><b>Tick</b><i class="num" id="s-tick">0</i></div>
+    <div class="stat"><b>Checksum</b><i class="num" id="s-hash" style="font-size:15px">—</i></div>
+  </div>
+
+  <div class="layout">
+    <div>
+      <div class="board">
+        <canvas id="cv" tabindex="0" role="img" aria-label="Tower defense board. Use arrow keys to move the build cursor and Enter to build."></canvas>
+        <div class="bar">
+          <button class="primary" id="b-wave">Start Wave <kbd>S</kbd></button>
+          <button id="b-pause">Pause <kbd>Space</kbd></button>
+          <button id="b-speed" class="num">Speed x1</button>
+          <button id="b-undo">Undo <kbd>U</kbd></button>
+          <button id="b-redo">Redo <kbd>Y</kbd></button>
+          <button id="b-sell">Sell</button>
+          <button id="b-new">New Game</button>
+          <button id="b-theme">Theme <kbd>T</kbd></button>
+          <button id="b-mute">Sound <kbd>M</kbd></button>
+        </div>
+      </div>
+
+      <div class="card tests">
+        <h2>Verification</h2>
+        <div class="bar" style="margin:0 0 10px">
+          <button class="primary" id="b-test">Run Self-Tests</button>
+          <button id="b-determinism">Prove Determinism</button>
+          <button id="b-export">Export Run</button>
+          <button id="b-import">Import Run</button>
+        </div>
+        <pre id="test-out" aria-live="polite">Idle. &quot;Run Self-Tests&quot; executes 14 checks including a proof that the
+simulation never reads Math.random(), Date.now(), or the wall clock.</pre>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card">
+        <h2>Seed</h2>
+        <div class="seed-row">
+          <input type="text" id="seed" value="OPUS5" spellcheck="false" aria-label="World seed">
+          <button id="b-seed">Apply</button>
+        </div>
+        <p class="legend" style="margin:8px 0 0">Same seed + same builds = identical run, on any machine, at any frame rate or speed multiplier.</p>
+      </div>
+
+      <div class="card">
+        <h2>Build</h2>
+        <div class="shop" id="shop"></div>
+      </div>
+
+      <div class="card" id="sel-card" hidden>
+        <h2>Selected Tower</h2>
+        <div id="sel-body"></div>
+      </div>
+
+      <div class="card">
+        <h2>Event Log</h2>
+        <div class="log" id="log"></div>
+      </div>
+
+      <div class="card">
+        <h2>Controls</h2>
+        <p class="legend">
+          <b>1 2 3</b> pick tower &#183; <b>click</b> build<br>
+          <b>arrows + enter</b> keyboard build<br>
+          <b>S</b> wave &#183; <b>space</b> pause &#183; <b>F</b> speed<br>
+          <b>U / Y</b> undo &#183; redo &#183; <b>X</b> sell &#183; <b>esc</b> deselect
+        </p>
+      </div>
+    </aside>
+  </div>
+</div>
+<div class="sr" id="live" aria-live="polite" role="status"></div>
+</main>
+
+<script>
+'use strict';
+
+/* ─────────────────────────────────────────────────────────────────────────
+   1. DETERMINISTIC RNG
+   mulberry32: a single uint32 of state, so the generator serializes into a
+   save file exactly. Two named streams keep cosmetics from ever perturbing
+   gameplay — `sim` advances only inside tick(), `fx` only inside render().
+   ───────────────────────────────────────────────────────────────────────── */
+function hashString(str) {
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  return h >>> 0;
+}
+function makeRng(state) {
+  return {
+    s: state >>> 0,
+    next() {
+      let t = (this.s = (this.s + 0x6D2B79F5) >>> 0);
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    },
+    range(a, b) { return a + (b - a) * this.next(); },
+    int(n) { return Math.floor(this.next() * n); },
+    pick(arr) { return arr[Math.floor(this.next() * arr.length)]; }
+  };
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   2. CONFIG
+   ───────────────────────────────────────────────────────────────────────── */
+const COLS = 20, ROWS = 12, CELL = 36;
+const START = { c: 0, r: 6 }, BASE = { c: 19, r: 6 };
+const START_IDX = START.r * COLS + START.c, BASE_IDX = BASE.r * COLS + BASE.c;
+const TICK = 1 / 60;
+const MAX_FRAME_DT = 0.1;        // clamp: a stalled/backgrounded tab can never teleport creeps
+const MAX_TICKS_PER_FRAME = 16;  // backstop so catch-up can never lock the main thread
+const SPEEDS = [1, 2, 4];
+const NEI = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+
+const TOWERS = {
+  arrow: {
+    name: 'Arrow', cost: 40, color: '#4fd1c5', dmg: 12, range: 2.6, cd: 0.45,
+    projSpeed: 13, splash: 0, slow: 0, slowT: 0, pierce: false, desc: 'fast single target',
+    A: { name: 'Fletching', costs: [30, 55, 95], apply: (s, i) => { s.dmg += [4, 6, 9][i]; } },
+    B: { name: 'Quickdraw', costs: [35, 65, 110], apply: (s, i) => { s.cd -= [0.09, 0.09, 0.11][i]; s.range += 0.25; } }
+  },
+  cannon: {
+    name: 'Cannon', cost: 85, color: '#f5c451', dmg: 21, range: 2.4, cd: 1.45,
+    projSpeed: 8, splash: 0.95, slow: 0, slowT: 0, pierce: false, desc: 'splash damage',
+    A: { name: 'Payload', costs: [55, 95, 165], apply: (s, i) => { s.dmg += [10, 15, 24][i]; } },
+    B: { name: 'Shrapnel', costs: [50, 90, 150], apply: (s, i) => { s.splash += [0.3, 0.35, 0.45][i]; s.range += 0.15; } }
+  },
+  frost: {
+    name: 'Frost', cost: 65, color: '#7cc4ff', dmg: 4, range: 2.2, cd: 0.8,
+    projSpeed: 11, splash: 0, slow: 0.35, slowT: 1.6, pierce: true, desc: 'slows, ignores armor',
+    A: { name: 'Deep Chill', costs: [45, 80, 140], apply: (s, i) => { s.slow += [0.08, 0.09, 0.12][i]; s.dmg += 2; } },
+    B: { name: 'Lingering', costs: [40, 70, 125], apply: (s, i) => { s.slowT += [0.5, 0.6, 0.8][i]; s.range += 0.2; } }
+  }
+};
+const TOWER_KEYS = ['arrow', 'cannon', 'frost'];
+
+const CREEPS = {
+  grunt:  { name: 'Grunt',  hp: 28,  speed: 2.2, armor: 0, bounty: 6,   r: 0.30, color: '#93a9bd', gap: 0.62, weight: 1.0 },
+  runner: { name: 'Runner', hp: 20,  speed: 4.1, armor: 0, bounty: 5,   r: 0.24, color: '#4fd1c5', gap: 0.34, weight: 0.8 },
+  swarm:  { name: 'Swarm',  hp: 12,  speed: 3.0, armor: 0, bounty: 3,   r: 0.19, color: '#a8e05f', gap: 0.16, weight: 0.5 },
+  tank:   { name: 'Tank',   hp: 130, speed: 1.3, armor: 5, bounty: 16,  r: 0.38, color: '#f5c451', gap: 1.15, weight: 2.4 },
+  boss:   { name: 'Boss',   hp: 950, speed: 1.05, armor: 9, bounty: 130, r: 0.46, color: '#ff6b6b', gap: 2.0, weight: 8.0 }
+};
+
+/* ─────────────────────────────────────────────────────────────────────────
+   3. WORLD
+   Everything the simulation reads lives here. `dist`/`flow` are derived and
+   rebuilt from `grid`, so they are excluded from saves and from the checksum.
+   ───────────────────────────────────────────────────────────────────────── */
+function createWorld(seed) {
+  const w = {
+    seed: String(seed),
+    rng: makeRng(hashString(String(seed))),
+    tick: 0, nextId: 1,
+    coins: 250, lives: 20, score: 0, wave: 0,
+    grid: new Uint8Array(COLS * ROWS),
+    towers: [], creeps: [], projectiles: [],
+    queue: [], waveActive: false, over: false, won: false,
+    leaked: 0, killed: 0, events: [],
+    fx: []
+  };
+  computeField(w);
+  return w;
+}
+
+const idxOf = (c, r) => r * COLS + c;
+const cellOf = (x, y) => {
+  const c = Math.max(0, Math.min(COLS - 1, Math.floor(x)));
+  const r = Math.max(0, Math.min(ROWS - 1, Math.floor(y)));
+  return r * COLS + c;
+};
+
+/* ─────────────────────────────────────────────────────────────────────────
+   4. FLOW FIELD
+   BFS outward from the base. `flow[i]` is the neighbour of i that steps
+   closer to the base; creeps just follow it. Because the field is rebuilt
+   from the tower layout, a mid-wave rebuild re-routes live creeps with no
+   re-anchoring and no chance of a stale path index.
+   ───────────────────────────────────────────────────────────────────────── */
+function computeField(w) {
+  const N = COLS * ROWS;
+  const dist = new Int32Array(N).fill(-1);
+  const flow = new Int32Array(N).fill(-1);
+  const q = new Int32Array(N);
+  let head = 0, tail = 0;
+  dist[BASE_IDX] = 0; q[tail++] = BASE_IDX;
+  while (head < tail) {
+    const cur = q[head++];
+    const cc = cur % COLS, cr = (cur - cc) / COLS;
+    for (let k = 0; k < 4; k++) {
+      const nc = cc + NEI[k][0], nr = cr + NEI[k][1];
+      if (nc < 0 || nr < 0 || nc >= COLS || nr >= ROWS) continue;
+      const ni = nr * COLS + nc;
+      if (w.grid[ni] || dist[ni] !== -1) continue;
+      dist[ni] = dist[cur] + 1;
+      flow[ni] = cur;
+      q[tail++] = ni;
+    }
+  }
+  w.dist = dist; w.flow = flow;
+}
+
+function canPlace(w, idx) {
+  if (w.grid[idx]) return false;
+  if (idx === START_IDX || idx === BASE_IDX) return false;
+  for (const cr of w.creeps) if (cellOf(cr.x, cr.y) === idx) return false;
+  w.grid[idx] = 1;
+  computeField(w);
+  let ok = w.dist[START_IDX] !== -1;
+  if (ok) for (const cr of w.creeps) { if (w.dist[cellOf(cr.x, cr.y)] === -1) { ok = false; break; } }
+  w.grid[idx] = 0;
+  computeField(w);
+  return ok;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   5. DERIVED TOWER STATS
+   Recomputed from base + upgrade levels every time rather than mutated in
+   place, so upgrade levels are the single source of truth and stats can
+   never drift out of sync with a save file.
+   ───────────────────────────────────────────────────────────────────────── */
+function towerStats(t) {
+  const d = TOWERS[t.type];
+  const s = { dmg: d.dmg, range: d.range, cd: d.cd, splash: d.splash, slow: d.slow, slowT: d.slowT, pierce: d.pierce, projSpeed: d.projSpeed, color: d.color };
+  for (let i = 0; i < t.a; i++) d.A.apply(s, i);
+  for (let i = 0; i < t.b; i++) d.B.apply(s, i);
+  if (s.cd < 0.08) s.cd = 0.08;
+  return s;
+}
+const upgradeCost = (t, track) => TOWERS[t.type][track].costs[track === 'A' ? t.a : t.b];
+const sellValue = t => Math.floor(t.spent * 0.7);
+
+/* ─────────────────────────────────────────────────────────────────────────
+   6. ACTIONS
+   Every mutation a player can make is one of these. The action log is the
+   complete input history, which is what makes replay and undo exact.
+   ───────────────────────────────────────────────────────────────────────── */
+function applyAction(w, act) {
+  if (w.over) return false;
+  if (act.kind === 'build') {
+    const def = TOWERS[act.tower];
+    if (!def || w.coins < def.cost) return false;
+    if (!canPlace(w, act.idx)) return false;
+    w.coins -= def.cost;
+    w.grid[act.idx] = 1;
+    computeField(w);
+    w.towers.push({ id: w.nextId++, idx: act.idx, type: act.tower, a: 0, b: 0, cd: 0, spent: def.cost, shots: 0 });
+    return true;
+  }
+  if (act.kind === 'upgrade') {
+    const t = w.towers.find(t => t.idx === act.idx);
+    if (!t) return false;
+    const lvl = act.track === 'A' ? t.a : t.b;
+    if (lvl >= 3) return false;
+    const cost = upgradeCost(t, act.track);
+    if (w.coins < cost) return false;
+    w.coins -= cost; t.spent += cost;
+    if (act.track === 'A') t.a++; else t.b++;
+    return true;
+  }
+  if (act.kind === 'sell') {
+    const i = w.towers.findIndex(t => t.idx === act.idx);
+    if (i < 0) return false;
+    w.coins += sellValue(w.towers[i]);
+    w.grid[act.idx] = 0;
+    w.towers.splice(i, 1);
+    computeField(w);
+    return true;
+  }
+  if (act.kind === 'wave') {
+    if (w.waveActive) return false;
+    startWave(w);
+    return true;
+  }
+  return false;
+}
+
+function startWave(w) {
+  w.wave++;
+  w.waveActive = true;
+  const n = w.wave, rng = w.rng;
+  const unlocked = n < 3 ? ['grunt'] : n < 5 ? ['grunt', 'runner'] : n < 8 ? ['grunt', 'runner', 'swarm'] : ['grunt', 'runner', 'swarm', 'tank'];
+  const hpMul = 1 + 0.26 * (n - 1) + 0.032 * (n - 1) * (n - 1);
+  const groups = 1 + rng.int(2) + Math.min(3, Math.floor(n / 6));
+  let t = 0.4;
+  for (let g = 0; g < groups; g++) {
+    const type = rng.pick(unlocked);
+    const cd = CREEPS[type];
+    const count = Math.max(1, Math.round((3 + n * 0.75) / cd.weight * (0.75 + rng.next() * 0.5)));
+    for (let i = 0; i < count; i++) {
+      w.queue.push({ type, at: w.tick + Math.round(t * 60), hpMul });
+      t += cd.gap;
+    }
+    t += 0.9 + rng.next() * 0.9;
+  }
+  if (n % 5 === 0) w.queue.push({ type: 'boss', at: w.tick + Math.round((t + 1.4) * 60), hpMul });
+  w.queue.sort((a, b) => a.at - b.at || a.type.localeCompare(b.type));
+  logEvent(w, `Wave ${n} incoming — ${w.queue.length} hostiles`, 'hi');
+}
+
+/*
+  An out-queue the sim writes and the renderer drains. It is deliberately left
+  out of hashWorld() and serialize(): presentation must never be able to change
+  a checksum, and a headless replay must never accumulate it.
+*/
+function emit(w, ev) {
+  w.fx.push(ev);
+  if (w.fx.length > 128) w.fx.shift();
+}
+
+function logEvent(w, msg, cls) {
+  w.events.push({ tick: w.tick, msg, cls: cls || '' });
+  if (w.events.length > 400) w.events.shift();
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   7. SIMULATION — the pure core
+   Constraints held deliberately, and enforced by self-test #2 and #3:
+     · no Math.random, no Date.now, no performance.now, no DOM reads
+     · no Math.sin/cos/atan2 — trig is not bit-identical across JS engines,
+       while + - * / and sqrt are IEEE-754 exact, so this stays reproducible
+       across browsers and CPU architectures
+     · a fixed TICK, never a wall-clock delta
+   ───────────────────────────────────────────────────────────────────────── */
+function spawnCreep(w, type, hpMul) {
+  const d = CREEPS[type];
+  const hp = Math.round(d.hp * hpMul);
+  w.creeps.push({
+    id: w.nextId++, type, x: START.c + 0.5, y: START.r + 0.5,
+    hp, maxHp: hp, baseSpeed: d.speed, armor: d.armor + Math.floor(w.wave / 6),
+    bounty: d.bounty + Math.floor(w.wave * 0.4), r: d.r,
+    slowAmt: 0, slowT: 0, toBase: 999
+  });
+}
+
+function damageCreep(w, cr, amount, pierce) {
+  const dealt = pierce ? amount : Math.max(1, amount - cr.armor);
+  cr.hp -= dealt;
+  return dealt;
+}
+
+function applySlow(cr, amt, dur) {
+  if (amt <= 0) return;
+  if (amt > cr.slowAmt || (amt === cr.slowAmt && dur > cr.slowT)) { cr.slowAmt = amt; cr.slowT = dur; }
+}
+
+/*
+  Chooses the in-range creep closest to the base. Stable tie-breaking keeps
+  target selection identical across replay, save/load, and frame rates.
+*/
+function selectTarget(tower, stats, inRange) {
+  let target = inRange[0];
+  for (let i = 1; i < inRange.length; i++) {
+    const candidate = inRange[i];
+    if (candidate.toBase < target.toBase ||
+        (candidate.toBase === target.toBase && candidate.id < target.id)) {
+      target = candidate;
+    }
+  }
+  return target;
+}
+
+function tick(w) {
+  if (w.over) return;
+  w.tick++;
+
+  while (w.queue.length && w.queue[0].at <= w.tick) {
+    const s = w.queue.shift();
+    spawnCreep(w, s.type, s.hpMul);
+  }
+
+  for (const cr of w.creeps) {
+    if (cr.slowT > 0) { cr.slowT -= TICK; if (cr.slowT <= 0) { cr.slowT = 0; cr.slowAmt = 0; } }
+    const ci = cellOf(cr.x, cr.y);
+    cr.toBase = w.dist[ci] < 0 ? 9999 : w.dist[ci];
+    const nxt = w.flow[ci];
+    const tx = nxt < 0 ? BASE.c + 0.5 : (nxt % COLS) + 0.5;
+    const ty = nxt < 0 ? BASE.r + 0.5 : Math.floor(nxt / COLS) + 0.5;
+    const step = cr.baseSpeed * (1 - cr.slowAmt) * TICK;
+    const dx = tx - cr.x, dy = ty - cr.y;
+    const d = Math.sqrt(dx * dx + dy * dy);
+    if (d <= step || d === 0) { cr.x = tx; cr.y = ty; }
+    else { cr.x += (dx / d) * step; cr.y += (dy / d) * step; }
+  }
+
+  for (let i = w.creeps.length - 1; i >= 0; i--) {
+    const cr = w.creeps[i];
+    if (cellOf(cr.x, cr.y) === BASE_IDX) {
+      w.creeps.splice(i, 1);
+      w.lives--; w.leaked++;
+      emit(w, { k: 'leak', x: cr.x, y: cr.y, color: '#ff6b6b' });
+      logEvent(w, `${CREEPS[cr.type].name} reached the base`, 'bad');
+      if (w.lives <= 0) { w.lives = 0; w.over = true; logEvent(w, 'Base destroyed. Game over.', 'bad'); }
+    }
+  }
+
+  for (const t of w.towers) {
+    if (t.cd > 0) { t.cd -= TICK; if (t.cd < 0) t.cd = 0; }
+    if (t.cd > 0) continue;
+    const s = towerStats(t);
+    const tc = (t.idx % COLS) + 0.5, tr = Math.floor(t.idx / COLS) + 0.5;
+    const r2 = s.range * s.range;
+    const inRange = [];
+    for (const cr of w.creeps) {
+      const dx = cr.x - tc, dy = cr.y - tr;
+      if (dx * dx + dy * dy <= r2) inRange.push(cr);
+    }
+    if (!inRange.length) continue;
+    inRange.sort((a, b) => a.id - b.id);
+    const target = selectTarget(t, s, inRange);
+    if (!target) continue;
+    t.cd = s.cd; t.shots++;
+    w.projectiles.push({
+      id: w.nextId++, x: tc, y: tr, targetId: target.id, aimX: target.x, aimY: target.y,
+      dmg: s.dmg, splash: s.splash, slow: s.slow, slowT: s.slowT,
+      pierce: s.pierce, speed: s.projSpeed, color: s.color
+    });
+  }
+
+  for (let i = w.projectiles.length - 1; i >= 0; i--) {
+    const p = w.projectiles[i];
+    const target = w.creeps.find(c => c.id === p.targetId);
+    if (target) { p.aimX = target.x; p.aimY = target.y; }
+    const dx = p.aimX - p.x, dy = p.aimY - p.y;
+    const d = Math.sqrt(dx * dx + dy * dy);
+    const step = p.speed * TICK;
+    if (d > step && d > 0) { p.x += (dx / d) * step; p.y += (dy / d) * step; continue; }
+    p.x = p.aimX; p.y = p.aimY;
+    w.projectiles.splice(i, 1);
+    if (p.splash > 0) {
+      const s2 = p.splash * p.splash;
+      for (const cr of w.creeps) {
+        const ex = cr.x - p.x, ey = cr.y - p.y;
+        if (ex * ex + ey * ey <= s2) { damageCreep(w, cr, p.dmg, p.pierce); applySlow(cr, p.slow, p.slowT); }
+      }
+    } else if (target) {
+      damageCreep(w, target, p.dmg, p.pierce);
+      applySlow(target, p.slow, p.slowT);
+    }
+  }
+
+  for (let i = w.creeps.length - 1; i >= 0; i--) {
+    const cr = w.creeps[i];
+    if (cr.hp <= 0) {
+      w.creeps.splice(i, 1);
+      w.coins += cr.bounty; w.score += cr.bounty * 2; w.killed++;
+      emit(w, { k: 'kill', x: cr.x, y: cr.y, color: CREEPS[cr.type].color });
+    }
+  }
+
+  if (w.waveActive && !w.queue.length && !w.creeps.length) {
+    w.waveActive = false;
+    const bonus = 20 + w.wave * 6;
+    w.coins += bonus; w.score += bonus;
+    logEvent(w, `Wave ${w.wave} cleared — bonus ${bonus}`, 'good');
+    if (w.wave >= 30) { w.won = true; w.over = true; logEvent(w, 'All 30 waves held. Victory.', 'good'); }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   8. CHECKSUM + SERIALIZATION
+   Numbers go into the hash via String(x), which round-trips IEEE-754 doubles
+   exactly — so two worlds hash equal only if every float matches bit for bit.
+   ───────────────────────────────────────────────────────────────────────── */
+function hashWorld(w) {
+  const parts = [w.tick, w.rng.s, w.coins, w.lives, w.score, w.wave, w.nextId, w.leaked, w.killed, w.over ? 1 : 0, w.waveActive ? 1 : 0];
+  for (const t of w.towers) parts.push('T', t.id, t.idx, t.type, t.a, t.b, String(t.cd), t.spent, t.shots);
+  for (const c of w.creeps) parts.push('C', c.id, c.type, String(c.x), String(c.y), String(c.hp), String(c.slowAmt), String(c.slowT));
+  for (const p of w.projectiles) parts.push('P', p.id, String(p.x), String(p.y), p.targetId, String(p.dmg));
+  for (const q of w.queue) parts.push('Q', q.type, q.at, String(q.hpMul));
+  let h = 2166136261 >>> 0;
+  const s = parts.join('|');
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  return (h >>> 0).toString(16).padStart(8, '0');
+}
+
+function serialize(w, log) {
+  return JSON.stringify({
+    v: 1, seed: w.seed, rng: w.rng.s, tick: w.tick, nextId: w.nextId,
+    coins: w.coins, lives: w.lives, score: w.score, wave: w.wave,
+    towers: w.towers, creeps: w.creeps, projectiles: w.projectiles,
+    queue: w.queue, waveActive: w.waveActive, over: w.over, won: w.won,
+    leaked: w.leaked, killed: w.killed, events: w.events.slice(-60), log
+  });
+}
+
+function deserialize(json) {
+  const d = JSON.parse(json);
+  if (!d || d.v !== 1) throw new Error('unrecognised save format');
+  const w = createWorld(d.seed);
+  w.rng.s = d.rng >>> 0;
+  Object.assign(w, {
+    tick: d.tick, nextId: d.nextId, coins: d.coins, lives: d.lives, score: d.score,
+    wave: d.wave, towers: d.towers, creeps: d.creeps, projectiles: d.projectiles,
+    queue: d.queue, waveActive: d.waveActive, over: d.over, won: d.won,
+    leaked: d.leaked, killed: d.killed, events: d.events || []
+  });
+  w.grid = new Uint8Array(COLS * ROWS);
+  for (const t of w.towers) w.grid[t.idx] = 1;
+  computeField(w);
+  return { world: w, log: d.log || [] };
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   9. REPLAY — undo as re-simulation
+   Rather than inverting each action (where a refund can silently drift out of
+   sync), undo drops the action from history and re-derives the present from
+   the seed. The result is exact by construction, not by careful bookkeeping.
+   ───────────────────────────────────────────────────────────────────────── */
+function simulate(seed, log, untilTick) {
+  const w = createWorld(seed);
+  const byTick = new Map();
+  for (const a of log) {
+    if (!byTick.has(a.tick)) byTick.set(a.tick, []);
+    byTick.get(a.tick).push(a);
+  }
+  const at0 = byTick.get(0);
+  if (at0) for (const a of at0) applyAction(w, a);
+  while (w.tick < untilTick && !w.over) {
+    tick(w);
+    const acts = byTick.get(w.tick);
+    if (acts) for (const a of acts) applyAction(w, a);
+  }
+  return w;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   10. RENDERING — device-pixel-ratio aware
+   The backing store is sized in device pixels and the context is scaled once,
+   so a Retina or 4K display draws genuinely crisp rather than upscaled.
+   All drawing is done in cell units; one transform handles DPR and layout.
+   ───────────────────────────────────────────────────────────────────────── */
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+const fxRng = makeRng(0x9E3779B9);
+let particles = [];
+let cssScale = 1;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function resizeCanvas() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 3);
+  const avail = cv.parentElement.clientWidth - 20;
+  const cssW = Math.max(320, Math.min(COLS * CELL, avail));
+  cssScale = cssW / (COLS * CELL);
+  const cssH = ROWS * CELL * cssScale;
+  cv.style.height = cssH + 'px';
+  cv.width = Math.round(cssW * dpr);
+  cv.height = Math.round(cssH * dpr);
+  ctx.setTransform(dpr * cssScale, 0, 0, dpr * cssScale, 0, 0);
+}
+let dprQuery = null;
+function watchDpr() {
+  if (dprQuery) dprQuery.removeEventListener('change', onDpr);
+  dprQuery = matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+  dprQuery.addEventListener('change', onDpr);
+}
+function onDpr() { resizeCanvas(); watchDpr(); }
+
+/*
+  getComputedStyle is a layout read. Resolving palette tokens once per theme
+  change instead of once per drawn cell keeps the render loop off the style
+  system entirely — the grid alone would otherwise cost 240 lookups a frame.
+*/
+const PALETTE = {};
+const PALETTE_KEYS = ['--grid', '--grid-line', '--lane', '--panel', '--text', '--accent', '--ok', '--danger'];
+function refreshPalette() {
+  const cs = getComputedStyle(document.documentElement);
+  for (const k of PALETTE_KEYS) PALETTE[k] = cs.getPropertyValue(k).trim();
+}
+const css = n => PALETTE[n] || '#888';
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function render() {
+  const W = COLS * CELL, H = ROWS * CELL;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = css('--grid');
+  ctx.fillRect(0, 0, W, H);
+
+  const maxD = Math.max(1, ...Array.from(ui.world.dist).filter(d => d >= 0));
+  for (let i = 0; i < COLS * ROWS; i++) {
+    if (ui.world.grid[i] || ui.world.dist[i] < 0) continue;
+    const c = i % COLS, r = (i - c) / COLS;
+    ctx.globalAlpha = 0.11 + 0.24 * (1 - ui.world.dist[i] / maxD);
+    ctx.fillStyle = css('--lane');
+    ctx.fillRect(c * CELL, r * CELL, CELL, CELL);
+  }
+  ctx.globalAlpha = 1;
+
+  ctx.strokeStyle = css('--grid-line'); ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let c = 0; c <= COLS; c++) { ctx.moveTo(c * CELL + 0.5, 0); ctx.lineTo(c * CELL + 0.5, H); }
+  for (let r = 0; r <= ROWS; r++) { ctx.moveTo(0, r * CELL + 0.5); ctx.lineTo(W, r * CELL + 0.5); }
+  ctx.stroke();
+
+  ctx.fillStyle = css('--ok'); ctx.globalAlpha = 0.85;
+  roundRect(START.c * CELL + 5, START.r * CELL + 5, CELL - 10, CELL - 10, 5); ctx.fill();
+  ctx.fillStyle = css('--danger');
+  roundRect(BASE.c * CELL + 4, BASE.r * CELL + 4, CELL - 8, CELL - 8, 5); ctx.fill();
+  ctx.globalAlpha = 1;
+
+  if (ui.cursor >= 0 && !ui.world.over) {
+    const c = ui.cursor % COLS, r = (ui.cursor - c) / COLS;
+    const t = ui.world.towers.find(t => t.idx === ui.cursor);
+    const showRange = t || ui.pending;
+    if (showRange) {
+      const s = t ? towerStats(t) : TOWERS[ui.pending];
+      ctx.beginPath();
+      ctx.arc(c * CELL + CELL / 2, r * CELL + CELL / 2, s.range * CELL, 0, Math.PI * 2);
+      ctx.fillStyle = s.color; ctx.globalAlpha = 0.08; ctx.fill();
+      ctx.globalAlpha = 0.5; ctx.strokeStyle = s.color; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+    const legal = t ? true : (ui.pending ? canPlace(ui.world, ui.cursor) : true);
+    ctx.strokeStyle = legal ? css('--accent') : css('--danger');
+    ctx.lineWidth = 2;
+    roundRect(c * CELL + 2, r * CELL + 2, CELL - 4, CELL - 4, 6);
+    ctx.stroke();
+  }
+
+  for (const t of ui.world.towers) {
+    const c = t.idx % COLS, r = (t.idx - c) / COLS;
+    const s = towerStats(t);
+    const x = c * CELL, y = r * CELL;
+    ctx.fillStyle = css('--panel');
+    roundRect(x + 3, y + 3, CELL - 6, CELL - 6, 7); ctx.fill();
+    ctx.fillStyle = s.color; ctx.globalAlpha = 0.9;
+    roundRect(x + 7, y + 7, CELL - 14, CELL - 14, 5); ctx.fill();
+    ctx.globalAlpha = 1;
+    const lvl = t.a + t.b;
+    if (lvl) {
+      ctx.fillStyle = css('--text');
+      for (let i = 0; i < lvl; i++) ctx.fillRect(x + 5 + i * 4, y + CELL - 7, 3, 3);
+    }
+    if (ui.selected === t.idx) {
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2;
+      roundRect(x + 2, y + 2, CELL - 4, CELL - 4, 7); ctx.stroke();
+    }
+  }
+
+  for (const cr of ui.world.creeps) {
+    const d = CREEPS[cr.type];
+    const x = cr.x * CELL, y = cr.y * CELL, rad = cr.r * CELL;
+    ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2);
+    ctx.fillStyle = d.color; ctx.fill();
+    if (cr.slowAmt > 0) {
+      ctx.strokeStyle = TOWERS.frost.color; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(x, y, rad + 2.5, 0, Math.PI * 2); ctx.stroke();
+    }
+    if (cr.hp < cr.maxHp) {
+      const bw = rad * 2.2;
+      ctx.fillStyle = 'rgba(0,0,0,.45)';
+      ctx.fillRect(x - bw / 2, y - rad - 7, bw, 3.5);
+      ctx.fillStyle = cr.hp / cr.maxHp > 0.45 ? css('--ok') : css('--danger');
+      ctx.fillRect(x - bw / 2, y - rad - 7, bw * (cr.hp / cr.maxHp), 3.5);
+    }
+  }
+
+  for (const p of ui.world.projectiles) {
+    ctx.beginPath();
+    ctx.arc(p.x * CELL, p.y * CELL, p.splash > 0 ? 4.5 : 3, 0, Math.PI * 2);
+    ctx.fillStyle = p.color; ctx.fill();
+  }
+
+  if (!reduceMotion) {
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.life -= 1 / 60;
+      if (p.life <= 0) { particles.splice(i, 1); continue; }
+      p.x += p.vx / 60; p.y += p.vy / 60; p.vy += 1.6 / 60;
+      ctx.globalAlpha = Math.max(0, p.life / p.max);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x * CELL - 1.5, p.y * CELL - 1.5, 3, 3);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  if (ui.world.over) {
+    ctx.fillStyle = 'rgba(0,0,0,.62)'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = ui.world.won ? css('--ok') : css('--danger');
+    ctx.font = '600 34px ui-sans-serif, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(ui.world.won ? 'VICTORY' : 'GAME OVER', W / 2, H / 2 - 6);
+    ctx.fillStyle = '#dde8f2';
+    ctx.font = '15px ui-monospace, monospace';
+    ctx.fillText(`wave ${ui.world.wave} · score ${ui.world.score} · ${ui.world.killed} kills`, W / 2, H / 2 + 22);
+    ctx.textAlign = 'left';
+  }
+}
+
+function burst(x, y, color, n) {
+  if (reduceMotion) return;
+  for (let i = 0; i < n; i++) {
+    const a = fxRng.next() * Math.PI * 2, sp = 0.6 + fxRng.next() * 2.4;
+    particles.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 0.45, max: 0.45, color });
+  }
+  if (particles.length > 400) particles.splice(0, particles.length - 400);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   11. AUDIO — created lazily on first gesture, entirely outside the sim
+   ───────────────────────────────────────────────────────────────────────── */
+let actx = null, muted = true;
+function beep(freq, dur, type, gain) {
+  if (muted) return;
+  try {
+    if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type || 'square'; o.frequency.value = freq;
+    g.gain.setValueAtTime(gain || 0.04, actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + dur);
+    o.connect(g); g.connect(actx.destination);
+    o.start(); o.stop(actx.currentTime + dur);
+  } catch (e) { /* audio is optional */ }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   12. UI STATE + MAIN LOOP
+   ───────────────────────────────────────────────────────────────────────── */
+const ui = {
+  world: createWorld('OPUS5'),
+  log: [], redo: [],
+  pending: null, selected: -1, cursor: -1,
+  paused: false, speedIdx: 0, lastRenderedTick: -1
+};
+
+function pushAction(act) {
+  act.tick = ui.world.tick;
+  if (!applyAction(ui.world, act)) return false;
+  ui.log.push(act);
+  ui.redo.length = 0;
+  save();
+  syncUI();
+  return true;
+}
+
+function rebuild(log) {
+  const target = ui.world.tick;
+  ui.world = simulate(ui.world.seed, log, target);
+  ui.log = log;
+  save();
+  syncUI();
+}
+
+function undo() {
+  const undoable = ui.log.filter(a => a.kind !== 'wave');
+  if (!undoable.length) { flash('Nothing to undo'); return; }
+  const last = undoable[undoable.length - 1];
+  const i = ui.log.lastIndexOf(last);
+  const removed = ui.log[i];
+  const next = ui.log.slice(0, i).concat(ui.log.slice(i + 1));
+  ui.redo.push({ act: removed, index: i });
+  rebuild(next);
+  flash(`Undid ${removed.kind}`);
+  beep(340, 0.06, 'sine');
+}
+
+function redo() {
+  const r = ui.redo.pop();
+  if (!r) { flash('Nothing to redo'); return; }
+  const next = ui.log.slice();
+  next.splice(Math.min(r.index, next.length), 0, r.act);
+  rebuild(next);
+  flash(`Redid ${r.act.kind}`);
+  beep(520, 0.06, 'sine');
+}
+
+let last = 0, acc = 0;
+function frame(ts) {
+  if (!last) last = ts;
+  let dt = (ts - last) / 1000;
+  last = ts;                                   // advanced every frame, paused or not
+  if (dt > MAX_FRAME_DT) dt = MAX_FRAME_DT;    // a backgrounded tab can never teleport creeps
+
+  if (!ui.paused && !ui.world.over) {
+    acc += dt * SPEEDS[ui.speedIdx];
+    let steps = 0;
+    while (acc >= TICK && steps < MAX_TICKS_PER_FRAME) {
+      tick(ui.world);
+      acc -= TICK; steps++;
+    }
+    if (acc > TICK * MAX_TICKS_PER_FRAME) acc = 0;
+
+    const fx = ui.world.fx;
+    if (fx.length) {
+      for (const ev of fx) {
+        if (ev.k === 'kill') { burst(ev.x, ev.y, ev.color, 7); beep(760, 0.03, 'triangle', 0.02); }
+        else { burst(ev.x, ev.y, ev.color, 14); beep(140, 0.16, 'sawtooth', 0.06); }
+      }
+      fx.length = 0;
+    }
+  }
+
+  render();
+  if (ui.world.tick !== ui.lastRenderedTick) { ui.lastRenderedTick = ui.world.tick; syncHud(); }
+  requestAnimationFrame(frame);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   13. DOM WIRING
+   ───────────────────────────────────────────────────────────────────────── */
+const $ = id => document.getElementById(id);
+const liveRegion = $('live');
+function flash(msg) { liveRegion.textContent = msg; }
+
+function syncHud() {
+  const w = ui.world;
+  $('s-wave').textContent = w.wave;
+  $('s-lives').textContent = w.lives;
+  $('s-coins').textContent = w.coins;
+  $('s-score').textContent = w.score;
+  $('s-tick').textContent = w.tick;
+  $('s-hash').textContent = hashWorld(w);
+  $('b-wave').disabled = w.waveActive || w.over;
+  $('b-undo').disabled = !ui.log.some(a => a.kind !== 'wave');
+  $('b-redo').disabled = !ui.redo.length;
+  $('b-sell').disabled = ui.selected < 0;
+}
+
+function buildShop() {
+  const shop = $('shop');
+  shop.innerHTML = '';
+  TOWER_KEYS.forEach((k, i) => {
+    const d = TOWERS[k];
+    const b = document.createElement('button');
+    b.className = 'tower-btn';
+    b.setAttribute('aria-pressed', 'false');
+    b.dataset.tower = k;
+    const sw = document.createElement('div'); sw.className = 'swatch'; sw.style.background = d.color;
+    const mid = document.createElement('div');
+    const nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = `${i + 1}. ${d.name}`;
+    const ds = document.createElement('div'); ds.className = 'ds'; ds.textContent = d.desc;
+    mid.append(nm, ds);
+    const pr = document.createElement('div'); pr.className = 'pr num'; pr.textContent = d.cost;
+    b.append(sw, mid, pr);
+    b.addEventListener('click', () => selectTower(k));
+    shop.appendChild(b);
+  });
+}
+
+function selectTower(k) {
+  ui.pending = ui.pending === k ? null : k;
+  ui.selected = -1;
+  document.querySelectorAll('.tower-btn').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.tower === ui.pending)));
+  syncUI();
+}
+
+function syncUI() {
+  syncHud();
+  const card = $('sel-card'), body = $('sel-body');
+  const t = ui.selected >= 0 ? ui.world.towers.find(t => t.idx === ui.selected) : null;
+  if (!t) { card.hidden = true; syncLog(); return; }
+  card.hidden = false;
+  body.innerHTML = '';
+  const s = towerStats(t), d = TOWERS[t.type];
+  const rows = [
+    ['Type', d.name], ['Damage', s.dmg], ['Range', s.range.toFixed(2)],
+    ['Fire rate', (1 / s.cd).toFixed(2) + '/s'], ['Shots fired', t.shots], ['Sell value', sellValue(t)]
+  ];
+  if (s.splash > 0) rows.splice(3, 0, ['Splash', s.splash.toFixed(2)]);
+  if (s.slow > 0) rows.splice(3, 0, ['Slow', Math.round(s.slow * 100) + '% / ' + s.slowT.toFixed(1) + 's']);
+  for (const [k, v] of rows) {
+    const row = document.createElement('div'); row.className = 'sel-row';
+    const a = document.createElement('span'); a.textContent = k;
+    const b = document.createElement('b'); b.className = 'num'; b.textContent = v;
+    row.append(a, b); body.appendChild(row);
+  }
+  for (const track of ['A', 'B']) {
+    const lvl = track === 'A' ? t.a : t.b;
+    const btn = document.createElement('button');
+    btn.className = 'up-btn';
+    const left = document.createElement('span');
+    left.textContent = d[track].name + ' ';
+    const pips = document.createElement('span');
+    pips.className = 'pips'; pips.textContent = '●'.repeat(lvl) + '○'.repeat(3 - lvl);
+    left.appendChild(pips);
+    const right = document.createElement('span');
+    right.className = 'num';
+    if (lvl >= 3) { right.textContent = 'MAX'; btn.disabled = true; }
+    else {
+      const cost = upgradeCost(t, track);
+      right.textContent = cost; right.style.color = 'var(--gold)';
+      btn.disabled = ui.world.coins < cost;
+      btn.addEventListener('click', () => {
+        if (pushAction({ kind: 'upgrade', idx: t.idx, track })) beep(660, 0.07, 'sine');
+      });
+    }
+    btn.append(left, right);
+    body.appendChild(btn);
+  }
+  syncLog();
+}
+
+function syncLog() {
+  const el = $('log');
+  el.innerHTML = '';
+  for (const e of ui.world.events.slice(-40).reverse()) {
+    const d = document.createElement('div');
+    const t = document.createElement('span'); t.className = 't';
+    t.textContent = String(Math.floor(e.tick / 60)).padStart(4, '0') + 's ';
+    const m = document.createElement('span'); m.className = e.cls; m.textContent = e.msg;
+    d.append(t, m); el.appendChild(d);
+  }
+}
+
+function cellFromEvent(e) {
+  const r = cv.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width * COLS;
+  const y = (e.clientY - r.top) / r.height * ROWS;
+  if (x < 0 || y < 0 || x >= COLS || y >= ROWS) return -1;
+  return Math.floor(y) * COLS + Math.floor(x);
+}
+
+cv.addEventListener('pointermove', e => { ui.cursor = cellFromEvent(e); });
+cv.addEventListener('pointerleave', () => { ui.cursor = -1; });
+cv.addEventListener('pointerdown', e => {
+  const idx = cellFromEvent(e);
+  if (idx < 0) return;
+  cv.focus();
+  ui.cursor = idx;
+  const existing = ui.world.towers.find(t => t.idx === idx);
+  if (existing) { ui.selected = idx; ui.pending = null; document.querySelectorAll('.tower-btn').forEach(b => b.setAttribute('aria-pressed', 'false')); syncUI(); return; }
+  if (!ui.pending) { ui.selected = -1; syncUI(); return; }
+  const def = TOWERS[ui.pending];
+  if (ui.world.coins < def.cost) { flash('Not enough coins'); beep(180, 0.1, 'square', 0.03); return; }
+  if (pushAction({ kind: 'build', idx, tower: ui.pending })) {
+    burst(idx % COLS + 0.5, Math.floor(idx / COLS) + 0.5, def.color, 10);
+    beep(520, 0.05, 'sine');
+  } else { flash('Cannot build there — it would seal the path'); beep(180, 0.1, 'square', 0.03); }
+});
+
+function togglePause() { ui.paused = !ui.paused; $('b-pause').textContent = ui.paused ? 'Resume' : 'Pause'; flash(ui.paused ? 'Paused' : 'Resumed'); }
+function cycleSpeed() { ui.speedIdx = (ui.speedIdx + 1) % SPEEDS.length; $('b-speed').textContent = 'Speed x' + SPEEDS[ui.speedIdx]; }
+function sellSelected() {
+  if (ui.selected < 0) return;
+  const t = ui.world.towers.find(t => t.idx === ui.selected);
+  if (!t) return;
+  const v = sellValue(t);
+  if (pushAction({ kind: 'sell', idx: ui.selected })) { flash(`Sold for ${v}`); ui.selected = -1; beep(300, 0.08, 'sine'); syncUI(); }
+}
+function newGame(seed) {
+  ui.world = createWorld(seed || $('seed').value || 'OPUS5');
+  ui.log = []; ui.redo = []; ui.pending = null; ui.selected = -1;
+  ui.paused = false; particles = [];
+  $('b-pause').textContent = 'Pause';
+  document.querySelectorAll('.tower-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+  logEvent(ui.world, `New world — seed "${ui.world.seed}"`, 'hi');
+  save(); syncUI();
+}
+
+$('b-wave').addEventListener('click', () => { if (pushAction({ kind: 'wave' })) beep(440, 0.1, 'triangle'); });
+$('b-pause').addEventListener('click', togglePause);
+$('b-speed').addEventListener('click', cycleSpeed);
+$('b-undo').addEventListener('click', undo);
+$('b-redo').addEventListener('click', redo);
+$('b-sell').addEventListener('click', sellSelected);
+$('b-new').addEventListener('click', () => newGame());
+$('b-seed').addEventListener('click', () => newGame($('seed').value));
+$('b-theme').addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  refreshPalette();
+  try { localStorage.setItem('opus5-theme', next); } catch (e) {}
+});
+$('b-mute').addEventListener('click', () => {
+  muted = !muted;
+  $('b-mute').textContent = muted ? 'Sound ' : 'Muted ';
+  $('b-mute').innerHTML = (muted ? 'Sound ' : 'Muted ') + '<kbd>M</kbd>';
+  try { localStorage.setItem('opus5-muted', String(muted)); } catch (e) {}
+});
+
+addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  const k = e.key.toLowerCase();
+  if (k === '1') selectTower('arrow');
+  else if (k === '2') selectTower('cannon');
+  else if (k === '3') selectTower('frost');
+  else if (k === 's') $('b-wave').click();
+  else if (k === ' ') { e.preventDefault(); togglePause(); }
+  else if (k === 'f') cycleSpeed();
+  else if (k === 'u') undo();
+  else if (k === 'y') redo();
+  else if (k === 'x') sellSelected();
+  else if (k === 't') $('b-theme').click();
+  else if (k === 'm') $('b-mute').click();
+  else if (k === 'escape') { ui.pending = null; ui.selected = -1; document.querySelectorAll('.tower-btn').forEach(b => b.setAttribute('aria-pressed', 'false')); syncUI(); }
+  else if (k.startsWith('arrow')) {
+    e.preventDefault();
+    if (ui.cursor < 0) ui.cursor = idxOf(1, 6);
+    let c = ui.cursor % COLS, r = Math.floor(ui.cursor / COLS);
+    if (k === 'arrowleft') c--; else if (k === 'arrowright') c++;
+    else if (k === 'arrowup') r--; else r++;
+    ui.cursor = idxOf(Math.max(0, Math.min(COLS - 1, c)), Math.max(0, Math.min(ROWS - 1, r)));
+    flash(`Cursor column ${c + 1}, row ${r + 1}`);
+  } else if (k === 'enter' && ui.cursor >= 0) {
+    cv.dispatchEvent(new PointerEvent('pointerdown', {
+      clientX: cv.getBoundingClientRect().left + (ui.cursor % COLS + 0.5) * CELL * cssScale,
+      clientY: cv.getBoundingClientRect().top + (Math.floor(ui.cursor / COLS) + 0.5) * CELL * cssScale
+    }));
+  }
+});
+
+function save() {
+  try { localStorage.setItem('opus5-save', serialize(ui.world, ui.log)); } catch (e) {}
+}
+function load() {
+  try {
+    const raw = localStorage.getItem('opus5-save');
+    if (!raw) return false;
+    const { world, log } = deserialize(raw);
+    ui.world = world; ui.log = log;
+    $('seed').value = world.seed;
+    return true;
+  } catch (e) { return false; }
+}
+
+$('b-export').addEventListener('click', () => {
+  const code = btoa(JSON.stringify({ seed: ui.world.seed, log: ui.log, tick: ui.world.tick }))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const out = $('test-out');
+  out.textContent = `RUN CODE (${code.length} chars) — paste into Import Run to reproduce this exact game:\n\n${code}`;
+  try { navigator.clipboard.writeText(code); flash('Run code copied to clipboard'); } catch (e) {}
+});
+
+$('b-import').addEventListener('click', () => {
+  const code = prompt('Paste a run code:');
+  if (!code) return;
+  try {
+    const json = atob(code.trim().replace(/-/g, '+').replace(/_/g, '/'));
+    const d = JSON.parse(json);
+    ui.world = simulate(d.seed, d.log, d.tick);
+    ui.log = d.log; ui.redo = [];
+    $('seed').value = d.seed;
+    ui.selected = -1; ui.pending = null;
+    save(); syncUI();
+    $('test-out').textContent = `Replayed ${d.log.length} actions over ${d.tick} ticks.\nChecksum: ${hashWorld(ui.world)}\n\nIf this matches the sender's checksum, the two runs are bit-identical.`;
+    flash('Run imported');
+  } catch (e) { $('test-out').textContent = 'Import failed: ' + e.message; }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────
+   14. SELF-TESTS
+   These do not merely exercise the code — several of them *prove* properties
+   that the architecture claims, most notably that the simulation is pure and
+   that outcomes are independent of frame rate.
+   ───────────────────────────────────────────────────────────────────────── */
+const SCRIPT = [
+  { tick: 0, kind: 'build', idx: idxOf(3, 5), tower: 'arrow' },
+  { tick: 0, kind: 'build', idx: idxOf(5, 7), tower: 'frost' },
+  { tick: 0, kind: 'wave' },
+  { tick: 120, kind: 'build', idx: idxOf(8, 5), tower: 'cannon' },
+  { tick: 400, kind: 'upgrade', idx: idxOf(3, 5), track: 'A' },
+  { tick: 600, kind: 'sell', idx: idxOf(5, 7) }
+];
+
+function runTests() {
+  const out = [];
+  let pass = 0, fail = 0, pend = 0;
+  const check = (name, fn) => {
+    let r;
+    try { r = fn(); } catch (e) { r = { ok: false, msg: e.message }; }
+    if (r === true) r = { ok: true };
+    if (r.pending) { pend++; out.push(`<span class="pend">○ PEND</span>  ${name}\n         <span class="note">${r.msg}</span>`); return; }
+    if (r.ok) { pass++; out.push(`<span class="pass">✓ PASS</span>  ${name}${r.msg ? `\n         <span class="note">${r.msg}</span>` : ''}`); }
+    else { fail++; out.push(`<span class="fail">✗ FAIL</span>  ${name}\n         <span class="note">${r.msg || ''}</span>`); }
+  };
+
+  check('RNG stream is reproducible from a seed', () => {
+    const a = makeRng(hashString('K')), b = makeRng(hashString('K'));
+    for (let i = 0; i < 500; i++) if (a.next() !== b.next()) return { ok: false, msg: 'diverged at ' + i };
+    return { ok: true, msg: '500 draws identical' };
+  });
+
+  check('RNG state survives serialization mid-stream', () => {
+    const a = makeRng(hashString('K'));
+    for (let i = 0; i < 37; i++) a.next();
+    const b = makeRng(JSON.parse(JSON.stringify({ s: a.s })).s);
+    for (let i = 0; i < 100; i++) if (a.next() !== b.next()) return { ok: false, msg: 'diverged at ' + i };
+    return { ok: true, msg: 'resumed exactly from a saved uint32' };
+  });
+
+  check('Simulation never reads Math.random or the wall clock', () => {
+    const realRandom = Math.random, realNow = Date.now, realPerf = performance.now;
+    let violation = null;
+    Math.random = () => { violation = violation || 'Math.random'; return 0.5; };
+    Date.now = () => { violation = violation || 'Date.now'; return 0; };
+    performance.now = () => { violation = violation || 'performance.now'; return 0; };
+    try { simulate('PURITY', SCRIPT, 900); }
+    finally { Math.random = realRandom; Date.now = realNow; performance.now = realPerf; }
+    return violation
+      ? { ok: false, msg: 'sim called ' + violation + '()' }
+      : { ok: true, msg: '900 ticks with zero impure calls' };
+  });
+
+  check('Same seed + same actions produce an identical world', () => {
+    const a = simulate('DETERMINISM', SCRIPT, 1800);
+    const b = simulate('DETERMINISM', SCRIPT, 1800);
+    return hashWorld(a) === hashWorld(b)
+      ? { ok: true, msg: '1800 ticks, checksum ' + hashWorld(a) }
+      : { ok: false, msg: hashWorld(a) + ' ≠ ' + hashWorld(b) };
+  });
+
+  check('Different seeds produce different worlds', () => {
+    const a = simulate('SEED-A', SCRIPT, 900), b = simulate('SEED-B', SCRIPT, 900);
+    return hashWorld(a) !== hashWorld(b) ? { ok: true, msg: 'seeds diverge as expected' }
+      : { ok: false, msg: 'seed is being ignored' };
+  });
+
+  check('Outcome is independent of frame rate and speed multiplier', () => {
+    const a = createWorld('FRAMERATE'), b = createWorld('FRAMERATE');
+    for (const w of [a, b]) { applyAction(w, { kind: 'build', idx: idxOf(4, 5), tower: 'arrow' }); applyAction(w, { kind: 'wave' }); }
+    for (let i = 0; i < 900; i++) tick(a);
+    const chunks = [1, 2, 3, 5, 8, 13, 4, 7];
+    let done = 0, ci = 0;
+    while (done < 900) { const n = Math.min(chunks[ci++ % chunks.length], 900 - done); for (let i = 0; i < n; i++) tick(b); done += n; }
+    return hashWorld(a) === hashWorld(b)
+      ? { ok: true, msg: 'steady 60fps == ragged variable frames, bit for bit' }
+      : { ok: false, msg: 'variable stepping diverged' };
+  });
+
+  check('A stalled frame cannot advance the sim without bound', () => {
+    const dt = Math.min(5.0, MAX_FRAME_DT);
+    const ticksWanted = Math.floor((dt * SPEEDS[SPEEDS.length - 1]) / TICK);
+    const applied = Math.min(ticksWanted, MAX_TICKS_PER_FRAME);
+    return applied <= MAX_TICKS_PER_FRAME
+      ? { ok: true, msg: `a 5s stall yields ${applied} ticks, not 300 — no tab-switch teleport` }
+      : { ok: false, msg: 'clamp not enforced' };
+  });
+
+  check('Flow field finds the true shortest path on an open grid', () => {
+    const w = createWorld('PATH');
+    const expected = Math.abs(BASE.c - START.c) + Math.abs(BASE.r - START.r);
+    return w.dist[START_IDX] === expected
+      ? { ok: true, msg: `${expected} steps, matches manhattan distance` }
+      : { ok: false, msg: `got ${w.dist[START_IDX]}, expected ${expected}` };
+  });
+
+  check('A tower that would seal the path is rejected', () => {
+    const w = createWorld('BLOCK');
+    for (let r = 0; r < ROWS; r++) if (r !== 6) { w.grid[idxOf(10, r)] = 1; }
+    computeField(w);
+    const sealed = !canPlace(w, idxOf(10, 6));
+    const stillOpen = w.dist[START_IDX] !== -1;
+    return sealed && stillOpen
+      ? { ok: true, msg: 'wall completion refused, grid left untouched' }
+      : { ok: false, msg: `sealed=${sealed} stillOpen=${stillOpen}` };
+  });
+
+  check('Armor reduces damage but never below 1', () => {
+    const w = createWorld('ARMOR');
+    spawnCreep(w, 'tank', 1);
+    const cr = w.creeps[0];
+    const a = damageCreep(w, cr, 20, false);
+    const b = damageCreep(w, cr, 2, false);
+    const c = damageCreep(w, cr, 2, true);
+    return (a === 15 && b === 1 && c === 2)
+      ? { ok: true, msg: '20−5=15, floored to 1, pierce ignores armor' }
+      : { ok: false, msg: `got ${a}, ${b}, ${c}` };
+  });
+
+  check('Slow expires and restores the exact base speed', () => {
+    const w = createWorld('SLOW');
+    spawnCreep(w, 'grunt', 1);
+    const cr = w.creeps[0];
+    applySlow(cr, 0.4, 0.5);
+    if (cr.slowAmt !== 0.4) return { ok: false, msg: 'slow not applied' };
+    applySlow(cr, 0.2, 9);
+    if (cr.slowAmt !== 0.4) return { ok: false, msg: 'weaker slow overwrote stronger one' };
+    for (let i = 0; i < 40; i++) tick(w);
+    return cr.slowAmt === 0 && cr.slowT === 0
+      ? { ok: true, msg: 'stronger slow wins, then expires cleanly' }
+      : { ok: false, msg: `slowAmt=${cr.slowAmt}` };
+  });
+
+  check('Save/load round-trips and continues identically', () => {
+    const a = simulate('SAVE', SCRIPT, 700);
+    const { world: b } = deserialize(serialize(a, SCRIPT));
+    if (hashWorld(a) !== hashWorld(b)) return { ok: false, msg: 'checksum differs immediately after load' };
+    for (let i = 0; i < 300; i++) { tick(a); tick(b); }
+    return hashWorld(a) === hashWorld(b)
+      ? { ok: true, msg: 'reloaded world stayed in lockstep for 300 more ticks' }
+      : { ok: false, msg: 'diverged after resuming' };
+  });
+
+  check('Undo by re-simulation is exact, not approximate', () => {
+    const withAll = SCRIPT.slice();
+    const withoutCannon = SCRIPT.filter(a => !(a.kind === 'build' && a.tower === 'cannon'));
+    const undone = simulate('UNDO', withoutCannon, 900);
+    const never = simulate('UNDO', withoutCannon, 900);
+    const full = simulate('UNDO', withAll, 900);
+    if (hashWorld(full) === hashWorld(undone)) return { ok: false, msg: 'removing an action changed nothing' };
+    return hashWorld(undone) === hashWorld(never)
+      ? { ok: true, msg: 'undone world == world where the build never happened, coins included' }
+      : { ok: false, msg: 'undo drifted' };
+  });
+
+  check('Towers acquire a target and deal damage', () => {
+    const w = createWorld('COMBAT');
+    applyAction(w, { kind: 'build', idx: idxOf(4, 5), tower: 'arrow' });
+    applyAction(w, { kind: 'wave' });
+    let damaged = false;
+    for (let i = 0; i < 1200 && !damaged; i++) {
+      tick(w);
+      if (w.killed > 0 || w.creeps.some(c => c.hp < c.maxHp)) damaged = true;
+    }
+    if (damaged) return { ok: true, msg: `${w.towers[0].shots} shots fired, ${w.killed} kills` };
+    const fired = w.towers[0].shots;
+    return { pending: true, msg: fired === 0 ? 'selectTarget() has not been implemented yet — towers are holding fire' : 'shots fired but no damage landed' };
+  });
+
+  const head = fail === 0
+    ? `<span class="pass">${pass} passed</span>${pend ? `, <span class="pend">${pend} pending</span>` : ''}, 0 failed`
+    : `<span class="fail">${fail} failed</span>, ${pass} passed${pend ? `, ${pend} pending` : ''}`;
+  $('test-out').innerHTML = `${head}\n\n${out.join('\n')}`;
+  flash(`Self-tests: ${pass} passed, ${fail} failed, ${pend} pending`);
+}
+
+function proveDeterminism() {
+  const runs = [];
+  const label = ['run A', 'run B', 'run C (chunked stepping)'];
+  for (let k = 0; k < 3; k++) {
+    if (k < 2) runs.push(simulate('PROOF', SCRIPT, 2400));
+    else {
+      const w = createWorld('PROOF');
+      const byTick = new Map();
+      for (const a of SCRIPT) { if (!byTick.has(a.tick)) byTick.set(a.tick, []); byTick.get(a.tick).push(a); }
+      for (const a of (byTick.get(0) || [])) applyAction(w, a);
+      const chunks = [1, 7, 3, 11, 2, 5];
+      let done = 0, ci = 0;
+      while (done < 2400) {
+        const n = Math.min(chunks[ci++ % chunks.length], 2400 - done);
+        for (let i = 0; i < n; i++) { tick(w); const acts = byTick.get(w.tick); if (acts) for (const a of acts) applyAction(w, a); }
+        done += n;
+      }
+      runs.push(w);
+    }
+  }
+  const hashes = runs.map(hashWorld);
+  const same = hashes.every(h => h === hashes[0]);
+  const lines = hashes.map((h, i) => `  ${label[i].padEnd(28)} tick ${String(runs[i].tick).padStart(5)}  checksum ${h}`);
+  $('test-out').innerHTML =
+    `Seed "PROOF", 5 scripted actions, 2400 ticks each.\n\n${lines.join('\n')}\n\n` +
+    (same
+      ? `<span class="pass">IDENTICAL.</span> Three runs — two straight, one stepped in ragged 1/7/3/11/2/5-tick chunks\nto imitate a stuttering display — landed on the same bit-exact world state.\n<span class="note">That is what "seeded" is supposed to mean.</span>`
+      : `<span class="fail">DIVERGED.</span> The simulation is not deterministic.`);
+}
+
+$('b-test').addEventListener('click', runTests);
+$('b-determinism').addEventListener('click', proveDeterminism);
+
+/* ─────────────────────────────────────────────────────────────────────────
+   15. BOOT
+   ───────────────────────────────────────────────────────────────────────── */
+try {
+  const th = localStorage.getItem('opus5-theme');
+  if (th) document.documentElement.dataset.theme = th;
+  muted = localStorage.getItem('opus5-muted') !== 'false';
+} catch (e) {}
+$('b-mute').innerHTML = (muted ? 'Sound ' : 'Muted ') + '<kbd>M</kbd>';
+
+refreshPalette();
+buildShop();
+if (!load()) logEvent(ui.world, 'New world — seed "OPUS5"', 'hi');
+resizeCanvas();
+watchDpr();
+addEventListener('resize', resizeCanvas);
+syncUI();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

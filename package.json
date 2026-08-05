@@ -6,6 +6,7 @@
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
+    "check:experiments": "node scripts/check-experiments.mjs",
     "check:navigation": "node scripts/check-navigation-state.mjs",
     "check:type": "node scripts/check-type-system.mjs",
     "sync:resume": "node scripts/sync-resume.mjs"
