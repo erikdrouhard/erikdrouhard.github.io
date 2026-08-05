@@ -204,6 +204,10 @@
   content: "";
 }
 
+.mix-section-feature + .mix-section {
+  border-top: 0;
+}
+
 .mix-reading {
   display: grid;
   max-width: 720px;
