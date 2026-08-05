@@ -716,6 +716,16 @@
     grid-template-columns: minmax(0, 11fr) minmax(290px, 9fr);
   }
 
+  .core-ai-page .button-row {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .core-ai-page .button {
+    width: 100%;
+  }
+
   .core-ai-page .timeline li {
     grid-template-columns: 130px minmax(180px, 0.9fr) minmax(240px, 1.3fr);
   }
