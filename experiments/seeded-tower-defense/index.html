@@ -210,6 +210,8 @@ simulation never reads Math.random(), Date.now(), or the wall clock.</pre>
 <div class="sr" id="live" aria-live="polite" role="status"></div>
 </main>
 
+<img id="sprite-atlas" src="./tower-defense-spritesheet.jpg" alt="" hidden decoding="async">
+
 <script>
 'use strict';
 
@@ -280,6 +282,35 @@ const CREEPS = {
   tank:   { name: 'Tank',   hp: 130, speed: 1.3, armor: 5, bounty: 16,  r: 0.38, color: '#f5c451', gap: 1.15, weight: 2.4 },
   boss:   { name: 'Boss',   hp: 950, speed: 1.05, armor: 9, bounty: 130, r: 0.46, color: '#ff6b6b', gap: 2.0, weight: 8.0 }
 };
+
+/* Crops from the supplied 1280 × 853 texture atlas. Terrain keeps its
+   painted tile background; entity sprites are keyed off the atlas's dark
+   backdrop once at load time and cached as transparent canvases. */
+const SPRITE_RECTS = Object.freeze({
+  terrainGrass: { x: 16, y: 34, w: 91, h: 104 },
+  terrainDirt: { x: 111, y: 34, w: 81, h: 104 },
+  terrainStone: { x: 195, y: 34, w: 149, h: 104 },
+  terrainRocky: { x: 533, y: 34, w: 92, h: 104 },
+  terrainSnow: { x: 630, y: 34, w: 91, h: 104 },
+  portal: { x: 746, y: 30, w: 124, h: 145 },
+  castle: { x: 13, y: 198, w: 116, h: 101 },
+  towerArrow: { x: 24, y: 380, w: 111, h: 108 },
+  towerCannon: { x: 21, y: 546, w: 108, h: 110 },
+  towerFrost: { x: 23, y: 702, w: 109, h: 124 },
+  enemyGrunt: { x: 754, y: 424, w: 65, h: 75 },
+  enemyRunner: { x: 880, y: 423, w: 72, h: 78 },
+  enemySwarm: { x: 752, y: 510, w: 67, h: 69 },
+  enemyTank: { x: 1023, y: 419, w: 78, h: 84 },
+  enemyBoss: { x: 1097, y: 407, w: 97, h: 98 },
+  projectileArrow: { x: 838, y: 197, w: 49, h: 43 },
+  projectileCannon: { x: 806, y: 248, w: 39, h: 38 },
+  projectileFrost: { x: 793, y: 326, w: 52, h: 53 }
+});
+const TERRAIN_STAGES = Object.freeze([
+  { id: 'meadow', fromWave: 0, ground: 'terrainGrass', path: 'terrainDirt' },
+  { id: 'highlands', fromWave: 10, ground: 'terrainRocky', path: 'terrainStone' },
+  { id: 'winter', fromWave: 20, ground: 'terrainSnow', path: 'terrainDirt' }
+]);
 
 /* ─────────────────────────────────────────────────────────────────────────
    3. WORLD
@@ -671,20 +702,28 @@ function simulate(seed, log, untilTick) {
    ───────────────────────────────────────────────────────────────────────── */
 const cv = document.getElementById('cv');
 const ctx = cv.getContext('2d');
+const spriteAtlas = document.getElementById('sprite-atlas');
 const fxRng = makeRng(0x9E3779B9);
 let particles = [];
 let cssScale = 1;
+let atlasReady = false;
+let terrainLayer = null;
+let terrainLayerKey = '';
+const spriteCache = new Map();
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function resizeCanvas() {
   const dpr = Math.min(window.devicePixelRatio || 1, 3);
   const avail = cv.parentElement.clientWidth - 20;
-  const cssW = Math.max(320, Math.min(COLS * CELL, avail));
+  const cssW = Math.max(320, avail);
   cssScale = cssW / (COLS * CELL);
   const cssH = ROWS * CELL * cssScale;
-  cv.style.height = cssH + 'px';
-  cv.width = Math.round(cssW * dpr);
-  cv.height = Math.round(cssH * dpr);
+  const styleW = cssW + 'px', styleH = cssH + 'px';
+  if (cv.style.width !== styleW) cv.style.width = styleW;
+  if (cv.style.height !== styleH) cv.style.height = styleH;
+  const backingW = Math.round(cssW * dpr), backingH = Math.round(cssH * dpr);
+  if (cv.width !== backingW) cv.width = backingW;
+  if (cv.height !== backingH) cv.height = backingH;
   ctx.setTransform(dpr * cssScale, 0, 0, dpr * cssScale, 0, 0);
 }
 let dprQuery = null;
@@ -717,33 +756,167 @@ function roundRect(x, y, w, h, r) {
   ctx.closePath();
 }
 
+function cropCover(target, source, rect, x, y, w, h) {
+  const sourceRatio = rect.w / rect.h;
+  const targetRatio = w / h;
+  let sx = rect.x, sy = rect.y, sw = rect.w, sh = rect.h;
+  if (sourceRatio > targetRatio) {
+    sw = rect.h * targetRatio;
+    sx += (rect.w - sw) / 2;
+  } else {
+    sh = rect.w / targetRatio;
+    sy += (rect.h - sh) / 2;
+  }
+  target.drawImage(source, sx, sy, sw, sh, x, y, w, h);
+}
+
+function makeTransparentSprite(rect) {
+  const sprite = document.createElement('canvas');
+  sprite.width = rect.w;
+  sprite.height = rect.h;
+  const spriteCtx = sprite.getContext('2d', { willReadFrequently: true });
+  spriteCtx.drawImage(spriteAtlas, rect.x, rect.y, rect.w, rect.h, 0, 0, rect.w, rect.h);
+  const image = spriteCtx.getImageData(0, 0, rect.w, rect.h);
+  const pixels = image.data;
+  for (let i = 0; i < pixels.length; i += 4) {
+    const red = pixels[i], green = pixels[i + 1], blue = pixels[i + 2];
+    const brightest = Math.max(red, green, blue);
+    const darkest = Math.min(red, green, blue);
+    const chroma = brightest - darkest;
+    if (brightest <= 24) pixels[i + 3] = 0;
+    else if (brightest < 52 && chroma < 18) {
+      pixels[i + 3] = Math.round(pixels[i + 3] * ((brightest - 24) / 28));
+    }
+  }
+  spriteCtx.putImageData(image, 0, 0);
+  return sprite;
+}
+
+function prepareSpriteAtlas() {
+  if (!spriteAtlas.naturalWidth) return;
+  spriteCache.clear();
+  for (const [name, rect] of Object.entries(SPRITE_RECTS)) {
+    if (!name.startsWith('terrain')) spriteCache.set(name, makeTransparentSprite(rect));
+  }
+  atlasReady = true;
+  terrainLayerKey = '';
+}
+
+spriteAtlas.addEventListener('load', prepareSpriteAtlas, { once: true });
+if (spriteAtlas.complete && spriteAtlas.naturalWidth) prepareSpriteAtlas();
+
+function terrainStageFor(wave) {
+  let stage = TERRAIN_STAGES[0];
+  for (const candidate of TERRAIN_STAGES) if (wave >= candidate.fromWave) stage = candidate;
+  return stage;
+}
+
+function routeFromSpawn(w) {
+  const route = [];
+  let idx = START_IDX;
+  for (let guard = 0; guard < COLS * ROWS; guard++) {
+    route.push(idx);
+    if (idx === BASE_IDX) break;
+    const next = w.flow[idx];
+    if (next < 0 || next === idx) break;
+    idx = next;
+  }
+  return route;
+}
+
+function drawTerrainCrop(target, rect, x, y, size, quarterTurns, mirror) {
+  target.save();
+  target.translate(x + size / 2, y + size / 2);
+  target.rotate((quarterTurns || 0) * Math.PI / 2);
+  if (mirror) target.scale(-1, 1);
+  cropCover(target, spriteAtlas, rect, -size / 2, -size / 2, size, size);
+  target.restore();
+}
+
+function currentTerrainLayer(w) {
+  if (!atlasReady) return null;
+  const stage = terrainStageFor(w.wave);
+  const layoutKey = w.towers.map(t => t.idx).join(',');
+  const key = `${w.seed}|${stage.id}|${layoutKey}`;
+  if (terrainLayer && terrainLayerKey === key) return terrainLayer;
+
+  const W = COLS * CELL, H = ROWS * CELL;
+  terrainLayer = document.createElement('canvas');
+  terrainLayer.width = W;
+  terrainLayer.height = H;
+  const terrainCtx = terrainLayer.getContext('2d');
+  const groundRect = SPRITE_RECTS[stage.ground];
+  for (let i = 0; i < COLS * ROWS; i++) {
+    const c = i % COLS, r = (i - c) / COLS;
+    const variation = hashString(`${w.seed}|terrain|${i}`);
+    drawTerrainCrop(terrainCtx, groundRect, c * CELL, r * CELL, CELL, variation & 1 ? 2 : 0, Boolean(variation & 2));
+  }
+
+  const route = routeFromSpawn(w);
+  for (let i = 0; i < route.length; i++) {
+    const idx = route[i];
+    const c = idx % COLS, r = (idx - c) / COLS;
+    const previous = route[Math.max(0, i - 1)];
+    const next = route[Math.min(route.length - 1, i + 1)];
+    const pc = previous % COLS, pr = Math.floor(previous / COLS);
+    const nc = next % COLS, nr = Math.floor(next / COLS);
+    const horizontal = pc !== nc && pr === nr;
+    const turns = horizontal ? 1 : 0;
+    drawTerrainCrop(terrainCtx, SPRITE_RECTS[stage.path], c * CELL, r * CELL, CELL, turns, Boolean(hashString(`${w.seed}|path|${idx}`) & 1));
+  }
+
+  terrainCtx.fillStyle = 'rgba(3, 8, 12, .18)';
+  terrainCtx.fillRect(0, 0, W, H);
+  terrainLayerKey = key;
+  return terrainLayer;
+}
+
+function drawSpriteBottom(name, centerX, bottomY, height, alpha) {
+  const sprite = spriteCache.get(name);
+  if (!sprite) return null;
+  const width = height * sprite.width / sprite.height;
+  ctx.save();
+  ctx.globalAlpha = alpha == null ? 1 : alpha;
+  ctx.drawImage(sprite, centerX - width / 2, bottomY - height, width, height);
+  ctx.restore();
+  return { width, height };
+}
+
 function render() {
   const W = COLS * CELL, H = ROWS * CELL;
   ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = css('--grid');
-  ctx.fillRect(0, 0, W, H);
-
-  const maxD = Math.max(1, ...Array.from(ui.world.dist).filter(d => d >= 0));
-  for (let i = 0; i < COLS * ROWS; i++) {
-    if (ui.world.grid[i] || ui.world.dist[i] < 0) continue;
-    const c = i % COLS, r = (i - c) / COLS;
-    ctx.globalAlpha = 0.11 + 0.24 * (1 - ui.world.dist[i] / maxD);
-    ctx.fillStyle = css('--lane');
-    ctx.fillRect(c * CELL, r * CELL, CELL, CELL);
+  const terrain = currentTerrainLayer(ui.world);
+  if (terrain) ctx.drawImage(terrain, 0, 0, W, H);
+  else {
+    ctx.fillStyle = css('--grid');
+    ctx.fillRect(0, 0, W, H);
+    const maxD = Math.max(1, ...Array.from(ui.world.dist).filter(d => d >= 0));
+    for (let i = 0; i < COLS * ROWS; i++) {
+      if (ui.world.grid[i] || ui.world.dist[i] < 0) continue;
+      const c = i % COLS, r = (i - c) / COLS;
+      ctx.globalAlpha = 0.11 + 0.24 * (1 - ui.world.dist[i] / maxD);
+      ctx.fillStyle = css('--lane');
+      ctx.fillRect(c * CELL, r * CELL, CELL, CELL);
+    }
+    ctx.globalAlpha = 1;
   }
-  ctx.globalAlpha = 1;
 
-  ctx.strokeStyle = css('--grid-line'); ctx.lineWidth = 1;
+  ctx.strokeStyle = atlasReady ? 'rgba(4, 10, 12, .18)' : css('--grid-line'); ctx.lineWidth = 1;
   ctx.beginPath();
   for (let c = 0; c <= COLS; c++) { ctx.moveTo(c * CELL + 0.5, 0); ctx.lineTo(c * CELL + 0.5, H); }
   for (let r = 0; r <= ROWS; r++) { ctx.moveTo(0, r * CELL + 0.5); ctx.lineTo(W, r * CELL + 0.5); }
   ctx.stroke();
 
-  ctx.fillStyle = css('--ok'); ctx.globalAlpha = 0.85;
-  roundRect(START.c * CELL + 5, START.r * CELL + 5, CELL - 10, CELL - 10, 5); ctx.fill();
-  ctx.fillStyle = css('--danger');
-  roundRect(BASE.c * CELL + 4, BASE.r * CELL + 4, CELL - 8, CELL - 8, 5); ctx.fill();
-  ctx.globalAlpha = 1;
+  if (atlasReady) {
+    drawSpriteBottom('portal', START.c * CELL + CELL / 2, START.r * CELL + CELL + 7, 57, 0.96);
+    drawSpriteBottom('castle', BASE.c * CELL + CELL / 2, BASE.r * CELL + CELL + 5, 52, 0.98);
+  } else {
+    ctx.fillStyle = css('--ok'); ctx.globalAlpha = 0.85;
+    roundRect(START.c * CELL + 5, START.r * CELL + 5, CELL - 10, CELL - 10, 5); ctx.fill();
+    ctx.fillStyle = css('--danger');
+    roundRect(BASE.c * CELL + 4, BASE.r * CELL + 4, CELL - 8, CELL - 8, 5); ctx.fill();
+    ctx.globalAlpha = 1;
+  }
 
   if (ui.cursor >= 0 && !ui.world.over) {
     const c = ui.cursor % COLS, r = (ui.cursor - c) / COLS;
@@ -768,11 +941,15 @@ function render() {
     const c = t.idx % COLS, r = (t.idx - c) / COLS;
     const s = towerStats(t);
     const x = c * CELL, y = r * CELL;
-    ctx.fillStyle = css('--panel');
-    roundRect(x + 3, y + 3, CELL - 6, CELL - 6, 7); ctx.fill();
-    ctx.fillStyle = s.color; ctx.globalAlpha = 0.9;
-    roundRect(x + 7, y + 7, CELL - 14, CELL - 14, 5); ctx.fill();
-    ctx.globalAlpha = 1;
+    const spriteName = t.type === 'arrow' ? 'towerArrow' : t.type === 'cannon' ? 'towerCannon' : 'towerFrost';
+    const spriteHeight = t.type === 'frost' ? 51 : 47;
+    if (!drawSpriteBottom(spriteName, x + CELL / 2, y + CELL + 5, spriteHeight)) {
+      ctx.fillStyle = css('--panel');
+      roundRect(x + 3, y + 3, CELL - 6, CELL - 6, 7); ctx.fill();
+      ctx.fillStyle = s.color; ctx.globalAlpha = 0.9;
+      roundRect(x + 7, y + 7, CELL - 14, CELL - 14, 5); ctx.fill();
+      ctx.globalAlpha = 1;
+    }
     const lvl = t.a + t.b;
     if (lvl) {
       ctx.fillStyle = css('--text');
@@ -787,25 +964,45 @@ function render() {
   for (const cr of ui.world.creeps) {
     const d = CREEPS[cr.type];
     const x = cr.x * CELL, y = cr.y * CELL, rad = cr.r * CELL;
-    ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2);
-    ctx.fillStyle = d.color; ctx.fill();
+    const spriteName = `enemy${cr.type[0].toUpperCase()}${cr.type.slice(1)}`;
+    const spriteHeight = Math.max(25, rad * 3.2);
+    const sprite = drawSpriteBottom(spriteName, x, y + rad * 0.9, spriteHeight);
+    if (!sprite) {
+      ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2);
+      ctx.fillStyle = d.color; ctx.fill();
+    }
     if (cr.slowAmt > 0) {
       ctx.strokeStyle = TOWERS.frost.color; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(x, y, rad + 2.5, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(x, y + rad * 0.65, rad + 3, rad * 0.55 + 2, 0, 0, Math.PI * 2); ctx.stroke();
     }
     if (cr.hp < cr.maxHp) {
       const bw = rad * 2.2;
+      const barY = sprite ? y + rad * 0.9 - spriteHeight - 5 : y - rad - 7;
       ctx.fillStyle = 'rgba(0,0,0,.45)';
-      ctx.fillRect(x - bw / 2, y - rad - 7, bw, 3.5);
+      ctx.fillRect(x - bw / 2, barY, bw, 3.5);
       ctx.fillStyle = cr.hp / cr.maxHp > 0.45 ? css('--ok') : css('--danger');
-      ctx.fillRect(x - bw / 2, y - rad - 7, bw * (cr.hp / cr.maxHp), 3.5);
+      ctx.fillRect(x - bw / 2, barY, bw * (cr.hp / cr.maxHp), 3.5);
     }
   }
 
   for (const p of ui.world.projectiles) {
-    ctx.beginPath();
-    ctx.arc(p.x * CELL, p.y * CELL, p.splash > 0 ? 4.5 : 3, 0, Math.PI * 2);
-    ctx.fillStyle = p.color; ctx.fill();
+    const spriteName = p.splash > 0 ? 'projectileCannon' : p.slow > 0 ? 'projectileFrost' : 'projectileArrow';
+    const sprite = spriteCache.get(spriteName);
+    if (sprite) {
+      const height = p.splash > 0 ? 15 : p.slow > 0 ? 20 : 14;
+      const width = height * sprite.width / sprite.height;
+      ctx.save();
+      ctx.translate(p.x * CELL, p.y * CELL);
+      if (spriteName === 'projectileArrow') {
+        ctx.rotate(Math.atan2(p.aimY - p.y, p.aimX - p.x) + Math.PI / 4);
+      }
+      ctx.drawImage(sprite, -width / 2, -height / 2, width, height);
+      ctx.restore();
+    } else {
+      ctx.beginPath();
+      ctx.arc(p.x * CELL, p.y * CELL, p.splash > 0 ? 4.5 : 3, 0, Math.PI * 2);
+      ctx.fillStyle = p.color; ctx.fill();
+    }
   }
 
   if (!reduceMotion) {
@@ -1409,6 +1606,7 @@ refreshPalette();
 buildShop();
 if (!load()) logEvent(ui.world, 'New world — seed "OPUS5"', 'hi');
 resizeCanvas();
+requestAnimationFrame(resizeCanvas);
 watchDpr();
 addEventListener('resize', resizeCanvas);
 syncUI();
