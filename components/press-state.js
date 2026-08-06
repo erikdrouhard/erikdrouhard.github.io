@@ -11,7 +11,15 @@
  * a pointer-driven device if this never loads.
  */
 
-const PRESSABLE_SELECTOR = ".core-ai-page .button";
+/* The site's pill buttons, matching the shared interaction block in styles.css.
+   The Mix.dialog demo's own controls are deliberately left out. */
+const PRESSABLE_SELECTOR = [
+  ".resume-button",
+  ".contact-button",
+  ".core-ai-page .button",
+  ".drive-contact",
+  ".mix-contact",
+].join(",");
 const PRESSED_CLASS = "is-pressed";
 
 let pressed = null;

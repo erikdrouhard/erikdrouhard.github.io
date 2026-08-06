@@ -512,21 +512,8 @@
   touch-action: manipulation;
 }
 
-/* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
-   which stays false on iPadOS while a trackpad drives a cursor. See
-   /components/pointer-hover.js. */
-:where(html:not(.is-coarse-pointer)) .mix-contact {
-  transition: transform 150ms ease-out, opacity 150ms ease;
-}
-
-:where(html:not(.is-coarse-pointer)) .mix-contact:hover {
-  opacity: 0.84;
-  transform: translateY(-1px);
-}
-
-.mix-contact:active {
-  transform: scale(0.98);
-}
+/* The pill's hover and press states are shared with every other button on the
+   site; see the pill interaction block in styles.css. */
 
 @media (max-width: 809.98px) {
   .mix-header {
@@ -652,12 +639,6 @@
     grid-template-columns: 1fr;
   }
 
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mix-contact {
-    transition: none;
-  }
 }
 
 @media (prefers-color-scheme: dark) {

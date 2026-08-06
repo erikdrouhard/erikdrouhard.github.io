@@ -704,8 +704,6 @@ h1 a:focus-visible,
    .is-coarse-pointer on <html> in step with live pointer events, so a tap still
    never leaves a hover state behind. :where() holds the guard at zero
    specificity, leaving the cascade exactly as it was. */
-:where(html:not(.is-coarse-pointer)) .resume-button:hover,
-:where(html:not(.is-coarse-pointer)) .contact-button:hover,
 :where(html:not(.is-coarse-pointer)) .case-studies-link:hover,
 :where(html:not(.is-coarse-pointer)) .mobile-nav a:hover,
 :where(html:not(.is-coarse-pointer)) .social-links a:hover {
@@ -743,6 +741,61 @@ h1 a:focus-visible,
   :where(html:not(.is-coarse-pointer))
     .core-ai-page .applied-work-link a:is(:hover, :focus-visible) {
     animation: link-shimmer 550ms ease-out;
+  }
+}
+
+/* Every pill button on the site shares one interaction: hover lifts it off the
+   page, a press drops it back to the baseline and squashes it slightly. The
+   header, footer, and all three case-study CTA pairs are listed here together
+   so they cannot drift apart again. The Mix.dialog demo's own controls are
+   deliberately not in this set — they simulate the product's UI, not the
+   site's.
+
+   Only the opacity shift lives out here. Everything that moves sits behind
+   prefers-reduced-motion below. */
+:where(html:not(.is-coarse-pointer)) .resume-button:hover,
+:where(html:not(.is-coarse-pointer)) .contact-button:hover,
+:where(html:not(.is-coarse-pointer)) .core-ai-page .button:hover,
+:where(html:not(.is-coarse-pointer)) .drive-contact:hover,
+:where(html:not(.is-coarse-pointer)) .mix-contact:hover {
+  opacity: 0.82;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Ungated by pointer, so the press below animates under a finger too. */
+  .resume-button,
+  .contact-button,
+  .core-ai-page .button,
+  .drive-contact,
+  .mix-contact {
+    transition:
+      transform 150ms ease-out,
+      opacity 150ms ease;
+  }
+
+  :where(html:not(.is-coarse-pointer)) .resume-button:hover,
+  :where(html:not(.is-coarse-pointer)) .contact-button:hover,
+  :where(html:not(.is-coarse-pointer)) .core-ai-page .button:hover,
+  :where(html:not(.is-coarse-pointer)) .drive-contact:hover,
+  :where(html:not(.is-coarse-pointer)) .mix-contact:hover {
+    transform: translateY(-3px);
+  }
+
+  /* After the lift so it wins whenever both apply, and ungated so a finger
+     press feels the same as a trackpad click. iOS withholds :active on touch,
+     so components/press-state.js supplies .is-pressed; :active still covers
+     the no-JS case. */
+  .resume-button:active,
+  .resume-button.is-pressed,
+  .contact-button:active,
+  .contact-button.is-pressed,
+  .core-ai-page .button:active,
+  .core-ai-page .button.is-pressed,
+  .drive-contact:active,
+  .drive-contact.is-pressed,
+  .mix-contact:active,
+  .mix-contact.is-pressed {
+    transform: translateY(0) scale(0.95);
   }
 }
 
