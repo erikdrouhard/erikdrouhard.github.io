@@ -339,7 +339,7 @@ a {
 
 .desktop-header-actions {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 28px;
 }
 

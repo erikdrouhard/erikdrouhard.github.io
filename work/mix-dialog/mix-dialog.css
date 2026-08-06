@@ -303,11 +303,12 @@
     0 0 0 1px rgb(0 0 0 / 8%),
     0 12px 30px rgb(0 0 0 / 4%);
   gap: 20px;
-  grid-template-columns: 136px minmax(0, 1fr);
+  grid-template-columns: max-content minmax(0, 1fr);
 }
 
 .mix-action-list .mix-item-label {
   color: var(--mix-accent);
+  white-space: nowrap;
 }
 
 .mix-action-list h3 + p {
@@ -558,7 +559,7 @@
 
   .mix-action-list > article {
     gap: 16px;
-    grid-template-columns: 105px minmax(0, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .mix-media-scroller {

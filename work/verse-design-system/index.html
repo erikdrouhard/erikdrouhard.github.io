@@ -14,13 +14,15 @@
     <link
       rel="preload"
       as="image"
-      href="/work/verse-design-system/assets/media/Verse Tech Stack.png"
+      href="/work/verse-design-system/assets/media/Verse Team breakdown.png"
       type="image/png"
     />
     <link rel="stylesheet" href="/styles.css" />
     <link rel="stylesheet" href="/components/case-study-nav.css" />
     <link rel="stylesheet" href="/work/mix-dialog/mix-dialog.css" />
     <link rel="stylesheet" href="/work/verse-design-system/verse-design-system.css" />
+    <script type="module" src="/components/pointer-hover.js"></script>
+    <script type="module" src="/components/press-state.js"></script>
     <script type="module" src="/components/mobile-menu.js"></script>
     <script type="module" src="/components/case-study-nav.js"></script>
   </head>
@@ -40,32 +42,32 @@
         </a>
 
         <div class="desktop-header-actions">
-          <a class="case-studies-link type-action" href="/work/" aria-current="page">CASE STUDIES</a>
+          <a class="case-studies-link type-action" href="/work/" aria-current="page">Work</a>
           <a
-            class="resume-button type-action"
+            class="resume-button pill pill-primary type-action"
             href="/assets/erik-drouhard-resume.pdf"
             download="Erik-Drouhard-Resume.pdf"
           >
             <img src="/assets/download.svg" width="16" height="16" alt="" />
-            <span>DOWNLOAD RESUME</span>
+            <span>Download resume</span>
           </a>
         </div>
 
         <details class="mobile-menu">
-          <summary class="type-action">MENU</summary>
+          <summary class="type-action">Menu</summary>
           <nav class="mobile-nav" aria-label="Mobile navigation">
-            <a class="type-action" href="/work/" aria-current="page">CASE STUDIES</a>
-            <a class="type-action" href="/assets/erik-drouhard-resume.pdf" download="Erik-Drouhard-Resume.pdf">DOWNLOAD RESUME</a>
+            <a class="type-action" href="/work/" aria-current="page">Work</a>
+            <a class="type-action" href="/assets/erik-drouhard-resume.pdf" download="Erik-Drouhard-Resume.pdf">Download resume</a>
           </nav>
         </details>
       </header>
 
       <case-study-nav data-offset>
         <nav class="case-study-nav__inner" aria-label="Case study chapters">
-          <a class="type-meta type-caps" href="#problem">Problem</a>
-          <a class="type-meta type-caps" href="#strategy">Strategy</a>
-          <a class="type-meta type-caps" href="#system">System</a>
-          <a class="type-meta type-caps" href="#result">Result</a>
+          <a class="type-meta" href="#problem">Problem</a>
+          <a class="type-meta" href="#strategy">Strategy</a>
+          <a class="type-meta" href="#system">System</a>
+          <a class="type-meta" href="#result">Result</a>
         </nav>
       </case-study-nav>
 
@@ -95,15 +97,22 @@
             </div>
 
             <figure class="mix-hero-visual mix-hero-visual--verse">
-              <span class="mix-visual-label type-meta-sm type-caps">SYSTEM ARCHITECTURE</span>
-              <img
-                src="./assets/media/Verse Tech Stack.png"
-                width="1920"
-                height="1080"
-                alt="Diagram showing Verse UI composed from Fluent UI, a Fluent theme, and custom Verse components."
-                fetchpriority="high"
-              />
-              <figcaption class="type-caption">The architecture aligned a themed foundation with the custom components Mix products required.</figcaption>
+              <span class="mix-visual-label type-meta-sm type-caps">PROGRAM SCOPE</span>
+              <a
+                href="/work/verse-design-system/assets/media/Verse Team breakdown.png"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open the Verse cross-team operating model full size in a new tab"
+              >
+                <img
+                  src="./assets/media/Verse Team breakdown.png"
+                  width="1920"
+                  height="1080"
+                  alt="Planning diagram showing Verse design and engineering groups coordinating a shared UI foundation for Dialog, NLU, Dashboard, and Mix product teams."
+                  fetchpriority="high"
+                />
+              </a>
+              <figcaption class="type-caption">The operating model connected the Verse system team with the product and design teams responsible for adopting it. Open full size to zoom.</figcaption>
             </figure>
           </header>
 
@@ -127,25 +136,29 @@
             <div class="mix-three-column mix-three-column--media">
               <figure>
                 <span class="mix-item-label type-meta-sm type-caps">BEFORE · MIX.DIALOG</span>
-                <img
-                  src="./assets/media/mix.dialog-messagenode-before-verse.png"
-                  width="1261"
-                  height="710"
-                  alt="Earlier dark Mix.dialog message-node interface before the Verse design system."
-                  loading="lazy"
-                />
-                <figcaption class="type-caption">Earlier product UI showed the density and readability problems teams were carrying independently.</figcaption>
+                <a href="/work/verse-design-system/assets/media/mix.dialog-messagenode-before-verse.png" target="_blank" rel="noopener noreferrer" aria-label="Open the earlier Mix.dialog interface full size in a new tab">
+                  <img
+                    src="./assets/media/mix.dialog-messagenode-before-verse.png"
+                    width="1261"
+                    height="710"
+                    alt="Earlier dark Mix.dialog message-node interface before the Verse design system."
+                    loading="lazy"
+                  />
+                </a>
+                <figcaption class="type-caption">Earlier product UI showed the density and readability problems teams were carrying independently. Open full size to zoom.</figcaption>
               </figure>
               <figure>
                 <span class="mix-item-label type-meta-sm type-caps">AFTER · MIX.VERSE</span>
-                <img
-                  src="./assets/media/Mix.dialog-MessageNode-verse-light-mode.png"
-                  width="1271"
-                  height="826"
-                  alt="Later light Mix.dialog message-node interface using Mix.Verse."
-                  loading="lazy"
-                />
-                <figcaption class="type-caption">The later light-mode surface used the shared foundation while preserving Mix-specific workflows.</figcaption>
+                <a href="/work/verse-design-system/assets/media/Mix.dialog-MessageNode-verse-light-mode.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Mix.Verse light-mode interface full size in a new tab">
+                  <img
+                    src="./assets/media/Mix.dialog-MessageNode-verse-light-mode.png"
+                    width="1271"
+                    height="826"
+                    alt="Later light Mix.dialog message-node interface using Mix.Verse."
+                    loading="lazy"
+                  />
+                </a>
+                <figcaption class="type-caption">The later light-mode surface used the shared foundation while preserving Mix-specific workflows. Open full size to zoom.</figcaption>
               </figure>
             </div>
           </section>
@@ -153,7 +166,7 @@
           <section id="strategy" class="mix-section mix-section-feature" aria-labelledby="task-heading">
             <div class="mix-reading">
               <p class="mix-section-label type-meta type-caps">02 · TASK</p>
-              <h2 id="task-heading" class="type-section">Turn years of design-engineering learning into a platform strategy</h2>
+              <h2 id="task-heading" class="type-section">Turn 2–3 years of design-engineering groundwork into a platform strategy</h2>
               <p>
                 I was not a people manager, but I was the DRI for the system. My role was closer to a product and technical lead: define how the system needed to work, align it with business and front-end constraints, and create a plan multiple teams could execute.
               </p>
@@ -201,30 +214,32 @@
             </div>
 
             <p class="mix-gallery-label type-meta-sm type-caps">
-              Mix.tokens teaching deck · 4 slides <span>Scroll to compare →</span>
+              Mix.tokens teaching deck · 4 slides <span>Scroll to compare · Select to expand →</span>
             </p>
             <div class="mix-media-scroller mix-media-scroller--tokens" role="region" aria-label="Four-slide Mix.tokens teaching presentation" tabindex="0">
-              <figure><img src="./assets/media/web/mix-tokens-1.webp" width="1600" height="1199" alt="Mix.tokens presentation title slide." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/mix-tokens-2.webp" width="1600" height="1199" alt="Slide defining design tokens as the visual atoms of a design system." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/mix-tokens-3.webp" width="1600" height="1199" alt="Slide outlining initial token goals and future possibilities including React components and Storybook." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/mix-tokens-4.webp" width="1600" height="1199" alt="Slide explaining why shared design tokens reduce duplicated work and connect UX with front-end." loading="lazy" /></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/mix-tokens-1.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Mix.tokens slide 1 full size in a new tab"><img src="./assets/media/web/mix-tokens-1.webp" width="1600" height="1199" alt="Mix.tokens presentation title slide." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/mix-tokens-2.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Mix.tokens slide 2 full size in a new tab"><img src="./assets/media/web/mix-tokens-2.webp" width="1600" height="1199" alt="Slide defining design tokens as the visual atoms of a design system." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/mix-tokens-3.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Mix.tokens slide 3 full size in a new tab"><img src="./assets/media/web/mix-tokens-3.webp" width="1600" height="1199" alt="Slide outlining initial token goals and future possibilities including React components and Storybook." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/mix-tokens-4.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Mix.tokens slide 4 full size in a new tab"><img src="./assets/media/web/mix-tokens-4.webp" width="1600" height="1199" alt="Slide explaining why shared design tokens reduce duplicated work and connect UX with front-end." loading="lazy" /></a></figure>
             </div>
 
             <div class="mix-three-column mix-three-column--media">
               <figure >
                 <span class="mix-item-label type-meta-sm type-caps">TOKEN DECISIONS</span>
-                <img
-                  src="./assets/media/Verse-Design-System-TokenProgress.png"
-                  width="1852"
-                  height="1213"
-                  alt="Working table comparing Bolt and Fluent token categories, status, and owners."
-                  loading="lazy"
-                />
-                <figcaption class="type-caption">Token decisions were tracked explicitly during the transition from Bolt to a Fluent-based foundation.</figcaption>
+                <a href="/work/verse-design-system/assets/media/Verse-Design-System-TokenProgress.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse token decisions table full size in a new tab">
+                  <img
+                    src="./assets/media/Verse-Design-System-TokenProgress.png"
+                    width="1852"
+                    height="1213"
+                    alt="Working table comparing Bolt and Fluent token categories, status, and owners."
+                    loading="lazy"
+                  />
+                </a>
+                <figcaption class="type-caption">Token decisions were tracked explicitly during the transition from Bolt to a Fluent-based foundation. Open full size to zoom.</figcaption>
               </figure>
               <figure >
                 <span class="mix-item-label type-meta-sm type-caps">COMPLETE TOKEN SET</span>
-                <a href="./assets/media/web/verse-tokens-complete-set.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the complete Verse token set">
+                <a href="./assets/media/web/verse-tokens-complete-set.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the complete Verse token set full size in a new tab">
                   <span>
                     <img
                       src="./assets/media/web/verse-tokens-complete-set.webp"
@@ -266,7 +281,7 @@
 
             <figure class="mix-hero-visual mix-hero-visual--wide">
               <span class="mix-item-label type-meta-sm type-caps">COMPONENT INVENTORY</span>
-              <a href="./assets/media/web/verse-components-list.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the complete Verse component inventory">
+              <a href="./assets/media/web/verse-components-list.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the complete Verse component inventory full size in a new tab">
                 <img
                   src="./assets/media/web/verse-components-list.webp"
                   width="1800"
@@ -287,16 +302,16 @@
 
             <div class="mix-three-column mix-three-column--media mix-three-column--components">
               <figure>
-                <img src="./assets/media/verse-card-component-light.png" width="1020" height="1166" alt="Verse card component anatomy shown in the light theme." loading="lazy" />
-                <figcaption class="type-caption">Shared card anatomy · light theme.</figcaption>
+                <a href="/work/verse-design-system/assets/media/verse-card-component-light.png" target="_blank" rel="noopener noreferrer" aria-label="Open the light Verse card component anatomy full size in a new tab"><img src="./assets/media/verse-card-component-light.png" width="1020" height="1166" alt="Verse card component anatomy shown in the light theme." loading="lazy" /></a>
+                <figcaption class="type-caption">Shared card anatomy · light theme. Open full size to zoom.</figcaption>
               </figure>
               <figure>
-                <img src="./assets/media/verse-card-component-dark.png" width="1020" height="1166" alt="Verse card component anatomy shown in the dark theme." loading="lazy" />
-                <figcaption class="type-caption">The same shared anatomy · dark theme.</figcaption>
+                <a href="/work/verse-design-system/assets/media/verse-card-component-dark.png" target="_blank" rel="noopener noreferrer" aria-label="Open the dark Verse card component anatomy full size in a new tab"><img src="./assets/media/verse-card-component-dark.png" width="1020" height="1166" alt="Verse card component anatomy shown in the dark theme." loading="lazy" /></a>
+                <figcaption class="type-caption">The same shared anatomy · dark theme. Open full size to zoom.</figcaption>
               </figure>
               <figure>
-                <img src="./assets/media/verse-card-composed-dark.png" width="248" height="384" alt="A composed dark Mix component built from Verse card parts." loading="lazy" />
-                <figcaption class="type-caption">A Mix-specific composition built from the shared parts.</figcaption>
+                <a href="/work/verse-design-system/assets/media/verse-card-composed-dark.png" target="_blank" rel="noopener noreferrer" aria-label="Open the composed Mix card full size in a new tab"><img src="./assets/media/verse-card-composed-dark.png" width="248" height="384" alt="A composed dark Mix component built from Verse card parts." loading="lazy" /></a>
+                <figcaption class="type-caption">A Mix-specific composition built from the shared parts. Open full size to zoom.</figcaption>
               </figure>
             </div>
           </section>
@@ -313,25 +328,29 @@
             <div class="mix-three-column mix-three-column--media">
               <figure >
                 <span class="mix-item-label type-meta-sm type-caps">TEAM MODEL</span>
-                <img
-                  src="./assets/media/Verse Team breakdown.png"
-                  width="1920"
-                  height="1080"
-                  alt="Planning diagram separating the Verse team from Dialog, NLU, Dashboard, and Mix UX implementation teams."
-                  loading="lazy"
-                />
-                <figcaption class="type-caption">The planning model clarified ownership between the system team and the product teams consuming it.</figcaption>
+                <a href="/work/verse-design-system/assets/media/Verse Team breakdown.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse team model full size in a new tab">
+                  <img
+                    src="./assets/media/Verse Team breakdown.png"
+                    width="1920"
+                    height="1080"
+                    alt="Planning diagram separating the Verse team from Dialog, NLU, Dashboard, and Mix UX implementation teams."
+                    loading="lazy"
+                  />
+                </a>
+                <figcaption class="type-caption">The planning model clarified ownership between the system team and the product teams consuming it. Open full size to zoom.</figcaption>
               </figure>
               <figure >
                 <span class="mix-item-label type-meta-sm type-caps">DELIVERY PLAN</span>
-                <img
-                  src="./assets/media/Verse Timelines with the teams of 5.png"
-                  width="1920"
-                  height="1080"
-                  alt="Year-long planning timeline for design, UX engineering, product engineering, accessibility, maintenance, and QA work."
-                  loading="lazy"
-                />
-                <figcaption class="type-caption">The phased plan exposed dependencies among theme work, custom components, accessibility, integration, maintenance, and QA.</figcaption>
+                <a href="/work/verse-design-system/assets/media/Verse Timelines with the teams of 5.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse delivery plan full size in a new tab">
+                  <img
+                    src="./assets/media/Verse Timelines with the teams of 5.png"
+                    width="1920"
+                    height="1080"
+                    alt="Year-long planning timeline for design, UX engineering, product engineering, accessibility, maintenance, and QA work."
+                    loading="lazy"
+                  />
+                </a>
+                <figcaption class="type-caption">The phased plan exposed dependencies among theme work, custom components, accessibility, integration, maintenance, and QA. Open full size to zoom.</figcaption>
               </figure>
             </div>
 
@@ -345,7 +364,7 @@
             <div class="mix-three-column mix-three-column--media mix-three-column--tall">
               <figure >
                 <span class="mix-item-label type-meta-sm type-caps">SYSTEM PROGRESS</span>
-                <a href="./assets/media/web/verse-progress-table.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse component progress table">
+                <a href="./assets/media/web/verse-progress-table.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse component progress table full size in a new tab">
                   <span>
                     <img
                       src="./assets/media/web/verse-progress-table.webp"
@@ -360,7 +379,7 @@
               </figure>
               <figure >
                 <span class="mix-item-label type-meta-sm type-caps">IMPLEMENTATION SUPPORT</span>
-                <a href="./assets/media/web/verse-implementation-help.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse implementation support artifact">
+                <a href="./assets/media/web/verse-implementation-help.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse implementation support artifact full size in a new tab">
                   <span>
                     <img
                       src="./assets/media/web/verse-implementation-help.webp"
@@ -390,7 +409,7 @@
 
             <figure class="mix-hero-visual mix-hero-visual--wide mix-hero-visual--spec">
               <span class="mix-item-label type-meta-sm type-caps">ACCESSIBILITY SPECIFICATION · OVERSIGHT + DIRECTION</span>
-              <a href="./assets/media/web/verse-accessibility-spec.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the complete Verse accessibility specification">
+              <a href="./assets/media/web/verse-accessibility-spec.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the complete Verse accessibility specification full size in a new tab">
                 <span>
                   <img
                     src="./assets/media/web/verse-accessibility-spec.webp"
@@ -415,21 +434,21 @@
             </div>
 
             <p class="mix-gallery-label type-meta-sm type-caps">
-              Nuance i3 · selected story slides <span>Scroll to compare →</span>
+              Nuance i3 · selected story slides <span>Scroll to compare · Select to expand →</span>
             </p>
             <div class="mix-media-scroller mix-media-wide" role="region" aria-label="Selected slides from the 2022 Nuance i3 Verse presentation" tabindex="0">
-              <figure><img src="./assets/media/web/verse-i3-slide-4.webp" width="1600" height="900" alt="Nuance i3 title slide: Design like a developer, develop like a designer." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/verse-i3-slide-16-B.webp" width="1600" height="900" alt="Slide asking why a design system was needed and listing consistency, accessibility, extensibility, speed, scale, usability, and prototyping." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/verse-i3-slide-19.webp" width="1600" height="900" alt="Slide noting the previous Sketch and Abstract design workflow." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/verse-i3-slide-27.webp" width="1600" height="900" alt="Slide announcing the switch to Figma." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/verse-i3-slide-29.webp" width="1600" height="900" alt="Slide showing design tools aligned more closely with development through component and layout models." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/verse-i3-slide-42.webp" width="1600" height="900" alt="Slide defining design tokens." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/verse-i3-slide-48.webp" width="1600" height="900" alt="Slide introducing accessibility as a system concern." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/verse-i3-slide-60.webp" width="1600" height="900" alt="Slide introducing Bolt, the early name for Verse." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/verse-i3-slide-71.webp" width="1600" height="900" alt="Slide showing the proposed system stack of design tokens, headless UI components, and a styling library." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/verse-i3-slide-76.webp" width="1600" height="900" alt="Slide showing atomic design used for modular system layers." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/verse-i3-slide-77.webp" width="1600" height="900" alt="Slide explaining that teams could take the system layers they needed and discard the rest." loading="lazy" /></figure>
-              <figure><img src="./assets/media/web/verse-i3-slide-80.webp" width="1600" height="900" alt="Closing slide stating that Mix is built on top of Bolt." loading="lazy" /></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-4.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 4 full size in a new tab"><img src="./assets/media/web/verse-i3-slide-4.webp" width="1600" height="900" alt="Nuance i3 title slide: Design like a developer, develop like a designer." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-16-B.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 16B full size in a new tab"><img src="./assets/media/web/verse-i3-slide-16-B.webp" width="1600" height="900" alt="Slide asking why a design system was needed and listing consistency, accessibility, extensibility, speed, scale, usability, and prototyping." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-19.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 19 full size in a new tab"><img src="./assets/media/web/verse-i3-slide-19.webp" width="1600" height="900" alt="Slide noting the previous Sketch and Abstract design workflow." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-27.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 27 full size in a new tab"><img src="./assets/media/web/verse-i3-slide-27.webp" width="1600" height="900" alt="Slide announcing the switch to Figma." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-29.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 29 full size in a new tab"><img src="./assets/media/web/verse-i3-slide-29.webp" width="1600" height="900" alt="Slide showing design tools aligned more closely with development through component and layout models." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-42.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 42 full size in a new tab"><img src="./assets/media/web/verse-i3-slide-42.webp" width="1600" height="900" alt="Slide defining design tokens." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-48.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 48 full size in a new tab"><img src="./assets/media/web/verse-i3-slide-48.webp" width="1600" height="900" alt="Slide introducing accessibility as a system concern." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-60.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 60 full size in a new tab"><img src="./assets/media/web/verse-i3-slide-60.webp" width="1600" height="900" alt="Slide introducing Bolt, the early name for Verse." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-71.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 71 full size in a new tab"><img src="./assets/media/web/verse-i3-slide-71.webp" width="1600" height="900" alt="Slide showing the proposed system stack of design tokens, headless UI components, and a styling library." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-76.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 76 full size in a new tab"><img src="./assets/media/web/verse-i3-slide-76.webp" width="1600" height="900" alt="Slide showing atomic design used for modular system layers." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-77.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 77 full size in a new tab"><img src="./assets/media/web/verse-i3-slide-77.webp" width="1600" height="900" alt="Slide explaining that teams could take the system layers they needed and discard the rest." loading="lazy" /></a></figure>
+              <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-80.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 80 full size in a new tab"><img src="./assets/media/web/verse-i3-slide-80.webp" width="1600" height="900" alt="Closing slide stating that Mix is built on top of Bolt." loading="lazy" /></a></figure>
             </div>
           </section>
 
@@ -463,25 +482,25 @@
                 <strong class="type-subsection">Explore the Verse UI Storybook</strong>
                 <span class="type-body-sm">Browse the implemented themes, components, accessibility utilities, and Mix-specific layer.</span>
               </span>
-              <span class="mix-contact type-action">OPEN STORYBOOK <span aria-hidden="true">↗</span></span>
+              <span class="mix-contact type-action">Open Storybook <span aria-hidden="true">↗</span></span>
             </a>
 
             <div class="mix-four-column mix-four-column--media">
               <figure>
-                <img src="./assets/media/Mix.dialog-MessageNode-verse-light-mode.png" width="1271" height="826" alt="Mix.dialog message-node interface using the light Mix.Verse theme." loading="lazy" />
-                <figcaption class="type-caption">Mix.dialog · message authoring.</figcaption>
+                <a href="/work/verse-design-system/assets/media/Mix.dialog-MessageNode-verse-light-mode.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Mix.dialog Mix.Verse interface full size in a new tab"><img src="./assets/media/Mix.dialog-MessageNode-verse-light-mode.png" width="1271" height="826" alt="Mix.dialog message-node interface using the light Mix.Verse theme." loading="lazy" /></a>
+                <figcaption class="type-caption">Mix.dialog · message authoring. Open full size to zoom.</figcaption>
               </figure>
               <figure>
-                <img src="./assets/media/Mix-Verse-NLU-LightMode.png" width="1275" height="842" alt="Mix.nlu interface using the light Mix.Verse theme." loading="lazy" />
-                <figcaption class="type-caption">Mix.nlu · model configuration.</figcaption>
+                <a href="/work/verse-design-system/assets/media/Mix-Verse-NLU-LightMode.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Mix.nlu Mix.Verse interface full size in a new tab"><img src="./assets/media/Mix-Verse-NLU-LightMode.png" width="1275" height="842" alt="Mix.nlu interface using the light Mix.Verse theme." loading="lazy" /></a>
+                <figcaption class="type-caption">Mix.nlu · model configuration. Open full size to zoom.</figcaption>
               </figure>
               <figure>
-                <img src="./assets/media/Mix.dashboard-Verse-Light.png" width="1272" height="795" alt="Mix Dashboard interface using the light Mix.Verse theme." loading="lazy" />
-                <figcaption class="type-caption">Mix Dashboard · project management.</figcaption>
+                <a href="/work/verse-design-system/assets/media/Mix.dashboard-Verse-Light.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Mix Dashboard Mix.Verse interface full size in a new tab"><img src="./assets/media/Mix.dashboard-Verse-Light.png" width="1272" height="795" alt="Mix Dashboard interface using the light Mix.Verse theme." loading="lazy" /></a>
+                <figcaption class="type-caption">Mix Dashboard · project management. Open full size to zoom.</figcaption>
               </figure>
               <figure>
-                <img src="./assets/media/mix.home-verse-light-mode.png" width="1271" height="1087" alt="Mix.home interface using the light Mix.Verse theme." loading="lazy" />
-                <figcaption class="type-caption">Mix.home · platform entry point.</figcaption>
+                <a href="/work/verse-design-system/assets/media/mix.home-verse-light-mode.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Mix.home Mix.Verse interface full size in a new tab"><img src="./assets/media/mix.home-verse-light-mode.png" width="1271" height="1087" alt="Mix.home interface using the light Mix.Verse theme." loading="lazy" /></a>
+                <figcaption class="type-caption">Mix.home · platform entry point. Open full size to zoom.</figcaption>
               </figure>
             </div>
           </section>
@@ -503,8 +522,8 @@
             <h2 class="type-section">Design systems are organizational systems.</h2>
             <p class="type-body-sm">The components mattered because the strategy made it possible for teams to build them together.</p>
             <div class="mix-footer-actions">
-              <a class="mix-contact type-action" href="mailto:erikdrouhard@gmail.com">CONTACT ME</a>
-              <a class="mix-contact mix-contact-secondary type-action" href="/work/mix-dialog/">READ MIX.DIALOG</a>
+              <a class="mix-contact pill pill-primary type-action" href="/work/mix-dialog/">Read Mix.dialog</a>
+              <a class="mix-contact pill pill-secondary type-action" href="mailto:erikdrouhard@gmail.com">Contact me</a>
             </div>
           </footer>
         </article>
@@ -517,7 +536,7 @@
           <a href="https://x.com/erikdrouhard" target="_blank" rel="noopener noreferrer" aria-label="X"><img src="/assets/x.svg" width="24" height="24" alt="" /></a>
           <a href="https://www.instagram.com/ekdr0" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="/assets/instagram.svg" width="24" height="24" alt="" /></a>
         </nav>
-        <a class="contact-button type-action" href="mailto:erikdrouhard@gmail.com">CONTACT ME</a>
+        <a class="contact-button pill pill-secondary type-action" href="mailto:erikdrouhard@gmail.com">Contact me</a>
       </footer>
     </div>
   </body>
