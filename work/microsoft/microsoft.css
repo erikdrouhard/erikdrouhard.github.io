@@ -128,6 +128,13 @@
   justify-content: center;
   text-decoration: none;
   touch-action: manipulation;
+
+  /* Ungated, so the press below animates under a finger as well as a cursor.
+     The lift and press states live down with the other pointer-dependent
+     rules. */
+  transition:
+    transform 150ms ease-out,
+    opacity 150ms ease;
 }
 
 .core-ai-page .button-primary {
@@ -137,10 +144,6 @@
 
 .core-ai-page .button-secondary {
   background: transparent;
-}
-
-.core-ai-page .button:active {
-  transform: scale(0.98);
 }
 
 .core-ai-page .prototype-loop {
@@ -699,16 +702,24 @@
   outline-offset: 3px;
 }
 
-/* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
-   which stays false on iPadOS while a trackpad drives a cursor. See
-   /components/pointer-hover.js. */
-:where(html:not(.is-coarse-pointer)) .core-ai-page .button {
-  transition: transform 150ms ease-out, opacity 150ms ease;
-}
+/* Hovering lifts the pill off the page; pressing drops it back down and
+   squashes it, so a click reads as a physical push.
 
+   The lift is guarded on the pointer in use, not on
+   (hover: hover) and (pointer: fine), which stays false on iPadOS while a
+   trackpad drives a cursor. See /components/pointer-hover.js. */
 :where(html:not(.is-coarse-pointer)) .core-ai-page .button:hover {
   opacity: 0.82;
-  transform: translateY(-1px);
+  transform: translateY(-3px);
+}
+
+/* Ungated, and after the lift so it wins whenever both apply: a press should
+   feel the same under a finger as under a trackpad click. iOS withholds :active
+   on touch, so components/press-state.js supplies .is-pressed; :active still
+   covers the no-JS case. */
+.core-ai-page .button:active,
+.core-ai-page .button.is-pressed {
+  transform: translateY(0) scale(0.95);
 }
 
 @media (min-width: 810px) {
@@ -965,6 +976,13 @@
 @media (prefers-reduced-motion: reduce) {
   .core-ai-page .button {
     transition: none;
+  }
+
+  /* Keep the opacity shift as the affordance and drop the movement. */
+  :where(html:not(.is-coarse-pointer)) .core-ai-page .button:hover,
+  .core-ai-page .button:active,
+  .core-ai-page .button.is-pressed {
+    transform: none;
   }
 }
 
