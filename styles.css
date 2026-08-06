@@ -698,22 +698,28 @@ h1 a:focus-visible,
   --link-shimmer-highlight: var(--drive-cyan-bright, #8fc7ff);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .resume-button:hover,
-  .contact-button:hover,
-  .case-studies-link:hover,
-  .mobile-nav a:hover,
-  .social-links a:hover {
-    opacity: 0.78;
-  }
+/* Hover affordances follow the pointer actually in use rather than
+   (hover: hover) and (pointer: fine), which stays false on iPadOS even while a
+   trackpad drives a cursor. components/pointer-hover.js keeps
+   .is-coarse-pointer on <html> in step with live pointer events, so a tap still
+   never leaves a hover state behind. :where() holds the guard at zero
+   specificity, leaving the cascade exactly as it was. */
+:where(html:not(.is-coarse-pointer)) .resume-button:hover,
+:where(html:not(.is-coarse-pointer)) .contact-button:hover,
+:where(html:not(.is-coarse-pointer)) .case-studies-link:hover,
+:where(html:not(.is-coarse-pointer)) .mobile-nav a:hover,
+:where(html:not(.is-coarse-pointer)) .social-links a:hover {
+  opacity: 0.78;
+}
 
-  .work-item:hover .work-cta {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 5px;
-  }
+:where(html:not(.is-coarse-pointer)) .work-item:hover .work-cta {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
 
-  @supports (-webkit-background-clip: text) or (background-clip: text) {
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  :where(html:not(.is-coarse-pointer))
     :where(
       .type-body,
       .type-body-sm,
@@ -722,15 +728,21 @@ h1 a:focus-visible,
       .type-display,
       .type-section,
       .type-hero
-    ) a:not([class]):is(:hover, :focus-visible),
+    )
+    a:not([class]):is(:hover, :focus-visible),
+  :where(html:not(.is-coarse-pointer))
     .case-studies-link[aria-current="page"]:is(:hover, :focus-visible),
+  :where(html:not(.is-coarse-pointer))
     .work-item:is(:hover, :focus-visible) .work-item-copy h2,
+  :where(html:not(.is-coarse-pointer))
     .work-item:is(:hover, :focus-visible) .work-cta,
+  :where(html:not(.is-coarse-pointer))
     .core-ai-page figcaption a:is(:hover, :focus-visible),
+  :where(html:not(.is-coarse-pointer))
     .core-ai-page .public-link a:is(:hover, :focus-visible),
+  :where(html:not(.is-coarse-pointer))
     .core-ai-page .applied-work-link a:is(:hover, :focus-visible) {
-      animation: link-shimmer 550ms ease-out;
-    }
+    animation: link-shimmer 550ms ease-out;
   }
 }
 

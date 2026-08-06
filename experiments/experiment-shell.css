@@ -78,11 +78,12 @@
   outline-offset: 3px;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .experiment-home-link:hover,
-  .experiment-back-link:hover {
-    opacity: 0.76;
-  }
+/* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
+   which stays false on iPadOS while a trackpad drives a cursor. See
+   /components/pointer-hover.js. */
+:where(html:not(.is-coarse-pointer)) .experiment-home-link:hover,
+:where(html:not(.is-coarse-pointer)) .experiment-back-link:hover {
+  opacity: 0.76;
 }
 
 @media (max-width: 600px) {

@@ -699,16 +699,16 @@
   outline-offset: 3px;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .core-ai-page .button {
-    transition: transform 150ms ease-out, opacity 150ms ease;
-  }
+/* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
+   which stays false on iPadOS while a trackpad drives a cursor. See
+   /components/pointer-hover.js. */
+:where(html:not(.is-coarse-pointer)) .core-ai-page .button {
+  transition: transform 150ms ease-out, opacity 150ms ease;
+}
 
-  .core-ai-page .button:hover {
-    opacity: 0.82;
-    transform: translateY(-1px);
-  }
-
+:where(html:not(.is-coarse-pointer)) .core-ai-page .button:hover {
+  opacity: 0.82;
+  transform: translateY(-1px);
 }
 
 @media (min-width: 810px) {
