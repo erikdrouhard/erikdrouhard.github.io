@@ -118,30 +118,8 @@
   gap: 16px;
 }
 
-.core-ai-page .button {
-  display: inline-flex;
-  min-height: 44px;
-
-  /* 18px, matching the footer contact pill. Uppercase labels run wider than
-     the sentence case they replaced, and at 22px the pair no longer fit the
-     hero column side by side. */
-  padding: 0 18px;
-  border: 1px solid #000;
-  border-radius: 999px;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  touch-action: manipulation;
-}
-
-.core-ai-page .button-primary {
-  background: #000;
-  color: #fff;
-}
-
-.core-ai-page .button-secondary {
-  background: transparent;
-}
+/* The hero's two buttons are the site's shared pill; see styles.css. Only
+   their stacking behaviour is this page's business, further down. */
 
 .core-ai-page .prototype-loop {
   position: relative;
@@ -691,7 +669,6 @@
   margin-bottom: 0;
 }
 
-.core-ai-page .button:focus-visible,
 .core-ai-page figcaption a:focus-visible,
 .core-ai-page .public-link a:focus-visible,
 .core-ai-page .applied-work-link a:focus-visible {
@@ -771,7 +748,7 @@
     align-items: stretch;
   }
 
-  .core-ai-page .button {
+  .core-ai-page .button-row .pill {
     width: 100%;
   }
 
@@ -807,7 +784,7 @@
   }
 
   .core-ai-page .button-row,
-  .core-ai-page .button {
+  .core-ai-page .button-row .pill {
     width: 100%;
   }
 
@@ -965,14 +942,6 @@
   }
 
   .core-ai-page .skip-link,
-  .core-ai-page .button-primary {
-    background: #f2f5fb;
-    color: #0b162b;
-  }
-
-  .core-ai-page .button {
-    border-color: #f2f5fb;
-  }
 
   .core-ai-page .eyebrow,
   .core-ai-page .number,

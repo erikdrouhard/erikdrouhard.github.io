@@ -477,28 +477,10 @@
   justify-content: center;
 }
 
+/* Appearance comes from the shared pill in styles.css; the footer pair only
+   set their own minimum width. */
 .mix-contact {
-  display: inline-flex;
   min-width: 158px;
-  min-height: 44px;
-  padding: 0 22px;
-  border-radius: 999px;
-  background: var(--mix-accent-deep);
-  color: #fff;
-  text-decoration: none;
-  align-items: center;
-  justify-content: center;
-}
-
-.mix-contact-secondary {
-  background: transparent;
-  color: var(--mix-accent-deep);
-  box-shadow: inset 0 0 0 1px rgb(32 25 74 / 28%);
-}
-
-.mix-contact:focus-visible {
-  outline: 2px solid #000;
-  outline-offset: 3px;
 }
 
 .mix-media-scroller:focus-visible {
@@ -506,7 +488,6 @@
   outline-offset: 3px;
 }
 
-.mix-contact,
 .mix-header a,
 .mix-header summary {
   touch-action: manipulation;
@@ -751,18 +732,4 @@
     color: rgb(255 255 255 / 68%);
   }
 
-  .mix-contact {
-    background: #f5f3fa;
-    color: #100c20;
-  }
-
-  .mix-contact-secondary {
-    background: transparent;
-    color: #c3b8ff;
-    box-shadow: inset 0 0 0 1px rgb(195 184 255 / 42%);
-  }
-
-  .mix-contact:focus-visible {
-    outline-color: #f5f3fa;
-  }
 }

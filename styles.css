@@ -96,6 +96,23 @@
   --space-paragraph: 1.45em;
   --link-shimmer-highlight: #1677ff;
 
+  /* -- Buttons ------------------------------------------------------------
+     One button for the whole site. The filled pill reads as a physical key:
+     `--pill-edge` is the side of it, exposed under the face. The face is a
+     shade off pure black so that edge has somewhere darker to sit. */
+  --pill-face: #242424;
+  --pill-face-hover: #3a3a3a;
+  --pill-label: #fff;
+  --pill-edge: #000;
+  --pill-ambient: rgb(0 0 0 / 22%);
+
+  /* The outlined pill just tints, at the 10% the brief asked for. Pure black
+     over the page keeps it neutral — a grey fill would go muddy over the
+     case studies' tinted footers. */
+  --pill-line: rgb(0 0 0 / 24%);
+  --pill-tint: rgb(0 0 0 / 10%);
+  --pill-tint-pressed: rgb(0 0 0 / 16%);
+
   --layer-content: 0;
   --layer-sticky-nav: 1;
   --layer-header: 2;
@@ -331,15 +348,9 @@ a {
   text-decoration: none;
 }
 
+/* Appearance comes from .pill; this only carries what is specific to the
+   footer's contact link. */
 .contact-button {
-  display: flex;
-  min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid rgb(0 0 0 / 24%);
-  border-radius: 999px;
-  align-items: center;
-  background: transparent;
-  text-decoration: none;
   white-space: nowrap;
 }
 
@@ -412,19 +423,12 @@ a {
   border-top: 1px solid rgb(0 0 0 / 8%);
 }
 
+/* Appearance comes from .pill; this only carries the gap for the download icon
+   and the header row's sizing. It used to force a 237px minimum, which was cut
+   to fit the old all-caps label and leaves the sentence-case one adrift. */
 .resume-button {
-  display: flex;
-  width: max-content;
-  min-width: 237px;
-  min-height: 44px;
-  padding: 0 24px;
   flex: 0 0 auto;
-  align-items: center;
   gap: 12px;
-  border-radius: 999px;
-  background: #000;
-  color: #fff;
-  text-decoration: none;
   white-space: nowrap;
 }
 
@@ -558,8 +562,7 @@ h1,
   justify-content: space-between;
 }
 
-.resume-button:focus-visible,
-.contact-button:focus-visible,
+.pill:focus-visible,
 .case-studies-link:focus-visible,
 .mobile-menu summary:focus-visible,
 .mobile-nav a:focus-visible,
@@ -744,58 +747,94 @@ h1 a:focus-visible,
   }
 }
 
-/* Every pill button on the site shares one interaction: hover lifts it off the
-   page, a press drops it back to the baseline and squashes it slightly. The
-   header, footer, and all three case-study CTA pairs are listed here together
-   so they cannot drift apart again. The Mix.dialog demo's own controls are
-   deliberately not in this set — they simulate the product's UI, not the
-   site's.
+/* ── The button ───────────────────────────────────────────────────────────
+   Every button on the site is this one, on every page. Pages contribute
+   sizing and stacking; nothing else. The Mix.dialog demo's own controls stay
+   out of it — they simulate the product's UI, not the site's. */
+.pill {
+  display: inline-flex;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  touch-action: manipulation;
+}
 
-   Only the opacity shift lives out here. Everything that moves sits behind
-   prefers-reduced-motion below. */
-:where(html:not(.is-coarse-pointer)) .resume-button:hover,
-:where(html:not(.is-coarse-pointer)) .contact-button:hover,
-:where(html:not(.is-coarse-pointer)) .core-ai-page .button:hover,
-:where(html:not(.is-coarse-pointer)) .drive-contact:hover,
-:where(html:not(.is-coarse-pointer)) .mix-contact:hover {
-  opacity: 0.82;
+/* The filled pill, built as a physical key: the box-shadow's first layer is
+   the button's edge, sitting under the face, and the second is the shadow it
+   casts on the page. Following Josh Comeau's 3D button, the face rides up on
+   hover and slams down on press while the edge's underside stays pinned to
+   the same baseline — rest, hover and press all resolve to 4px below the
+   resting face. That fixed point is what sells it as one solid object rather
+   than a sliding rectangle.
+   https://www.joshwcomeau.com/animation/3d-button/ */
+.pill-primary {
+  background: var(--pill-face);
+  color: var(--pill-label);
+  box-shadow:
+    0 4px 0 var(--pill-edge),
+    0 6px 12px var(--pill-ambient);
+}
+
+/* The outlined pill is the quiet one: no lift, no press travel, just a tint. */
+.pill-secondary {
+  border: 1px solid var(--pill-line);
+  background: transparent;
+  color: inherit;
+  transition: background-color 150ms ease;
+}
+
+:where(html:not(.is-coarse-pointer)) .pill-primary:hover {
+  background: var(--pill-face-hover);
+}
+
+:where(html:not(.is-coarse-pointer)) .pill-secondary:hover {
+  background: var(--pill-tint);
+}
+
+.pill-secondary:active,
+.pill-secondary.is-pressed {
+  background: var(--pill-tint-pressed);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* Ungated by pointer, so the press below animates under a finger too. */
-  .resume-button,
-  .contact-button,
-  .core-ai-page .button,
-  .drive-contact,
-  .mix-contact {
+  .pill-primary {
     transition:
-      transform 150ms ease-out,
-      opacity 150ms ease;
+      transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1),
+      box-shadow 600ms cubic-bezier(0.3, 0.7, 0.4, 1),
+      background-color 250ms ease;
   }
 
-  :where(html:not(.is-coarse-pointer)) .resume-button:hover,
-  :where(html:not(.is-coarse-pointer)) .contact-button:hover,
-  :where(html:not(.is-coarse-pointer)) .core-ai-page .button:hover,
-  :where(html:not(.is-coarse-pointer)) .drive-contact:hover,
-  :where(html:not(.is-coarse-pointer)) .mix-contact:hover {
-    transform: translateY(-3px);
+  /* Quicker than the rest state's settle, and overshooting past 1 so the face
+     springs up rather than easing up. */
+  :where(html:not(.is-coarse-pointer)) .pill-primary:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 6px 0 var(--pill-edge),
+      0 10px 18px var(--pill-ambient);
+    transition:
+      transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5),
+      box-shadow 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5),
+      background-color 250ms ease;
   }
 
-  /* After the lift so it wins whenever both apply, and ungated so a finger
-     press feels the same as a trackpad click. iOS withholds :active on touch,
-     so components/press-state.js supplies .is-pressed; :active still covers
-     the no-JS case. */
-  .resume-button:active,
-  .resume-button.is-pressed,
-  .contact-button:active,
-  .contact-button.is-pressed,
-  .core-ai-page .button:active,
-  .core-ai-page .button.is-pressed,
-  .drive-contact:active,
-  .drive-contact.is-pressed,
-  .mix-contact:active,
-  .mix-contact.is-pressed {
-    transform: translateY(0) scale(0.95);
+  /* 34ms — about two frames. A real key bottoms out instantly; anything
+     slower reads as lag rather than as a press. Listed after the hover so it
+     wins whenever both apply, and ungated by pointer so a finger press feels
+     the same as a trackpad click. iOS withholds :active on touch, so
+     components/press-state.js supplies .is-pressed; :active covers no-JS. */
+  .pill-primary:active,
+  .pill-primary.is-pressed {
+    transform: translateY(2px);
+    box-shadow:
+      0 2px 0 var(--pill-edge),
+      0 3px 6px var(--pill-ambient);
+    transition:
+      transform 34ms,
+      box-shadow 34ms;
   }
 }
 
@@ -979,6 +1018,18 @@ h1 a:focus-visible,
 @media (prefers-color-scheme: dark) {
   :root {
     --link-shimmer-highlight: #8fc7ff;
+
+    /* The button inverts wholesale. The edge is now a grey below the near-white
+       face — still the darker side of the same key. */
+    --pill-face: #f4f4f5;
+    --pill-face-hover: #fff;
+    --pill-label: #090a0c;
+    --pill-edge: #9aa0aa;
+    --pill-ambient: rgb(0 0 0 / 46%);
+    --pill-line: rgb(255 255 255 / 28%);
+    --pill-tint: rgb(255 255 255 / 10%);
+    --pill-tint-pressed: rgb(255 255 255 / 17%);
+
     color-scheme: dark;
     color: #f4f4f5;
     background: #090a0c;
@@ -989,10 +1040,6 @@ h1 a:focus-visible,
     color: #f4f4f5;
   }
 
-  .contact-button {
-    border-color: rgb(255 255 255 / 28%);
-  }
-
   .mobile-nav {
     border-color: rgb(255 255 255 / 12%);
     background: rgb(22 24 28 / 98%);
@@ -1001,11 +1048,6 @@ h1 a:focus-visible,
 
   .mobile-nav a + a {
     border-color: rgb(255 255 255 / 10%);
-  }
-
-  .resume-button {
-    background: #f4f4f5;
-    color: #090a0c;
   }
 
   .brand-mark,

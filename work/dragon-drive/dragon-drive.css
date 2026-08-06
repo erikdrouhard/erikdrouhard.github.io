@@ -507,27 +507,12 @@
   gap: 10px;
 }
 
+/* Appearance comes from the shared pill in styles.css; the footer pair only
+   set their own minimum width. */
 .drive-contact {
-  display: inline-flex;
   min-width: 158px;
-  min-height: 44px;
-  padding: 0 22px;
-  border-radius: 999px;
-  background: var(--drive-ink);
-  color: #fff;
-  text-decoration: none;
-  align-items: center;
-  justify-content: center;
-  touch-action: manipulation;
 }
 
-.drive-contact-secondary {
-  background: transparent;
-  color: var(--drive-ink);
-  box-shadow: inset 0 0 0 1px rgb(7 30 38 / 30%);
-}
-
-.drive-contact:focus-visible,
 .drive-video-frame video:focus-visible,
 .drive-highlight video:focus-visible {
   outline: 2px solid var(--drive-ink);
@@ -673,10 +658,9 @@
       linear-gradient(170deg, #0b1a1d 0%, #060d0f 100%);
   }
 
-  /* These two take --drive-ink as a background, so their white label text
-     has to flip with it. */
-  .drive-skip-link,
-  .drive-contact {
+  /* Takes --drive-ink as a background, so its white label text flips with it.
+     The footer buttons are the shared pill and invert on their own. */
+  .drive-skip-link {
     color: #071e26;
   }
 
@@ -721,12 +705,6 @@
     background:
       radial-gradient(circle at 88% 0%, rgb(41 211 223 / 14%), transparent 24rem),
       var(--drive-cyan-soft);
-  }
-
-  .drive-contact-secondary {
-    background: transparent;
-    color: #a9eef2;
-    box-shadow: inset 0 0 0 1px rgb(169 238 242 / 42%);
   }
 
 }
