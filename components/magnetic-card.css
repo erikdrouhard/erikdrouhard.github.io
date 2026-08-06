@@ -39,47 +39,56 @@
   transform-origin: center;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .case-study-magnetic-stage .case-study-magnetic-card {
-    transform: translate3d(
-        var(--magnetic-x),
-        var(--magnetic-y),
-        var(--magnetic-z)
-      )
-      rotateX(var(--magnetic-rotate-x))
-      rotateY(var(--magnetic-rotate-y))
-      rotateZ(var(--magnetic-rest-rotate))
-      scale(var(--magnetic-scale));
-    transform-style: preserve-3d;
-    transition: transform 240ms cubic-bezier(0.215, 0.61, 0.355, 1);
-    will-change: transform;
-  }
-
-  .case-study-magnetic-stage .case-study-magnetic-card.mix-hero-visual {
-    --magnetic-rest-rotate: 1deg;
-  }
-
-  .case-study-magnetic-stage.is-magnetized::before {
-    opacity: 0.72;
-    transform: translate3d(
-        var(--magnetic-shadow-x, 0),
-        var(--magnetic-shadow-y, 12px),
-        -1px
-      )
-      scale(1);
-    transition:
-      opacity 180ms ease,
-      transform 180ms ease;
-  }
-
-  .case-study-magnetic-stage.is-magnetized .case-study-magnetic-card {
-    transition-duration: 110ms;
-    transition-timing-function: ease-out;
-  }
+/* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
+   which stays false on iPadOS while a trackpad drives a cursor. See
+   components/pointer-hover.js. */
+:where(html:not(.is-coarse-pointer))
+  .case-study-magnetic-stage
+  .case-study-magnetic-card {
+  transform: translate3d(
+      var(--magnetic-x),
+      var(--magnetic-y),
+      var(--magnetic-z)
+    )
+    rotateX(var(--magnetic-rotate-x))
+    rotateY(var(--magnetic-rotate-y))
+    rotateZ(var(--magnetic-rest-rotate))
+    scale(var(--magnetic-scale));
+  transform-style: preserve-3d;
+  transition: transform 240ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  will-change: transform;
 }
 
-@media (hover: hover) and (pointer: fine) and (max-width: 809.98px) {
-  .case-study-magnetic-stage .case-study-magnetic-card.mix-hero-visual {
+:where(html:not(.is-coarse-pointer))
+  .case-study-magnetic-stage
+  .case-study-magnetic-card.mix-hero-visual {
+  --magnetic-rest-rotate: 1deg;
+}
+
+:where(html:not(.is-coarse-pointer)) .case-study-magnetic-stage.is-magnetized::before {
+  opacity: 0.72;
+  transform: translate3d(
+      var(--magnetic-shadow-x, 0),
+      var(--magnetic-shadow-y, 12px),
+      -1px
+    )
+    scale(1);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+:where(html:not(.is-coarse-pointer))
+  .case-study-magnetic-stage.is-magnetized
+  .case-study-magnetic-card {
+  transition-duration: 110ms;
+  transition-timing-function: ease-out;
+}
+
+@media (max-width: 809.98px) {
+  :where(html:not(.is-coarse-pointer))
+    .case-study-magnetic-stage
+    .case-study-magnetic-card.mix-hero-visual {
     --magnetic-rest-rotate: 0deg;
   }
 }

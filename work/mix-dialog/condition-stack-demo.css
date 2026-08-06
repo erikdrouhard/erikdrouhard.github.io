@@ -506,19 +506,20 @@ condition-stack-demo {
   white-space: nowrap;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .condition-demo__invitation:hover {
-    transform: rotate(2deg) translateY(-3px);
-  }
+/* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
+   which stays false on iPadOS while a trackpad drives a cursor. See
+   /components/pointer-hover.js. */
+:where(html:not(.is-coarse-pointer)) .condition-demo__invitation:hover {
+  transform: rotate(2deg) translateY(-3px);
+}
 
-  .condition-demo button:hover {
-    background-color: #eeeaff;
-  }
+:where(html:not(.is-coarse-pointer)) .condition-demo button:hover {
+  background-color: #eeeaff;
+}
 
-  .cs-action:hover,
-  .cs-branch:hover {
-    box-shadow: inset 0 0 0 1px rgb(76 53 177 / 25%);
-  }
+:where(html:not(.is-coarse-pointer)) .cs-action:hover,
+:where(html:not(.is-coarse-pointer)) .cs-branch:hover {
+  box-shadow: inset 0 0 0 1px rgb(76 53 177 / 25%);
 }
 
 @media (max-width: 809.98px) {
@@ -750,14 +751,12 @@ condition-stack-demo {
       0 18px 42px rgb(0 0 0 / 34%);
   }
 
-  @media (hover: hover) and (pointer: fine) {
-    .condition-demo button:hover {
-      background-color: #342b5c;
-    }
+  :where(html:not(.is-coarse-pointer)) .condition-demo button:hover {
+    background-color: #342b5c;
+  }
 
-    .cs-action:hover,
-    .cs-branch:hover {
-      box-shadow: inset 0 0 0 1px rgb(173 155 255 / 38%);
-    }
+  :where(html:not(.is-coarse-pointer)) .cs-action:hover,
+  :where(html:not(.is-coarse-pointer)) .cs-branch:hover {
+    box-shadow: inset 0 0 0 1px rgb(173 155 255 / 38%);
   }
 }

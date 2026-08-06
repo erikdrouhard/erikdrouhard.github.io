@@ -5,7 +5,11 @@ const CARD_SELECTOR = [
   ".drive-hero-visual",
 ].join(",");
 
-const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+import {
+  hasFinePointer,
+  subscribeToPointerCapability,
+} from "./pointer-hover.js";
+
 const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 class MagneticCard {
@@ -25,13 +29,13 @@ class MagneticCard {
     this.stage.append(card);
     card.classList.add("case-study-magnetic-card");
 
-    hoverQuery.addEventListener("change", this.handlePreferenceChange);
+    subscribeToPointerCapability(this.handlePreferenceChange);
     reduceMotionQuery.addEventListener("change", this.handlePreferenceChange);
     this.handlePreferenceChange();
   }
 
   get enabled() {
-    return hoverQuery.matches && !reduceMotionQuery.matches;
+    return hasFinePointer() && !reduceMotionQuery.matches;
   }
 
   handlePreferenceChange() {

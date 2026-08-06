@@ -539,15 +539,16 @@
   touch-action: manipulation;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .drive-contact {
-    transition: opacity 150ms ease, transform 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
+/* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
+   which stays false on iPadOS while a trackpad drives a cursor. See
+   /components/pointer-hover.js. */
+:where(html:not(.is-coarse-pointer)) .drive-contact {
+  transition: opacity 150ms ease, transform 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
+}
 
-  .drive-contact:hover {
-    opacity: 0.82;
-    transform: translateY(-1px);
-  }
+:where(html:not(.is-coarse-pointer)) .drive-contact:hover {
+  opacity: 0.82;
+  transform: translateY(-1px);
 }
 
 .drive-contact:active {

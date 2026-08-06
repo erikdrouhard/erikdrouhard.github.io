@@ -512,16 +512,16 @@
   touch-action: manipulation;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .mix-contact {
-    transition: transform 150ms ease-out, opacity 150ms ease;
-  }
+/* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
+   which stays false on iPadOS while a trackpad drives a cursor. See
+   /components/pointer-hover.js. */
+:where(html:not(.is-coarse-pointer)) .mix-contact {
+  transition: transform 150ms ease-out, opacity 150ms ease;
+}
 
-  .mix-contact:hover {
-    opacity: 0.84;
-    transform: translateY(-1px);
-  }
-
+:where(html:not(.is-coarse-pointer)) .mix-contact:hover {
+  opacity: 0.84;
+  transform: translateY(-1px);
 }
 
 .mix-contact:active {

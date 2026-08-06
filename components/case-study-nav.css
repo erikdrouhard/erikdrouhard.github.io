@@ -69,10 +69,12 @@ case-study-nav[data-offset] {
   outline-offset: 2px;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .case-study-nav__inner a:hover {
-    color: #000;
-  }
+/* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
+   which stays false on iPadOS while a trackpad drives a cursor. The guard still
+   drops on touch, so the colour never sticks after a tap. See
+   components/pointer-hover.js. */
+:where(html:not(.is-coarse-pointer)) .case-study-nav__inner a:hover {
+  color: #000;
 }
 
 @media (min-width: 810px) and (max-width: 1199.98px) {
@@ -121,9 +123,7 @@ case-study-nav[data-offset] {
 
   /* Guarded to match the light-mode hover rule, so the colour never sticks
      on touch devices after a tap. */
-  @media (hover: hover) and (pointer: fine) {
-    .case-study-nav__inner a:hover {
-      color: #f4f4f5;
-    }
+  :where(html:not(.is-coarse-pointer)) .case-study-nav__inner a:hover {
+    color: #f4f4f5;
   }
 }
