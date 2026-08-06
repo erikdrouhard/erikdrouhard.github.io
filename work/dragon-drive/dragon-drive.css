@@ -277,6 +277,13 @@
   pointer-events: none;
 }
 
+/* The feature band's full-bleed bottom edge already separates it from the
+   following section. Avoid stacking the next section's content-width rule on
+   the same boundary. */
+.drive-section-feature + .drive-section {
+  border-top: 0;
+}
+
 .drive-moments {
   display: grid;
   border-block: 1px solid var(--drive-line);
