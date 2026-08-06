@@ -628,6 +628,14 @@ h1 a:focus-visible,
   max-width: 26ch;
   margin: 0;
   text-decoration: underline;
+
+  /* Named rather than left to default, which is why this needs a literal in
+     each colour scheme. The shimmer below paints these titles through
+     -webkit-text-fill-color: transparent, and a text-decoration-color left at
+     its `currentColor` initial follows that fill instead of `color` — so the
+     underline was being drawn in transparent. Any explicit colour opts out of
+     that and paints normally, at rest and under the sweep. */
+  text-decoration-color: #000;
 }
 
 .work-item-copy h2.work-item-title-wide {
@@ -666,6 +674,7 @@ h1 a:focus-visible,
     .type-hero
   ) a:not([class]),
   .case-studies-link[aria-current="page"],
+  .work-item-copy h2,
   .work-cta,
   .core-ai-page figcaption a,
   .core-ai-page .public-link a,
@@ -726,6 +735,8 @@ h1 a:focus-visible,
     a:not([class]):is(:hover, :focus-visible),
   :where(html:not(.is-coarse-pointer))
     .case-studies-link[aria-current="page"]:is(:hover, :focus-visible),
+  :where(html:not(.is-coarse-pointer))
+    .work-item:is(:hover, :focus-visible) .work-item-copy h2,
   :where(html:not(.is-coarse-pointer))
     .work-item:is(:hover, :focus-visible) .work-cta,
   :where(html:not(.is-coarse-pointer))
@@ -1029,6 +1040,12 @@ h1 a:focus-visible,
   body {
     background: linear-gradient(172deg, #121417 0%, #08090b 100%);
     color: #f4f4f5;
+  }
+
+  /* Tracks :root's colour by hand; see the light-mode rule for why it cannot
+     be currentColor. */
+  .work-item-copy h2 {
+    text-decoration-color: #f4f4f5;
   }
 
   .mobile-nav {
