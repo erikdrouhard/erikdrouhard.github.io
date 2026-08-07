@@ -618,6 +618,45 @@ h1 a:focus-visible,
   align-items: baseline;
 }
 
+/* The featured treatment is contained by the row modifier. Its proportions
+   reuse the existing badge and button language while naming each value here,
+   so the sticker does not introduce anonymous spacing or depth values into the
+   shared system. */
+.work-item--featured {
+  --featured-sticker-gap: 10px;
+  --featured-sticker-min-height: 28px;
+  --featured-sticker-padding-block: 5px;
+  --featured-sticker-padding-inline: 14px;
+  --featured-sticker-radius: 999px;
+  --featured-sticker-tilt: -2deg;
+  --featured-sticker-edge-depth: 2px;
+  --featured-sticker-shadow-depth: 3px;
+  --featured-sticker-shadow-blur: 6px;
+}
+
+.work-item--featured .work-meta {
+  display: grid;
+  gap: var(--featured-sticker-gap);
+  justify-items: start;
+}
+
+.work-item--featured .type-badge {
+  display: inline-flex;
+  min-height: var(--featured-sticker-min-height);
+  padding: var(--featured-sticker-padding-block) var(--featured-sticker-padding-inline);
+  border-radius: var(--featured-sticker-radius);
+  align-items: center;
+  background: var(--pill-face);
+  box-shadow:
+    0 var(--featured-sticker-edge-depth) 0 var(--pill-edge),
+    0 var(--featured-sticker-shadow-depth) var(--featured-sticker-shadow-blur) var(--pill-ambient);
+  color: var(--pill-label);
+  pointer-events: none;
+  transform: rotate(var(--featured-sticker-tilt));
+  transform-origin: left center;
+  user-select: none;
+}
+
 .work-item-copy {
   display: grid;
   min-width: 0;
@@ -628,6 +667,7 @@ h1 a:focus-visible,
   max-width: 26ch;
   margin: 0;
   text-decoration: underline;
+  text-wrap: balance;
 
   /* Named rather than left to default, which is why this needs a literal in
      each colour scheme. The shimmer below paints these titles through
