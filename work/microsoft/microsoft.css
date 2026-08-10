@@ -1036,3 +1036,69 @@
     box-shadow: inset 0 0 0 1px rgb(92 124 238 / 28%);
   }
 }
+
+/* Closing call to action. Mirrors the band the other case studies end on, so
+   every page offers a next read and a way to get in contact. The site footer
+   below keeps "Contact me" for the site-wide action; this one says "Get in
+   touch" so the same action is not offered twice under the same name. */
+.core-ai-page .core-cta {
+  display: flex;
+  padding: 94px 24px 104px;
+  border-top: 1px solid rgb(32 25 74 / 10%);
+  align-items: center;
+  flex-direction: column;
+  gap: 18px;
+  background:
+    radial-gradient(circle at 50% 0%, rgb(101 72 232 / 11%), transparent 28rem),
+    linear-gradient(145deg, #f4f1ff, #f8fbff);
+  color: #000;
+  text-align: center;
+}
+
+.core-ai-page .core-cta h2 {
+  max-width: 34ch;
+  margin: 0;
+}
+
+.core-ai-page .core-cta p {
+  margin: 0;
+  color: rgb(32 25 74 / 65%);
+}
+
+.core-ai-page .core-cta-actions {
+  display: flex;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Appearance comes from the shared pill in styles.css; the pair only set
+   their own minimum width so they read as one unit. */
+.core-ai-page .core-contact {
+  min-width: 158px;
+}
+
+@media (max-width: 809.98px) {
+  .core-ai-page .core-cta {
+    padding: 76px 16px 84px;
+  }
+
+  .core-ai-page .core-cta h2 {
+    max-width: 16ch;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .core-ai-page .core-cta {
+    border-color: rgb(255 255 255 / 12%);
+    background:
+      radial-gradient(circle at 50% 0%, rgb(101 72 232 / 18%), transparent 28rem),
+      linear-gradient(145deg, #17131f, #0d1017);
+    color: #f5f3fa;
+  }
+
+  .core-ai-page .core-cta p {
+    color: rgb(255 255 255 / 68%);
+  }
+}
