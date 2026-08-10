@@ -270,10 +270,6 @@
   outline-offset: var(--verse-focus-offset);
 }
 
-.mix-page--verse .mix-section--provenance {
-  padding-bottom: var(--verse-gap-medium);
-}
-
 @media (hover: hover) and (pointer: fine) {
   .mix-page--verse .mix-callout--storybook:hover {
     transform: translateY(calc(var(--verse-rule-size) * -1));
