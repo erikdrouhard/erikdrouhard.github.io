@@ -1,0 +1,50 @@
+/* Shared testimonial block for the case studies.
+   Layout and colour only: typography comes from the type-* classes in the
+   markup, so this file stays inside the type system that check-type-system.mjs
+   enforces. Attribution is by role, never by name. */
+
+.testimonials {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.testimonial {
+  display: grid;
+  margin: 0;
+  padding: 28px 0 0;
+  border-top: 1px solid rgb(0 0 0 / 18%);
+  gap: 16px;
+  align-content: start;
+}
+
+.testimonial blockquote {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* The role and the org read as one unit, so they share a row and only the
+   role carries emphasis. */
+.testimonial figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  color: rgb(0 0 0 / 62%);
+}
+
+.testimonial figcaption .testimonial-role {
+  color: #000;
+}
+
+@media (width <= 700px) {
+  .testimonials {
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .testimonial {
+    padding-top: 24px;
+  }
+}
