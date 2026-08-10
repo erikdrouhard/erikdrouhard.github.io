@@ -11,12 +11,10 @@
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#15131d" />
     <title>Mix.dialog: Making Complex Conversation Logic Legible | Erik Drouhard</title>
     <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
-    <link
-      rel="preload"
-      as="image"
-      href="/work/mix-dialog/assets/media/condition-tale--13.avif"
-      type="image/avif"
-    />
+    <!-- No hero preload: Vite hashes the <img src> into /assets/ but leaves an
+         absolute href alone, so a preload written here fetches a second copy
+         instead of the one that renders. fetchpriority="high" on the hero img
+         prioritises the URL the browser actually uses. -->
     <link rel="stylesheet" href="/styles.css" />
     <link rel="stylesheet" href="/components/case-study-nav.css" />
     <link rel="stylesheet" href="/work/mix-dialog/mix-dialog.css" />
@@ -100,20 +98,20 @@
             <figure class="mix-hero-visual">
               <span class="mix-visual-label type-meta-sm type-caps">PRODUCT WORK · CONDITION STACK</span>
               <a
-                href="/work/mix-dialog/assets/media/condition-tale--13.avif"
+                href="/work/mix-dialog/assets/media/Condition-Stack-QA-Node.png"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Open the redesigned Mix.dialog condition stack slide full size in a new tab"
+                aria-label="Open the Mix.dialog condition stack on a QA node full size in a new tab"
               >
                 <img
-                  src="./assets/media/condition-tale--13.avif"
-                  width="380"
-                  height="270"
-                  alt="Presentation slide showing the redesigned Mix.dialog condition stack and nested conditional authoring interface."
+                  src="./assets/media/Condition-Stack-QA-Node.png"
+                  width="1446"
+                  height="1100"
+                  alt="Mix.dialog QA node with the condition stack open: nested if branches on a morning variable, message and return actions inside each level, and Else If and Else controls on every block."
                   fetchpriority="high"
                 />
               </a>
-              <figcaption class="type-caption">Implemented direction shown in a condition-stack product presentation. Open full size to zoom.</figcaption>
+              <figcaption class="type-caption">The condition stack in the product, authoring nested logic on a QA node. Open full size to zoom.</figcaption>
             </figure>
           </header>
 
@@ -160,6 +158,24 @@
                 <p>Managed and deployed dialog and NLU configurations.</p>
               </div>
             </div>
+
+            <figure class="mix-figure">
+              <a
+                href="/work/mix-dialog/assets/media/mix.dialog-messagenode.png"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open the Mix.dialog authoring canvas full size in a new tab"
+              >
+                <img
+                  src="./assets/media/mix.dialog-messagenode.png"
+                  width="1261"
+                  height="710"
+                  alt="Mix.dialog authoring a travel booking project: a component tree on the left, a flow canvas of connected greeting, intent, and menu nodes in the centre, and node properties for the selected message on the right."
+                  loading="lazy"
+                />
+              </a>
+              <figcaption class="type-caption">The authoring surface conversation designers worked in, with the flow canvas and node properties side by side. Open full size to zoom.</figcaption>
+            </figure>
           </section>
 
           <section class="mix-section" aria-labelledby="role-heading">
@@ -194,6 +210,24 @@
                   <p>Defined rich text, audio, DTMF, and per-channel output patterns that connected recognized intents to downstream behavior.</p>
                 </div>
               </div>
+
+              <figure class="mix-figure">
+                <a
+                  href="/work/mix-dialog/assets/media/Condition-Stack-Design-Channel-Dock.png"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Open the Mix.dialog channel dock and condition stack full size in a new tab"
+                >
+                  <img
+                    src="./assets/media/Condition-Stack-Design-Channel-Dock.png"
+                    width="1446"
+                    height="1100"
+                    alt="The same QA node with the channel dock expanded, showing omni-channel, mobile, web, and TV virtual assistant targets above the nested condition stack."
+                    loading="lazy"
+                  />
+                </a>
+                <figcaption class="type-caption">The channel dock expanded over the condition stack: one authored behavior, targeted per channel. Open full size to zoom.</figcaption>
+              </figure>
             </div>
           </section>
 

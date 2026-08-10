@@ -147,10 +147,12 @@
   transform: rotate(1deg);
 }
 
+/* Matches the intrinsic 1446x1100 of the hero screenshot. object-fit: cover
+   crops to this box, so a mismatched ratio silently eats the app bar. */
 .mix-hero-visual img {
   width: 100%;
   height: auto;
-  aspect-ratio: 45 / 32;
+  aspect-ratio: 723 / 550;
   border-radius: 14px;
   object-fit: cover;
   outline: 1px solid rgb(255 255 255 / 12%);
@@ -394,6 +396,36 @@
 
 .mix-media-wide img {
   aspect-ratio: 16 / 9;
+}
+
+/* A standalone product screenshot inside a section, sharing the hero's panel
+   treatment without its rotation. Intrinsic width/height on the img carries
+   the ratio, so one class serves screenshots of any shape. */
+.mix-figure {
+  display: grid;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 22px;
+  background: var(--mix-panel);
+  box-shadow:
+    0 0 0 1px rgb(31 25 73 / 16%),
+    0 18px 48px rgb(43 30 106 / 14%),
+    0 6px 18px rgb(0 0 0 / 8%);
+  gap: 10px;
+}
+
+.mix-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  outline: 1px solid rgb(255 255 255 / 12%);
+  outline-offset: -1px;
+}
+
+.mix-figure figcaption {
+  padding: 0 5px 4px;
+  color: rgb(255 255 255 / 72%);
 }
 
 .mix-results-grid {
