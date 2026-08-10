@@ -388,12 +388,6 @@
   white-space: nowrap;
 }
 
-/* Keep the final media-to-footer handoff on the shared 24px micro rhythm
-   instead of repeating a full case-study section inset. */
-#verse.mix-section {
-  padding-bottom: 24px;
-}
-
 .mix-media-wide img {
   aspect-ratio: 16 / 9;
 }
