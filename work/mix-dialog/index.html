@@ -285,6 +285,22 @@
               </condition-stack-demo>
             </div>
 
+            <div class="mix-reading">
+              <p class="mix-section-label type-meta type-caps">SYSTEM DESIGN</p>
+              <h3 class="type-subsection">The actions inside a condition were a shared system, not a list</h3>
+              <div class="mix-prose">
+                <p>
+                  A condition is only useful if something can happen inside it, and that set of actions did not exist yet. I ran design interviews with the VUI designers who would be authoring with them to establish what was actually needed inside a branch, then worked the set out with product management and my UX design team.
+                </p>
+                <p>
+                  That defined the actions—messages, variable assignments, events, notes, and returns—which I then designed as one system rather than as features of the condition builder. Each had to hold up in more than one place: nested several levels deep inside a condition, sitting flat on a node with no conditions at all, and reused by the other node types. That meant settling their structure, their properties, their editing and reordering rules, and how they read when stacked together.
+                </p>
+              </div>
+              <p class="mix-callout">
+                Because the actions were shared, they set the boundaries other designers worked inside. New behavior had to compose from the same pieces and follow the same structure, which kept the authoring language consistent as the product grew.
+              </p>
+            </div>
+
             <p class="mix-gallery-label type-meta-sm type-caps">
               14 condition-stack explorations <span>Scroll to compare →</span>
             </p>

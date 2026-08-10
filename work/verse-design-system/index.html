@@ -11,12 +11,10 @@
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121417" />
     <title>Verse: Building a Shared Design System for Mix | Erik Drouhard</title>
     <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
-    <link
-      rel="preload"
-      as="image"
-      href="/work/verse-design-system/assets/media/Verse Team breakdown.png"
-      type="image/png"
-    />
+    <!-- No hero preload: Vite hashes the <img src> into /assets/ but leaves an
+         absolute href alone, so a preload written here fetches a second copy
+         instead of the one that renders. fetchpriority="high" on the hero img
+         prioritises the URL the browser actually uses. -->
     <link rel="stylesheet" href="/styles.css" />
     <link rel="stylesheet" href="/components/case-study-nav.css" />
     <link rel="stylesheet" href="/components/testimonials.css" />
