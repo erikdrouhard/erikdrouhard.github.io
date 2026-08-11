@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="./resume-as-a-system.css" />
     <script type="module" src="/components/pointer-hover.js"></script>
     <script type="module" src="/components/press-state.js"></script>
-    <script type="module" src="/components/mobile-menu.js"></script>
   </head>
   <body class="resume-system-page">
     <a class="resume-skip-link type-action" href="#resume-story">Skip to resume</a>
@@ -34,18 +33,7 @@
           />
         </a>
 
-        <div class="desktop-header-actions">
-          <a class="resume-back-link type-action" href="/experiments/"><span aria-hidden="true">←</span> Experiments</a>
-          <a class="pill pill-secondary type-action" href="mailto:erikdrouhard@gmail.com">Get in touch</a>
-        </div>
-
-        <details class="mobile-menu">
-          <summary class="type-action">Menu</summary>
-          <nav class="mobile-nav" aria-label="Mobile navigation">
-            <a class="type-action" href="/experiments/">Experiments</a>
-            <a class="type-action" href="mailto:erikdrouhard@gmail.com">Get in touch</a>
-          </nav>
-        </details>
+        <a class="resume-back-link type-action type-caps" href="/experiments/"><span aria-hidden="true">←</span> Back to experiments</a>
       </header>
 
       <main id="resume-story" class="site-main resume-main">
