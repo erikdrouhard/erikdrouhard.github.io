@@ -7,19 +7,20 @@
     <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
     <meta
       name="description"
-      content="An experimental visual resume mapping Erik Drouhard's work across design systems, complex product experiences, front-end engineering, and AI."
+      content="A living resume that lets you explore how Erik Drouhard makes complex systems understandable through interaction design, prototyping, and design engineering."
     />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcfeff" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121417" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8f7f4" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0d11" />
     <title>Resume as a System | Erik Drouhard</title>
     <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/work/mix-dialog/condition-stack-demo.css" />
     <link rel="stylesheet" href="./resume-as-a-system.css" />
-    <script type="module" src="/components/pointer-hover.js"></script>
-    <script type="module" src="/components/press-state.js"></script>
+    <script type="module" src="/work/mix-dialog/condition-stack-demo.js"></script>
+    <script type="module" src="./resume-as-a-system.js"></script>
   </head>
   <body class="resume-system-page">
-    <a class="resume-skip-link type-action" href="#resume-story">Skip to resume</a>
+    <a class="resume-skip-link type-action" href="#story-explorer">Skip to the interactive story</a>
 
     <div class="page-shell">
       <header class="site-header">
@@ -33,325 +34,323 @@
           />
         </a>
 
-        <a class="resume-back-link type-action type-caps" href="/experiments/"><span aria-hidden="true">←</span> Back to experiments</a>
+        <a class="resume-back-link type-action type-caps" href="/experiments/">
+          <span aria-hidden="true">←</span> Back to experiments
+        </a>
       </header>
 
-      <main id="resume-story" class="site-main resume-main">
+      <main class="site-main resume-main">
         <div class="content resume-content">
-          <section class="resume-hero" aria-labelledby="resume-title">
-            <div class="resume-hero-copy">
-              <p class="resume-eyebrow type-eyebrow type-caps">Experiment 002 · Resume, interpreted</p>
-              <h1 id="resume-title" class="type-display">
-                A resume says what happened. This one shows how the pieces connect.
+          <section class="story-hero" aria-labelledby="resume-title">
+            <div class="story-hero-copy">
+              <p class="story-eyebrow type-eyebrow type-caps">Experiment 002 · A living résumé</p>
+              <h1 id="resume-title" class="story-title type-display">
+                The work changes.<br />The question stays the same.
               </h1>
-              <p class="resume-deck type-deck">
-                Erik Drouhard is a systems-focused design engineer with 15+ years spanning product design, front-end engineering, complex technical platforms, design systems, and AI-native workflows.
+              <p class="story-deck type-deck">
+                How do you make a complex system understandable enough for people to use, build, and evolve?
               </p>
-              <a class="pill pill-primary type-action" href="#career-map">Follow the system <span aria-hidden="true">↓</span></a>
+              <a class="pill pill-primary type-action" href="#story-explorer">
+                Explore the work <span aria-hidden="true">↓</span>
+              </a>
             </div>
 
-            <figure class="thesis-map" aria-labelledby="thesis-title thesis-caption">
-              <div class="thesis-node thesis-node-core">
-                <span id="thesis-title" class="type-subsection">Make complexity legible</span>
-              </div>
-              <div class="thesis-node thesis-node-one type-meta type-caps">Product design</div>
-              <div class="thesis-node thesis-node-two type-meta type-caps">Front-end systems</div>
-              <div class="thesis-node thesis-node-three type-meta type-caps">Design foundations</div>
-              <div class="thesis-node thesis-node-four type-meta type-caps">AI workflows</div>
-              <svg class="thesis-lines" viewBox="0 0 620 470" role="img" aria-label="Four practices connected to the central goal of making complexity legible">
-                <path d="M310 235 C235 205 190 145 150 90" />
-                <path d="M310 235 C385 205 430 145 470 90" />
-                <path d="M310 235 C235 265 190 325 150 380" />
-                <path d="M310 235 C385 265 430 325 470 380" />
-                <circle cx="310" cy="235" r="6" />
-                <circle cx="150" cy="90" r="4" />
-                <circle cx="470" cy="90" r="4" />
-                <circle cx="150" cy="380" r="4" />
-                <circle cx="470" cy="380" r="4" />
-              </svg>
-              <figcaption id="thesis-caption" class="type-caption">One throughline, expressed through four kinds of work.</figcaption>
-            </figure>
+            <div class="story-orbit" aria-hidden="true">
+              <div class="orbit-ring orbit-ring-one"></div>
+              <div class="orbit-ring orbit-ring-two"></div>
+              <div class="orbit-ring orbit-ring-three"></div>
+              <span class="orbit-label orbit-label-context type-meta type-caps">Context</span>
+              <span class="orbit-label orbit-label-logic type-meta type-caps">Logic</span>
+              <span class="orbit-label orbit-label-systems type-meta type-caps">Systems</span>
+              <span class="orbit-label orbit-label-agents type-meta type-caps">Agents</span>
+              <span class="orbit-core type-support">Make complexity legible</span>
+            </div>
           </section>
 
-          <section class="capability-strip" aria-labelledby="capability-title">
-            <div class="section-heading">
-              <p class="type-meta type-caps">Working set</p>
-              <h2 id="capability-title" class="type-section">The system is equal parts strategy, interaction, and implementation.</h2>
+          <section id="story-explorer" class="story-explorer" aria-labelledby="explorer-heading" data-active="mix">
+            <header class="explorer-heading">
+              <p class="type-meta type-caps">Four chapters · one throughline</p>
+              <h2 id="explorer-heading" class="type-section">Follow the problem, not just the job titles.</h2>
+              <p class="type-body-sm">Choose a chapter, then use the interface inside it.</p>
+            </header>
+
+            <div class="chapter-tab-shell">
+              <div class="chapter-progress" aria-hidden="true"><span></span></div>
+              <div class="chapter-tabs" role="tablist" aria-label="Resume chapters">
+                <button
+                  id="tab-dragon"
+                  class="chapter-tab type-support"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="panel-dragon"
+                  tabindex="-1"
+                  data-chapter="dragon"
+                >
+                  <span class="chapter-number type-meta">01 · 2017–19</span>
+                  <span>Physical context</span>
+                </button>
+                <button
+                  id="tab-mix"
+                  class="chapter-tab type-support"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="panel-mix"
+                  data-chapter="mix"
+                >
+                  <span class="chapter-number type-meta">02 · 2019–22</span>
+                  <span>Nested logic</span>
+                </button>
+                <button
+                  id="tab-verse"
+                  class="chapter-tab type-support"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="panel-verse"
+                  tabindex="-1"
+                  data-chapter="verse"
+                >
+                  <span class="chapter-number type-meta">03 · 2022–23</span>
+                  <span>Shared systems</span>
+                </button>
+                <button
+                  id="tab-ai"
+                  class="chapter-tab type-support"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="panel-ai"
+                  tabindex="-1"
+                  data-chapter="ai"
+                >
+                  <span class="chapter-number type-meta">04 · 2023–now</span>
+                  <span>Emerging behavior</span>
+                </button>
+              </div>
             </div>
-            <dl class="capability-grid">
-              <div>
-                <dt class="type-support">Design systems</dt>
-                <dd class="type-body-sm">Strategy, tokens, component models, Figma libraries, governance, adoption, accessibility</dd>
+
+            <div class="chapter-stage">
+              <aside class="chapter-narrative" aria-live="polite" aria-atomic="true">
+                <div>
+                  <p id="chapter-meta" class="chapter-meta type-meta type-caps">Mix.dialog · Sr. UX Designer</p>
+                  <h3 id="chapter-title" class="type-section">Replace a condition table with a language people could manipulate.</h3>
+                  <p id="chapter-summary" class="chapter-summary type-body">
+                    Conversation designers were authoring deterministic behavior that could branch across any combination of channel and modality. The old table could not make that depth readable.
+                  </p>
+                </div>
+
+                <dl class="chapter-details">
+                  <div>
+                    <dt class="type-meta type-caps">The design move</dt>
+                    <dd id="chapter-move" class="type-body-sm">Turn rows and levels into infinitely nestable stacks with direct, local manipulation.</dd>
+                  </div>
+                  <div>
+                    <dt class="type-meta type-caps">What carried forward</dt>
+                    <dd id="chapter-thread" class="type-body-sm">A complex system becomes usable when its structure is visible in the interface.</dd>
+                  </div>
+                </dl>
+
+                <a id="chapter-link" class="chapter-link type-action" href="/work/mix-dialog/">
+                  Read the Mix.dialog case study <span aria-hidden="true">→</span>
+                </a>
+              </aside>
+
+              <div class="chapter-canvas">
+                <section
+                  id="panel-dragon"
+                  class="story-panel story-panel-dragon"
+                  role="tabpanel"
+                  aria-labelledby="tab-dragon"
+                  hidden
+                >
+                  <div class="demo-heading">
+                    <div>
+                      <p class="type-meta type-caps">Representative interaction</p>
+                      <h4 class="type-subsection">Look first. Then use the same voice command.</h4>
+                    </div>
+                    <p class="type-caption">Gaze establishes context; motion makes the interpretation visible.</p>
+                  </div>
+
+                  <div class="gaze-demo" data-gaze-context="route">
+                    <video
+                      class="gaze-video"
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      poster="/work/dragon-drive/assets/hud-hero-poster.avif"
+                      aria-label="Dragon Drive CES technology demonstrator"
+                    >
+                      <source src="/work/dragon-drive/assets/hud-hero-loop.mp4" type="video/mp4" />
+                    </video>
+                    <div class="gaze-wash" aria-hidden="true"></div>
+                    <div class="gaze-targets" role="group" aria-label="Choose what the system should treat as context">
+                      <button class="gaze-target type-meta type-caps" type="button" data-context="weather" aria-pressed="false">
+                        <span aria-hidden="true">○</span> Weather
+                      </button>
+                      <button class="gaze-target type-meta type-caps" type="button" data-context="route" aria-pressed="true">
+                        <span aria-hidden="true">○</span> Route
+                      </button>
+                      <button class="gaze-target type-meta type-caps" type="button" data-context="music" aria-pressed="false">
+                        <span aria-hidden="true">○</span> Music
+                      </button>
+                    </div>
+                    <div class="gaze-command">
+                      <span class="type-meta type-caps">Voice</span>
+                      <strong class="type-support">“Show me more.”</strong>
+                    </div>
+                    <div class="gaze-response" aria-live="polite">
+                      <span class="type-meta type-caps">System reads</span>
+                      <strong id="gaze-response" class="type-support">Expand the next route instruction.</strong>
+                    </div>
+                  </div>
+                </section>
+
+                <section
+                  id="panel-mix"
+                  class="story-panel story-panel-mix"
+                  role="tabpanel"
+                  aria-labelledby="tab-mix"
+                >
+                  <div class="demo-heading">
+                    <div>
+                      <p class="type-meta type-caps">Interactive reconstruction</p>
+                      <h4 class="type-subsection">The interface is a stack, not a tree.</h4>
+                    </div>
+                    <p class="type-caption">Add an action, add another condition, or move an entire block.</p>
+                  </div>
+                  <condition-stack-demo></condition-stack-demo>
+                </section>
+
+                <section
+                  id="panel-verse"
+                  class="story-panel story-panel-verse"
+                  role="tabpanel"
+                  aria-labelledby="tab-verse"
+                  hidden
+                >
+                  <div class="demo-heading">
+                    <div>
+                      <p class="type-meta type-caps">Live token playground</p>
+                      <h4 class="type-subsection">Change the foundation. The component and code move together.</h4>
+                    </div>
+                    <p class="type-caption">A design system is a shared implementation model, not a handoff artifact.</p>
+                  </div>
+
+                  <div class="verse-demo" data-verse-tone="light">
+                    <form class="token-controls" aria-label="Component token controls">
+                      <label class="token-control">
+                        <span class="type-meta type-caps">Space <output id="space-output" for="space-token">24</output>px</span>
+                        <input id="space-token" type="range" min="12" max="36" step="4" value="24" />
+                      </label>
+                      <label class="token-control">
+                        <span class="type-meta type-caps">Radius <output id="radius-output" for="radius-token">16</output>px</span>
+                        <input id="radius-token" type="range" min="0" max="28" step="4" value="16" />
+                      </label>
+                      <div class="tone-control" role="group" aria-label="Preview tone">
+                        <span class="type-meta type-caps">Surface</span>
+                        <button class="tone-button type-meta type-caps" type="button" data-tone="light" aria-pressed="true">Light</button>
+                        <button class="tone-button type-meta type-caps" type="button" data-tone="dark" aria-pressed="false">Dark</button>
+                      </div>
+                    </form>
+
+                    <div class="component-workbench">
+                      <div class="component-preview" aria-label="Live component preview">
+                        <article class="system-card">
+                          <p class="type-meta type-caps">Shared component</p>
+                          <h5 class="type-subsection">One model, two disciplines.</h5>
+                          <p class="type-body-sm">The same spacing, surface, state, and naming decisions show up in design and in code.</p>
+                          <button class="system-card-action type-action" type="button">Inspect state</button>
+                        </article>
+                      </div>
+                      <pre class="token-code type-meta" aria-label="Generated design token values"><code>:root {
+  --space-card: <span id="code-space">24px</span>;
+  --radius-card: <span id="code-radius">16px</span>;
+  --surface-card: <span id="code-surface">#ffffff</span>;
+}</code></pre>
+                    </div>
+                  </div>
+                </section>
+
+                <section
+                  id="panel-ai"
+                  class="story-panel story-panel-ai"
+                  role="tabpanel"
+                  aria-labelledby="tab-ai"
+                  hidden
+                >
+                  <div class="demo-heading">
+                    <div>
+                      <p class="type-meta type-caps">Prototype loop</p>
+                      <h4 class="type-subsection">Use a working interface to turn uncertainty into a reusable pattern.</h4>
+                    </div>
+                    <p class="type-caption">Choose the question, then move the prototype through its next pass.</p>
+                  </div>
+
+                  <div class="prototype-lab" data-prototype-goal="capability" data-prototype-step="0">
+                    <div class="prototype-goals" role="group" aria-label="Choose what the prototype should learn">
+                      <button class="prototype-goal type-meta type-caps" type="button" data-goal="capability" aria-pressed="true">Explore a capability</button>
+                      <button class="prototype-goal type-meta type-caps" type="button" data-goal="interaction" aria-pressed="false">Test an interaction</button>
+                      <button class="prototype-goal type-meta type-caps" type="button" data-goal="workflow" aria-pressed="false">Package a workflow</button>
+                    </div>
+
+                    <div class="prototype-workspace">
+                      <ol class="prototype-steps" aria-label="Prototype stages">
+                        <li class="is-current"><button class="type-meta type-caps" type="button" data-step="0">Explore</button></li>
+                        <li><button class="type-meta type-caps" type="button" data-step="1">Prototype</button></li>
+                        <li><button class="type-meta type-caps" type="button" data-step="2">Evaluate</button></li>
+                        <li><button class="type-meta type-caps" type="button" data-step="3">Reuse</button></li>
+                      </ol>
+
+                      <div class="prototype-output" aria-live="polite">
+                        <p id="prototype-kicker" class="type-meta type-caps">Explore · capability</p>
+                        <h5 id="prototype-title" class="type-subsection">Find the boundary of what the model can do reliably.</h5>
+                        <p id="prototype-body" class="type-body-sm">Start with the uncertain behavior, the user need, and the product context that has to survive contact with a real interface.</p>
+                        <div class="prototype-artifact" aria-hidden="true">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+
+                      <button id="prototype-next" class="prototype-next type-action" type="button">
+                        Next pass <span aria-hidden="true">→</span>
+                      </button>
+                    </div>
+                  </div>
+                </section>
               </div>
-              <div>
-                <dt class="type-support">Product practice</dt>
-                <dd class="type-body-sm">Complex systems UX, behavior authoring, interaction patterns, inclusive design</dd>
+            </div>
+
+            <div class="career-continuum" aria-label="Career continuity">
+              <div class="continuum-item">
+                <span class="type-meta type-caps">2011–17 · Foundation</span>
+                <strong class="type-support">Design in the browser</strong>
+                <span class="type-caption">Visual design, front-end development, publishing systems</span>
               </div>
-              <div>
-                <dt class="type-support">Engineering</dt>
-                <dd class="type-body-sm">React, Storybook, Radix, vanilla-extract, HTML, CSS, JavaScript, TypeScript</dd>
+              <div class="continuum-line" aria-hidden="true"><span></span></div>
+              <div class="continuum-item">
+                <span class="type-meta type-caps">2017–present · Nuance → Microsoft</span>
+                <strong class="type-support">One continuous systems practice</strong>
+                <span class="type-caption">Multimodal interfaces, behavior authoring, design systems, AI tools</span>
               </div>
-              <div>
-                <dt class="type-support">AI practice</dt>
-                <dd class="type-body-sm">LLM-assisted prototyping, evaluation, agentic workflows, reusable skills, context engineering</dd>
-              </div>
-            </dl>
+            </div>
           </section>
 
-          <section id="career-map" class="career-overview" aria-labelledby="career-heading">
-            <div class="section-heading career-heading">
-              <p class="type-meta type-caps">2011 → present</p>
-              <h2 id="career-heading" class="type-section">The roles change. The connective tissue keeps accumulating.</h2>
-            </div>
-
-            <ol class="career-track" role="list">
-              <li class="career-stop career-stop-current">
-                <a href="#core-ai">
-                  <span class="career-date type-meta">2025—NOW</span>
-                  <span class="career-role type-support">CoreAI</span>
-                  <span class="career-domain type-caption">AI tools + evaluation</span>
-                </a>
-              </li>
-              <li class="career-stop">
-                <a href="#copilot-studio">
-                  <span class="career-date type-meta">2023—25</span>
-                  <span class="career-role type-support">Copilot Studio</span>
-                  <span class="career-domain type-caption">Builder experiences</span>
-                </a>
-              </li>
-              <li class="career-stop">
-                <a href="#verse">
-                  <span class="career-date type-meta">2022—23</span>
-                  <span class="career-role type-support">Verse</span>
-                  <span class="career-domain type-caption">Design foundations</span>
-                </a>
-              </li>
-              <li class="career-stop">
-                <a href="#mix-dialog">
-                  <span class="career-date type-meta">2019—22</span>
-                  <span class="career-role type-support">Mix.dialog</span>
-                  <span class="career-domain type-caption">Conditional logic</span>
-                </a>
-              </li>
-              <li class="career-stop">
-                <a href="#dragon-drive">
-                  <span class="career-date type-meta">2017—19</span>
-                  <span class="career-role type-support">Dragon Drive</span>
-                  <span class="career-domain type-caption">Multimodal systems</span>
-                </a>
-              </li>
-              <li class="career-stop">
-                <a href="#foundations">
-                  <span class="career-date type-meta">2011—17</span>
-                  <span class="career-role type-support">Web foundations</span>
-                  <span class="career-domain type-caption">Design + front end</span>
-                </a>
-              </li>
-            </ol>
-            <p class="tenure-note type-caption"><strong>One continuous Microsoft tenure since June 2017</strong>, beginning at Nuance Communications and continuing after Microsoft’s 2022 acquisition.</p>
-          </section>
-
-          <article id="core-ai" class="role-chapter role-chapter-featured" aria-labelledby="core-ai-heading">
-            <div class="role-copy">
-              <div class="role-meta-line">
-                <span class="type-meta type-caps">01 · Microsoft CoreAI</span>
-                <span class="type-meta">Mar 2025—present</span>
-              </div>
-              <h2 id="core-ai-heading" class="type-section">Turn emerging AI capabilities into tools teams can actually use.</h2>
-              <p class="type-body">Prototype across Microsoft Foundry and Azure portals, building focused mini-apps, reusable agent skills, and internal workflows that help teams explore, test, and validate ideas faster.</p>
-              <p class="type-body">Use AI and LLMs from early prototypes through evaluation while co-leading the tooling effort for Azure portals and helping teams adopt AI-native workflows.</p>
-            </div>
-
-            <figure class="system-figure core-loop" aria-labelledby="core-loop-title core-loop-caption">
-              <div class="loop-orbit" aria-hidden="true"></div>
-              <div class="loop-center">
-                <span id="core-loop-title" class="type-support">Reusable context</span>
-                <span class="type-caption">patterns + skills</span>
-              </div>
-              <div class="loop-step loop-step-one"><span class="type-meta type-caps">Explore</span><span class="type-caption">capability</span></div>
-              <div class="loop-step loop-step-two"><span class="type-meta type-caps">Prototype</span><span class="type-caption">mini-app</span></div>
-              <div class="loop-step loop-step-three"><span class="type-meta type-caps">Evaluate</span><span class="type-caption">behavior</span></div>
-              <div class="loop-step loop-step-four"><span class="type-meta type-caps">Reuse</span><span class="type-caption">workflow</span></div>
-              <figcaption id="core-loop-caption" class="type-caption">A practical loop from uncertain capability to reusable team tooling.</figcaption>
-            </figure>
-          </article>
-
-          <article id="copilot-studio" class="role-chapter" aria-labelledby="copilot-heading">
-            <div class="role-copy">
-              <div class="role-meta-line">
-                <span class="type-meta type-caps">02 · Copilot Studio</span>
-                <span class="type-meta">Aug 2023—Mar 2025</span>
-              </div>
-              <h2 id="copilot-heading" class="type-section">Give builders a clear path through complex AI-driven behavior.</h2>
-              <p class="type-body">Designed and prototyped builder-facing experiences for conversational AI tools, partnering with design and engineering to help users build and customize complex workflows.</p>
-              <p class="type-body">Translated behavior-authoring needs into understandable patterns and interactive prototypes; promoted from Product Designer I to Product Designer II.</p>
-            </div>
-
-            <figure class="system-figure workflow-figure" aria-labelledby="workflow-title workflow-caption">
-              <div class="workflow-input">
-                <span id="workflow-title" class="type-meta type-caps">Complex behavior</span>
-                <div class="workflow-scramble" aria-hidden="true">
-                  <span></span><span></span><span></span><span></span><span></span>
-                </div>
-              </div>
-              <div class="workflow-arrow type-meta" aria-hidden="true">→</div>
-              <div class="workflow-pattern">
-                <span class="type-meta type-caps">Understandable pattern</span>
-                <div class="workflow-steps">
-                  <span class="type-caption">Build</span>
-                  <span class="type-caption">Customize</span>
-                  <span class="type-caption">Test</span>
-                </div>
-              </div>
-              <div class="workflow-arrow type-meta" aria-hidden="true">→</div>
-              <div class="workflow-output">
-                <span class="type-meta type-caps">Interactive prototype</span>
-                <span class="workflow-cursor type-meta" aria-hidden="true">↗</span>
-              </div>
-              <figcaption id="workflow-caption" class="type-caption">The design move: preserve system power while reducing the effort needed to understand it.</figcaption>
-            </figure>
-          </article>
-
-          <article id="verse" class="role-chapter role-chapter-reverse" aria-labelledby="verse-heading">
-            <div class="role-copy">
-              <div class="role-meta-line">
-                <span class="type-meta type-caps">03 · Verse Design System</span>
-                <span class="type-meta">Nov 2022—Aug 2023</span>
-              </div>
-              <h2 id="verse-heading" class="type-section">Connect the design language to the implementation system.</h2>
-              <p class="type-body">Served as the Verse design-system DRI, leading strategy, design and front-end architecture, component composition, the cross-team plan, and implementation guidance.</p>
-              <p class="type-body">Connected Figma and code through shared tokens, components, states, naming, and extension points; coordinated governance and adoption across design and engineering teams.</p>
-            </div>
-
-            <figure class="system-figure bridge-figure" aria-labelledby="bridge-title bridge-caption">
-              <div class="bridge-shore">
-                <span id="bridge-title" class="type-meta type-caps">Design</span>
-                <strong class="type-support">Figma libraries</strong>
-              </div>
-              <div class="bridge-span" aria-label="Shared design-system layers">
-                <span class="bridge-piece type-caption">Tokens</span>
-                <span class="bridge-piece type-caption">Components</span>
-                <span class="bridge-piece type-caption">States</span>
-                <span class="bridge-piece type-caption">Naming</span>
-              </div>
-              <div class="bridge-shore bridge-shore-code">
-                <span class="type-meta type-caps">Code</span>
-                <strong class="type-support">React + Storybook</strong>
-              </div>
-              <div class="bridge-foundation type-caption">Radix + vanilla-extract <span aria-hidden="true">→</span> Fluent 2</div>
-              <figcaption id="bridge-caption" class="type-caption">A shared foundation used across Mix.dialog and the surrounding platform, supported through implementation guidance and education.</figcaption>
-            </figure>
-          </article>
-
-          <article id="mix-dialog" class="role-chapter" aria-labelledby="mix-heading">
-            <div class="role-copy">
-              <div class="role-meta-line">
-                <span class="type-meta type-caps">04 · Mix.dialog</span>
-                <span class="type-meta">Feb 2019—Nov 2022</span>
-              </div>
-              <h2 id="mix-heading" class="type-section">Make infinitely nestable logic readable without making it less powerful.</h2>
-              <p class="type-body">Designed the conditional-logic system at the core of Mix.dialog, making deeply nested behavior across channels and modalities legible to conversation designers and feasible for engineering to implement.</p>
-              <p class="type-body">Research showed measurable usability improvements in workflows used by customers including Sony Interactive Entertainment and Rakuten.</p>
-            </div>
-
-            <figure class="system-figure logic-figure" aria-labelledby="logic-title logic-caption">
-              <div class="logic-root">
-                <span id="logic-title" class="type-meta type-caps">If channel</span>
-                <strong class="type-support">Voice</strong>
-              </div>
-              <div class="logic-branches">
-                <div class="logic-branch">
-                  <div class="logic-condition"><span class="type-meta type-caps">And modality</span><strong class="type-support">Audio</strong></div>
-                  <div class="logic-nested"><span class="type-meta type-caps">If context</span><strong class="type-support">Known</strong></div>
-                  <div class="logic-leaf type-caption">Continue behavior</div>
-                </div>
-                <div class="logic-branch">
-                  <div class="logic-condition"><span class="type-meta type-caps">Else modality</span><strong class="type-support">Visual</strong></div>
-                  <div class="logic-nested"><span class="type-meta type-caps">If state</span><strong class="type-support">Available</strong></div>
-                  <div class="logic-leaf type-caption">Choose response</div>
-                </div>
-              </div>
-              <figcaption id="logic-caption" class="type-caption">A conceptual illustration of nested conditions across channel and modality—not a reproduction of the product UI.</figcaption>
-            </figure>
-          </article>
-
-          <article id="dragon-drive" class="role-chapter role-chapter-reverse" aria-labelledby="dragon-heading">
-            <div class="role-copy">
-              <div class="role-meta-line">
-                <span class="type-meta type-caps">05 · Dragon Drive</span>
-                <span class="type-meta">Jun 2017—Feb 2019</span>
-              </div>
-              <h2 id="dragon-heading" class="type-section">Design the interface around the driver’s attention—not the screen.</h2>
-              <p class="type-body">Led UI and interaction design for an automotive windshield HUD with gaze tracking, featured at the Dragon Drive Innovation Showcase at CES 2019.</p>
-              <p class="type-body">Designed for platform constraints, divided attention, multimodal feedback, and real-time system behavior.</p>
-            </div>
-
-            <figure class="system-figure hud-figure" aria-labelledby="hud-title hud-caption">
-              <div class="hud-label hud-label-top type-meta type-caps" id="hud-title">Windshield HUD</div>
-              <div class="hud-road" aria-hidden="true">
-                <span class="hud-lane hud-lane-left"></span>
-                <span class="hud-lane hud-lane-right"></span>
-              </div>
-              <div class="hud-focus" aria-hidden="true"><span></span></div>
-              <div class="hud-status hud-status-left"><span class="type-meta type-caps">Gaze</span><strong class="type-support">Road</strong></div>
-              <div class="hud-status hud-status-right"><span class="type-meta type-caps">Feedback</span><strong class="type-support">Multimodal</strong></div>
-              <div class="hud-horizon" aria-hidden="true"></div>
-              <figcaption id="hud-caption" class="type-caption">The visual hierarchy keeps the driving context primary and information peripheral.</figcaption>
-            </figure>
-          </article>
-
-          <article id="foundations" class="foundation-chapter" aria-labelledby="foundation-heading">
-            <div class="section-heading">
-              <p class="type-meta type-caps">06 · The craft base</p>
-              <h2 id="foundation-heading" class="type-section">Before product systems, there was already a loop between design and code.</h2>
-            </div>
-
-            <div class="foundation-grid">
-              <section>
-                <div class="role-meta-line">
-                  <span class="type-meta type-caps">Cold Spring Design</span>
-                  <span class="type-meta">2011—2016</span>
-                </div>
-                <h3 class="type-subsection">Visual design becomes front-end craft.</h3>
-                <p class="type-body-sm">Led visual design and front-end development for marketing websites using HTML, SCSS, jQuery, and WordPress.</p>
-                <div class="foundation-stack" aria-label="HTML, SCSS, jQuery, and WordPress">
-                  <span class="type-meta">HTML</span><span class="type-meta">SCSS</span><span class="type-meta">jQuery</span><span class="type-meta">WordPress</span>
-                </div>
-              </section>
-
-              <section>
-                <div class="role-meta-line">
-                  <span class="type-meta type-caps">Applause</span>
-                  <span class="type-meta">2016—2017</span>
-                </div>
-                <h3 class="type-subsection">Front-end craft becomes architecture.</h3>
-                <p class="type-body-sm">Led front-end development for Applause.com and directed a shift from multilingual WordPress to a headless Contentful, Middleman, and Vue architecture through pre-launch.</p>
-                <div class="architecture-shift" aria-label="Architecture shift from WordPress to a headless stack">
-                  <span class="architecture-before type-caption">WordPress</span>
-                  <span class="architecture-arrow type-meta" aria-hidden="true">→</span>
-                  <span class="architecture-after type-caption">Contentful</span>
-                  <span class="architecture-after type-caption">Middleman</span>
-                  <span class="architecture-after type-caption">Vue</span>
-                </div>
-              </section>
-            </div>
-          </article>
-
-          <section class="resume-epilogue" aria-labelledby="epilogue-heading">
+          <section class="story-close" aria-labelledby="close-heading">
             <p class="type-meta type-caps">The throughline</p>
-            <h2 id="epilogue-heading" class="type-quote">Make complex systems understandable enough to use, build, and evolve.</h2>
-            <div class="epilogue-details">
-              <p class="type-body-sm"><strong>Education</strong><br />American International College<br />Master Certificate, Visual Communications</p>
-              <p class="type-body-sm"><strong>Current practice</strong><br />Human-agent interaction, design foundations, rapid prototyping, and AI-native workflows</p>
+            <h2 id="close-heading" class="type-display">Design the model. Build the interface. Learn from the behavior.</h2>
+            <p class="type-deck">That loop started in the browser and now extends into human-agent interaction, rapid prototyping, evaluation, and reusable AI-native workflows.</p>
+            <div class="story-close-actions">
+              <a class="pill pill-primary type-action" href="mailto:erikdrouhard@gmail.com">Start a conversation <span aria-hidden="true">→</span></a>
+              <a class="story-resume-link type-action" href="/assets/erik-drouhard-resume.pdf">Read the résumé <span aria-hidden="true">↗</span></a>
             </div>
-            <a class="pill pill-primary type-action" href="mailto:erikdrouhard@gmail.com">Start a conversation <span aria-hidden="true">→</span></a>
           </section>
         </div>
       </main>
 
-      <footer class="social-footer resume-footer">
+      <footer class="resume-footer">
         <p class="type-caption">Resume as a System · an unlisted portfolio experiment</p>
-        <a class="type-action resume-back-link" href="/experiments/"><span aria-hidden="true">←</span> Back to experiments</a>
       </footer>
     </div>
   </body>
