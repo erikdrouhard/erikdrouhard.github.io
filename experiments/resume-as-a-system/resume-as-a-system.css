@@ -109,8 +109,6 @@
 }
 
 .story-title {
-  --type-display: 300 clamp(3.75rem, 7vw, 6.75rem)/0.9 var(--font-display);
-  letter-spacing: -0.045em;
   text-wrap: balance;
 }
 
@@ -202,9 +200,11 @@
 }
 
 .story-explorer {
-  width: 100%;
+  width: min(calc(100vw - 48px), 1320px);
+  margin-left: 50%;
   padding: clamp(72px, 9vw, 120px) 0 96px;
   border-top: 1px solid var(--story-line);
+  transform: translateX(-50%);
 }
 
 .explorer-heading {
@@ -982,8 +982,10 @@
     padding-left: 20px;
   }
 
-  .story-title {
-    --type-display: 300 clamp(3.25rem, 16vw, 5.5rem)/0.92 var(--font-display);
+  .story-explorer {
+    width: 100%;
+    margin-left: 0;
+    transform: none;
   }
 
   .story-orbit {
@@ -1178,10 +1180,6 @@
 @media (max-width: 420px) {
   .story-hero {
     padding-top: 76px;
-  }
-
-  .story-title {
-    --type-display: 300 3.25rem/0.94 var(--font-display);
   }
 
   .story-orbit {
