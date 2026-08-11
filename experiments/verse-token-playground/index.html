@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <meta
+      name="description"
+      content="An interactive Verse design-system playground for composing patterns from confirmed spacing, radius, stroke, color, shadow, and motion tokens plus typography styles."
+    />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f6f6" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141414" />
+    <title>Verse Token Playground | Erik Drouhard</title>
+    <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/experiments/experiment-shell.css" />
+    <link rel="stylesheet" href="./verse-token-playground.css" />
+    <script type="module" src="/components/pointer-hover.js"></script>
+    <script type="module" src="/components/press-state.js"></script>
+    <script type="module" src="./verse-token-playground.js"></script>
+  </head>
+  <body class="verse-token-page">
+    <a class="experiment-skip-link" href="#experiment">Skip to the token playground</a>
+
+    <header class="experiment-nav-shell">
+      <nav class="experiment-nav" aria-label="Experiment navigation">
+        <a class="experiment-home-link" href="/" aria-label="Homepage">
+          <span class="experiment-brand-mark" aria-hidden="true"></span>
+        </a>
+        <a class="experiment-back-link" href="/experiments/">
+          <span aria-hidden="true">←</span> BACK TO EXPERIMENTS
+        </a>
+      </nav>
+    </header>
+
+    <main id="experiment" class="token-lab">
+      <header class="lab-intro">
+        <p class="type-meta type-caps">Experiment 003 · Design system</p>
+        <h1 class="type-display">Compose with the system, not around it.</h1>
+        <p class="type-deck">
+          Tune real Verse design tokens and watch one composition respond as spacing, shape,
+          surface, depth, type, and motion change together.
+        </p>
+        <p class="source-note type-body-sm">
+          Confirmed token names, values, and typography styles come from the
+          <a href="https://verse-ui.azurewebsites.net/?path=/story/components-combobox-combobox--default" target="_blank" rel="noopener noreferrer">live VerseUI Storybook</a>.
+          Arrangement, element count, and tilt are labeled as local composition controls.
+        </p>
+      </header>
+
+      <div class="playground-layout">
+        <section class="canvas-panel" aria-labelledby="canvas-heading">
+          <header class="canvas-toolbar">
+            <div>
+              <p class="canvas-kicker">LIVE COMPOSITION</p>
+              <h2 id="canvas-heading">Pattern canvas</h2>
+            </div>
+
+            <div class="theme-switch" role="group" aria-label="Verse preview theme">
+              <button type="button" data-theme="light" aria-pressed="true">Light</button>
+              <button type="button" data-theme="dark" aria-pressed="false">Dark</button>
+              <button type="button" data-theme="contrast" aria-pressed="false">High contrast</button>
+            </div>
+          </header>
+
+          <div
+            id="token-canvas"
+            class="token-canvas"
+            role="img"
+            aria-label="A six-element orbit composition using Verse design tokens."
+          >
+            <div class="canvas-axis canvas-axis-horizontal" aria-hidden="true"></div>
+            <div class="canvas-axis canvas-axis-vertical" aria-hidden="true"></div>
+            <svg class="connector-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <div class="node-layer" aria-hidden="true"></div>
+            <span class="canvas-watermark" aria-hidden="true">VERSE / COMPOSE</span>
+          </div>
+
+          <dl class="token-readout" aria-label="Active Verse tokens">
+            <div>
+              <dt>Space</dt>
+              <dd id="readout-space">spacingHorizontalL / spacingVerticalL · 16px</dd>
+            </div>
+            <div>
+              <dt>Radius</dt>
+              <dd id="readout-radius">borderRadiusLarge · 6px</dd>
+            </div>
+            <div>
+              <dt>Surface</dt>
+              <dd id="readout-surface">colorNeutralBackground1 · #ffffff</dd>
+            </div>
+            <div>
+              <dt>Accent</dt>
+              <dd id="readout-accent">colorBrandBackground · #0f6cbd</dd>
+            </div>
+          </dl>
+        </section>
+
+        <aside class="control-panel" aria-labelledby="controls-heading">
+          <header class="controls-heading">
+            <p>INSPECTOR</p>
+            <h2 id="controls-heading">Token controls</h2>
+          </header>
+
+          <form id="token-controls">
+            <fieldset class="control-group source-controls">
+              <legend>
+                <span>Verse source tokens</span>
+                <small>CONFIRMED</small>
+              </legend>
+
+              <label class="range-control" for="space-token">
+                <span>Spacing pair</span>
+                <output id="space-output" for="space-token">spacingHorizontalL / spacingVerticalL · 16px</output>
+              </label>
+              <input id="space-token" name="space-token" type="range" min="0" max="6" step="1" value="3" />
+
+              <label class="range-control" for="radius-token">
+                <span>Border radius</span>
+                <output id="radius-output" for="radius-token">borderRadiusLarge · 6px</output>
+              </label>
+              <input id="radius-token" name="radius-token" type="range" min="0" max="5" step="1" value="3" />
+
+              <label class="range-control" for="stroke-token">
+                <span>Stroke width</span>
+                <output id="stroke-output" for="stroke-token">strokeWidthThin · 1px</output>
+              </label>
+              <input id="stroke-token" name="stroke-token" type="range" min="0" max="3" step="1" value="0" />
+
+              <label class="range-control" for="shadow-token">
+                <span>Elevation</span>
+                <output id="shadow-output" for="shadow-token">shadow8</output>
+              </label>
+              <input id="shadow-token" name="shadow-token" type="range" min="0" max="5" step="1" value="2" />
+
+              <label class="range-control" for="motion-token">
+                <span>Motion duration</span>
+                <output id="motion-output" for="motion-token">durationNormal · 200ms</output>
+              </label>
+              <input id="motion-token" name="motion-token" type="range" min="0" max="6" step="1" value="3" />
+
+              <label class="select-control" for="accent-token">
+                <span>Accent token</span>
+                <select id="accent-token" name="accent-token">
+                  <option value="brand">colorBrandBackground</option>
+                  <option value="teal-neptune">colorVerseBrandGradientsTealToNeptune</option>
+                  <option value="neptune">colorVerseBrandGradientsNeptuneDkToNeptune</option>
+                  <option value="tag-blue">colorVerseTagBlueBackground</option>
+                  <option value="tag-green">colorVerseTagGreenBackground</option>
+                  <option value="tag-magenta">colorVerseTagMagentaBackground</option>
+                </select>
+              </label>
+
+              <label class="select-control" for="type-token">
+                <span>Typography style</span>
+                <select id="type-token" name="type-token">
+                  <option value="caption1">caption1 · 10/14</option>
+                  <option value="body1">body1 · 12/16</option>
+                  <option value="subtitle2">subtitle2 · 14/20</option>
+                  <option value="body2" selected>body2 · 16/22</option>
+                  <option value="subtitle1">subtitle1 · 20/28</option>
+                  <option value="title2">title2 · 28/36</option>
+                </select>
+              </label>
+
+              <p class="mapping-note">
+                Typography choices are confirmed Verse style sets. Gradient stop extraction,
+                contrast text, and animation easing are local composition logic; the selected
+                gradient and motion duration remain source tokens.
+              </p>
+            </fieldset>
+
+            <fieldset class="control-group composition-controls">
+              <legend>
+                <span>Composition controls</span>
+                <small>LOCAL</small>
+              </legend>
+
+              <div class="layout-control">
+                <span>Arrangement</span>
+                <div class="layout-options">
+                  <label><input type="radio" name="layout" value="orbit" checked /><span>Orbit</span></label>
+                  <label><input type="radio" name="layout" value="flow" /><span>Flow</span></label>
+                  <label><input type="radio" name="layout" value="stack" /><span>Stack</span></label>
+                </div>
+              </div>
+
+              <label class="range-control" for="count-control">
+                <span>Element count</span>
+                <output id="count-output" for="count-control">6</output>
+              </label>
+              <input id="count-control" name="count-control" type="range" min="3" max="10" step="1" value="6" />
+
+              <label class="range-control" for="tilt-control">
+                <span>Tilt</span>
+                <output id="tilt-output" for="tilt-control">4°</output>
+              </label>
+              <input id="tilt-control" name="tilt-control" type="range" min="0" max="12" step="1" value="4" />
+
+              <div class="control-actions">
+                <button id="remix-button" type="button">Remix</button>
+                <button id="reset-button" type="reset">Reset</button>
+              </div>
+            </fieldset>
+          </form>
+
+          <p class="control-footnote">
+            Token values are discrete on purpose. This is a composer, not a freeform style editor.
+          </p>
+        </aside>
+      </div>
+
+      <p id="change-status" class="visually-hidden" role="status" aria-live="polite"></p>
+    </main>
+  </body>
+</html>
