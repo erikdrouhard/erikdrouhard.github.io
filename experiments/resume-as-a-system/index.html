@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <meta
+      name="description"
+      content="An experimental visual resume mapping Erik Drouhard's work across design systems, complex product experiences, front-end engineering, and AI."
+    />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcfeff" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121417" />
+    <title>Resume as a System | Erik Drouhard</title>
+    <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="./resume-as-a-system.css" />
+    <script type="module" src="/components/pointer-hover.js"></script>
+    <script type="module" src="/components/press-state.js"></script>
+    <script type="module" src="/components/mobile-menu.js"></script>
+  </head>
+  <body class="resume-system-page">
+    <a class="resume-skip-link type-action" href="#resume-story">Skip to resume</a>
+
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand-link" href="/" aria-label="Homepage">
+          <img
+            class="brand-mark"
+            src="/assets/erikdrouhard-logomark.svg"
+            width="48"
+            height="48"
+            alt=""
+          />
+        </a>
+
+        <div class="desktop-header-actions">
+          <a class="resume-back-link type-action" href="/experiments/"><span aria-hidden="true">←</span> Experiments</a>
+          <a class="pill pill-secondary type-action" href="mailto:erikdrouhard@gmail.com">Get in touch</a>
+        </div>
+
+        <details class="mobile-menu">
+          <summary class="type-action">Menu</summary>
+          <nav class="mobile-nav" aria-label="Mobile navigation">
+            <a class="type-action" href="/experiments/">Experiments</a>
+            <a class="type-action" href="mailto:erikdrouhard@gmail.com">Get in touch</a>
+          </nav>
+        </details>
+      </header>
+
+      <main id="resume-story" class="site-main resume-main">
+        <div class="content resume-content">
+          <section class="resume-hero" aria-labelledby="resume-title">
+            <div class="resume-hero-copy">
+              <p class="resume-eyebrow type-eyebrow type-caps">Experiment 002 · Resume, interpreted</p>
+              <h1 id="resume-title" class="type-display">
+                A resume says what happened. This one shows how the pieces connect.
+              </h1>
+              <p class="resume-deck type-deck">
+                Erik Drouhard is a systems-focused design engineer with 15+ years spanning product design, front-end engineering, complex technical platforms, design systems, and AI-native workflows.
+              </p>
+              <a class="pill pill-primary type-action" href="#career-map">Follow the system <span aria-hidden="true">↓</span></a>
+            </div>
+
+            <figure class="thesis-map" aria-labelledby="thesis-title thesis-caption">
+              <div class="thesis-node thesis-node-core">
+                <span id="thesis-title" class="type-subsection">Make complexity legible</span>
+              </div>
+              <div class="thesis-node thesis-node-one type-meta type-caps">Product design</div>
+              <div class="thesis-node thesis-node-two type-meta type-caps">Front-end systems</div>
+              <div class="thesis-node thesis-node-three type-meta type-caps">Design foundations</div>
+              <div class="thesis-node thesis-node-four type-meta type-caps">AI workflows</div>
+              <svg class="thesis-lines" viewBox="0 0 620 470" role="img" aria-label="Four practices connected to the central goal of making complexity legible">
+                <path d="M310 235 C235 205 190 145 150 90" />
+                <path d="M310 235 C385 205 430 145 470 90" />
+                <path d="M310 235 C235 265 190 325 150 380" />
+                <path d="M310 235 C385 265 430 325 470 380" />
+                <circle cx="310" cy="235" r="6" />
+                <circle cx="150" cy="90" r="4" />
+                <circle cx="470" cy="90" r="4" />
+                <circle cx="150" cy="380" r="4" />
+                <circle cx="470" cy="380" r="4" />
+              </svg>
+              <figcaption id="thesis-caption" class="type-caption">One throughline, expressed through four kinds of work.</figcaption>
+            </figure>
+          </section>
+
+          <section class="capability-strip" aria-labelledby="capability-title">
+            <div class="section-heading">
+              <p class="type-meta type-caps">Working set</p>
+              <h2 id="capability-title" class="type-section">The system is equal parts strategy, interaction, and implementation.</h2>
+            </div>
+            <dl class="capability-grid">
+              <div>
+                <dt class="type-support">Design systems</dt>
+                <dd class="type-body-sm">Strategy, tokens, component models, Figma libraries, governance, adoption, accessibility</dd>
+              </div>
+              <div>
+                <dt class="type-support">Product practice</dt>
+                <dd class="type-body-sm">Complex systems UX, behavior authoring, interaction patterns, inclusive design</dd>
+              </div>
+              <div>
+                <dt class="type-support">Engineering</dt>
+                <dd class="type-body-sm">React, Storybook, Radix, vanilla-extract, HTML, CSS, JavaScript, TypeScript</dd>
+              </div>
+              <div>
+                <dt class="type-support">AI practice</dt>
+                <dd class="type-body-sm">LLM-assisted prototyping, evaluation, agentic workflows, reusable skills, context engineering</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section id="career-map" class="career-overview" aria-labelledby="career-heading">
+            <div class="section-heading career-heading">
+              <p class="type-meta type-caps">2011 → present</p>
+              <h2 id="career-heading" class="type-section">The roles change. The connective tissue keeps accumulating.</h2>
+            </div>
+
+            <ol class="career-track" role="list">
+              <li class="career-stop career-stop-current">
+                <a href="#core-ai">
+                  <span class="career-date type-meta">2025—NOW</span>
+                  <span class="career-role type-support">CoreAI</span>
+                  <span class="career-domain type-caption">AI tools + evaluation</span>
+                </a>
+              </li>
+              <li class="career-stop">
+                <a href="#copilot-studio">
+                  <span class="career-date type-meta">2023—25</span>
+                  <span class="career-role type-support">Copilot Studio</span>
+                  <span class="career-domain type-caption">Builder experiences</span>
+                </a>
+              </li>
+              <li class="career-stop">
+                <a href="#verse">
+                  <span class="career-date type-meta">2022—23</span>
+                  <span class="career-role type-support">Verse</span>
+                  <span class="career-domain type-caption">Design foundations</span>
+                </a>
+              </li>
+              <li class="career-stop">
+                <a href="#mix-dialog">
+                  <span class="career-date type-meta">2019—22</span>
+                  <span class="career-role type-support">Mix.dialog</span>
+                  <span class="career-domain type-caption">Conditional logic</span>
+                </a>
+              </li>
+              <li class="career-stop">
+                <a href="#dragon-drive">
+                  <span class="career-date type-meta">2017—19</span>
+                  <span class="career-role type-support">Dragon Drive</span>
+                  <span class="career-domain type-caption">Multimodal systems</span>
+                </a>
+              </li>
+              <li class="career-stop">
+                <a href="#foundations">
+                  <span class="career-date type-meta">2011—17</span>
+                  <span class="career-role type-support">Web foundations</span>
+                  <span class="career-domain type-caption">Design + front end</span>
+                </a>
+              </li>
+            </ol>
+            <p class="tenure-note type-caption"><strong>One continuous Microsoft tenure since June 2017</strong>, beginning at Nuance Communications and continuing after Microsoft’s 2022 acquisition.</p>
+          </section>
+
+          <article id="core-ai" class="role-chapter role-chapter-featured" aria-labelledby="core-ai-heading">
+            <div class="role-copy">
+              <div class="role-meta-line">
+                <span class="type-meta type-caps">01 · Microsoft CoreAI</span>
+                <span class="type-meta">Mar 2025—present</span>
+              </div>
+              <h2 id="core-ai-heading" class="type-section">Turn emerging AI capabilities into tools teams can actually use.</h2>
+              <p class="type-body">Prototype across Microsoft Foundry and Azure portals, building focused mini-apps, reusable agent skills, and internal workflows that help teams explore, test, and validate ideas faster.</p>
+              <p class="type-body">Use AI and LLMs from early prototypes through evaluation while co-leading the tooling effort for Azure portals and helping teams adopt AI-native workflows.</p>
+            </div>
+
+            <figure class="system-figure core-loop" aria-labelledby="core-loop-title core-loop-caption">
+              <div class="loop-orbit" aria-hidden="true"></div>
+              <div class="loop-center">
+                <span id="core-loop-title" class="type-support">Reusable context</span>
+                <span class="type-caption">patterns + skills</span>
+              </div>
+              <div class="loop-step loop-step-one"><span class="type-meta type-caps">Explore</span><span class="type-caption">capability</span></div>
+              <div class="loop-step loop-step-two"><span class="type-meta type-caps">Prototype</span><span class="type-caption">mini-app</span></div>
+              <div class="loop-step loop-step-three"><span class="type-meta type-caps">Evaluate</span><span class="type-caption">behavior</span></div>
+              <div class="loop-step loop-step-four"><span class="type-meta type-caps">Reuse</span><span class="type-caption">workflow</span></div>
+              <figcaption id="core-loop-caption" class="type-caption">A practical loop from uncertain capability to reusable team tooling.</figcaption>
+            </figure>
+          </article>
+
+          <article id="copilot-studio" class="role-chapter" aria-labelledby="copilot-heading">
+            <div class="role-copy">
+              <div class="role-meta-line">
+                <span class="type-meta type-caps">02 · Copilot Studio</span>
+                <span class="type-meta">Aug 2023—Mar 2025</span>
+              </div>
+              <h2 id="copilot-heading" class="type-section">Give builders a clear path through complex AI-driven behavior.</h2>
+              <p class="type-body">Designed and prototyped builder-facing experiences for conversational AI tools, partnering with design and engineering to help users build and customize complex workflows.</p>
+              <p class="type-body">Translated behavior-authoring needs into understandable patterns and interactive prototypes; promoted from Product Designer I to Product Designer II.</p>
+            </div>
+
+            <figure class="system-figure workflow-figure" aria-labelledby="workflow-title workflow-caption">
+              <div class="workflow-input">
+                <span id="workflow-title" class="type-meta type-caps">Complex behavior</span>
+                <div class="workflow-scramble" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+              <div class="workflow-arrow type-meta" aria-hidden="true">→</div>
+              <div class="workflow-pattern">
+                <span class="type-meta type-caps">Understandable pattern</span>
+                <div class="workflow-steps">
+                  <span class="type-caption">Build</span>
+                  <span class="type-caption">Customize</span>
+                  <span class="type-caption">Test</span>
+                </div>
+              </div>
+              <div class="workflow-arrow type-meta" aria-hidden="true">→</div>
+              <div class="workflow-output">
+                <span class="type-meta type-caps">Interactive prototype</span>
+                <span class="workflow-cursor type-meta" aria-hidden="true">↗</span>
+              </div>
+              <figcaption id="workflow-caption" class="type-caption">The design move: preserve system power while reducing the effort needed to understand it.</figcaption>
+            </figure>
+          </article>
+
+          <article id="verse" class="role-chapter role-chapter-reverse" aria-labelledby="verse-heading">
+            <div class="role-copy">
+              <div class="role-meta-line">
+                <span class="type-meta type-caps">03 · Verse Design System</span>
+                <span class="type-meta">Nov 2022—Aug 2023</span>
+              </div>
+              <h2 id="verse-heading" class="type-section">Connect the design language to the implementation system.</h2>
+              <p class="type-body">Served as the Verse design-system DRI, leading strategy, design and front-end architecture, component composition, the cross-team plan, and implementation guidance.</p>
+              <p class="type-body">Connected Figma and code through shared tokens, components, states, naming, and extension points; coordinated governance and adoption across design and engineering teams.</p>
+            </div>
+
+            <figure class="system-figure bridge-figure" aria-labelledby="bridge-title bridge-caption">
+              <div class="bridge-shore">
+                <span id="bridge-title" class="type-meta type-caps">Design</span>
+                <strong class="type-support">Figma libraries</strong>
+              </div>
+              <div class="bridge-span" aria-label="Shared design-system layers">
+                <span class="bridge-piece type-caption">Tokens</span>
+                <span class="bridge-piece type-caption">Components</span>
+                <span class="bridge-piece type-caption">States</span>
+                <span class="bridge-piece type-caption">Naming</span>
+              </div>
+              <div class="bridge-shore bridge-shore-code">
+                <span class="type-meta type-caps">Code</span>
+                <strong class="type-support">React + Storybook</strong>
+              </div>
+              <div class="bridge-foundation type-caption">Radix + vanilla-extract <span aria-hidden="true">→</span> Fluent 2</div>
+              <figcaption id="bridge-caption" class="type-caption">A shared foundation used across Mix.dialog and the surrounding platform, supported through implementation guidance and education.</figcaption>
+            </figure>
+          </article>
+
+          <article id="mix-dialog" class="role-chapter" aria-labelledby="mix-heading">
+            <div class="role-copy">
+              <div class="role-meta-line">
+                <span class="type-meta type-caps">04 · Mix.dialog</span>
+                <span class="type-meta">Feb 2019—Nov 2022</span>
+              </div>
+              <h2 id="mix-heading" class="type-section">Make infinitely nestable logic readable without making it less powerful.</h2>
+              <p class="type-body">Designed the conditional-logic system at the core of Mix.dialog, making deeply nested behavior across channels and modalities legible to conversation designers and feasible for engineering to implement.</p>
+              <p class="type-body">Research showed measurable usability improvements in workflows used by customers including Sony Interactive Entertainment and Rakuten.</p>
+            </div>
+
+            <figure class="system-figure logic-figure" aria-labelledby="logic-title logic-caption">
+              <div class="logic-root">
+                <span id="logic-title" class="type-meta type-caps">If channel</span>
+                <strong class="type-support">Voice</strong>
+              </div>
+              <div class="logic-branches">
+                <div class="logic-branch">
+                  <div class="logic-condition"><span class="type-meta type-caps">And modality</span><strong class="type-support">Audio</strong></div>
+                  <div class="logic-nested"><span class="type-meta type-caps">If context</span><strong class="type-support">Known</strong></div>
+                  <div class="logic-leaf type-caption">Continue behavior</div>
+                </div>
+                <div class="logic-branch">
+                  <div class="logic-condition"><span class="type-meta type-caps">Else modality</span><strong class="type-support">Visual</strong></div>
+                  <div class="logic-nested"><span class="type-meta type-caps">If state</span><strong class="type-support">Available</strong></div>
+                  <div class="logic-leaf type-caption">Choose response</div>
+                </div>
+              </div>
+              <figcaption id="logic-caption" class="type-caption">A conceptual illustration of nested conditions across channel and modality—not a reproduction of the product UI.</figcaption>
+            </figure>
+          </article>
+
+          <article id="dragon-drive" class="role-chapter role-chapter-reverse" aria-labelledby="dragon-heading">
+            <div class="role-copy">
+              <div class="role-meta-line">
+                <span class="type-meta type-caps">05 · Dragon Drive</span>
+                <span class="type-meta">Jun 2017—Feb 2019</span>
+              </div>
+              <h2 id="dragon-heading" class="type-section">Design the interface around the driver’s attention—not the screen.</h2>
+              <p class="type-body">Led UI and interaction design for an automotive windshield HUD with gaze tracking, featured at the Dragon Drive Innovation Showcase at CES 2019.</p>
+              <p class="type-body">Designed for platform constraints, divided attention, multimodal feedback, and real-time system behavior.</p>
+            </div>
+
+            <figure class="system-figure hud-figure" aria-labelledby="hud-title hud-caption">
+              <div class="hud-label hud-label-top type-meta type-caps" id="hud-title">Windshield HUD</div>
+              <div class="hud-road" aria-hidden="true">
+                <span class="hud-lane hud-lane-left"></span>
+                <span class="hud-lane hud-lane-right"></span>
+              </div>
+              <div class="hud-focus" aria-hidden="true"><span></span></div>
+              <div class="hud-status hud-status-left"><span class="type-meta type-caps">Gaze</span><strong class="type-support">Road</strong></div>
+              <div class="hud-status hud-status-right"><span class="type-meta type-caps">Feedback</span><strong class="type-support">Multimodal</strong></div>
+              <div class="hud-horizon" aria-hidden="true"></div>
+              <figcaption id="hud-caption" class="type-caption">The visual hierarchy keeps the driving context primary and information peripheral.</figcaption>
+            </figure>
+          </article>
+
+          <article id="foundations" class="foundation-chapter" aria-labelledby="foundation-heading">
+            <div class="section-heading">
+              <p class="type-meta type-caps">06 · The craft base</p>
+              <h2 id="foundation-heading" class="type-section">Before product systems, there was already a loop between design and code.</h2>
+            </div>
+
+            <div class="foundation-grid">
+              <section>
+                <div class="role-meta-line">
+                  <span class="type-meta type-caps">Cold Spring Design</span>
+                  <span class="type-meta">2011—2016</span>
+                </div>
+                <h3 class="type-subsection">Visual design becomes front-end craft.</h3>
+                <p class="type-body-sm">Led visual design and front-end development for marketing websites using HTML, SCSS, jQuery, and WordPress.</p>
+                <div class="foundation-stack" aria-label="HTML, SCSS, jQuery, and WordPress">
+                  <span class="type-meta">HTML</span><span class="type-meta">SCSS</span><span class="type-meta">jQuery</span><span class="type-meta">WordPress</span>
+                </div>
+              </section>
+
+              <section>
+                <div class="role-meta-line">
+                  <span class="type-meta type-caps">Applause</span>
+                  <span class="type-meta">2016—2017</span>
+                </div>
+                <h3 class="type-subsection">Front-end craft becomes architecture.</h3>
+                <p class="type-body-sm">Led front-end development for Applause.com and directed a shift from multilingual WordPress to a headless Contentful, Middleman, and Vue architecture through pre-launch.</p>
+                <div class="architecture-shift" aria-label="Architecture shift from WordPress to a headless stack">
+                  <span class="architecture-before type-caption">WordPress</span>
+                  <span class="architecture-arrow type-meta" aria-hidden="true">→</span>
+                  <span class="architecture-after type-caption">Contentful</span>
+                  <span class="architecture-after type-caption">Middleman</span>
+                  <span class="architecture-after type-caption">Vue</span>
+                </div>
+              </section>
+            </div>
+          </article>
+
+          <section class="resume-epilogue" aria-labelledby="epilogue-heading">
+            <p class="type-meta type-caps">The throughline</p>
+            <h2 id="epilogue-heading" class="type-quote">Make complex systems understandable enough to use, build, and evolve.</h2>
+            <div class="epilogue-details">
+              <p class="type-body-sm"><strong>Education</strong><br />American International College<br />Master Certificate, Visual Communications</p>
+              <p class="type-body-sm"><strong>Current practice</strong><br />Human-agent interaction, design foundations, rapid prototyping, and AI-native workflows</p>
+            </div>
+            <a class="pill pill-primary type-action" href="mailto:erikdrouhard@gmail.com">Start a conversation <span aria-hidden="true">→</span></a>
+          </section>
+        </div>
+      </main>
+
+      <footer class="social-footer resume-footer">
+        <p class="type-caption">Resume as a System · an unlisted portfolio experiment</p>
+        <a class="type-action resume-back-link" href="/experiments/"><span aria-hidden="true">←</span> Back to experiments</a>
+      </footer>
+    </div>
+  </body>
+</html>

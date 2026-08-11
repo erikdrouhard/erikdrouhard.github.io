@@ -16,6 +16,7 @@ Build production output with `npm run build` and preview it with `npm run previe
 - `/` — portfolio homepage
 - `/work/` — case studies index
 - `/experiments/` — unlisted, noindex experiments index
+- `/experiments/resume-as-a-system/` — visual resume and career-systems experiment
 - `/experiments/seeded-tower-defense/` — deterministic seeded tower-defense experiment
 - `/work/dragon-drive/` — Nuance Dragon Drive automotive HUD case study
 - `/work/microsoft/` — Microsoft case study spanning Copilot Studio and CoreAI
