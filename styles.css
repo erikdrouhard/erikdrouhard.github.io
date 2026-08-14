@@ -443,7 +443,9 @@ a {
   border: 1px solid var(--line-soft);
   border-radius: 12px;
   background: rgb(255 255 255 / 98%);
-  box-shadow: 0 16px 36px var(--line-soft);
+  /* Elevation, not a hairline. --line-soft is a border token and goes pale
+     in dark mode; the dark rule below keeps a real black shadow. */
+  box-shadow: 0 16px 36px rgb(0 0 0 / 10%);
 }
 
 .mobile-nav a {

@@ -201,7 +201,7 @@
   border-radius: 18px;
   background: rgb(255 255 255 / 66%);
   box-shadow:
-    0 0 0 1px rgb(0 0 0 / 8%),
+    0 0 0 1px var(--line-subtle),
     0 16px 40px rgb(23 42 91 / 6%);
   list-style: none;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -223,7 +223,7 @@
 }
 
 .core-ai-page .snapshot li + li {
-  border-left: 1px solid rgb(0 0 0 / 14%);
+  border-left: 1px solid var(--line);
 }
 
 .core-ai-page .snapshot span {
@@ -237,7 +237,7 @@
 
 .core-ai-page .section-rule .shell {
   padding-top: 112px;
-  border-top: 1px solid rgb(0 0 0 / 14%);
+  border-top: 1px solid var(--line);
 }
 
 .core-ai-page .section-rule {
@@ -269,7 +269,7 @@
   border-radius: 20px;
   background: rgb(255 255 255 / 74%);
   box-shadow:
-    0 0 0 1px rgb(0 0 0 / 8%),
+    0 0 0 1px var(--line-subtle),
     0 24px 54px rgb(20 39 88 / 8%);
   gap: 72px;
   grid-template-columns: minmax(210px, 0.62fr) minmax(0, 1.38fr);
@@ -329,7 +329,7 @@
 
 .core-ai-page .section-heading > p:last-child {
   max-width: 650px;
-  color: rgb(0 0 0 / 68%);
+  color: var(--ink-soft);
 }
 
 .core-ai-page .timeline {
@@ -343,7 +343,7 @@
   position: relative;
   display: grid;
   padding: 30px 0 30px 30px;
-  border-bottom: 1px solid rgb(0 0 0 / 14%);
+  border-bottom: 1px solid var(--line);
   column-gap: 28px;
   grid-template-columns: 160px minmax(220px, 1fr) minmax(260px, 1.45fr);
   align-items: start;
@@ -380,7 +380,7 @@
 .core-ai-page .scope-note p,
 .core-ai-page .applied-work p,
 .core-ai-page .map-of-truth p {
-  color: rgb(0 0 0 / 68%);
+  color: var(--ink-soft);
 }
 
 .core-ai-page .split {
@@ -410,7 +410,7 @@
   border-radius: 18px;
   background: rgb(255 255 255 / 50%);
   box-shadow:
-    0 0 0 1px rgb(0 0 0 / 8%),
+    0 0 0 1px var(--line-subtle),
     0 18px 44px rgb(20 39 88 / 9%);
 }
 
@@ -450,7 +450,7 @@
   border-radius: 16px;
   background: rgb(255 255 255 / 66%);
   box-shadow:
-    0 0 0 1px rgb(0 0 0 / 8%),
+    0 0 0 1px var(--line-subtle),
     0 12px 30px rgb(23 42 91 / 5%);
 }
 
@@ -477,7 +477,7 @@
   border-radius: 20px;
   background: rgb(255 255 255 / 62%);
   box-shadow:
-    0 0 0 1px rgb(0 0 0 / 8%),
+    0 0 0 1px var(--line-subtle),
     0 20px 48px rgb(20 39 88 / 7%);
   gap: 56px;
   grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
@@ -543,7 +543,7 @@
 .core-ai-page .prototype-grid,
 .core-ai-page .link-grid {
   display: grid;
-  border-top: 1px solid rgb(0 0 0 / 14%);
+  border-top: 1px solid var(--line);
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
@@ -555,7 +555,7 @@
 .core-ai-page .prototype,
 .core-ai-page .public-link {
   padding: 32px 36px 32px 0;
-  border-bottom: 1px solid rgb(0 0 0 / 14%);
+  border-bottom: 1px solid var(--line);
 }
 
 .core-ai-page .prototype {
@@ -564,7 +564,7 @@
   border-radius: 16px;
   background: rgb(255 255 255 / 64%);
   box-shadow:
-    0 0 0 1px rgb(0 0 0 / 8%),
+    0 0 0 1px var(--line-subtle),
     0 12px 30px rgb(23 42 91 / 5%);
 }
 
@@ -572,7 +572,7 @@
 .core-ai-page .public-link:nth-child(even) {
   padding-right: 0;
   padding-left: 36px;
-  border-left: 1px solid rgb(0 0 0 / 14%);
+  border-left: 1px solid var(--line);
 }
 
 .core-ai-page .prototype:nth-child(even) {
@@ -596,7 +596,7 @@
   display: grid;
   margin-top: 72px;
   padding-top: 40px;
-  border-top: 1px solid rgb(0 0 0 / 14%);
+  border-top: 1px solid var(--line);
   gap: 64px;
   grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
   align-items: start;
@@ -626,13 +626,13 @@
 
 .core-ai-page .map-flow {
   display: grid;
-  border-top: 1px solid rgb(0 0 0 / 14%);
+  border-top: 1px solid var(--line);
 }
 
 .core-ai-page .map-node {
   display: grid;
   padding: 18px 0;
-  border-bottom: 1px solid rgb(0 0 0 / 14%);
+  border-bottom: 1px solid var(--line);
   gap: 4px;
 }
 
@@ -816,7 +816,13 @@
     padding-inline: 20px;
   }
 
-  .core-ai-page .snapshot li + li,
+  .core-ai-page .snapshot li + li {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  /* Dark mode does not restyle these stacked dividers. Leave the literal so
+     --line's 18% white dark value does not appear here. */
   .core-ai-page .sprint-step + .sprint-step,
   .core-ai-page .outcome + .outcome,
   .core-ai-page .system-layer + .system-layer {
@@ -941,7 +947,12 @@
       linear-gradient(172deg, #101522 0%, #080a0f 100%);
   }
 
-  .core-ai-page .skip-link,
+  /* Keep the skip-link white-on-black in both modes. It used to share this
+     muted grouping and the label dropped to 62% white. */
+  .core-ai-page .skip-link {
+    background: #000;
+    color: #fff;
+  }
 
   .core-ai-page .eyebrow,
   .core-ai-page .number,
@@ -969,7 +980,7 @@
   .core-ai-page .scope-note p,
   .core-ai-page .applied-work p,
   .core-ai-page .map-of-truth p {
-    color: rgb(255 255 255 / 72%);
+    color: var(--ink-soft);
   }
 
   .core-ai-page .snapshot,
@@ -981,7 +992,7 @@
   .core-ai-page .prototype {
     background: rgb(255 255 255 / 6%);
     box-shadow:
-      0 0 0 1px rgb(255 255 255 / 10%),
+      0 0 0 1px var(--line-subtle),
       0 18px 44px rgb(0 0 0 / 22%);
   }
 
@@ -1027,7 +1038,7 @@
   .core-ai-page .media-frame {
     background: rgb(255 255 255 / 5%);
     box-shadow:
-      0 0 0 1px rgb(255 255 255 / 10%),
+      0 0 0 1px var(--line-subtle),
       0 18px 44px rgb(0 0 0 / 24%);
   }
 
