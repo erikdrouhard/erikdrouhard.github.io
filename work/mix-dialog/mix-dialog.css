@@ -305,7 +305,10 @@
     0 0 0 1px rgb(0 0 0 / 8%),
     0 12px 30px rgb(0 0 0 / 4%);
   gap: 20px;
-  grid-template-columns: max-content minmax(0, 1fr);
+  /* A shared label column so headings and body share one left edge down
+     the list. max-content sized each card from its own label and staggered
+     the copy — Verse's "CHANGE THE TOOLING" is ~40px wider than "MAKE THE CASE". */
+  grid-template-columns: 12.5rem minmax(0, 1fr);
 }
 
 .mix-action-list .mix-item-label {
