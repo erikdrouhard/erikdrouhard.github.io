@@ -840,7 +840,6 @@ h1 a:focus-visible,
   padding: 0 18px;
   border: 0;
   border-radius: var(--radius-pill);
-}
   align-items: center;
   justify-content: center;
   text-decoration: none;
