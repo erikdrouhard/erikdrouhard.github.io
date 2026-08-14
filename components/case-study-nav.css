@@ -6,9 +6,9 @@ case-study-nav {
   top: 0;
   display: block;
   width: 100%;
-  border-block: 1px solid rgb(0 0 0 / 10%);
+  border-block: 1px solid var(--line-soft);
   background: rgb(249 249 250 / 88%);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(var(--nav-blur));
 }
 
 case-study-nav[data-offset] {
@@ -17,10 +17,10 @@ case-study-nav[data-offset] {
 
 .case-study-nav__inner {
   display: flex;
-  width: min(100%, 940px);
+  width: min(100%, var(--page-width));
   min-width: 0;
   margin-inline: auto;
-  padding-inline: 24px;
+  padding-inline: var(--page-gutter);
   gap: 28px;
   overflow-x: auto;
   scrollbar-width: none;
@@ -33,7 +33,7 @@ case-study-nav[data-offset] {
 .case-study-nav__inner a {
   position: relative;
   display: inline-flex;
-  min-height: 48px;
+  min-height: var(--icon);
   color: rgb(0 0 0 / 64%);
   text-decoration: none;
   white-space: nowrap;
@@ -56,7 +56,7 @@ case-study-nav[data-offset] {
 }
 
 .case-study-nav__inner a[aria-current="location"] {
-  color: #000;
+  color: var(--ink);
 }
 
 .case-study-nav__inner a[aria-current="location"]::after {
@@ -65,7 +65,7 @@ case-study-nav[data-offset] {
 
 .case-study-nav__inner a:focus-visible {
   border-radius: 4px;
-  outline: 2px solid #000;
+  outline: var(--focus-size) solid var(--ink);
   outline-offset: 2px;
 }
 
@@ -74,24 +74,24 @@ case-study-nav[data-offset] {
    drops on touch, so the colour never sticks after a tap. See
    components/pointer-hover.js. */
 :where(html:not(.is-coarse-pointer)) .case-study-nav__inner a:hover {
-  color: #000;
+  color: var(--ink);
 }
 
 @media (min-width: 810px) and (max-width: 1199.98px) {
   .case-study-nav__inner {
-    width: min(calc(100% - 80px), 730px);
+    width: min(calc(100% - 80px), var(--page-width-tablet));
     padding-inline: 0;
   }
 }
 
 @media (max-width: 809.98px) {
   case-study-nav[data-offset] {
-    margin-top: 16px;
+    margin-top: var(--page-gutter-mobile);
   }
 
   .case-study-nav__inner {
     width: 100%;
-    padding-inline: 16px;
+    padding-inline: var(--page-gutter-mobile);
     gap: 22px;
   }
 }
@@ -105,7 +105,7 @@ case-study-nav[data-offset] {
 
 @media (prefers-color-scheme: dark) {
   case-study-nav {
-    border-color: rgb(255 255 255 / 12%);
+    border-color: var(--line-soft);
     background: rgb(14 16 19 / 88%);
   }
 
@@ -114,16 +114,16 @@ case-study-nav[data-offset] {
   }
 
   .case-study-nav__inner a[aria-current="location"] {
-    color: #f4f4f5;
+    color: var(--ink);
   }
 
   .case-study-nav__inner a:focus-visible {
-    outline-color: #f4f4f5;
+    outline-color: var(--ink);
   }
 
   /* Guarded to match the light-mode hover rule, so the colour never sticks
      on touch devices after a tap. */
   :where(html:not(.is-coarse-pointer)) .case-study-nav__inner a:hover {
-    color: #f4f4f5;
+    color: var(--ink);
   }
 }

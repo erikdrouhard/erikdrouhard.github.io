@@ -5,6 +5,16 @@ const CARD_SELECTOR = [
   ".drive-hero-visual",
 ].join(",");
 
+const MAGNETIC_X_RANGE = 7;
+const MAGNETIC_Y_RANGE = 5;
+const MAGNETIC_Z = "18px";
+const MAGNETIC_ROTATE_X = 3.25;
+const MAGNETIC_ROTATE_Y = 4.25;
+const MAGNETIC_SCALE = "1.012";
+const MAGNETIC_SHADOW_X = 11;
+const MAGNETIC_SHADOW_Y_BASE = 14;
+const MAGNETIC_SHADOW_Y_RANGE = 5;
+
 import {
   hasFinePointer,
   subscribeToPointerCapability,
@@ -79,25 +89,31 @@ class MagneticCard {
         Math.min(1, ((event.clientY - bounds.top) / bounds.height - 0.5) * 2),
       );
 
-      this.card.style.setProperty("--magnetic-x", `${(x * 7).toFixed(2)}px`);
-      this.card.style.setProperty("--magnetic-y", `${(y * 5).toFixed(2)}px`);
-      this.card.style.setProperty("--magnetic-z", "18px");
+      this.card.style.setProperty(
+        "--magnetic-x",
+        `${(x * MAGNETIC_X_RANGE).toFixed(2)}px`,
+      );
+      this.card.style.setProperty(
+        "--magnetic-y",
+        `${(y * MAGNETIC_Y_RANGE).toFixed(2)}px`,
+      );
+      this.card.style.setProperty("--magnetic-z", MAGNETIC_Z);
       this.card.style.setProperty(
         "--magnetic-rotate-x",
-        `${(-y * 3.25).toFixed(2)}deg`,
+        `${(-y * MAGNETIC_ROTATE_X).toFixed(2)}deg`,
       );
       this.card.style.setProperty(
         "--magnetic-rotate-y",
-        `${(x * 4.25).toFixed(2)}deg`,
+        `${(x * MAGNETIC_ROTATE_Y).toFixed(2)}deg`,
       );
-      this.card.style.setProperty("--magnetic-scale", "1.012");
+      this.card.style.setProperty("--magnetic-scale", MAGNETIC_SCALE);
       this.stage.style.setProperty(
         "--magnetic-shadow-x",
-        `${(-x * 11).toFixed(2)}px`,
+        `${(-x * MAGNETIC_SHADOW_X).toFixed(2)}px`,
       );
       this.stage.style.setProperty(
         "--magnetic-shadow-y",
-        `${(14 - y * 5).toFixed(2)}px`,
+        `${(MAGNETIC_SHADOW_Y_BASE - y * MAGNETIC_SHADOW_Y_RANGE).toFixed(2)}px`,
       );
     });
   }

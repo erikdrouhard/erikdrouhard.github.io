@@ -93,8 +93,48 @@
   /* -- Shared type behaviour --------------------------------------------- */
   --weight-strong: 700;
   --weight-link: 600;
+  --weight-heavy: 800;
   --space-paragraph: 1.45em;
-  --link-shimmer-highlight: #1677ff;
+
+  /* Experiment-shell chrome keeps system-ui so it does not pick up Crimson.
+     Declared here so check-type-system.mjs still has a single owner. */
+  --type-experiment-nav: 700 0.8125rem/1 ui-sans-serif, system-ui, sans-serif;
+  --type-experiment-nav-sm: 700 0.75rem/1 ui-sans-serif, system-ui, sans-serif;
+  --track-experiment-nav: 0.06em;
+
+  /* -- Page --------------------------------------------------------------
+     Shared site chrome only. Case-study brand palettes (--drive-*, --mix-*,
+     --core-*, --verse-*) stay on those pages and must not be folded in. */
+  --page-wash: #fcfeff;
+  --page-paper: #f6f6f6;
+  --page-paper-deep: #f6f6f6;
+  --ink: #000;
+  --ink-inverse: #fff;
+  --ink-muted: rgb(0 0 0 / 58%);
+  --ink-soft: rgb(0 0 0 / 68%);
+  --line: rgb(0 0 0 / 14%);
+  --line-subtle: rgb(0 0 0 / 8%);
+  --line-soft: rgb(0 0 0 / 10%);
+
+  /* -- Focus ------------------------------------------------------------- */
+  --focus: #1677ff;
+  --focus-size: 2px;
+  --focus-offset: 3px;
+  --link-shimmer-highlight: var(--focus);
+
+  /* -- Shell ------------------------------------------------------------- */
+  --page-width: 940px;
+  --page-width-tablet: 730px;
+  --page-gutter: 24px;
+  --page-gutter-mobile: 16px;
+  --page-min: 320px;
+
+  /* -- Control ----------------------------------------------------------- */
+  --radius-pill: 999px;
+  --tap: 44px;
+  --icon: 48px;
+  --hover-fade: 0.78;
+  --nav-blur: 14px;
 
   /* -- Buttons ------------------------------------------------------------
      One button for the whole site. The filled pill reads as a physical key:
@@ -117,9 +157,10 @@
   --layer-sticky-nav: 1;
   --layer-header: 2;
   --layer-popover: 1;
+  --layer-skip: 30;
   color-scheme: light;
-  color: #000;
-  background: #f6f6f6;
+  color: var(--ink);
+  background: var(--page-paper);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -296,9 +337,9 @@ body {
 }
 
 body {
-  min-width: 320px;
-  background: linear-gradient(172deg, rgb(252 254 255) 0%, rgb(246 246 246) 100%);
-  color: #000;
+  min-width: var(--page-min);
+  background: linear-gradient(172deg, var(--page-wash) 0%, var(--page-paper-deep) 100%);
+  color: var(--ink);
 }
 
 img {
@@ -323,18 +364,18 @@ a {
   position: relative;
   z-index: var(--layer-header);
   display: flex;
-  width: min(100%, 940px);
+  width: min(100%, var(--page-width));
   height: 88px;
-  padding: 40px 24px 0;
+  padding: 40px var(--page-gutter) 0;
   align-items: center;
   justify-content: space-between;
 }
 
 .brand-link,
 .brand-mark {
-  width: 48px;
-  height: 48px;
-  flex: 0 0 48px;
+  width: var(--icon);
+  height: var(--icon);
+  flex: 0 0 var(--icon);
 }
 
 .desktop-header-actions {
@@ -379,8 +420,8 @@ a {
 .mobile-menu summary {
   position: relative;
   display: flex;
-  width: 48px;
-  height: 48px;
+  width: var(--icon);
+  height: var(--icon);
   cursor: pointer;
   list-style: none;
   align-items: center;
@@ -399,15 +440,15 @@ a {
   display: grid;
   width: 220px;
   padding: 8px;
-  border: 1px solid rgb(0 0 0 / 10%);
+  border: 1px solid var(--line-soft);
   border-radius: 12px;
   background: rgb(255 255 255 / 98%);
-  box-shadow: 0 16px 36px rgb(0 0 0 / 10%);
+  box-shadow: 0 16px 36px var(--line-soft);
 }
 
 .mobile-nav a {
   display: flex;
-  min-height: 48px;
+  min-height: var(--icon);
   padding: 15px 12px;
   align-items: center;
   text-decoration: none;
@@ -420,7 +461,7 @@ a {
 }
 
 .mobile-nav a + a {
-  border-top: 1px solid rgb(0 0 0 / 8%);
+  border-top: 1px solid var(--line-subtle);
 }
 
 /* Appearance comes from .pill; this only carries the gap for the download icon
@@ -443,8 +484,8 @@ a {
   position: relative;
   z-index: var(--layer-content);
   display: flex;
-  width: min(100%, 940px);
-  padding: 0 24px 40px;
+  width: min(100%, var(--page-width));
+  padding: 0 var(--page-gutter) 40px;
   flex-direction: column;
   align-items: center;
 }
@@ -485,7 +526,7 @@ h1,
 }
 
 .skills strong {
-  font-weight: 800;
+  font-weight: var(--weight-heavy);
 }
 
 .profile {
@@ -540,8 +581,8 @@ h1,
   position: absolute;
   top: 50%;
   left: 50%;
-  width: max(100%, 48px);
-  height: max(100%, 48px);
+  width: max(100%, var(--icon));
+  height: max(100%, var(--icon));
   content: "";
   transform: translate(-50%, -50%);
 }
@@ -553,9 +594,9 @@ h1,
 
 .social-footer {
   display: flex;
-  width: min(100%, 940px);
+  width: min(100%, var(--page-width));
   margin: 0 auto;
-  padding: 24px 24px 40px;
+  padding: var(--page-gutter) var(--page-gutter) 40px;
   align-items: center;
   flex-wrap: wrap;
   gap: 24px;
@@ -570,8 +611,8 @@ h1,
 .social-links a:focus-visible,
 h1 a:focus-visible,
 .bio a:focus-visible {
-  outline: 2px solid #1677ff;
-  outline-offset: 3px;
+  outline: var(--focus-size) solid var(--focus);
+  outline-offset: var(--focus-offset);
 }
 
 .work-main {
@@ -595,7 +636,7 @@ h1 a:focus-visible,
 
 .work-eyebrow,
 .work-meta {
-  color: rgb(0 0 0 / 58%);
+  color: var(--ink-muted);
 }
 
 .work-title {
@@ -604,14 +645,14 @@ h1 a:focus-visible,
 
 .work-list {
   width: 100%;
-  border-top: 1px solid rgb(0 0 0 / 14%);
+  border-top: 1px solid var(--line);
 }
 
 .work-item {
   display: grid;
   min-width: 0;
   padding: 32px 0;
-  border-bottom: 1px solid rgb(0 0 0 / 14%);
+  border-bottom: 1px solid var(--line);
   gap: 20px;
   text-decoration: none;
   grid-template-columns: minmax(160px, 1fr) minmax(0, 2.35fr) auto;
@@ -627,7 +668,7 @@ h1 a:focus-visible,
   --featured-sticker-min-height: 28px;
   --featured-sticker-padding-block: 5px;
   --featured-sticker-padding-inline: 14px;
-  --featured-sticker-radius: 999px;
+  --featured-sticker-radius: var(--radius-pill);
   --featured-sticker-tilt: -2deg;
   --featured-sticker-edge-depth: 2px;
   --featured-sticker-shadow-depth: 3px;
@@ -675,7 +716,7 @@ h1 a:focus-visible,
      its `currentColor` initial follows that fill instead of `color` — so the
      underline was being drawn in transparent. Any explicit colour opts out of
      that and paints normally, at rest and under the sweep. */
-  text-decoration-color: #000;
+  text-decoration-color: var(--ink);
 }
 
 .work-item-copy h2.work-item-title-wide {
@@ -685,7 +726,7 @@ h1 a:focus-visible,
 .work-item-copy > p {
   max-width: 58ch;
   margin: 0;
-  color: rgb(0 0 0 / 68%);
+  color: var(--ink-soft);
   text-wrap: pretty;
 }
 
@@ -695,7 +736,7 @@ h1 a:focus-visible,
 }
 
 .work-item:focus-visible {
-  outline: 2px solid #1677ff;
+  outline: var(--focus-size) solid var(--focus);
   outline-offset: 8px;
 }
 
@@ -758,7 +799,7 @@ h1 a:focus-visible,
 :where(html:not(.is-coarse-pointer)) .case-studies-link:hover,
 :where(html:not(.is-coarse-pointer)) .mobile-nav a:hover,
 :where(html:not(.is-coarse-pointer)) .social-links a:hover {
-  opacity: 0.78;
+  opacity: var(--hover-fade);
 }
 
 @supports (-webkit-background-clip: text) or (background-clip: text) {
@@ -795,10 +836,10 @@ h1 a:focus-visible,
    out of it — they simulate the product's UI, not the site's. */
 .pill {
   display: inline-flex;
-  min-height: 44px;
+  min-height: var(--tap);
   padding: 0 18px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   align-items: center;
   justify-content: center;
   text-decoration: none;
@@ -892,7 +933,7 @@ h1 a:focus-visible,
   .site-header,
   .site-main,
   .social-footer {
-    width: min(calc(100% - 80px), 730px);
+    width: min(calc(100% - 80px), var(--page-width-tablet));
     padding-right: 0;
     padding-left: 0;
   }
@@ -956,7 +997,7 @@ h1 a:focus-visible,
   .site-header {
     width: 100%;
     height: 64px;
-    padding: 16px 16px 0;
+    padding: var(--page-gutter-mobile) var(--page-gutter-mobile) 0;
   }
 
   .desktop-header-actions {
@@ -969,12 +1010,12 @@ h1 a:focus-visible,
 
   .site-main {
     width: 100%;
-    padding: 0 16px 16px;
+    padding: 0 var(--page-gutter-mobile) var(--page-gutter-mobile);
   }
 
   .social-footer {
-    width: calc(100% - 32px);
-    padding: 24px 0 calc(32px + env(safe-area-inset-bottom));
+    width: calc(100% - (var(--page-gutter-mobile) * 2));
+    padding: var(--page-gutter) 0 calc(32px + env(safe-area-inset-bottom));
   }
 
   .content {
@@ -1059,7 +1100,17 @@ h1 a:focus-visible,
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --link-shimmer-highlight: #8fc7ff;
+    --page-wash: #121417;
+    --page-paper: #090a0c;
+    --page-paper-deep: #08090b;
+    --ink: #f4f4f5;
+    --ink-inverse: #fff;
+    --ink-muted: rgb(255 255 255 / 62%);
+    --ink-soft: rgb(255 255 255 / 72%);
+    --line: rgb(255 255 255 / 18%);
+    --line-subtle: rgb(255 255 255 / 10%);
+    --line-soft: rgb(255 255 255 / 12%);
+    --focus: #8fc7ff;
 
     /* The button inverts wholesale. The edge is now a grey below the near-white
        face — still the darker side of the same key. */
@@ -1073,29 +1124,29 @@ h1 a:focus-visible,
     --pill-tint-pressed: rgb(255 255 255 / 17%);
 
     color-scheme: dark;
-    color: #f4f4f5;
-    background: #090a0c;
+    color: var(--ink);
+    background: var(--page-paper);
   }
 
   body {
-    background: linear-gradient(172deg, #121417 0%, #08090b 100%);
-    color: #f4f4f5;
+    background: linear-gradient(172deg, var(--page-wash) 0%, var(--page-paper-deep) 100%);
+    color: var(--ink);
   }
 
   /* Tracks :root's colour by hand; see the light-mode rule for why it cannot
      be currentColor. */
   .work-item-copy h2 {
-    text-decoration-color: #f4f4f5;
+    text-decoration-color: var(--ink);
   }
 
   .mobile-nav {
-    border-color: rgb(255 255 255 / 12%);
+    border-color: var(--line-soft);
     background: rgb(22 24 28 / 98%);
     box-shadow: 0 16px 36px rgb(0 0 0 / 34%);
   }
 
   .mobile-nav a + a {
-    border-color: rgb(255 255 255 / 10%);
+    border-color: var(--line-subtle);
   }
 
   .brand-mark,
@@ -1106,16 +1157,16 @@ h1 a:focus-visible,
 
   .work-eyebrow,
   .work-meta {
-    color: rgb(255 255 255 / 62%);
+    color: var(--ink-muted);
   }
 
   .work-list,
   .work-item {
-    border-color: rgb(255 255 255 / 18%);
+    border-color: var(--line);
   }
 
   .work-item-copy > p {
-    color: rgb(255 255 255 / 72%);
+    color: var(--ink-soft);
   }
 }
 

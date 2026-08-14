@@ -11,19 +11,19 @@
   overflow-x: hidden;
   background:
     radial-gradient(circle at 84% 9%, rgb(101 72 232 / 11%), transparent 27rem),
-    linear-gradient(172deg, #fcfeff 0%, #f6f6f6 100%);
+    linear-gradient(172deg, var(--page-wash) 0%, var(--page-paper) 100%);
 }
 
 .mix-skip-link {
   position: fixed;
-  z-index: 30;
+  z-index: var(--layer-skip);
   top: 12px;
   left: 12px;
-  min-height: 44px;
+  min-height: var(--tap);
   padding: 13px 16px;
-  border-radius: 999px;
-  background: #000;
-  color: #fff;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--ink-inverse);
   text-decoration: none;
   transform: translateY(-160%);
 }
@@ -49,7 +49,7 @@
 
 .mix-content {
   gap: 0;
-  color: #000;
+  color: var(--ink);
 }
 
 .mix-content h1,
@@ -63,7 +63,7 @@
 .mix-content h1,
 .mix-content h2,
 .mix-content h3 {
-  color: #000;
+  color: var(--ink);
 }
 
 .mix-content p {
@@ -165,7 +165,7 @@
   top: 20px;
   left: 20px;
   padding: 7px 9px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(17 15 46 / 86%);
   color: #fff;
 }
@@ -348,7 +348,7 @@
 
 .mix-media-scroller:focus-visible {
   border-radius: 12px;
-  outline: 2px solid #1677ff;
+  outline: var(--focus-size) solid var(--focus);
   outline-offset: 4px;
 }
 
@@ -484,7 +484,7 @@
   background:
     radial-gradient(circle at 50% 0%, rgb(101 72 232 / 11%), transparent 28rem),
     linear-gradient(145deg, #f4f1ff, #f8fbff);
-  color: #000;
+  color: var(--ink);
   text-align: center;
 }
 

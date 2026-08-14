@@ -35,7 +35,7 @@
 }
 
 .testimonial figcaption .testimonial-role {
-  color: #000;
+  color: var(--ink);
 }
 
 @media (width <= 700px) {

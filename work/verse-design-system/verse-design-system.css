@@ -48,7 +48,7 @@
   --mix-ink-muted: var(--verse-copy-muted);
   background:
     radial-gradient(circle at 84% 9%, var(--verse-accent-wash), transparent 27rem),
-    linear-gradient(172deg, var(--verse-page-light) 0%, #f6f6f6 100%);
+    linear-gradient(172deg, var(--verse-page-light) 0%, var(--page-paper) 100%);
 }
 
 .mix-page--verse .mix-hero {
@@ -266,7 +266,7 @@
 }
 
 .mix-page--verse .mix-callout--storybook:focus-visible {
-  outline: var(--verse-focus-size) solid #1677ff;
+  outline: var(--verse-focus-size) solid var(--focus);
   outline-offset: var(--verse-focus-offset);
 }
 
