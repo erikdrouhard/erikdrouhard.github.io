@@ -116,7 +116,7 @@
 }
 
 .mix-project-meta > div + div {
-  border-top: 1px solid rgb(0 0 0 / 8%);
+  border-top: 1px solid var(--line-subtle);
 }
 
 .mix-project-meta dt,
@@ -469,7 +469,7 @@
 .mix-metric-note {
   max-width: 76ch;
   margin-top: -24px;
-  color: rgb(0 0 0 / 58%);
+  color: var(--ink-muted);
 }
 
 .mix-footer {
