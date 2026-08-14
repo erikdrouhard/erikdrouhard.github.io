@@ -19,14 +19,14 @@
 
 .drive-skip-link {
   position: fixed;
-  z-index: 30;
+  z-index: var(--layer-skip);
   top: 12px;
   left: 12px;
-  min-height: 44px;
+  min-height: var(--tap);
   padding: 13px 16px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--drive-ink);
-  color: #fff;
+  color: var(--ink-inverse);
   text-decoration: none;
   transform: translateY(-160%);
 }

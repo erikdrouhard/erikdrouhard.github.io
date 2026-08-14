@@ -7,20 +7,20 @@
      --core-ink, which stays a near-black text colour in both modes
      (the white prototype-loop output card still sits on it). */
   --core-panel: #0b162b;
-  min-width: 320px;
-  color: #000;
+  min-width: var(--page-min);
+  color: var(--ink);
   background:
     radial-gradient(circle at 84% 8%, rgb(49 91 232 / 11%), transparent 29rem),
-    linear-gradient(172deg, #fcfeff 0%, #f6f6f6 100%);
+    linear-gradient(172deg, var(--page-wash) 0%, var(--page-paper) 100%);
 }
 
 .core-ai-page .skip-link {
   position: fixed;
-  z-index: 100;
+  z-index: var(--layer-skip);
   top: 12px;
   left: 12px;
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: #000;
   color: #fff;
   text-decoration: none;
@@ -36,9 +36,9 @@
 }
 
 .core-ai-page .shell {
-  width: min(100%, 940px);
+  width: min(100%, var(--page-width));
   margin-inline: auto;
-  padding-inline: 24px;
+  padding-inline: var(--page-gutter);
 }
 
 .core-ai-page .core-main {
@@ -76,7 +76,7 @@
 .core-ai-page .eyebrow,
 .core-ai-page .number,
 .core-ai-page time {
-  color: rgb(0 0 0 / 58%);
+  color: var(--ink-muted);
 }
 
 .core-ai-page .hero {
@@ -426,7 +426,7 @@
 .core-ai-page figcaption {
   max-width: 760px;
   margin-top: 14px;
-  color: rgb(0 0 0 / 58%);
+  color: var(--ink-muted);
 }
 
 .core-ai-page figcaption a,
@@ -586,7 +586,7 @@
   margin-bottom: 24px;
   padding: 6px 9px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--core-soft);
   box-shadow: inset 0 0 0 1px rgb(49 91 232 / 14%);
   color: rgb(0 0 0 / 62%);
@@ -660,8 +660,8 @@
 .core-ai-page .footer-inner {
   display: flex;
   padding-top: 28px;
-  border-top: 1px solid rgb(0 0 0 / 14%);
-  color: rgb(0 0 0 / 58%);
+  border-top: 1px solid var(--line);
+  color: var(--ink-muted);
   justify-content: space-between;
 }
 
@@ -672,8 +672,8 @@
 .core-ai-page figcaption a:focus-visible,
 .core-ai-page .public-link a:focus-visible,
 .core-ai-page .applied-work-link a:focus-visible {
-  outline: 2px solid #1677ff;
-  outline-offset: 3px;
+  outline: var(--focus-size) solid var(--focus);
+  outline-offset: var(--focus-offset);
 }
 
 /* The pill's hover and press states are shared with every other button on the
@@ -729,7 +729,7 @@
 
 @media (min-width: 810px) and (max-width: 1199.98px) {
   .core-ai-page .shell {
-    width: min(calc(100% - 80px), 730px);
+    width: min(calc(100% - 80px), var(--page-width-tablet));
     padding-inline: 0;
   }
 
