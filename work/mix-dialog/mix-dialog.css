@@ -316,6 +316,9 @@
 .mix-action-list h3 + p {
   margin-top: 4px;
   color: rgb(0 0 0 / 67%);
+  /* Pretty wrap shortens lines inside the card column and reads as a
+     ragged left edge under the heading, especially in Safari. */
+  text-wrap: wrap;
 }
 
 .mix-condition-demo {
