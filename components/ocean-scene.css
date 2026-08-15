@@ -18,7 +18,7 @@ html.has-ocean .page-shell {
   transition: opacity var(--ocean-zen-fade) ease;
 }
 
-html:not(.has-ocean) .zen-enter,
+html:not(.has-ocean) .zen-toggle,
 html:not(.has-ocean) .zen-chrome {
   display: none;
 }
@@ -44,22 +44,53 @@ html:not(.has-ocean) .zen-chrome {
   transition: opacity var(--ocean-zen-fade) ease;
 }
 
-.zen-enter {
+.footer-end {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.zen-toggle {
+  display: inline-flex;
+  min-height: var(--tap);
   padding: 0;
   border: 0;
   background: transparent;
+  align-items: center;
+  gap: 10px;
   color: inherit;
   cursor: pointer;
 }
 
-.mobile-nav .zen-enter {
-  display: flex;
-  width: 100%;
-  min-height: var(--icon);
-  padding: 15px 12px;
-  border-top: 1px solid var(--line-subtle);
-  align-items: center;
-  text-align: left;
+.zen-toggle-track {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  flex: 0 0 36px;
+  border-radius: var(--radius-pill);
+  background: var(--line);
+}
+
+.zen-toggle-track::after {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-pill);
+  background: var(--page-paper);
+  box-shadow: 0 1px 3px var(--pill-ambient);
+  content: "";
+  transition: transform 180ms ease;
+}
+
+.zen-toggle[aria-checked="true"] .zen-toggle-track {
+  background: var(--pill-face);
+}
+
+.zen-toggle[aria-checked="true"] .zen-toggle-track::after {
+  transform: translateX(16px);
 }
 
 .zen-chrome {
@@ -120,21 +151,17 @@ html.is-zen .zen-chrome .pill-primary {
     0 8px 18px rgb(0 0 0 / 35%);
 }
 
-.zen-enter:focus-visible,
+.zen-toggle:focus-visible,
 .zen-chrome .pill:focus-visible {
   outline: var(--focus-size) solid var(--focus);
   outline-offset: var(--focus-offset);
 }
 
-:where(html:not(.is-coarse-pointer)) .zen-enter:hover {
+:where(html:not(.is-coarse-pointer)) .zen-toggle:hover {
   opacity: var(--hover-fade);
 }
 
 @media (max-width: 809.98px) {
-  .desktop-header-actions .zen-enter {
-    display: none;
-  }
-
   .zen-chrome {
     top: var(--page-gutter-mobile);
     right: var(--page-gutter-mobile);
@@ -159,7 +186,8 @@ html.is-zen .zen-chrome .pill-primary {
 @media (prefers-reduced-motion: reduce) {
   html.has-ocean .page-shell,
   .ocean-veil,
-  .zen-chrome {
+  .zen-chrome,
+  .zen-toggle-track::after {
     transition: none;
   }
 }

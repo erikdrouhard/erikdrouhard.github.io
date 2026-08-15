@@ -225,41 +225,56 @@ function perspective(fovy, aspect, near, far) {
 const SKY_GLSL = `
 vec3 skyColor(vec3 dir, vec3 sunDir, vec3 moonDir, float sunAlt) {
   vec3 rd = normalize(dir);
+  vec3 sun = normalize(sunDir);
   float h = rd.y;
   float day = smoothstep(-0.18, 0.12, sunAlt);
-  float golden = 1.0 - smoothstep(0.02, 0.28, abs(sunAlt));
+  float dusk = 1.0 - smoothstep(0.10, 0.36, abs(sunAlt));
   float night = 1.0 - day;
 
   vec3 dayZenith = vec3(0.23, 0.50, 0.90);
   vec3 dayHorizon = vec3(0.70, 0.84, 0.96);
-  vec3 duskZenith = vec3(0.08, 0.10, 0.22);
-  vec3 duskHorizon = vec3(0.92, 0.42, 0.22);
   vec3 nightZenith = vec3(0.01, 0.02, 0.05);
   vec3 nightHorizon = vec3(0.04, 0.06, 0.12);
+  vec3 duskOrange = vec3(0.84, 0.18, 0.03);
+  vec3 duskRose = vec3(0.56, 0.08, 0.30);
+  vec3 duskPurple = vec3(0.18, 0.05, 0.34);
+  vec3 duskDeep = vec3(0.06, 0.03, 0.16);
 
-  vec3 zenith = mix(mix(nightZenith, duskZenith, golden), dayZenith, day);
-  vec3 horizon = mix(mix(nightHorizon, duskHorizon, golden), dayHorizon, day);
-  float t = pow(clamp((h + 0.06) / 0.78, 0.0, 1.0), 0.72);
-  vec3 col = mix(horizon, zenith, t);
+  float elev = pow(clamp((h + 0.08) / 0.82, 0.0, 1.0), 0.78);
+  vec3 daySky = mix(dayHorizon, dayZenith, elev);
+  vec3 nightSky = mix(nightHorizon, nightZenith, elev);
+  vec3 duskSky = mix(duskOrange, duskRose, smoothstep(0.0, 0.30, elev));
+  duskSky = mix(duskSky, duskPurple, smoothstep(0.20, 0.60, elev));
+  duskSky = mix(duskSky, duskDeep, smoothstep(0.52, 1.0, elev));
+
+  vec3 flatRd = normalize(vec3(rd.x, 0.0, rd.z) + vec3(0.0001, 0.0, 0.0));
+  vec3 flatSun = normalize(vec3(sun.x, 0.0, sun.z) + vec3(0.0001, 0.0, 0.0));
+  float towardSun = max(dot(flatRd, flatSun), 0.0);
+  duskSky = mix(duskSky, duskOrange, pow(towardSun, 2.2) * (1.0 - elev) * 0.75);
+  duskSky = mix(duskSky, duskPurple, (1.0 - towardSun) * elev * 0.28);
+
+  vec3 col = mix(nightSky, daySky, day);
+  col = mix(col, duskSky, dusk);
 
   if (h < 0.0) {
-    vec3 deep = mix(vec3(0.01, 0.04, 0.06), vec3(0.02, 0.08, 0.10), day);
-    col = mix(deep, horizon, pow(clamp(h + 1.0, 0.0, 1.0), 6.0));
+    vec3 deep = mix(vec3(0.01, 0.03, 0.05), vec3(0.02, 0.08, 0.10), day);
+    deep = mix(deep, vec3(0.14, 0.03, 0.04), dusk);
+    col = mix(deep, col, pow(clamp(h + 1.0, 0.0, 1.0), 6.0));
   }
 
-  float sunDot = max(dot(rd, normalize(sunDir)), 0.0);
-  vec3 sunCol = mix(vec3(1.0, 0.52, 0.20), vec3(1.0, 0.96, 0.82), day);
-  col += sunCol * smoothstep(0.996, 0.9994, sunDot) * (1.6 + day * 1.4);
-  col += sunCol * pow(sunDot, 64.0) * (0.45 + golden * 0.7);
-  col += sunCol * pow(sunDot, 8.0) * (0.12 + golden * 0.35);
+  float sunDot = max(dot(rd, sun), 0.0);
+  vec3 sunCol = mix(vec3(1.0, 0.96, 0.82), vec3(0.90, 0.20, 0.03), dusk);
+  col += sunCol * smoothstep(0.994, 0.9990, sunDot) * mix(2.4, 0.65, dusk);
+  col += sunCol * pow(sunDot, 48.0) * mix(0.40, 0.90, dusk);
+  col += sunCol * pow(sunDot, 6.0) * mix(0.10, 0.58, dusk);
 
   float moonDot = max(dot(rd, normalize(moonDir)), 0.0);
-  float moonVis = smoothstep(-0.06, 0.03, moonDir.y) * night;
+  float moonVis = smoothstep(-0.06, 0.03, moonDir.y) * night * (1.0 - dusk);
   col += vec3(0.86, 0.90, 1.0) * smoothstep(0.997, 0.9996, moonDot) * 1.8 * moonVis;
   col += vec3(0.45, 0.55, 0.75) * pow(moonDot, 32.0) * 0.28 * moonVis;
 
   float star = fract(sin(dot(rd.xy * 240.0, vec2(12.9898, 78.233))) * 43758.5453);
-  col += vec3(0.85, 0.9, 1.0) * step(0.9965, star) * night * smoothstep(0.02, 0.18, h);
+  col += vec3(0.85, 0.9, 1.0) * step(0.9965, star) * night * (1.0 - dusk) * smoothstep(0.02, 0.18, h);
 
   return col;
 }
@@ -352,16 +367,19 @@ void main() {
   R.y = abs(R.y);
 
   float day = smoothstep(-0.18, 0.12, u_sunAlt);
+  float dusk = 1.0 - smoothstep(0.10, 0.36, abs(u_sunAlt));
   vec3 deep = mix(vec3(0.01, 0.03, 0.06), vec3(0.01, 0.08, 0.12), day);
   vec3 shallow = mix(vec3(0.04, 0.08, 0.12), vec3(0.05, 0.22, 0.26), day);
+  deep = mix(deep, vec3(0.08, 0.02, 0.05), dusk);
+  shallow = mix(shallow, vec3(0.22, 0.06, 0.05), dusk);
   vec3 water = mix(deep, shallow, clamp(N.y * 0.65 + 0.2, 0.0, 1.0));
 
   vec3 sky = skyColor(R, u_sunDir, u_moonDir, u_sunAlt);
   float fresnel = mix(0.05, 1.0, pow(1.0 - max(dot(N, V), 0.0), 5.0));
   vec3 col = mix(water, sky, fresnel);
 
-  vec3 sunCol = mix(vec3(1.0, 0.52, 0.22), vec3(1.0, 0.95, 0.78), day);
-  col += sunCol * pow(max(dot(R, normalize(u_sunDir)), 0.0), 220.0) * (0.9 + day * 0.8);
+  vec3 sunCol = mix(vec3(1.0, 0.95, 0.78), vec3(0.90, 0.20, 0.03), dusk);
+  col += sunCol * pow(max(dot(R, normalize(u_sunDir)), 0.0), 220.0) * mix(1.7, 0.7, dusk);
   col += vec3(0.65, 0.74, 0.9) * pow(max(dot(R, normalize(u_moonDir)), 0.0), 280.0) * (1.0 - day) * 0.55;
 
   float foam = smoothstep(0.42, 0.92, v_height);
@@ -691,7 +709,7 @@ function initOcean() {
   const clock = document.querySelector("[data-ocean-clock]");
   const soundButton = document.querySelector("[data-ocean-sound]");
   const exitButton = document.querySelector("[data-ocean-zen-exit]");
-  const enterButtons = [...document.querySelectorAll("[data-ocean-zen-enter]")];
+  const zenToggle = document.querySelector("[data-ocean-zen-toggle]");
   const page = document.querySelector(".page-shell");
   if (!canvas || !veil || !chrome || !page) return;
 
@@ -744,7 +762,7 @@ function initOcean() {
     page.inert = true;
     chrome.inert = false;
     chrome.setAttribute("aria-hidden", "false");
-    enterButtons.forEach((button) => button.setAttribute("aria-expanded", "true"));
+    zenToggle?.setAttribute("aria-checked", "true");
     document.querySelectorAll("details.mobile-menu").forEach((menu) => {
       menu.open = false;
     });
@@ -762,18 +780,15 @@ function initOcean() {
     page.inert = false;
     chrome.inert = true;
     chrome.setAttribute("aria-hidden", "true");
-    enterButtons.forEach((button) => button.setAttribute("aria-expanded", "false"));
+    zenToggle?.setAttribute("aria-checked", "false");
     window.clearInterval(clockTimer);
     await setSound(false);
     if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
   };
 
-  enterButtons.forEach((button) => {
-    button.hidden = false;
-    button.setAttribute("aria-expanded", "false");
-    button.addEventListener("click", () => {
-      enterZen();
-    });
+  zenToggle?.addEventListener("click", () => {
+    if (zen) exitZen();
+    else enterZen();
   });
 
   exitButton?.addEventListener("click", () => {

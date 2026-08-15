@@ -37,9 +37,6 @@
 
         <div class="desktop-header-actions">
           <a class="case-studies-link type-action" href="/work/">Work</a>
-          <button type="button" class="zen-enter type-action" data-ocean-zen-enter>
-            Zen
-          </button>
           <a
             class="resume-button pill pill-primary type-action"
             href="./assets/erik-drouhard-resume.pdf"
@@ -55,9 +52,6 @@
           <nav class="mobile-nav" aria-label="Mobile navigation">
             <a class="type-action" href="/work/">Work</a>
             <a class="type-action" href="./assets/erik-drouhard-resume.pdf" download="Erik-Drouhard-Resume.pdf">Download resume</a>
-            <button type="button" class="zen-enter type-action" data-ocean-zen-enter>
-              Zen
-            </button>
           </nav>
         </details>
       </header>
@@ -129,7 +123,19 @@
               <img src="./assets/instagram.svg" width="24" height="24" alt="" />
             </a>
           </nav>
-          <a class="contact-button pill pill-secondary type-action" href="mailto:erikdrouhard@gmail.com">Contact me</a>
+          <div class="footer-end">
+            <button
+              type="button"
+              class="zen-toggle type-action"
+              data-ocean-zen-toggle
+              role="switch"
+              aria-checked="false"
+            >
+              <span class="zen-toggle-track" aria-hidden="true"></span>
+              Zen
+            </button>
+            <a class="contact-button pill pill-secondary type-action" href="mailto:erikdrouhard@gmail.com">Contact me</a>
+          </div>
       </footer>
     </div>
 
