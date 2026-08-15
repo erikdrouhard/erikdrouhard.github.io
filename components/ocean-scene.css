@@ -1,7 +1,9 @@
 /* Homepage ocean prototype.
-   Tune the page wash over the water here — 1 hides the ocean, 0 shows it fully. */
+   Tune the page wash over the water here — 1 hides the ocean, 0 shows it fully.
+   0.68 keeps the type readable while the sea still reads through on the light
+   homepage. Try 0.8 if you want it quieter. */
 :root {
-  --ocean-veil-opacity: 0.8;
+  --ocean-veil-opacity: 0.68;
   --ocean-zen-fade: 700ms;
 }
 
