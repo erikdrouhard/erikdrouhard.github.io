@@ -65,8 +65,8 @@ html:not(.has-ocean) .zen-chrome {
 .zen-chrome {
   position: fixed;
   z-index: 3;
+  top: var(--page-gutter);
   right: var(--page-gutter);
-  bottom: var(--page-gutter);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -103,6 +103,7 @@ html.is-zen .ocean-veil {
 }
 
 html.is-zen .zen-chrome {
+  display: flex;
   opacity: 1;
   pointer-events: auto;
 }
@@ -135,8 +136,9 @@ html.is-zen .zen-chrome .pill-primary {
   }
 
   .zen-chrome {
+    top: var(--page-gutter-mobile);
     right: var(--page-gutter-mobile);
-    bottom: calc(16px + env(safe-area-inset-bottom));
+    bottom: auto;
     left: var(--page-gutter-mobile);
     align-items: stretch;
   }
