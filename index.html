@@ -12,13 +12,17 @@
     <title>Erik Drouhard | AI Design Engineer</title>
     <link rel="icon" href="./assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./components/magnetic-card.css" />
+    <link rel="stylesheet" href="./components/ocean-scene.css" />
     <link rel="stylesheet" href="./styles.css" />
     <script type="module" src="./components/pointer-hover.js"></script>
     <script type="module" src="./components/press-state.js"></script>
     <script type="module" src="/components/mobile-menu.js"></script>
     <script type="module" src="./components/magnetic-card.js"></script>
+    <script type="module" src="./components/ocean-scene.js"></script>
   </head>
   <body>
+    <canvas class="ocean-scene" data-ocean-canvas hidden aria-hidden="true"></canvas>
+    <div class="ocean-veil" data-ocean-veil hidden aria-hidden="true"></div>
     <div class="page-shell">
       <header class="site-header">
         <a class="brand-link" href="/" aria-label="Homepage">
@@ -33,6 +37,9 @@
 
         <div class="desktop-header-actions">
           <a class="case-studies-link type-action" href="/work/">Work</a>
+          <button type="button" class="zen-enter type-action" data-ocean-zen-enter>
+            Zen
+          </button>
           <a
             class="resume-button pill pill-primary type-action"
             href="./assets/erik-drouhard-resume.pdf"
@@ -48,6 +55,9 @@
           <nav class="mobile-nav" aria-label="Mobile navigation">
             <a class="type-action" href="/work/">Work</a>
             <a class="type-action" href="./assets/erik-drouhard-resume.pdf" download="Erik-Drouhard-Resume.pdf">Download resume</a>
+            <button type="button" class="zen-enter type-action" data-ocean-zen-enter>
+              Zen
+            </button>
           </nav>
         </details>
       </header>
@@ -121,6 +131,18 @@
           </nav>
           <a class="contact-button pill pill-secondary type-action" href="mailto:erikdrouhard@gmail.com">Contact me</a>
       </footer>
+    </div>
+
+    <div class="zen-chrome" data-ocean-zen-chrome hidden aria-hidden="true">
+      <p class="zen-clock type-meta type-caps" data-ocean-clock></p>
+      <div class="zen-actions">
+        <button type="button" class="pill pill-secondary type-action" data-ocean-sound>
+          Sound off
+        </button>
+        <button type="button" class="pill pill-primary type-action" data-ocean-zen-exit>
+          Exit Zen
+        </button>
+      </div>
     </div>
   </body>
 </html>
