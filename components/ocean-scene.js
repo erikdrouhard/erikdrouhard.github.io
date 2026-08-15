@@ -248,15 +248,15 @@ vec3 skyColor(vec3 dir, vec3 sunDir, vec3 moonDir, float sunAlt) {
   }
 
   float sunDot = max(dot(rd, normalize(sunDir)), 0.0);
-  vec3 sunCol = mix(vec3(1.0, 0.55, 0.22), vec3(1.0, 0.96, 0.82), day);
-  col += sunCol * pow(sunDot, 1600.0) * 4.0 * day;
-  col += sunCol * pow(sunDot, 18.0) * (0.55 + golden * 0.85);
-  col += sunCol * pow(sunDot, 4.0) * golden * 0.28;
+  vec3 sunCol = mix(vec3(1.0, 0.52, 0.20), vec3(1.0, 0.96, 0.82), day);
+  col += sunCol * smoothstep(0.996, 0.9994, sunDot) * (1.6 + day * 1.4);
+  col += sunCol * pow(sunDot, 64.0) * (0.45 + golden * 0.7);
+  col += sunCol * pow(sunDot, 8.0) * (0.12 + golden * 0.35);
 
   float moonDot = max(dot(rd, normalize(moonDir)), 0.0);
-  float moonVis = smoothstep(-0.08, 0.04, moonDir.y) * (0.25 + night * 0.75);
-  col += vec3(0.82, 0.88, 1.0) * pow(moonDot, 2200.0) * 2.2 * moonVis;
-  col += vec3(0.45, 0.55, 0.75) * pow(moonDot, 40.0) * 0.22 * moonVis;
+  float moonVis = smoothstep(-0.06, 0.03, moonDir.y) * night;
+  col += vec3(0.86, 0.90, 1.0) * smoothstep(0.997, 0.9996, moonDot) * 1.8 * moonVis;
+  col += vec3(0.45, 0.55, 0.75) * pow(moonDot, 32.0) * 0.28 * moonVis;
 
   float star = fract(sin(dot(rd.xy * 240.0, vec2(12.9898, 78.233))) * 43758.5453);
   col += vec3(0.85, 0.9, 1.0) * step(0.9965, star) * night * smoothstep(0.02, 0.18, h);
@@ -362,7 +362,7 @@ void main() {
 
   vec3 sunCol = mix(vec3(1.0, 0.52, 0.22), vec3(1.0, 0.95, 0.78), day);
   col += sunCol * pow(max(dot(R, normalize(u_sunDir)), 0.0), 220.0) * (0.9 + day * 0.8);
-  col += vec3(0.65, 0.74, 0.9) * pow(max(dot(R, normalize(u_moonDir)), 0.0), 380.0) * 0.45;
+  col += vec3(0.65, 0.74, 0.9) * pow(max(dot(R, normalize(u_moonDir)), 0.0), 280.0) * (1.0 - day) * 0.55;
 
   float foam = smoothstep(0.42, 0.92, v_height);
   col = mix(col, vec3(0.86, 0.91, 0.94), foam * 0.32);
@@ -499,13 +499,27 @@ class OceanRenderer {
   }
 
   camera(sky) {
-    const eye = [0, 3.05, 18];
-    const target = [sky.sunDir[0] * 6, 2.15, -22];
-    const forward = normalize(sub(target, eye));
+    const body = sky.sunAlt > -0.08 ? sky.sunDir : sky.moonDir;
+    const rawYaw = Math.atan2(body[0], -body[2]);
+    const horizonNeed = 1 - Math.max(0, body[1]);
+    const yawLimit = 0.32 + 0.95 * horizonNeed;
+    const yaw = Math.max(-yawLimit, Math.min(yawLimit, rawYaw));
+    const pitch = 0.34 + 0.12 * Math.max(0, body[1]);
+    const forward = normalize([
+      Math.sin(yaw) * Math.cos(pitch),
+      Math.sin(pitch),
+      -Math.cos(yaw) * Math.cos(pitch),
+    ]);
+    const eye = [0, 2.35, 12];
+    const target = [
+      eye[0] + forward[0] * 40,
+      eye[1] + forward[1] * 40,
+      eye[2] + forward[2] * 40,
+    ];
     const right = normalize(cross(forward, [0, 1, 0]));
     const up = cross(right, forward);
     const aspect = this.canvas.width / Math.max(this.canvas.height, 1);
-    const fov = 68 * DEG;
+    const fov = 72 * DEG;
     return { eye, target, forward, right, up, aspect, fov };
   }
 
