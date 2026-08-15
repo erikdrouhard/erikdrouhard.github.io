@@ -504,7 +504,8 @@ class OceanRenderer {
     const horizonNeed = 1 - Math.max(0, body[1]);
     const yawLimit = 0.32 + 0.95 * horizonNeed;
     const yaw = Math.max(-yawLimit, Math.min(yawLimit, rawYaw));
-    const pitch = 0.34 + 0.12 * Math.max(0, body[1]);
+    const zen = document.documentElement.classList.contains("is-zen");
+    const pitch = zen ? 0.34 + 0.12 * Math.max(0, body[1]) : 0.16;
     const forward = normalize([
       Math.sin(yaw) * Math.cos(pitch),
       Math.sin(pitch),

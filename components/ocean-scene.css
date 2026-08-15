@@ -107,6 +107,18 @@ html.is-zen .zen-chrome {
   pointer-events: auto;
 }
 
+html.is-zen .zen-chrome .pill-secondary {
+  border-color: rgb(255 255 255 / 42%);
+  background: rgb(0 0 0 / 38%);
+  color: #fff;
+}
+
+html.is-zen .zen-chrome .pill-primary {
+  box-shadow:
+    0 4px 0 rgb(0 0 0 / 55%),
+    0 8px 18px rgb(0 0 0 / 35%);
+}
+
 .zen-enter:focus-visible,
 .zen-chrome .pill:focus-visible {
   outline: var(--focus-size) solid var(--focus);
