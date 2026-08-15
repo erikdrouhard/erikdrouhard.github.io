@@ -18,7 +18,6 @@ html.has-ocean .page-shell {
   transition: opacity var(--ocean-zen-fade) ease;
 }
 
-html:not(.has-ocean) .zen-toggle,
 html:not(.has-ocean) .zen-chrome {
   display: none;
 }
@@ -51,46 +50,70 @@ html:not(.has-ocean) .zen-chrome {
   gap: 20px;
 }
 
-.zen-toggle {
+.ocean-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ocean-switch {
+  position: relative;
   display: inline-flex;
   min-height: var(--tap);
-  padding: 0;
-  border: 0;
-  background: transparent;
   align-items: center;
   gap: 10px;
-  color: inherit;
   cursor: pointer;
 }
 
-.zen-toggle-track {
-  position: relative;
+.ocean-switch-root {
+  display: inline-flex;
   width: 36px;
   height: 20px;
   flex: 0 0 36px;
+  padding: 2px;
+  border: 0;
   border-radius: var(--radius-pill);
   background: var(--line);
+  box-sizing: border-box;
+  align-items: center;
 }
 
-.zen-toggle-track::after {
-  position: absolute;
-  top: 2px;
-  left: 2px;
+.ocean-switch-root[data-checked] {
+  background: var(--pill-face);
+}
+
+.ocean-switch-root[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.ocean-switch-thumb {
   width: 16px;
   height: 16px;
   border-radius: var(--radius-pill);
   background: var(--page-paper);
   box-shadow: 0 1px 3px var(--pill-ambient);
-  content: "";
-  transition: transform 180ms ease;
+  transition: translate 180ms ease;
 }
 
-.zen-toggle[aria-checked="true"] .zen-toggle-track {
-  background: var(--pill-face);
+.ocean-switch-thumb[data-checked] {
+  translate: 16px 0;
 }
 
-.zen-toggle[aria-checked="true"] .zen-toggle-track::after {
-  transform: translateX(16px);
+.ocean-switch-root:focus-visible {
+  outline: var(--focus-size) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .zen-chrome {
@@ -151,13 +174,12 @@ html.is-zen .zen-chrome .pill-primary {
     0 8px 18px rgb(0 0 0 / 35%);
 }
 
-.zen-toggle:focus-visible,
 .zen-chrome .pill:focus-visible {
   outline: var(--focus-size) solid var(--focus);
   outline-offset: var(--focus-offset);
 }
 
-:where(html:not(.is-coarse-pointer)) .zen-toggle:hover {
+:where(html:not(.is-coarse-pointer)) .ocean-switch:hover .ocean-switch-root:not([data-disabled]) {
   opacity: var(--hover-fade);
 }
 
@@ -187,7 +209,7 @@ html.is-zen .zen-chrome .pill-primary {
   html.has-ocean .page-shell,
   .ocean-veil,
   .zen-chrome,
-  .zen-toggle-track::after {
+  .ocean-switch-thumb {
     transition: none;
   }
 }
@@ -199,7 +221,8 @@ html.is-zen .zen-chrome .pill-primary {
   }
 
   .ocean-scene,
-  .ocean-veil {
+  .ocean-veil,
+  .ocean-controls {
     display: none;
   }
 }

@@ -15,6 +15,7 @@ const WORCESTER = {
 };
 
 const SOUND_KEY = "ocean-zen-sound";
+const VISIBLE_KEY = "ocean-background";
 const DEG = Math.PI / 180;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -228,17 +229,17 @@ vec3 skyColor(vec3 dir, vec3 sunDir, vec3 moonDir, float sunAlt) {
   vec3 sun = normalize(sunDir);
   float h = rd.y;
   float day = smoothstep(-0.18, 0.12, sunAlt);
-  float dusk = 1.0 - smoothstep(0.10, 0.36, abs(sunAlt));
+  float dusk = 1.0 - smoothstep(0.16, 0.48, abs(sunAlt));
   float night = 1.0 - day;
 
   vec3 dayZenith = vec3(0.23, 0.50, 0.90);
   vec3 dayHorizon = vec3(0.70, 0.84, 0.96);
   vec3 nightZenith = vec3(0.01, 0.02, 0.05);
   vec3 nightHorizon = vec3(0.04, 0.06, 0.12);
-  vec3 duskOrange = vec3(0.84, 0.18, 0.03);
-  vec3 duskRose = vec3(0.56, 0.08, 0.30);
-  vec3 duskPurple = vec3(0.18, 0.05, 0.34);
-  vec3 duskDeep = vec3(0.06, 0.03, 0.16);
+  vec3 duskOrange = vec3(1.0, 0.22, 0.02);
+  vec3 duskRose = vec3(0.72, 0.06, 0.36);
+  vec3 duskPurple = vec3(0.28, 0.04, 0.50);
+  vec3 duskDeep = vec3(0.08, 0.02, 0.20);
 
   float elev = pow(clamp((h + 0.08) / 0.82, 0.0, 1.0), 0.78);
   vec3 daySky = mix(dayHorizon, dayZenith, elev);
@@ -263,10 +264,10 @@ vec3 skyColor(vec3 dir, vec3 sunDir, vec3 moonDir, float sunAlt) {
   }
 
   float sunDot = max(dot(rd, sun), 0.0);
-  vec3 sunCol = mix(vec3(1.0, 0.96, 0.82), vec3(0.90, 0.20, 0.03), dusk);
-  col += sunCol * smoothstep(0.994, 0.9990, sunDot) * mix(2.4, 0.65, dusk);
-  col += sunCol * pow(sunDot, 48.0) * mix(0.40, 0.90, dusk);
-  col += sunCol * pow(sunDot, 6.0) * mix(0.10, 0.58, dusk);
+  vec3 sunCol = mix(vec3(1.0, 0.96, 0.82), vec3(0.95, 0.18, 0.02), dusk);
+  col += sunCol * smoothstep(0.993, 0.9988, sunDot) * mix(2.2, 0.55, dusk);
+  col += sunCol * pow(sunDot, 32.0) * mix(0.35, 0.75, dusk);
+  col += sunCol * pow(sunDot, 5.0) * mix(0.08, 0.42, dusk);
 
   float moonDot = max(dot(rd, normalize(moonDir)), 0.0);
   float moonVis = smoothstep(-0.06, 0.03, moonDir.y) * night * (1.0 - dusk);
@@ -367,7 +368,7 @@ void main() {
   R.y = abs(R.y);
 
   float day = smoothstep(-0.18, 0.12, u_sunAlt);
-  float dusk = 1.0 - smoothstep(0.10, 0.36, abs(u_sunAlt));
+  float dusk = 1.0 - smoothstep(0.16, 0.48, abs(u_sunAlt));
   vec3 deep = mix(vec3(0.01, 0.03, 0.06), vec3(0.01, 0.08, 0.12), day);
   vec3 shallow = mix(vec3(0.04, 0.08, 0.12), vec3(0.05, 0.22, 0.26), day);
   deep = mix(deep, vec3(0.08, 0.02, 0.05), dusk);
@@ -378,7 +379,7 @@ void main() {
   float fresnel = mix(0.05, 1.0, pow(1.0 - max(dot(N, V), 0.0), 5.0));
   vec3 col = mix(water, sky, fresnel);
 
-  vec3 sunCol = mix(vec3(1.0, 0.95, 0.78), vec3(0.90, 0.20, 0.03), dusk);
+  vec3 sunCol = mix(vec3(1.0, 0.95, 0.78), vec3(0.95, 0.18, 0.02), dusk);
   col += sunCol * pow(max(dot(R, normalize(u_sunDir)), 0.0), 220.0) * mix(1.7, 0.7, dusk);
   col += vec3(0.65, 0.74, 0.9) * pow(max(dot(R, normalize(u_moonDir)), 0.0), 280.0) * (1.0 - day) * 0.55;
 
@@ -502,6 +503,7 @@ class OceanRenderer {
     gl.disable(gl.CULL_FACE);
     this.start = performance.now();
     this.frame = 0;
+    this.running = false;
     this.resize();
   }
 
@@ -582,15 +584,21 @@ class OceanRenderer {
   }
 
   startLoop() {
+    if (this.running) return;
+    this.running = true;
     const tick = (now) => {
-      if (document.hidden) {
-        this.frame = requestAnimationFrame(tick);
-        return;
+      if (!this.running) return;
+      if (!document.hidden) {
+        this.draw(celestialState(), (now - this.start) / 1000);
       }
-      this.draw(celestialState(), (now - this.start) / 1000);
       this.frame = requestAnimationFrame(tick);
     };
     this.frame = requestAnimationFrame(tick);
+  }
+
+  stopLoop() {
+    this.running = false;
+    cancelAnimationFrame(this.frame);
   }
 }
 
@@ -700,6 +708,45 @@ function formatWorcesterClock(date) {
   return `${time} · Worcester`;
 }
 
+const oceanListeners = new Set();
+const oceanState = {
+  available: false,
+  visible: false,
+  zen: false,
+};
+
+function emitOcean() {
+  const snapshot = { ...oceanState };
+  oceanListeners.forEach((listener) => listener(snapshot));
+}
+
+export function getOceanState() {
+  return { ...oceanState };
+}
+
+export function subscribeOcean(listener) {
+  oceanListeners.add(listener);
+  listener({ ...oceanState });
+  return () => oceanListeners.delete(listener);
+}
+
+function readVisiblePref() {
+  if (params.get("ocean") === "0") return false;
+  if (params.get("ocean") === "1") return true;
+  return window.localStorage.getItem(VISIBLE_KEY) !== "0";
+}
+
+let setOceanVisibleImpl = () => {};
+let setZenImpl = () => {};
+
+export function setOceanVisible(on) {
+  setOceanVisibleImpl(Boolean(on));
+}
+
+export function setZen(on) {
+  setZenImpl(Boolean(on));
+}
+
 function initOcean() {
   if (window.matchMedia("(forced-colors: active)").matches) return;
 
@@ -709,7 +756,6 @@ function initOcean() {
   const clock = document.querySelector("[data-ocean-clock]");
   const soundButton = document.querySelector("[data-ocean-sound]");
   const exitButton = document.querySelector("[data-ocean-zen-exit]");
-  const zenToggle = document.querySelector("[data-ocean-zen-toggle]");
   const page = document.querySelector(".page-shell");
   if (!canvas || !veil || !chrome || !page) return;
 
@@ -725,15 +771,10 @@ function initOcean() {
     return;
   }
 
-  canvas.hidden = false;
-  veil.hidden = false;
   chrome.hidden = false;
   chrome.inert = true;
-  document.documentElement.classList.add("has-ocean");
-  renderer.startLoop();
 
   const sound = new OceanSound();
-  let zen = false;
   let lastFocus = null;
   let clockTimer = 0;
 
@@ -754,15 +795,24 @@ function initOcean() {
     syncSoundLabel();
   };
 
+  const applyVisible = (on) => {
+    oceanState.visible = on;
+    canvas.hidden = !on;
+    veil.hidden = !on;
+    document.documentElement.classList.toggle("has-ocean", on);
+    if (on) renderer.startLoop();
+    else renderer.stopLoop();
+  };
+
   const enterZen = async () => {
-    if (zen) return;
-    zen = true;
+    if (oceanState.zen) return;
+    if (!oceanState.visible) applyVisible(true);
+    oceanState.zen = true;
     lastFocus = document.activeElement;
     document.documentElement.classList.add("is-zen");
     page.inert = true;
     chrome.inert = false;
     chrome.setAttribute("aria-hidden", "false");
-    zenToggle?.setAttribute("aria-checked", "true");
     document.querySelectorAll("details.mobile-menu").forEach((menu) => {
       menu.open = false;
     });
@@ -771,25 +821,41 @@ function initOcean() {
     clockTimer = window.setInterval(syncClock, 15000);
     if (window.localStorage.getItem(SOUND_KEY) === "1") await setSound(true);
     (exitButton ?? chrome).focus();
+    emitOcean();
   };
 
   const exitZen = async () => {
-    if (!zen) return;
-    zen = false;
+    if (!oceanState.zen) return;
+    oceanState.zen = false;
     document.documentElement.classList.remove("is-zen");
     page.inert = false;
     chrome.inert = true;
     chrome.setAttribute("aria-hidden", "true");
-    zenToggle?.setAttribute("aria-checked", "false");
     window.clearInterval(clockTimer);
     await setSound(false);
     if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+    emitOcean();
   };
 
-  zenToggle?.addEventListener("click", () => {
-    if (zen) exitZen();
-    else enterZen();
-  });
+  setOceanVisibleImpl = (on) => {
+    if (on === oceanState.visible) return;
+    if (!on && oceanState.zen) {
+      exitZen().then(() => {
+        applyVisible(false);
+        window.localStorage.setItem(VISIBLE_KEY, "0");
+        emitOcean();
+      });
+      return;
+    }
+    applyVisible(on);
+    window.localStorage.setItem(VISIBLE_KEY, on ? "1" : "0");
+    emitOcean();
+  };
+
+  setZenImpl = (on) => {
+    if (on) enterZen();
+    else exitZen();
+  };
 
   exitButton?.addEventListener("click", () => {
     exitZen();
@@ -800,7 +866,7 @@ function initOcean() {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && zen) {
+    if (event.key === "Escape" && oceanState.zen) {
       event.preventDefault();
       exitZen();
     }
@@ -808,6 +874,11 @@ function initOcean() {
 
   syncClock();
   syncSoundLabel();
+
+  oceanState.available = true;
+  const startVisible = readVisiblePref() || params.get("zen") === "1";
+  applyVisible(startVisible);
+  emitOcean();
 
   if (params.get("zen") === "1") enterZen();
 }

@@ -1,5 +1,6 @@
 import { readdirSync } from "node:fs";
 import { resolve } from "node:path";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 const experimentsDirectory = resolve(__dirname, "experiments");
@@ -13,6 +14,7 @@ const experimentEntries = Object.fromEntries(
 );
 
 export default defineConfig({
+  plugins: [react()],
   build: {
     rollupOptions: {
       input: {

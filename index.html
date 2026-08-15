@@ -19,6 +19,7 @@
     <script type="module" src="/components/mobile-menu.js"></script>
     <script type="module" src="./components/magnetic-card.js"></script>
     <script type="module" src="./components/ocean-scene.js"></script>
+    <script type="module" src="./components/ocean-toggles.jsx"></script>
   </head>
   <body>
     <canvas class="ocean-scene" data-ocean-canvas hidden aria-hidden="true"></canvas>
@@ -124,16 +125,7 @@
             </a>
           </nav>
           <div class="footer-end">
-            <button
-              type="button"
-              class="zen-toggle type-action"
-              data-ocean-zen-toggle
-              role="switch"
-              aria-checked="false"
-            >
-              <span class="zen-toggle-track" aria-hidden="true"></span>
-              Zen
-            </button>
+            <div data-ocean-controls></div>
             <a class="contact-button pill pill-secondary type-action" href="mailto:erikdrouhard@gmail.com">Contact me</a>
           </div>
       </footer>
