@@ -5,7 +5,8 @@
  * Query helpers for playing with the prototype:
  *   ?veil=0.65   override --ocean-veil-opacity
  *   ?hour=6      shift the sky to that Worcester hour
- *   ?zen=1       start in Zen
+ *   ?ocean=1     start with the ocean on (also stored after the footer switch)
+ *   ?zen=1       start in Zen (turns the ocean on for that visit)
  */
 
 const WORCESTER = {
@@ -733,7 +734,7 @@ export function subscribeOcean(listener) {
 function readVisiblePref() {
   if (params.get("ocean") === "0") return false;
   if (params.get("ocean") === "1") return true;
-  return window.localStorage.getItem(VISIBLE_KEY) !== "0";
+  return window.localStorage.getItem(VISIBLE_KEY) === "1";
 }
 
 let setOceanVisibleImpl = () => {};
