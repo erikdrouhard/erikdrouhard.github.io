@@ -36,6 +36,13 @@ html:not(.has-ocean) .zen-chrome {
   display: block;
 }
 
+.ocean-scene[hidden],
+.ocean-veil[hidden],
+html:not(.has-ocean) .ocean-scene,
+html:not(.has-ocean) .ocean-veil {
+  display: none;
+}
+
 .ocean-veil {
   z-index: 1;
   background: linear-gradient(172deg, var(--page-wash) 0%, var(--page-paper-deep) 100%);
