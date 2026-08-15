@@ -1,0 +1,228 @@
+/* Homepage ocean prototype.
+   Tune the page wash over the water here — 1 hides the ocean, 0 shows it fully.
+   0.68 keeps the type readable while the sea still reads through on the light
+   homepage. Try 0.8 if you want it quieter. */
+:root {
+  --ocean-veil-opacity: 0.68;
+  --ocean-zen-fade: 700ms;
+}
+
+html.has-ocean,
+html.has-ocean body {
+  background: transparent;
+}
+
+html.has-ocean .page-shell {
+  position: relative;
+  z-index: 2;
+  transition: opacity var(--ocean-zen-fade) ease;
+}
+
+html:not(.has-ocean) .zen-chrome {
+  display: none;
+}
+
+.ocean-scene,
+.ocean-veil {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ocean-scene {
+  z-index: 0;
+  display: block;
+}
+
+.ocean-veil {
+  z-index: 1;
+  background: linear-gradient(172deg, var(--page-wash) 0%, var(--page-paper-deep) 100%);
+  opacity: var(--ocean-veil-opacity);
+  transition: opacity var(--ocean-zen-fade) ease;
+}
+
+.footer-end {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.ocean-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ocean-switch {
+  position: relative;
+  display: inline-flex;
+  min-height: var(--tap);
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.ocean-switch-root {
+  display: inline-flex;
+  width: 36px;
+  height: 20px;
+  flex: 0 0 36px;
+  padding: 2px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--line);
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.ocean-switch-root[data-checked] {
+  background: var(--pill-face);
+}
+
+.ocean-switch-root[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.ocean-switch-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-pill);
+  background: var(--page-paper);
+  box-shadow: 0 1px 3px var(--pill-ambient);
+  transition: translate 180ms ease;
+}
+
+.ocean-switch-thumb[data-checked] {
+  translate: 16px 0;
+}
+
+.ocean-switch-root:focus-visible {
+  outline: var(--focus-size) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.zen-chrome {
+  position: fixed;
+  z-index: 3;
+  top: var(--page-gutter);
+  right: var(--page-gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ocean-zen-fade) ease;
+}
+
+.zen-clock {
+  margin: 0;
+  color: rgb(255 255 255 / 78%);
+  text-shadow: 0 1px 8px rgb(0 0 0 / 45%);
+}
+
+.zen-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+html.is-zen {
+  overflow: hidden;
+}
+
+html.is-zen .page-shell {
+  opacity: 0;
+  pointer-events: none;
+}
+
+html.is-zen .ocean-veil {
+  opacity: 0;
+}
+
+html.is-zen .zen-chrome {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+html.is-zen .zen-chrome .pill-secondary {
+  border-color: rgb(255 255 255 / 42%);
+  background: rgb(0 0 0 / 38%);
+  color: #fff;
+}
+
+html.is-zen .zen-chrome .pill-primary {
+  box-shadow:
+    0 4px 0 rgb(0 0 0 / 55%),
+    0 8px 18px rgb(0 0 0 / 35%);
+}
+
+.zen-chrome .pill:focus-visible {
+  outline: var(--focus-size) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+:where(html:not(.is-coarse-pointer)) .ocean-switch:hover .ocean-switch-root:not([data-disabled]) {
+  opacity: var(--hover-fade);
+}
+
+@media (max-width: 809.98px) {
+  .zen-chrome {
+    top: var(--page-gutter-mobile);
+    right: var(--page-gutter-mobile);
+    bottom: auto;
+    left: var(--page-gutter-mobile);
+    align-items: stretch;
+  }
+
+  .zen-clock {
+    text-align: right;
+  }
+
+  .zen-actions {
+    justify-content: stretch;
+  }
+
+  .zen-actions .pill {
+    flex: 1 1 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.has-ocean .page-shell,
+  .ocean-veil,
+  .zen-chrome,
+  .ocean-switch-thumb {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  html.has-ocean,
+  html.has-ocean body {
+    background: Canvas;
+  }
+
+  .ocean-scene,
+  .ocean-veil,
+  .ocean-controls {
+    display: none;
+  }
+}
