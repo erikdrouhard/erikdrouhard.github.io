@@ -72,6 +72,15 @@
   color: var(--verse-copy-muted);
 }
 
+.mix-page--verse .mix-hero-details {
+  display: grid;
+  gap: var(--verse-gap-small);
+}
+
+.mix-page--verse .mix-hero-proof {
+  margin: 0;
+}
+
 .mix-page--verse .mix-section-feature::before {
   border-color: var(--verse-accent-wash);
   background:
@@ -231,8 +240,7 @@
 
 .mix-page--verse .mix-callout--storybook {
   display: flex;
-  grid-column: 1 / -1;
-  max-width: none;
+  max-width: var(--verse-gallery-width);
   background: var(--verse-accent-deep);
   color: #fff;
   box-shadow:
