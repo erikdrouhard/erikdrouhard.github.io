@@ -231,7 +231,8 @@
 
 .mix-page--verse .mix-callout--storybook {
   display: flex;
-  max-width: var(--verse-gallery-width);
+  grid-column: 1 / -1;
+  max-width: none;
   background: var(--verse-accent-deep);
   color: #fff;
   box-shadow:
