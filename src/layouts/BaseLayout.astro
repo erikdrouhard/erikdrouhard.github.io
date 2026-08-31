@@ -7,6 +7,12 @@ import "@fontsource-variable/newsreader";
 import "@fontsource-variable/jetbrains-mono";
 import "../styles/theme.css";
 
+// Preloaded so the swap from the fallback face happens during load rather than
+// after first paint. Only the latin subsets — the other unicode-ranges never
+// download for English content, and preloading them would waste the budget.
+import newsreaderLatin from "@fontsource-variable/newsreader/files/newsreader-latin-wght-normal.woff2?url";
+import monoLatin from "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url";
+
 interface Props {
   title: string;
   description?: string;
@@ -34,6 +40,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="theme-color" content="#070d09" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
+    <link rel="preload" href={newsreaderLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={monoLatin} as="font" type="font/woff2" crossorigin />
     {noindex && <meta name="robots" content="noindex" />}
     <title>{title}</title>
 

@@ -11,7 +11,7 @@ const { entry, shortcut } = Astro.props;
 const { title, org, summary, featured } = entry.data;
 ---
 
-<a class:list={["card", { featured }]} href={`/work/${entry.id}/`} data-key={shortcut}>
+<a class:list={["card", { featured }]} href={`/work/${entry.id}/`}>
   <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
   <div class="meta">
     {featured && <span class="badge">Featured</span>}

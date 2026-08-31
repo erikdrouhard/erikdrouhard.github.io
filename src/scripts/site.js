@@ -33,6 +33,10 @@ document.addEventListener("astro:before-swap", () => {
   // the field mode actually changed.
 });
 
-/* A hard navigation away (or a bfcache eviction) still has to release the
-   loop, otherwise a restored page can end up with two. */
+/* bfcache. Going back to a page restored from the back/forward cache does not
+   re-fire astro:page-load, so the field has to be released on the way out and
+   rebuilt on the way in — otherwise a restored page shows a frozen canvas. */
 window.addEventListener("pagehide", stopField);
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) initField();
+});

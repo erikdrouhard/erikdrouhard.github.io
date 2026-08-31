@@ -765,9 +765,21 @@ button.btn { font-family: inherit; cursor: pointer; }
 }
 .figure a:focus-visible { outline-offset: 0; }
 
-/* MDX bodies produce figures as siblings of prose paragraphs, so the figure
-   needs the same measure as the text it interrupts unless marked .wide. */
-.prose .figure { max-width: none; }
+/* The prototype had no MDX bodies, so .prose could carry the 68ch measure on
+   the container itself. Now figures are siblings of the paragraphs, and a
+   .figure.wide inside a 68ch container cannot be wide. So the measure moves off
+   the container and onto the text elements: prose still reads at 68ch, a plain
+   figure matches it, and .wide spans the shell. */
+.case-body .prose { max-width: none; }
+.case-body .prose > p,
+.case-body .prose > h2,
+.case-body .prose > h3,
+.case-body .prose > ul,
+.case-body .prose > ol,
+.case-body .prose > pre,
+.case-body .prose > blockquote,
+.case-body .prose > .figure { max-width: 68ch; }
+.case-body .prose > .figure.wide { max-width: none; }
 
 /* Skip link — the old site had one and losing it would be a regression. */
 .skip-link {

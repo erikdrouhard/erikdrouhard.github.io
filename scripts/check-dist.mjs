@@ -87,6 +87,24 @@ for (const file of walk(DIST)) {
   }
 }
 
+/* Keyboard shortcuts are resolved per page against what is visible, so two
+   controls on the SAME page claiming one key means the second is unreachable.
+   Collisions across different pages are fine and expected. */
+const KEY = /<kbd[^>]*data-key="([^"]+)"/g;
+for (const file of walk(DIST)) {
+  const html = readFileSync(file, "utf8");
+  const rel = file.slice(DIST.length + 1);
+  const seen = new Map();
+  let k;
+  while ((k = KEY.exec(html))) {
+    const key = k[1].toLowerCase();
+    seen.set(key, (seen.get(key) || 0) + 1);
+  }
+  for (const [key, n] of seen) {
+    if (n > 1) failures.push(`${rel}: shortcut "${key}" claimed by ${n} keycaps`);
+  }
+}
+
 if (failures.length) {
   console.error(`check-dist: ${failures.length} problem(s)\n`);
   for (const f of failures) console.error("  " + f);
