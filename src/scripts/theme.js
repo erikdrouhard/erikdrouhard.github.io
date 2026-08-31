@@ -10,6 +10,14 @@
    ========================================================================== */
 const KEY = "ed-theme";
 
+function saved() {
+  try {
+    return localStorage.getItem(KEY);
+  } catch (e) {
+    return null;
+  }
+}
+
 function persist(value) {
   try {
     localStorage.setItem(KEY, value);
@@ -44,6 +52,16 @@ function onClick(event) {
 
 /* The click handler lives on <document>, which survives a ClientRouter swap,
    so it is bound once. Only the label sync has to re-run per page. */
+/* ClientRouter's swapRootAttributes() replaces every attribute on <html> with
+   the incoming document's, and the incoming document is server-rendered without
+   data-theme — the inline <head> script only runs on a full page load. So a
+   client navigation strips the attribute, and reading it back would report
+   "dark" to a reader who chose light. Storage is the source of truth here, not
+   the DOM. */
+export function restoreTheme() {
+  apply(saved() || "dark");
+}
+
 let bound = false;
 
 export function initTheme() {
@@ -51,7 +69,6 @@ export function initTheme() {
     document.addEventListener("click", onClick);
     bound = true;
   }
-  // <html data-theme> persists across swaps; the freshly-swapped footer toggle
-  // does not, so re-sync its label and pressed state.
-  apply(document.documentElement.getAttribute("data-theme") || "dark");
+  // Also re-syncs the freshly-swapped footer toggle's label and aria-pressed.
+  restoreTheme();
 }

@@ -13,7 +13,7 @@
 import { initField, stopField } from "./field.js";
 import { initKeys } from "./keys.js";
 import { initCards } from "./cards.js";
-import { initTheme } from "./theme.js";
+import { initTheme, restoreTheme } from "./theme.js";
 import { initStagger, stopStagger } from "./stagger.js";
 
 document.addEventListener("astro:page-load", () => {
@@ -23,6 +23,11 @@ document.addEventListener("astro:page-load", () => {
   initField();
   initStagger();
 });
+
+/* after-swap runs before the new page paints, so the theme is put back on
+   <html> without a flash of the wrong palette. astro:page-load would be too
+   late — it fires after paint. */
+document.addEventListener("astro:after-swap", restoreTheme);
 
 document.addEventListener("astro:before-swap", () => {
   stopStagger();
