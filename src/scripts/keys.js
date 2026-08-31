@@ -18,6 +18,19 @@ function visibleTargets() {
   return map;
 }
 
+/* The keycap flash is given 160ms before the navigation takes the frame. If
+   anything else navigates inside that window, the anchor we captured is
+   detached by the swap — and .click() on a detached anchor still follows its
+   href in Chrome, which is a full page reload straight past ClientRouter. Two
+   keypresses inside the window would queue two navigations. So the pending
+   click is cancellable, and a swap cancels it. */
+let pending = 0;
+
+export function cancelPendingKey() {
+  clearTimeout(pending);
+  pending = 0;
+}
+
 function onKeydown(event) {
   if (event.metaKey || event.ctrlKey || event.altKey || event.repeat) return;
   const t = event.target;
@@ -39,8 +52,11 @@ function onKeydown(event) {
     link.click();
     return;
   }
-  // let the keycap flash start before the navigation takes the frame
-  setTimeout(() => link.click(), 160);
+  cancelPendingKey();
+  pending = setTimeout(() => {
+    pending = 0;
+    if (link.isConnected) link.click();
+  }, 160);
 }
 
 /* document survives ClientRouter swaps, so this binds once for the session. */

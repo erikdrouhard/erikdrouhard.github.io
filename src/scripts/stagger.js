@@ -13,6 +13,7 @@
 const STAGGER = 70; // ms between siblings
 
 let cleanup = 0;
+let active = null; // { view, items } currently mid-stagger
 
 function itemsFor(view) {
   // grid children get their own delays; everything else follows document order
@@ -23,8 +24,22 @@ function itemsFor(view) {
   ];
 }
 
-export function initStagger() {
+/* Removes the classes and inline delays, whoever gets here first. Leaving
+   is-entered on means .view.is-entered .grid > * (0-3-0) keeps overriding
+   .card's own transition (0-1-0), and card hover feedback goes instant for the
+   life of the page. */
+function settle() {
   clearTimeout(cleanup);
+  if (!active) return;
+  active.view.classList.remove("is-entering", "is-entered");
+  active.items.forEach((el) => {
+    el.style.transitionDelay = "";
+  });
+  active = null;
+}
+
+export function initStagger() {
+  settle();
 
   const view = document.querySelector("main.view");
   if (!view) return;
@@ -34,6 +49,7 @@ export function initStagger() {
   const items = itemsFor(view);
   if (!items.length) return;
 
+  active = { view, items };
   view.classList.remove("is-entered");
   view.classList.add("is-entering");
   items.forEach((el, i) => {
@@ -43,6 +59,10 @@ export function initStagger() {
   // two frames: one for the browser to commit the start state, one to release
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
+      // A backgrounded tab parks rAF while setTimeout keeps running, so the
+      // cleanup below can fire before this does. If it already settled, the
+      // stagger is over — do not re-add the class it just removed.
+      if (active === null || active.view !== view) return;
       view.classList.remove("is-entering");
       view.classList.add("is-entered");
     });
@@ -51,14 +71,9 @@ export function initStagger() {
   // once the longest delay has played out, drop the classes and the inline
   // delays so nothing lingers to interfere with hover transitions
   const total = 620 + items.length * STAGGER;
-  cleanup = setTimeout(() => {
-    view.classList.remove("is-entered");
-    items.forEach((el) => {
-      el.style.transitionDelay = "";
-    });
-  }, total);
+  cleanup = setTimeout(settle, total);
 }
 
 export function stopStagger() {
-  clearTimeout(cleanup);
+  settle();
 }

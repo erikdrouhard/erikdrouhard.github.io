@@ -800,3 +800,15 @@ button.btn { font-family: inherit; cursor: pointer; }
 /* Case-study page rhythm: the meta grid and prose share the shell, but the
    prev/next cards run full width beneath them. */
 .case-body { margin-bottom: 40px; }
+
+/* The field is persisted across navigations (transition:persist), but an
+   element with no view-transition-name of its own is captured inside
+   ::view-transition-old/new(root) — so the root's translateY(-32px) + fade
+   would sweep the whole fixed canvas up the screen on every page change. The
+   loop stays continuous either way; this is about what you see. Giving it its
+   own name pulls it out of the root snapshot, and killing the animation on
+   that name holds it still while the content transitions over it. */
+#field { view-transition-name: field; }
+::view-transition-group(field) { animation: none; }
+::view-transition-old(field) { display: none; }
+::view-transition-new(field) { animation: none; }

@@ -11,7 +11,7 @@
    teardown leaks one loop per navigation until the page stutters.
    ========================================================================== */
 import { initField, stopField } from "./field.js";
-import { initKeys } from "./keys.js";
+import { initKeys, cancelPendingKey } from "./keys.js";
 import { initCards } from "./cards.js";
 import { initTheme, restoreTheme } from "./theme.js";
 import { initStagger, stopStagger } from "./stagger.js";
@@ -31,6 +31,7 @@ document.addEventListener("astro:after-swap", restoreTheme);
 
 document.addEventListener("astro:before-swap", () => {
   stopStagger();
+  cancelPendingKey();
   // The canvas carries transition:persist, so initField() will usually adopt
   // the surviving loop rather than build a new one. Stopping here anyway would
   // restart the drift on every navigation, so the field is left running and

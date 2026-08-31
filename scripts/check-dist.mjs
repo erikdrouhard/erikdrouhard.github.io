@@ -12,7 +12,7 @@
  * migration that silently drops a URL is the expensive kind of regression.
  */
 import { readdirSync, readFileSync, existsSync, statSync } from "node:fs";
-import { join, resolve, dirname } from "node:path";
+import { join, resolve, dirname, relative, sep } from "node:path";
 
 const DIST = resolve(process.cwd(), "dist");
 
@@ -34,6 +34,38 @@ const REQUIRED_ROUTES = [
 ];
 
 const failures = [];
+
+/* macOS is case-insensitive; GitHub Pages is not. existsSync() on this machine
+   happily resolves /assets/ERIK-DROUHARD-PORTRAIT.PNG and the link then 404s in
+   production, where nobody is looking. So every path segment under dist/ is
+   matched against the real directory listing, exactly. */
+const dirCache = new Map();
+function entriesOf(dir) {
+  let names = dirCache.get(dir);
+  if (!names) {
+    try {
+      names = new Set(readdirSync(dir));
+    } catch {
+      names = new Set();
+    }
+    dirCache.set(dir, names);
+  }
+  return names;
+}
+
+function existsExact(target) {
+  if (!existsSync(target)) return false;
+  const rel = relative(DIST, target);
+  // outside dist/ (shouldn't happen) — fall back to the plain check
+  if (rel.startsWith("..")) return true;
+  let dir = DIST;
+  for (const segment of rel.split(sep)) {
+    if (!segment || segment === ".") continue;
+    if (!entriesOf(dir).has(segment)) return false;
+    dir = join(dir, segment);
+  }
+  return true;
+}
 
 function walk(dir) {
   const out = [];
@@ -72,16 +104,16 @@ for (const file of walk(DIST)) {
       ? join(DIST, path)
       : resolve(dirname(file), path);
 
-    if (existsSync(target)) {
+    if (existsExact(target)) {
       // a directory URL must resolve to an index.html
-      if (statSync(target).isDirectory() && !existsSync(join(target, "index.html"))) {
+      if (statSync(target).isDirectory() && !existsExact(join(target, "index.html"))) {
         failures.push(`${rel}: "${raw}" is a directory with no index.html`);
       }
       continue;
     }
     // "/work/foo/" style links land on the directory's index.html
-    if (existsSync(join(target, "index.html"))) continue;
-    if (existsSync(target + ".html")) continue;
+    if (existsExact(join(target, "index.html"))) continue;
+    if (existsExact(target + ".html")) continue;
 
     failures.push(`${rel}: "${raw}" does not exist in dist/`);
   }

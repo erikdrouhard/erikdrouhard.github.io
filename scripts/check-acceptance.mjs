@@ -172,6 +172,27 @@ const hidden = await page.$$eval("main.view .grid > *", (els) =>
 );
 ok("every work card is fully visible after the stagger", hidden === 0, `${hidden} still faded`);
 
+// --- the field must sit outside the root view transition ---
+await page.goto(BASE + "/", { waitUntil: "networkidle" });
+await page.waitForTimeout(300);
+const vtName = await page.evaluate(
+  () => getComputedStyle(document.getElementById("field")).viewTransitionName,
+);
+ok(
+  "the persisted field has its own view-transition-name",
+  vtName && vtName !== "none",
+  `got ${vtName} — without one the root transition lifts and fades the canvas`,
+);
+
+// --- card hover transition survives the stagger ---
+await page.goto(BASE + "/work/", { waitUntil: "networkidle" });
+await page.waitForTimeout(2500);
+const stuck = await page.evaluate(() => {
+  const v = document.querySelector("main.view");
+  return v.className.includes("is-entered") || v.className.includes("is-entering");
+});
+ok("stagger classes are cleaned up, so card hover stays animated", !stuck);
+
 // --- reduced motion: static field, no loop ---
 const rmCtx = await browser.newContext({ reducedMotion: "reduce" });
 await rmCtx.addInitScript(() => {
