@@ -235,6 +235,18 @@ The design prototype linked the Dragon Drive card at `/work/dragon-drive-hud/`. 
 
 The old site's `styles.css` and `components/*.js` remain under `public/`, because the three experiments load them directly. They are dead weight for the new design and could be scoped down to only what the experiments actually use. A follow-up, not a blocker.
 
+### "View additional work" currently leads to the same four
+
+`mix-flow`, `swype` and `applause` are drafts, so the work index renders exactly
+the four studies the home page already shows. The button under the home grid
+still says "View additional work", and there is none — it goes to the same list
+in a different layout. In the prototype the index held eight entries, which is
+what made the label true.
+
+Nothing was reworded, because that is copy and copy is yours. Three ways out:
+promote a draft, change the label, or drop the button until there is a fifth
+study. The count itself is computed, so it will correct on its own.
+
 ### Out of scope by decision
 
 Listed so nothing here looks forgotten:
