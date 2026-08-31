@@ -1,0 +1,23 @@
+---
+import type { WorkEntry } from "../lib/work";
+
+interface Props {
+  entry: WorkEntry;
+  /** the keycap shown on this card — differs between home (letters) and the index (digits) */
+  shortcut: string;
+}
+
+const { entry, shortcut } = Astro.props;
+const { title, org, summary, featured } = entry.data;
+---
+
+<a class:list={["card", { featured }]} href={`/work/${entry.id}/`} data-key={shortcut}>
+  <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+  <div class="meta">
+    {featured && <span class="badge">Featured</span>}
+    <span class="org">{org}</span>
+  </div>
+  <h3>{title}</h3>
+  <p>{summary}</p>
+  <div class="cta">Read case study → <kbd data-key={shortcut}>{shortcut}</kbd></div>
+</a>

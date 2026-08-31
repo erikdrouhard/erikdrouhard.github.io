@@ -1,0 +1,18 @@
+---
+/**
+ * Renders only where frontmatter supplied a real number. cards.js fills the
+ * 30 segments client-side from data-value. No number, no bar — the component
+ * is never called without one.
+ */
+interface Props {
+  label: string;
+  value: number;
+}
+
+const { label, value } = Astro.props;
+---
+
+<div class="metric">
+  <div class="bar" data-value={value} role="img" aria-label={`${label}: ${value} percent`}></div>
+  <div class="cap">{label}</div>
+</div>

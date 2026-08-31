@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WorkCard from "../../components/WorkCard.astro";
+import { getPublishedWork, pad } from "../../lib/work";
+
+const entries = await getPublishedWork();
+const count = pad(entries.length);
+---
+
+<BaseLayout
+  title="Work | Erik Drouhard"
+  description="Selected case studies by Erik Drouhard, AI Design Engineer."
+  field="full"
+>
+  <main id="main" class="view">
+    <div class="back-row">
+      {/* A real link, not a view-trail button: the browser already knows where back is. */}
+      <a class="back" href="/">← Back <kbd data-key="B">B</kbd></a>
+    </div>
+
+    <div class="work-head">
+      <h2>Selected work</h2>
+      <span class="count">{count} entries</span>
+    </div>
+
+    <div class="grid">
+      {entries.map((entry, i) => <WorkCard entry={entry} shortcut={String(i + 1)} />)}
+    </div>
+  </main>
+</BaseLayout>

@@ -1,0 +1,53 @@
+---
+/**
+ * The ticked frame used for every image and video in a case study.
+ * Captions are mono uppercase; a figure with no sourced caption renders
+ * without one rather than inventing text.
+ */
+interface Props {
+  src?: string;
+  video?: string;
+  poster?: string;
+  alt?: string;
+  caption?: string;
+  /** breaks out of the prose measure */
+  wide?: boolean;
+  /** video only: show transport controls instead of autoplaying muted */
+  controls?: boolean;
+  /** wraps the image in a link to the full-size asset */
+  href?: string;
+}
+
+const { src, video, poster, alt = "", caption, wide, controls, href } = Astro.props;
+---
+
+<figure class:list={["figure", { wide }]}>
+  {
+    video ? (
+      controls ? (
+        <video controls playsinline preload="metadata" poster={poster} aria-label={alt}>
+          <source src={video} type="video/mp4" />
+        </video>
+      ) : (
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster={poster}
+          aria-label={alt}
+        >
+          <source src={video} type="video/mp4" />
+        </video>
+      )
+    ) : href ? (
+      <a href={href} target="_blank" rel="noopener noreferrer">
+        <img src={src} alt={alt} loading="lazy" decoding="async" />
+      </a>
+    ) : (
+      <img src={src} alt={alt} loading="lazy" decoding="async" />
+    )
+  }
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

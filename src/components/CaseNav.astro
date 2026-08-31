@@ -1,0 +1,39 @@
+---
+import type { WorkEntry } from "../lib/work";
+
+interface Props {
+  prev?: WorkEntry;
+  next?: WorkEntry;
+}
+
+const { prev, next } = Astro.props;
+---
+
+{
+  (prev || next) && (
+    <nav class="case-nav" aria-label="More case studies">
+      {prev ? (
+        <a class="card prev" href={`/work/${prev.id}/`}>
+          <i class="tl" />
+          <i class="tr" />
+          <i class="bl" />
+          <i class="br" />
+          <span class="dir">Previous</span>
+          <h4>{prev.data.title}</h4>
+        </a>
+      ) : (
+        <span />
+      )}
+      {next && (
+        <a class="card next" href={`/work/${next.id}/`}>
+          <i class="tl" />
+          <i class="tr" />
+          <i class="bl" />
+          <i class="br" />
+          <span class="dir">Next</span>
+          <h4>{next.data.title}</h4>
+        </a>
+      )}
+    </nav>
+  )
+}

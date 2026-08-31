@@ -1,0 +1,79 @@
+---
+import { ClientRouter } from "astro:transitions";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+import "@fontsource-variable/newsreader";
+import "@fontsource-variable/jetbrains-mono";
+import "../styles/theme.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** "full" on home / work / about, "quiet" on reading pages, "off" for a static frame. */
+  field?: "full" | "quiet" | "off";
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = "Erik Drouhard is an AI Design Engineer specializing in human-agent interaction.",
+  field = "full",
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#070d09" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <title>{title}</title>
+
+    {/*
+      Runs before any stylesheet, so the saved theme is on <html> before the
+      first paint and a light-mode visitor never sees a dark flash.
+      Dark is the default for a first visit: prefers-color-scheme is
+      deliberately ignored, because the design is authored dark-first.
+    */}
+    <script is:inline>
+      (function () {
+        var t = "dark";
+        try {
+          t = localStorage.getItem("ed-theme") || "dark";
+        } catch (e) {}
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+
+    <ClientRouter />
+  </head>
+
+  <body data-field={field}>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    {/*
+      transition:persist keeps the same canvas node across navigations, so the
+      smoke keeps drifting through a page change instead of restarting — and
+      field.js can adopt the running loop rather than building a second one.
+    */}
+    <canvas id="field" aria-hidden="true" transition:persist></canvas>
+
+    <div class="shell">
+      <Nav />
+      <slot />
+      <Footer />
+    </div>
+
+    <script>
+      import "../scripts/site.js";
+    </script>
+  </body>
+</html>

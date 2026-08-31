@@ -1,23 +1,24 @@
 {
   "name": "erikdrouhard-2026-website",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "vite --host 127.0.0.1",
-    "build": "vite build",
-    "preview": "vite preview --host 127.0.0.1",
-    "check:experiments": "node scripts/check-experiments.mjs",
-    "check:navigation": "node scripts/check-navigation-state.mjs",
-    "check:type": "node scripts/check-type-system.mjs",
-    "sync:resume": "node scripts/sync-resume.mjs"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^5.2.0",
-    "vite": "^7.0.0"
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "check": "astro check",
+    "check:dist": "node scripts/check-dist.mjs",
+    "verify": "npm run build && npm run check:dist"
   },
   "dependencies": {
-    "@base-ui/react": "^1.7.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "@astrojs/mdx": "^4.3.0",
+    "astro": "^5.13.0",
+    "@fontsource-variable/newsreader": "^5.2.0",
+    "@fontsource-variable/jetbrains-mono": "^5.2.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.9.0"
   }
 }

@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="About | Erik Drouhard"
+  description="Erik Drouhard makes intelligent systems understandable, predictable, and useful."
+  field="full"
+>
+  <main id="main" class="view">
+    <div class="back-row">
+      <a class="back" href="/">← Back <kbd data-key="B">B</kbd></a>
+    </div>
+
+    <div class="work-head">
+      <h2>About Erik</h2>
+    </div>
+
+    <div class="about-layout">
+      <div class="prose">
+        <p class="lead">I make intelligent systems understandable, predictable, and useful.</p>
+
+        <p>
+          At <a href="/work/microsoft/">Microsoft CoreAI</a>, I design and build prototyping tools
+          for <a href="https://ai.azure.com/">Microsoft Foundry</a> and Azure portals. They give
+          design, research, product, and engineering teams a shared way to test AI product behavior
+          as working software and make decisions without waiting on the production repo.
+        </p>
+
+        <p>
+          Over the past <strong>15+ years</strong>, I've designed interfaces for conversational AI,
+          developer tools, and automotive systems. At Nuance, I led UI and interaction design for a
+          Dragon Drive <a href="https://www.youtube.com/watch?v=ITQPxzKxsuQ&t=232s"
+            >windshield HUD</a
+          > that used gaze to give voice commands context, featured at CES 2019. I then spent nearly
+          four years on <a href="/work/mix-dialog/">Mix.dialog</a>, designing tools for authoring
+          complex conversational behavior.
+        </p>
+
+        <p>
+          I later led the strategy and architecture of <a href="/work/verse-design-system/">Verse</a
+          >, the shared design system for Mix and the surrounding platform.
+        </p>
+
+        <p class="lead">I prototype to think.</p>
+      </div>
+
+      {/* The portrait is served from this repo. The old hashed www.erikdrouhard.com
+          URL in the prototype was a hotlink to the previous build's output. */}
+      <figure class="portrait">
+        <img
+          src="/assets/erik-drouhard-portrait.png"
+          alt="Portrait of Erik Drouhard"
+          width="320"
+          height="320"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    </div>
+
+    <div class="about-actions">
+      <a class="btn primary" href="mailto:erikdrouhard@gmail.com"
+        >Get in touch <kbd data-key="C">C</kbd></a
+      >
+    </div>
+
+    <a
+      class="card close-card view-work-card"
+      href="/work/"
+      aria-label="View the work"
+    >
+      <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+      <p class="close-line">View the work →</p>
+    </a>
+  </main>
+</BaseLayout>

@@ -1,0 +1,53 @@
+/* ==========================================================================
+   keys.js — single-character shortcuts.
+
+   Any <kbd data-key="X"> inside an <a> or <button> makes that control
+   reachable by pressing X. Targets are resolved on each keypress against
+   what is actually on screen, so a shortcut can never fire a control from a
+   page that is no longer mounted.
+   ========================================================================== */
+
+function visibleTargets() {
+  const map = {};
+  document.querySelectorAll("[data-key]").forEach((el) => {
+    const host = el.closest("a, button");
+    if (!host) return;
+    if (host.offsetParent === null) return; // display:none / detached
+    map[el.dataset.key.toLowerCase()] = host;
+  });
+  return map;
+}
+
+function onKeydown(event) {
+  if (event.metaKey || event.ctrlKey || event.altKey || event.repeat) return;
+  const t = event.target;
+  if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+  if (event.key.length !== 1) return;
+
+  const link = visibleTargets()[event.key.toLowerCase()];
+  if (!link) return;
+  event.preventDefault();
+
+  // flash the keycap so the shortcut is visibly acknowledged
+  link.querySelectorAll("kbd").forEach((k) => {
+    k.classList.add("hot");
+    setTimeout(() => k.classList.remove("hot"), 380);
+  });
+
+  link.focus();
+  if (link.tagName === "BUTTON") {
+    link.click();
+    return;
+  }
+  // let the keycap flash start before the navigation takes the frame
+  setTimeout(() => link.click(), 160);
+}
+
+/* document survives ClientRouter swaps, so this binds once for the session. */
+let bound = false;
+
+export function initKeys() {
+  if (bound) return;
+  document.addEventListener("keydown", onKeydown, true);
+  bound = true;
+}
