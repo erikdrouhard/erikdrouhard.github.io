@@ -501,6 +501,20 @@ h1 a:focus-visible {
   }
 }
 
+/* Site chrome is not editorial prose. The Microsoft page carries type-body on
+   <body> (ported as published), which makes the classless-anchor rules above
+   reach the header's About link — the one chrome anchor without a class. Its
+   <kbd> inherited the transparent text fill but not the gradient and rendered
+   as an empty box, and the link itself went bold. Chrome keeps its own
+   treatment regardless of what the page body is classed. */
+.case-page :is(.site-nav, .site-footer, .back-row) a {
+  font-weight: inherit;
+  text-decoration: none;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  animation: none;
+}
+
 @keyframes link-shimmer {
   from {
     background-position: 100% 0;

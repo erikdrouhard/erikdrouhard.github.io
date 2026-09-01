@@ -605,6 +605,7 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--t2);
+  text-decoration: none;
   background: var(--fill);
   border: 1px solid var(--line-1);
   border-radius: var(--radius);
