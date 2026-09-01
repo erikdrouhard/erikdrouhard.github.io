@@ -6,5 +6,16 @@
 export default {
   path: "/work/mix-dialog/",
   buttons: { primary: 1, secondary: 1 },
-  square: [],
+  square: [
+    ".mix-hero-visual",
+    ".mix-hero-visual img",
+    ".mix-visual-label",
+    ".mix-callout",
+    ".mix-four-column > div",
+    ".mix-action-list > article",
+    ".mix-media-scroller img",
+    ".mix-figure",
+    ".mix-figure img",
+    ".mix-metrics",
+  ],
 };

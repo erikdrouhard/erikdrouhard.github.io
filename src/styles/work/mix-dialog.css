@@ -114,7 +114,6 @@
   display: grid;
   min-width: 0;
   padding: 10px;
-  border-radius: 22px;
   background: var(--mix-panel);
   box-shadow:
     0 0 0 1px rgb(31 25 73 / 16%),
@@ -130,7 +129,6 @@
   width: 100%;
   height: auto;
   aspect-ratio: 723 / 550;
-  border-radius: 14px;
   object-fit: cover;
   outline: 1px solid rgb(255 255 255 / 12%);
   outline-offset: -1px;
@@ -142,7 +140,6 @@
   top: 20px;
   left: 20px;
   padding: 7px 9px;
-  border-radius: var(--radius-pill);
   background: rgb(17 15 46 / 86%);
   color: #fff;
 }
@@ -207,7 +204,6 @@
   padding: 20px 24px;
   border: 0;
   border-left: 3px solid var(--mix-accent);
-  border-radius: 0 14px 14px 0;
   background: rgb(255 255 255 / 64%);
   box-shadow: 0 0 0 1px rgb(0 0 0 / 7%);
 }
@@ -230,7 +226,6 @@
 .mix-four-column > div {
   min-width: 0;
   padding: 22px;
-  border-radius: 16px;
   background: rgb(255 255 255 / 64%);
   box-shadow:
     0 0 0 1px rgb(0 0 0 / 8%),
@@ -276,7 +271,6 @@
 .mix-action-list > article {
   display: grid;
   padding: 24px;
-  border-radius: 16px;
   background: rgb(255 255 255 / 72%);
   box-shadow:
     0 0 0 1px rgb(0 0 0 / 8%),
@@ -330,7 +324,6 @@
 }
 
 .mix-media-scroller:focus-visible {
-  border-radius: 12px;
   outline: var(--focus-size) solid var(--focus);
   outline-offset: 4px;
 }
@@ -345,7 +338,6 @@
   width: 100%;
   height: auto;
   aspect-ratio: 45 / 32;
-  border-radius: 14px;
   object-fit: cover;
   box-shadow: 0 14px 30px rgb(27 20 76 / 10%);
   outline: 1px solid rgb(0 0 0 / 8%);
@@ -382,7 +374,6 @@
   display: grid;
   min-width: 0;
   padding: 10px;
-  border-radius: 22px;
   background: var(--mix-panel);
   box-shadow:
     0 0 0 1px rgb(31 25 73 / 16%),
@@ -395,7 +386,6 @@
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 14px;
   outline: 1px solid rgb(255 255 255 / 12%);
   outline-offset: -1px;
 }
@@ -421,7 +411,6 @@
 .mix-metrics {
   display: grid;
   overflow: hidden;
-  border-radius: 18px;
   background: var(--mix-panel);
   box-shadow:
     0 0 0 1px rgb(32 25 74 / 15%),
@@ -487,8 +476,8 @@
   justify-content: center;
 }
 
-/* Appearance comes from the shared pill in styles.css; the footer pair only
-   set their own minimum width. */
+/* Appearance comes from `.btn` in theme.css; `.mix-contact` only sets its own
+   minimum width. */
 .mix-contact {
   min-width: 158px;
 }
@@ -498,8 +487,8 @@
   outline-offset: 3px;
 }
 
-/* The pill's hover and press states are shared with every other button on the
-   site; see the pill interaction block in styles.css. */
+/* Hover and press states are shared with every other button on the site; see
+   the `.btn` block in theme.css. */
 
 @media (max-width: 809.98px) {
   .mix-main {
