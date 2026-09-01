@@ -21,8 +21,8 @@
   --verse-accent-wash: rgb(193 39 182 / 10%);
   --verse-cyan-wash: rgb(37 185 208 / 10%);
   --verse-shadow: rgb(37 22 47 / 10%);
-  --verse-radius: 16px;
-  --verse-radius-large: 22px;
+  --verse-radius: 0;
+  --verse-radius-large: 0;
   --verse-control-radius: 999px;
   --verse-reading-width: 720px;
   --verse-gallery-width: 892px;
@@ -262,8 +262,6 @@
 
 .mix-page--verse .mix-callout--storybook .mix-contact {
   min-width: max-content;
-  background: #fff;
-  color: var(--verse-accent-deep);
 }
 
 .mix-page--verse .mix-callout--storybook:focus-visible {
@@ -378,11 +376,6 @@
 
 [data-theme="dark"] .mix-page--verse .mix-callout--storybook {
   color: #f5f3fa;
-}
-
-[data-theme="dark"] .mix-page--verse .mix-callout--storybook .mix-contact {
-  background: #f5f3fa;
-  color: #100c20;
 }
 
 [data-theme="dark"] .mix-page--verse .mix-three-column--media > figure > a > span,
