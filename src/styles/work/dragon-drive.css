@@ -94,7 +94,7 @@
 .drive-badges li {
   min-height: 28px;
   padding: 5px 14px;
-  border-radius: 999px;
+  border-radius: 0;
   background: rgb(255 255 255 / 74%);
   box-shadow: 0 0 0 1px rgb(7 30 38 / 13%);
 }
@@ -106,7 +106,7 @@
 }
 
 .drive-video-frame {
-  --frame-radius: min(2vw, 24px);
+  --frame-radius: 0;
   --frame-padding: 10px;
   position: relative;
   overflow: hidden;
@@ -124,7 +124,7 @@
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
-  border-radius: calc(var(--frame-radius) - var(--frame-padding));
+  border-radius: 0;
   object-fit: cover;
   outline: 1px solid rgb(255 255 255 / 12%);
   outline-offset: -1px;
@@ -136,7 +136,7 @@
   top: 22px;
   left: 22px;
   padding: 7px 9px;
-  border-radius: 999px;
+  border-radius: 0;
   background: rgb(7 30 38 / 86%);
   color: #fff;
   pointer-events: none;
@@ -225,7 +225,7 @@
   display: block;
   width: 100%;
   height: auto;
-  border-radius: min(1.5vw, 18px);
+  border-radius: 0;
   object-fit: cover;
   outline: 1px solid rgb(7 30 38 / 10%);
   outline-offset: -1px;
@@ -298,7 +298,7 @@
   display: grid;
   min-width: 0;
   padding: 28px;
-  border-radius: 18px;
+  border-radius: 0;
   background: var(--drive-panel);
   box-shadow:
     0 0 0 1px rgb(7 30 38 / 16%),
@@ -315,7 +315,7 @@
   min-width: 0;
   min-height: 150px;
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 0;
   background: rgb(255 255 255 / 8%);
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
   gap: 6px;
@@ -383,7 +383,7 @@
   display: grid;
   max-width: 760px;
   padding: 34px;
-  border-radius: 18px;
+  border-radius: 0;
   background: var(--drive-cyan-soft);
   box-shadow: inset 0 0 0 1px rgb(8 127 145 / 13%);
   gap: 12px;
@@ -484,8 +484,8 @@
   gap: 10px;
 }
 
-/* Appearance comes from the shared pill in styles.css; the footer pair only
-   set their own minimum width. */
+/* Appearance comes from `.btn` in theme.css; the footer pair only set their
+   own minimum width. */
 .drive-contact {
   min-width: 158px;
 }
@@ -496,8 +496,8 @@
   outline-offset: 3px;
 }
 
-/* The pill's hover and press states are shared with every other button on the
-   site; see the pill interaction block in styles.css. */
+/* The button's hover and focus states are shared with every other button on
+   the site; see the `.btn` block in theme.css. */
 
 @media (max-width: 809.98px) {
   .drive-main {
