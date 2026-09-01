@@ -16,7 +16,7 @@
    /about/, so no other route pays for it.
    ========================================================================== */
 import { pauseField, resumeField } from "./field.js";
-import { initGesture, stopGesture } from "./egg-gesture.js";
+import { initGesture, stopGesture, setSheetOpen } from "./egg-gesture.js";
 import { mountGame } from "./egg-game.js";
 
 let els = null;
@@ -29,6 +29,9 @@ let onKeydown = null;
 function openSheet() {
   if (!els || open) return;
   open = true;
+  // `hidden` carries display:none, so nothing inside the sheet is focusable
+  // and nothing is animatable until it comes off. It goes first; the spring
+  // in egg-gesture.js carries the sheet up from there.
   els.sheet.hidden = false;
   // inert does two jobs at once: it keeps Tab inside the sheet with no
   // focus-trap code, and it is what the keys.js guard reads to stop B and C
@@ -37,6 +40,7 @@ function openSheet() {
   pauseField();
   game = mountGame(els.canvas, els.status);
   els.close.focus();
+  setSheetOpen(true);
 }
 
 function closeSheet() {
@@ -49,9 +53,19 @@ function closeSheet() {
   // inert comes off before the focus call: focusing inside an inert subtree
   // silently does nothing.
   els.shell.inert = false;
+  // Resumed now rather than on settle, so the smoke is already drifting behind
+  // the sheet as it descends and the page does not come back to a still frame.
   resumeField();
-  els.sheet.hidden = true;
   els.play.focus();
+  // Everything above is instant; only re-hiding the sheet has to wait for the
+  // spring, since `hidden` would make it vanish rather than descend.
+  setSheetOpen(false, finishClose);
+}
+
+/* Runs when the sheet spring has settled at the bottom — or synchronously from
+   stopGesture(), if the page is torn down mid-descent. */
+function finishClose() {
+  if (els) els.sheet.hidden = true;
 }
 
 export function initEgg() {
