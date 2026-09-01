@@ -706,6 +706,30 @@ button.btn { font-family: inherit; cursor: pointer; }
 
 [data-theme="light"] kbd.hot { color: #f4f6f0; }
 
+/* ------------------------------------------------ surfaces locked to dark */
+/* A few panels keep a dark face in both themes — a case-study callout printed
+   on its brand colour, say. Under the light theme the shared components inside
+   them inherit light-theme pigment and go unreadable: `.btn` is the loudest
+   case, because both its resting and hover colour resolve to `--t1`, which is
+   near-black there. Re-pigmenting the token set for the subtree fixes every
+   such component at once instead of per page. Neutral rather than mint, so it
+   sits on whatever hue the panel happens to be; a page can point `--accent` at
+   its own colour. */
+.on-dark {
+  --fill:        rgba(7,13,9,0.30);
+  --fill-hover:  rgba(255,255,255,0.12);
+
+  --line-1:      rgba(255,255,255,0.20);
+  --line-2:      rgba(255,255,255,0.38);
+
+  --t1:          #ffffff;
+  --t2:          rgba(255,255,255,0.80);
+  --t3:          rgba(255,255,255,0.62);
+
+  --accent:      #ffffff;
+  --accent-soft: rgba(255,255,255,0.16);
+}
+
 /* ------------------------------------------------------------ theme toggle */
 .theme-toggle {
   display: inline-flex;

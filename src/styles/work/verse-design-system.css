@@ -260,6 +260,14 @@
   color: rgb(255 255 255 / 74%);
 }
 
+/* The panel is dark in both themes, so it carries `.on-dark` and the button
+   inside it reads from that token set; only the accent is re-pointed, from the
+   neutral white default to the Verse cyan. */
+.mix-page--verse .mix-callout--storybook {
+  --accent: var(--verse-cyan);
+  --accent-soft: rgb(37 185 208 / 18%);
+}
+
 .mix-page--verse .mix-callout--storybook .mix-contact {
   min-width: max-content;
 }
