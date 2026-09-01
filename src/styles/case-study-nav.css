@@ -71,7 +71,7 @@ case-study-nav[data-offset] {
 }
 
 .case-study-nav__inner a:focus-visible {
-  border-radius: 4px;
+  border-radius: 0;
   outline: var(--focus-size) solid var(--ink);
   outline-offset: 2px;
 }

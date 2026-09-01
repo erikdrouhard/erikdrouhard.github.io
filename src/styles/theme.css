@@ -222,7 +222,15 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
   align-items: center;
   gap: 9px;
   padding: 12px 18px;
+  /* The button carries its own face, weight and leading rather than
+     inheriting them. On the home page all three are what it would have
+     inherited anyway; on a case study the surrounding type role is a serif at
+     600 with a 1.45 ratio, and without these the same button renders in a
+     different typeface at a different weight. */
+  font-family: var(--sans);
   font-size: var(--fs-ui);
+  font-weight: 400;
+  line-height: 1.6;
   text-decoration: none;
   color: var(--t2);
   background: var(--fill);

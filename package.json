@@ -12,7 +12,8 @@
     "check:dist": "node scripts/check-dist.mjs",
     "verify": "npm run build && npm run check:dist",
     "check:acceptance": "node scripts/check-acceptance.mjs",
-    "check:all": "npm test && npm run build && npm run check:dist && npm run check:acceptance"
+    "check:square": "node scripts/check-square-style.mjs",
+    "check:all": "npm test && npm run build && npm run check:dist && npm run check:acceptance && npm run check:square"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",

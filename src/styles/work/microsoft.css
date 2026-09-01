@@ -727,7 +727,7 @@
     align-items: stretch;
   }
 
-  .core-ai-page .button-row .pill {
+  .core-ai-page .button-row .btn {
     width: 100%;
   }
 
@@ -763,7 +763,7 @@
   }
 
   .core-ai-page .button-row,
-  .core-ai-page .button-row .pill {
+  .core-ai-page .button-row .btn {
     width: 100%;
   }
 

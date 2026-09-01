@@ -16,7 +16,6 @@ import { initCards } from "./cards.js";
 import { initTheme, restoreTheme } from "./theme.js";
 import { initStagger, stopStagger } from "./stagger.js";
 import { initPointerHover } from "./pointer-hover.js";
-import { initPressState, stopPressState } from "./press-state.js";
 import { initCaseStudyNav } from "./case-study-nav.js";
 
 /* The egg is a lazy chunk gated on the pathname, so no other route downloads
@@ -33,7 +32,6 @@ document.addEventListener("astro:page-load", () => {
   /* First, and every navigation: the pointer class lives on <html>, which the
      router re-stamps from the server-rendered document on every swap. */
   initPointerHover();
-  initPressState();
   /* No-ops on a page without a <case-study-nav>, so no page-type check. */
   initCaseStudyNav();
   initTheme();
@@ -57,7 +55,6 @@ document.addEventListener("astro:after-swap", restoreTheme);
 
 document.addEventListener("astro:before-swap", () => {
   stopStagger();
-  stopPressState();
   cancelPendingKey();
   // Leaving About with the sheet open must put inert, the shell transform and
   // the field back, or the next page arrives scaled and frozen.
