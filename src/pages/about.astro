@@ -6,6 +6,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   title="About | Erik Drouhard"
   description="Erik Drouhard makes intelligent systems understandable, predictable, and useful."
   field="full"
+  bodyClass="about-page"
 >
   <main id="main" class="view">
     <div class="back-row">
@@ -75,4 +76,32 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <p class="close-line">View the work →</p>
     </a>
   </main>
+
+  {/*
+      The Easter egg. Deliberately unannounced: no hint, no tooltip, no label
+      anywhere in the reading column. The pocket is exactly as tall as the
+      shell's bottom padding, which .about-page zeroes, so the page is not one
+      pixel taller than it was before the egg existed. The button starts below
+      the pocket's clip and is pulled up by an overscroll gesture; under
+      prefers-reduced-motion the CSS simply hands it over, since a gesture-based
+      discovery mechanic is inaccessible by nature.
+
+      With JavaScript off this is an empty strip, a transparent scrim, and a
+      hidden section — the About page reads exactly as it always did.
+  */}
+  <div class="egg-pocket" slot="after-footer">
+    <button type="button" class="egg-play">Play</button>
+  </div>
+  <div class="egg-scrim" aria-hidden="true" slot="after-footer"></div>
+  <section class="egg-sheet" hidden aria-label="Block breaker" slot="after-footer">
+    <header class="egg-bar">
+      <span class="egg-title">Blocks</span>
+      <p class="egg-status" aria-live="polite"></p>
+      <button type="button" class="egg-close">Close</button>
+    </header>
+    <canvas
+      class="egg-canvas"
+      aria-label="Block breaker game. Arrow keys or A and D move the paddle; Space launches."
+      tabindex="0"></canvas>
+  </section>
 </BaseLayout>

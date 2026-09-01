@@ -815,3 +815,125 @@ button.btn { font-family: inherit; cursor: pointer; }
 ::view-transition-group(field) { animation: none; }
 ::view-transition-old(field) { display: none; }
 ::view-transition-new(field) { animation: none; }
+
+/* ==========================================================================
+   5. ABOUT-PAGE EASTER EGG
+
+   All of this is scoped to /about/ via body.about-page or the .egg-* classes,
+   which appear on no other page. Nothing here is announced: there is no hint
+   text, no tooltip, and no affordance in the reading column. The button lives
+   in a pocket below the footer and is pulled out by an overscroll gesture.
+
+   The pocket's height is exactly the shell's bottom padding, which .about-page
+   zeroes — so the About page is the same height with the egg as without it.
+   ========================================================================== */
+
+/* Claim the overscroll gesture so the browser does not spend it on a rubber
+   band or a pull-to-refresh. Only on this page; every other page scrolls
+   normally. */
+html:has(.about-page) { overscroll-behavior-y: none; }
+
+/* The shell scales back when the sheet rises, so it needs an origin and a
+   compositing hint. Its bottom padding becomes the pocket, below. */
+.about-page .shell {
+  padding-bottom: 0;
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+/* The clip that hides the button. Its height is what .shell gave up. */
+.egg-pocket {
+  position: relative;
+  height: 88px;
+  overflow: hidden;
+}
+
+/* Resting position is one pocket-height down: fully outside the clip. The
+   gesture drives translateY between 0 and -92px. */
+.egg-play {
+  position: absolute;
+  left: 50%;
+  top: 88px;
+  transform: translate(-50%, 0);
+}
+
+.egg-play,
+.egg-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 18px;
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--t1);
+  background: var(--fill);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  cursor: pointer;
+  transition: border-color 150ms ease-out, background 150ms ease-out;
+}
+.egg-play:hover,
+.egg-close:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+/* Dims the page behind the sheet. Always present, transparent until the sheet
+   rises, and never in the way of a pointer. */
+.egg-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--page);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.egg-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  transform: translateY(100%);
+  background: var(--page);
+  border-top: 1px solid var(--line-2);
+  display: flex;
+  flex-direction: column;
+}
+/* display:flex above outranks the UA's [hidden] rule, so restate it. Without
+   this the sheet is laid over the page from first paint. */
+.egg-sheet[hidden] { display: none; }
+
+.egg-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line-1);
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--t3);
+}
+/* The status line takes the slack so Close sits hard right. */
+.egg-status { flex: 1; margin: 0; color: var(--t3); }
+
+.egg-canvas {
+  flex: 1;
+  width: 100%;
+  display: block;
+  touch-action: none;
+}
+
+/* A discovery mechanic built on a gesture is inaccessible by nature, so when
+   motion is turned down the button is simply out — no pull, no spring. */
+@media (prefers-reduced-motion: reduce) {
+  .about-page .egg-play { transform: translate(-50%, -92px); }
+}
+
+@media (max-width: 720px) {
+  /* .shell's bottom padding is 64px here, so the pocket matches it. The button
+     still rests below the clip: its 88px offset is past the shorter pocket. */
+  .egg-pocket { height: 64px; }
+}

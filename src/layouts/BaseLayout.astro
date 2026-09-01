@@ -93,6 +93,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       <Nav />
       <slot />
       <Footer />
+      {/*
+        Anything a page wants to hang below the footer but still inside the
+        shell — /about/ puts the Easter-egg pocket here so the button is the
+        last thing in the tab order and outside main.view.
+      */}
+      <slot name="after-footer" />
     </div>
 
     <script>
