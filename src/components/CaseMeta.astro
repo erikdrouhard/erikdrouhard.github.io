@@ -1,0 +1,30 @@
+---
+interface Props {
+  role?: string;
+  team?: string;
+  timeline?: string;
+}
+
+const { role, team, timeline } = Astro.props;
+
+// Only cells with sourced data are rendered. An unknown role is left out,
+// never filled with a plausible-sounding guess.
+const cells = [
+  { label: "Role", value: role },
+  { label: "Team", value: team },
+  { label: "Timeline", value: timeline },
+].filter((c): c is { label: string; value: string } => Boolean(c.value));
+---
+
+{
+  cells.length > 0 && (
+    <dl class="case-meta">
+      {cells.map((cell) => (
+        <div>
+          <dt>{cell.label}</dt>
+          <dd>{cell.value}</dd>
+        </div>
+      ))}
+    </dl>
+  )
+}

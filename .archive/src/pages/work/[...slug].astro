@@ -1,0 +1,49 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseMeta from "../../components/CaseMeta.astro";
+import Metric from "../../components/Metric.astro";
+import CaseNav from "../../components/CaseNav.astro";
+import { getPublishedWork, neighbours } from "../../lib/work";
+
+export async function getStaticPaths() {
+  const entries = await getPublishedWork();
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry, ...neighbours(entries, entry.id) },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content } = await render(entry);
+const { title, org, role, team, timeline, metric, description, summary } = entry.data;
+---
+
+{/* data-field="quiet" drops the ambient smoke to 40% for reading. The pointer
+    distortion stays live — the field still responds, it just stops competing
+    with body text. */}
+<BaseLayout
+  title={`${title} | Erik Drouhard`}
+  description={description ?? summary}
+  field="quiet"
+>
+  <main id="main" class="view">
+    <div class="back-row">
+      <a class="back" href="/work/">← Back <kbd data-key="B">B</kbd></a>
+    </div>
+
+    <header class="case-header">
+      <h1>{title}</h1>
+      <CaseMeta role={role} team={team} timeline={timeline ?? org} />
+    </header>
+
+    <div class="case-body">
+      <div class="prose">
+        {metric && <Metric label={metric.label} value={metric.value} />}
+        <Content />
+      </div>
+    </div>
+
+    <CaseNav prev={prev} next={next} />
+  </main>
+</BaseLayout>

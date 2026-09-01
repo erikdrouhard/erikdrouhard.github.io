@@ -20,3 +20,6 @@ references/
 # case studies; the source images carry names and faces from an internal
 # tool and must stay out of this public repository.
 work/mix-dialog/assets/media/testimonials-*.png
+
+# Astro
+.astro/

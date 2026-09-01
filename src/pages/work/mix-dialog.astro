@@ -1,0 +1,443 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/case.css";
+import "../../styles/case-study-nav.css";
+import "../../styles/testimonials.css";
+import "../../styles/work/mix-dialog.css";
+import "../../styles/work/condition-stack-demo.css";
+---
+
+{/* No hero preload. The live site left one out deliberately: an absolute
+    preload href would fetch a second copy of the image alongside the one the
+    <img> actually renders. fetchpriority="high" on the hero img prioritises
+    the URL the browser is already going to use. */}
+<BaseLayout
+  title="Mix.dialog: Making Complex Conversation Logic Legible | Erik Drouhard"
+  description="How Erik Drouhard led interaction design for Mix.dialog’s behavior-authoring, condition-building, and QA workflows for enterprise IVR teams."
+  field="off"
+  shell="case"
+  bodyClass="mix-page"
+>
+  <div class="back-row">
+    <a class="back" href="/">← Back <kbd data-key="B">B</kbd></a>
+  </div>
+
+  <case-study-nav>
+    <nav class="case-study-nav__inner" aria-label="Case study chapters">
+      <a class="type-meta type-caps" href="#problem">Problem</a>
+      <a class="type-meta type-caps" href="#process">Process</a>
+      <a class="type-meta type-caps" href="#results">Results</a>
+      <a class="type-meta type-caps" href="#verse">Verse epilogue</a>
+    </nav>
+  </case-study-nav>
+
+  <main id="main" class="site-main mix-main">
+    <article class="content mix-content type-body">
+      <header class="mix-hero">
+        <div class="mix-hero-copy">
+          <p class="mix-eyebrow type-meta type-caps">Mix.dialog · Nuance · 2019–2022</p>
+          <h1 class="type-hero">Making complex conversation logic visible and controllable</h1>
+          <p class="mix-deck type-deck">
+            I led interaction design for behavior authoring, condition building, and QA workflows so enterprise conversation designers could build, understand, and verify deeply nested IVR logic.
+          </p>
+          <dl class="mix-project-meta" aria-label="Project details">
+            <div>
+              <dt class="type-meta type-caps">Role</dt>
+              <dd class="type-body-sm">Senior UX Designer and interaction design lead</dd>
+            </div>
+            <div>
+              <dt class="type-meta type-caps">Focus</dt>
+              <dd class="type-body-sm">Behavior authoring, condition building, and QA workflows</dd>
+            </div>
+            <div>
+              <dt class="type-meta type-caps">Partners</dt>
+              <dd class="type-body-sm">Conversation designers, product, engineering, and research</dd>
+            </div>
+          </dl>
+        </div>
+
+        <figure class="mix-hero-visual">
+          <span class="mix-visual-label type-meta-sm type-caps">PRODUCT WORK · CONDITION STACK</span>
+          <a
+            href="/work/mix-dialog/assets/media/Condition-Stack-QA-Node.png"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open the Mix.dialog condition stack on a QA node full size in a new tab"
+          >
+            <img
+              src="/work/mix-dialog/assets/media/Condition-Stack-QA-Node.png"
+              width="1446"
+              height="1100"
+              alt="Mix.dialog QA node with the condition stack open: nested if branches on a morning variable, message and return actions inside each level, and Else If and Else controls on every block."
+              fetchpriority="high"
+            />
+          </a>
+          <figcaption class="type-caption">The condition stack in the product, authoring nested logic on a QA node. Open full size to zoom.</figcaption>
+        </figure>
+      </header>
+
+      <section id="problem" class="mix-section" aria-labelledby="situation-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">01 · SITUATION</p>
+          <h2 id="situation-heading" class="type-section">Enterprise IVR teams needed behavior they could inspect and control</h2>
+          <div class="mix-prose">
+            <p>
+              Conversation designers specified deterministic voice experiences: explicit rules decided what the system said or did after a recognized intent, a no-match or no-input event, a retry, or an escalation.
+            </p>
+            <p>
+              Unlike simpler chatbot flows, that behavior could vary by channel and modality and sit inside deeply nested business rules. Authors needed to predict and verify each path because a wrong branch could misroute a call or interrupt a transaction.
+            </p>
+          </div>
+          <p class="mix-callout">
+            The workaround was a long conditional spreadsheet passed between conversation designers, customers, and engineers. It was difficult to read and change, and it separated design intent from implementation.
+          </p>
+        </div>
+      </section>
+
+      <section class="mix-section" aria-labelledby="platform-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">02 · PLATFORM CONTEXT</p>
+          <h2 id="platform-heading" class="type-section">Mix.dialog turned intent recognition into authored behavior</h2>
+          <p>
+            Within the connected Mix platform, Mix.dialog was the product conversation designers used to author deterministic prompts, conditions, actions, and recovery behavior across voice and digital channels.
+          </p>
+        </div>
+        <div class="mix-three-column mix-platform-grid type-body-sm">
+          <div>
+            <p class="mix-item-label type-meta type-caps">NLU</p>
+            <h3 class="type-support">Mix.nlu</h3>
+            <p>Defined intents and entities the experience could recognize.</p>
+          </div>
+          <div>
+            <p class="mix-item-label type-meta type-caps">Dialog</p>
+            <h3 class="type-support">Mix.dialog</h3>
+            <p>Authored prompts, conditions, actions, and recovery behavior.</p>
+          </div>
+          <div>
+            <p class="mix-item-label type-meta type-caps">DASHBOARD</p>
+            <h3 class="type-support">Dashboard</h3>
+            <p>Managed and deployed dialog and NLU configurations.</p>
+          </div>
+        </div>
+
+        <figure class="mix-figure">
+          <a
+            href="/work/mix-dialog/assets/media/mix.dialog-messagenode.png"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open the Mix.dialog authoring canvas full size in a new tab"
+          >
+            <img
+              src="/work/mix-dialog/assets/media/mix.dialog-messagenode.png"
+              width="1261"
+              height="710"
+              alt="Mix.dialog authoring a travel booking project: a component tree on the left, a flow canvas of connected greeting, intent, and menu nodes in the centre, and node properties for the selected message on the right."
+              loading="lazy"
+            />
+          </a>
+          <figcaption class="type-caption">The authoring surface conversation designers worked in, with the flow canvas and node properties side by side. Open full size to zoom.</figcaption>
+        </figure>
+      </section>
+
+      <section class="mix-section" aria-labelledby="role-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">03 · MY ROLE</p>
+          <h2 id="role-heading" class="type-section">I led interaction design for the behavior-authoring model</h2>
+          <p>
+            I worked with conversation designers, product leadership, and engineering directors to translate authoring needs into feasible data and interface structures. I led the condition-building model and core node, modality, and channel patterns; prototyped interaction and failure states; and defined reusable patterns for the wider tool.
+          </p>
+        </div>
+
+        <div class="mix-scope">
+          <p class="mix-section-label type-meta type-caps">SCOPE</p>
+          <h2 class="type-section">The core authoring surfaces I shaped</h2>
+          <p>
+            I designed the authoring primitives and verification surfaces that conversation designers built on—not the conversations themselves.
+          </p>
+          <div class="mix-three-column type-body-sm">
+            <div>
+              <p class="mix-item-label type-meta type-caps">ANCHOR PATTERN</p>
+              <h3 class="type-support">Question + QA nodes</h3>
+              <p>Shaped question behavior and the QA verification surface, using their complex properties to inform the wider authoring experience.</p>
+            </div>
+            <div>
+              <p class="mix-item-label type-meta type-caps">BEHAVIOR BUILDING</p>
+              <h3 class="type-support">Messages + conditions</h3>
+              <p>Designed how authors created prompts and nested conditional logic without translating spreadsheets or writing generated code.</p>
+            </div>
+            <div>
+              <p class="mix-item-label type-meta type-caps">CHANNEL SEMANTICS</p>
+              <h3 class="type-support">Modalities + actions</h3>
+              <p>Defined rich text, audio, DTMF, and per-channel output patterns that connected recognized intents to downstream behavior.</p>
+            </div>
+          </div>
+
+          <figure class="mix-figure">
+            <a
+              href="/work/mix-dialog/assets/media/Condition-Stack-Design-Channel-Dock.png"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open the Mix.dialog channel dock and condition stack full size in a new tab"
+            >
+              <img
+                src="/work/mix-dialog/assets/media/Condition-Stack-Design-Channel-Dock.png"
+                width="1446"
+                height="1100"
+                alt="The same QA node with the channel dock expanded, showing omni-channel, mobile, web, and TV virtual assistant targets above the nested condition stack."
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="type-caption">The channel dock expanded over the condition stack: one authored behavior, targeted per channel. Open full size to zoom.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="process" class="mix-section mix-section-feature" aria-labelledby="action-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">04 · ACTION</p>
+          <h2 id="action-heading" class="type-section">Making conditional logic visible and direct</h2>
+          <p>
+            For the condition stack, I tested interaction models with conversation designers and engineering, then used what we learned to shape both the interface and its underlying logic structure.
+          </p>
+        </div>
+
+        <div class="mix-action-list type-body-sm">
+          <article>
+            <p class="mix-item-label type-meta type-caps">01 · DIVERGE</p>
+            <div>
+              <h3 class="type-support">Test competing interaction models</h3>
+              <p>Code-forward concepts exposed power but raised the learning burden. Form-heavy designs hid context, while flatter structures could not express the depth IVR teams needed.</p>
+            </div>
+          </article>
+          <article>
+            <p class="mix-item-label type-meta type-caps">02 · LISTEN</p>
+            <div>
+              <h3 class="type-support">Find the real comprehension problem</h3>
+              <p>Feedback showed that syntax was only part of the problem. Authors needed clear starting points, visible hierarchy, readable content, and confidence about what an edit would affect.</p>
+            </div>
+          </article>
+          <article>
+            <p class="mix-item-label type-meta type-caps">03 · CONVERGE</p>
+            <div>
+              <h3 class="type-support">Make valid logic directly manipulable</h3>
+              <p>The selected direction treated conditional groups as objects. Authors could read hierarchy, add branches, move content, and understand the output without translating a spreadsheet or writing code.</p>
+            </div>
+          </article>
+          <article>
+            <p class="mix-item-label type-meta type-caps">04 · REFINE</p>
+            <div>
+              <h3 class="type-support">Define predictable editing rules</h3>
+              <p>Adding, deleting, reordering, and changing an if branch into an else-if branch each needed explicit rules so deep logic felt safe to edit.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="mix-condition-demo">
+          <div class="mix-condition-demo-heading">
+            <p class="mix-section-label type-meta type-caps">INTERACTIVE RECONSTRUCTION</p>
+            <h3 class="type-subsection">Nestable condition blocks made the logic directly manipulable</h3>
+            <p>
+              Every condition block kept its if, optional else-if branches, and else together as one movable structure. Authors could nest whole blocks, move messages, variable assignments, and events between levels, and reorder else-if branches without detaching them from their parent logic.
+            </p>
+          </div>
+          <condition-stack-demo>
+            <p>Enable JavaScript to explore the interactive condition-stack reconstruction.</p>
+          </condition-stack-demo>
+        </div>
+
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">SYSTEM DESIGN</p>
+          <h3 class="type-subsection">The actions inside a condition were a shared system, not a list</h3>
+          <div class="mix-prose">
+            <p>
+              A condition is only useful if something can happen inside it, and that set of actions did not exist yet. I ran design interviews with the VUI designers who would be authoring with them to establish what was actually needed inside a branch, then worked the set out with product management and my UX design team.
+            </p>
+            <p>
+              That defined the actions—messages, variable assignments, events, notes, and returns—which I then designed as one system rather than as features of the condition builder. Each had to hold up in more than one place: nested several levels deep inside a condition, sitting flat on a node with no conditions at all, and reused by the other node types. That meant settling their structure, their properties, their editing and reordering rules, and how they read when stacked together.
+            </p>
+          </div>
+          <p class="mix-callout">
+            Because the actions were shared, they set the boundaries other designers worked inside. New behavior had to compose from the same pieces and follow the same structure, which kept the authoring language consistent as the product grew.
+          </p>
+        </div>
+
+        <p class="mix-gallery-label type-meta-sm type-caps">
+          14 condition-stack explorations <span>Scroll to compare →</span>
+        </p>
+        <div class="mix-media-scroller" role="region" aria-label="Condition stack design explorations" tabindex="0">
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--01.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 1 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--01.avif" width="380" height="270" alt="Condition stack design exploration, slide 1 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--02.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 2 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--02.avif" width="380" height="270" alt="Condition stack design exploration, slide 2 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--03.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 3 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--03.avif" width="380" height="270" alt="Condition stack design exploration, slide 3 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--03b.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 4 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--03b.avif" width="380" height="270" alt="Condition stack design exploration, slide 4 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--04.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 5 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--04.avif" width="380" height="270" alt="Condition stack design exploration, slide 5 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--05.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 6 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--05.avif" width="380" height="270" alt="Condition stack design exploration, slide 6 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--06.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 7 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--06.avif" width="380" height="270" alt="Condition stack design exploration, slide 7 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--07.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 8 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--07.avif" width="380" height="270" alt="Condition stack design exploration, slide 8 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--08.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 9 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--08.avif" width="380" height="270" alt="Condition stack design exploration, slide 9 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--09.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 10 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--09.avif" width="380" height="270" alt="Condition stack design exploration, slide 10 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--10.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 11 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--10.avif" width="380" height="270" alt="Condition stack design exploration, slide 11 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--11.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 12 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--11.avif" width="380" height="270" alt="Condition stack design exploration, slide 12 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--12.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 13 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--12.avif" width="380" height="270" alt="Condition stack design exploration, slide 13 of 14." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--13.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack design exploration slide 14 of 14 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--13.avif" width="380" height="270" alt="Condition stack design exploration, slide 14 of 14." /></a></figure>
+        </div>
+      </section>
+
+      <section class="mix-section" aria-labelledby="process-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">HOW I WORKED</p>
+          <h2 id="process-heading" class="type-section">Research, design, validate, implement</h2>
+          <p>
+            This was not a screen-design handoff. The condition model evolved in a continuous loop with conversation designers, product, and engineering. Interface discoveries frequently became architecture conversations.
+          </p>
+        </div>
+
+        <div class="mix-four-column type-body-sm">
+          <div>
+            <p class="mix-item-label type-meta type-caps">01</p>
+            <h3 class="type-support">Research real authoring work</h3>
+            <p>Study spreadsheets, tools, handoffs, and nested IVR scenarios.</p>
+          </div>
+          <div>
+            <p class="mix-item-label type-meta type-caps">02</p>
+            <h3 class="type-support">Prototype competing mental models</h3>
+            <p>Tables, forms, graphs, code-like syntax, and direct manipulation.</p>
+          </div>
+          <div>
+            <p class="mix-item-label type-meta type-caps">03</p>
+            <h3 class="type-support">Validate comprehension and control</h3>
+            <p>Test context, nesting, add points, movement, and recovery.</p>
+          </div>
+          <div>
+            <p class="mix-item-label type-meta type-caps">04</p>
+            <h3 class="type-support">Shape implementation with engineering</h3>
+            <p>Align interaction rules with valid generated logic and data.</p>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="results" class="mix-section mix-section-feature" aria-labelledby="result-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">05 · RESULT</p>
+          <h2 id="result-heading" class="type-section">A more usable language for complex behavior</h2>
+          <p>
+            The work improved deeply nested condition authoring while establishing interaction patterns that influenced the wider Mix platform.
+          </p>
+        </div>
+
+        <div class="mix-metrics" role="group" aria-label="Condition-stack research outcomes">
+          <article>
+            <strong class="type-metric">17</strong>
+            <span class="type-body-sm">IVR + digital-VA designers</span>
+          </article>
+          <article>
+            <strong class="type-metric">5.0 → 7.0</strong>
+            <span class="type-body-sm">CSAT · +40%</span>
+          </article>
+          <article>
+            <strong class="type-metric">52.67 → 61.50</strong>
+            <span class="type-body-sm">SUS · +8.83 points</span>
+          </article>
+        </div>
+        <p class="mix-metric-note type-caption">
+          Three-session longitudinal study run by our embedded PhD researcher, tracking the condition stack as it was built. Both old-table-to-Session-3 gains were statistically significant at p &lt; .05; the source deck does not report per-session completion counts.
+        </p>
+
+        <div class="mix-three-column mix-results-grid type-body-sm">
+          <div>
+            <h3 class="type-support">A validated direction</h3>
+            <p>The new stack significantly improved satisfaction and perceived usability while revealing findability and hierarchy issues that still needed iteration.</p>
+          </div>
+          <div>
+            <h3 class="type-support">Proven in enterprise contexts</h3>
+            <p>The workflows supported customers including Sony Interactive Entertainment and Rakuten, where reliability and complex branching mattered.</p>
+          </div>
+          <div>
+            <h3 class="type-support">A platform-level template</h3>
+            <p>The QA node and condition work established properties and interaction patterns that informed other nodes and shared product behavior.</p>
+          </div>
+        </div>
+
+        <p class="mix-section-label type-meta type-caps">WHAT THE TEAM SAID</p>
+        <div class="testimonials">
+          <figure class="testimonial">
+            <blockquote class="type-body-sm">
+              <p>“The work he has done for the Dialog tool and the condition stack is simply put amazing. The Mix platform would not be where it is today without Erik and his dedication to excellence and being a true team player.”</p>
+            </blockquote>
+            <figcaption class="type-meta-sm type-caps">
+              <span class="testimonial-role">Senior Design Manager</span>
+            </figcaption>
+          </figure>
+          <figure class="testimonial">
+            <blockquote class="type-body-sm">
+              <p>“You are constantly pushing for the potential of Engineering and UX collaboration on complex design implementations.”</p>
+            </blockquote>
+            <figcaption class="type-meta-sm type-caps">
+              <span class="testimonial-role">Senior Software Engineering Manager</span>
+            </figcaption>
+          </figure>
+          <figure class="testimonial">
+            <blockquote class="type-body-sm">
+              <p>“You have both UX and frontend development knowledge and are in this unique position to provide guidance to both designers and developers.”</p>
+            </blockquote>
+            <figcaption class="type-meta-sm type-caps">
+              <span class="testimonial-role">Principal Software Developer</span>
+            </figcaption>
+          </figure>
+        </div>
+        <p class="mix-metric-note type-caption">Colleague feedback from internal reviews, quoted by role rather than by name.</p>
+
+        <p class="mix-gallery-label type-meta-sm type-caps">
+          Condition-stack results <span>Scroll to compare →</span>
+        </p>
+        <div class="mix-media-scroller" role="region" aria-label="Condition stack results" tabindex="0">
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--14.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack results slide 1 of 5 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--14.avif" width="380" height="270" alt="Condition stack results, slide 1 of 5." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--15.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack results slide 2 of 5 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--15.avif" width="380" height="270" alt="Condition stack results, slide 2 of 5." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--16.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack results slide 3 of 5 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--16.avif" width="380" height="270" alt="Condition stack results, slide 3 of 5." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--17.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack results slide 4 of 5 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--17.avif" width="380" height="270" alt="Condition stack results, slide 4 of 5." /></a></figure>
+          <figure><a href="/work/mix-dialog/assets/media/condition-tale--18.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack results slide 5 of 5 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--18.avif" width="380" height="270" alt="Condition stack results, slide 5 of 5." /></a></figure>
+        </div>
+
+        <p class="mix-callout mix-customer-note">
+          Customer context. Sony Interactive Entertainment used Mix.dialog and its condition system in work supporting voice functionality for PlayStation 5. This case study focuses on the authoring system—not Sony’s implementation details.
+        </p>
+      </section>
+
+      <section id="verse" class="mix-section" aria-labelledby="verse-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">06 · EPILOGUE · 2021–2023</p>
+          <h2 id="verse-heading" class="type-section">The product patterns became a shared system</h2>
+          <p>
+            Mix.dialog exposed a broader need for consistency, accessibility, and shared language between design and engineering. I made the case for a platform design system over several years, secured leadership buy-in, and led the architecture of what became Verse. Built with React, Radix, and vanilla-extract, the system was implemented across Mix.dialog and the surrounding platform by multiple engineering teams.
+          </p>
+          <p>
+            As the design–engineering liaison, I aligned teams around shared components, interaction patterns, tokens, and implementation practices. After the Microsoft acquisition, we migrated Verse to Fluent 2 to align with Microsoft&rsquo;s design language. The representative slides below are from my 2022 Nuance i3 talk, &ldquo;Design like a developer&hellip; Develop like a designer!&rdquo;
+          </p>
+          <p><a href="/work/verse-design-system/">Read the full Verse Design System case study →</a></p>
+        </div>
+      </section>
+
+      <footer class="mix-footer">
+        <h2 class="type-section">Let’s make complex systems understandable.</h2>
+        <p>Senior UX Designer · UX Engineer · Design systems and AI tools</p>
+        <div class="mix-footer-actions">
+          <a class="mix-contact btn primary" href="/work/microsoft/">Next: Microsoft</a>
+          <a class="mix-contact btn" href="mailto:erikdrouhard@gmail.com">Get in touch</a>
+        </div>
+      </footer>
+    </article>
+  </main>
+
+  {/* The demo is a custom element, so the browser upgrades whatever
+      ClientRouter swaps in — init only has to register it once. stop clears
+      the pending entry timer and focus frame that would otherwise survive the
+      swap. */}
+  <script>
+    import {
+      initConditionStackDemo,
+      stopConditionStackDemo,
+    } from "../../scripts/work/condition-stack-demo.js";
+    document.addEventListener("astro:page-load", initConditionStackDemo);
+    document.addEventListener("astro:before-swap", stopConditionStackDemo);
+  </script>
+</BaseLayout>

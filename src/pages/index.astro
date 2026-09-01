@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import WorkCard from "../components/WorkCard.astro";
+import { getPublishedWork, pad } from "../lib/work";
+
+const published = await getPublishedWork();
+// The count is computed. Hand-writing "04 entries" is how it goes stale.
+const count = pad(published.length);
+---
+
+<BaseLayout title="Erik Drouhard | AI Design Engineer" field="full">
+  <main id="main" class="view">
+    <section class="hero">
+      <h1>
+        <a href="https://www.linkedin.com/in/erikdrouhard">Erik Drouhard</a> is an AI Design Engineer
+        specializing in human-agent interaction. He lives in <a
+          href="https://www.worcesterma.gov/">Worcester, MA</a
+        > with his wife Becca and cat Star.
+      </h1>
+
+      <div class="skills-label">Key skills:</div>
+      <div class="skills">
+        <span>AI product design</span>
+        <span>Human-agent interaction</span>
+        <span>UX engineering</span>
+        <span>Design systems</span>
+        <span>Context engineering</span>
+      </div>
+    </section>
+
+    {/* id is the anchor /about/ links to. Renaming it breaks that link. */}
+    <div class="section-head" id="work">
+      <h2>Selected work</h2>
+      <span class="count">{count} entries</span>
+    </div>
+
+    <div class="grid">
+      {published.map((entry) => <WorkCard entry={entry} shortcut={entry.data.key} />)}
+    </div>
+
+    <section
+      class="card close-card"
+      data-href="/about/"
+      role="link"
+      tabindex="0"
+      aria-label="More about Erik"
+    >
+      <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+      <p class="close-line">I make intelligent systems understandable, predictable, and useful.</p>
+      <div class="close-actions">
+        <a class="btn primary" href="mailto:erikdrouhard@gmail.com"
+          >Get in touch <kbd data-key="C">C</kbd></a
+        >
+        <a class="btn" href="/about/">More about Erik →</a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
