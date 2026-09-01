@@ -1,0 +1,519 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/case.css";
+import "../../styles/case-study-nav.css";
+import "../../styles/testimonials.css";
+// Verse is an extension of the Mix stylesheet, not a sibling: its rules are
+// scoped under .mix-page--verse and override mix-dialog.css, so the import
+// order here is the cascade order the live page relies on.
+import "../../styles/work/mix-dialog.css";
+import "../../styles/work/verse-design-system.css";
+---
+
+<BaseLayout
+  title="Verse: Building a Shared Design System for Mix | Erik Drouhard"
+  description="How Erik Drouhard led the strategy and architecture of Verse, a shared accessible design system for Nuance Mix products."
+  field="off"
+  shell="case"
+  bodyClass="mix-page mix-page--verse"
+>
+  <div class="back-row">
+    <a class="back" href="/">← Back <kbd data-key="B">B</kbd></a>
+  </div>
+
+  <case-study-nav data-offset>
+    <nav class="case-study-nav__inner" aria-label="Case study chapters">
+      <a class="type-meta" href="#problem">Problem</a>
+      <a class="type-meta" href="#strategy">Strategy</a>
+      <a class="type-meta" href="#system">System</a>
+      <a class="type-meta" href="#result">Result</a>
+    </nav>
+  </case-study-nav>
+
+  <main id="main" class="site-main mix-main">
+    <article class="content mix-content type-body">
+      <header class="mix-hero">
+        <div class="mix-hero-copy">
+          <p class="mix-eyebrow type-meta type-caps">Verse Design System · Nuance · 2021–2023</p>
+          <h1 class="type-hero">Building a shared system for how Mix products were designed and built</h1>
+          <p class="mix-deck type-deck">
+            I was the design-system DRI: I made the strategic case, aligned design and front-end needs, and led the structure connecting Figma, tokens, accessible components, and product implementation.
+          </p>
+          <dl class="mix-project-meta" aria-label="Project details">
+            <div>
+              <dt class="type-meta type-caps">Role</dt>
+              <dd class="type-body-sm">Senior UX Engineer · Verse design-system DRI</dd>
+            </div>
+            <div>
+              <dt class="type-meta type-caps">Focus</dt>
+              <dd class="type-body-sm">Strategy · Architecture · Figma adoption · Accessibility</dd>
+            </div>
+            <div>
+              <dt class="type-meta type-caps">Partners</dt>
+              <dd class="type-body-sm">UX · UX engineering · Product engineering · Design leadership</dd>
+            </div>
+          </dl>
+        </div>
+
+        <figure class="mix-hero-visual mix-hero-visual--verse">
+          <span class="mix-visual-label type-meta-sm type-caps">PROGRAM SCOPE</span>
+          <a
+            href="/work/verse-design-system/assets/media/Verse Team breakdown.png"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open the Verse cross-team operating model full size in a new tab"
+          >
+            <img
+              src="/work/verse-design-system/assets/media/Verse Team breakdown.png"
+              width="1920"
+              height="1080"
+              alt="Planning diagram showing Verse design and engineering groups coordinating a shared UI foundation for Dialog, NLU, Dashboard, and Mix product teams."
+              fetchpriority="high"
+            />
+          </a>
+          <figcaption class="type-caption">The operating model connected the Verse system team with the product and design teams responsible for adopting it. Open full size to zoom.</figcaption>
+        </figure>
+      </header>
+
+      <section id="problem" class="mix-section" aria-labelledby="situation-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">01 · SITUATION</p>
+          <h2 id="situation-heading" class="type-section">A growing platform was accumulating inconsistency and implementation debt</h2>
+          <div class="mix-prose">
+            <p>
+              Mix.dialog, Mix.nlu, Dashboard, and the surrounding platform were growing through separate product teams. Shared interaction problems were being solved repeatedly, design files and front-end code drifted apart, and accessibility quality depended too heavily on each implementation.
+            </p>
+            <p>
+              The dark interface used by conversation designers had also drawn critical feedback for being difficult to read and parse. A theme alone could not fix the underlying problem: the platform needed shared structure, behavior, and ownership.
+            </p>
+          </div>
+          <p class="mix-callout type-callout">
+            The opportunity was larger than a component library. We needed a common operating model for design and engineering.
+          </p>
+        </div>
+
+        <div class="mix-three-column mix-three-column--media">
+          <figure>
+            <span class="mix-item-label type-meta-sm type-caps">BEFORE · MIX.DIALOG</span>
+            <a href="/work/verse-design-system/assets/media/mix.dialog-messagenode-before-verse.png" target="_blank" rel="noopener noreferrer" aria-label="Open the earlier Mix.dialog interface full size in a new tab">
+              <img
+                src="/work/verse-design-system/assets/media/mix.dialog-messagenode-before-verse.png"
+                width="1261"
+                height="710"
+                alt="Earlier dark Mix.dialog message-node interface before the Verse design system."
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="type-caption">Earlier product UI showed the density and readability problems teams were carrying independently. Open full size to zoom.</figcaption>
+          </figure>
+          <figure>
+            <span class="mix-item-label type-meta-sm type-caps">AFTER · MIX.VERSE</span>
+            <a href="/work/verse-design-system/assets/media/Mix.dialog-MessageNode-verse-light-mode.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Mix.Verse light-mode interface full size in a new tab">
+              <img
+                src="/work/verse-design-system/assets/media/Mix.dialog-MessageNode-verse-light-mode.png"
+                width="1271"
+                height="826"
+                alt="Later light Mix.dialog message-node interface using Mix.Verse."
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="type-caption">The later light-mode surface used the shared foundation while preserving Mix-specific workflows. Open full size to zoom.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="strategy" class="mix-section mix-section-feature" aria-labelledby="task-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">02 · TASK</p>
+          <h2 id="task-heading" class="type-section">Turn 2–3 years of design-engineering groundwork into a platform strategy</h2>
+          <p>
+            I was not a people manager, but I was the DRI for the system. My role was closer to a product and technical lead: define how the system needed to work, align it with business and front-end constraints, and create a plan multiple teams could execute.
+          </p>
+        </div>
+
+        <div class="mix-action-list type-body-sm">
+          <article>
+            <p class="mix-item-label type-meta type-caps">01 · MAKE THE CASE</p>
+            <div>
+              <h3 class="type-support">Connect design inconsistency to product delivery</h3>
+              <p>I spent years building support for a design system by connecting repeated UX problems to engineering pain, accessibility risk, and the cost of product teams solving the same foundations separately.</p>
+            </div>
+          </article>
+          <article>
+            <p class="mix-item-label type-meta type-caps">02 · CHANGE THE TOOLING</p>
+            <div>
+              <h3 class="type-support">Lead the move from Sketch and Abstract to Figma</h3>
+              <p>I worked directly with Finance to bring Figma to Nuance CoreAI and Healthcare, then trained three design teams to use it effectively. Shared components and collaborative design became an organizational capability rather than a file-format change.</p>
+            </div>
+          </article>
+          <article>
+            <p class="mix-item-label type-meta type-caps">03 · ALIGN THE MODEL</p>
+            <div>
+              <h3 class="type-support">Make Figma and front-end composition describe the same system</h3>
+              <p>I defined how tokens, components, layouts, states, and extension points should compose so designers and engineers could reason about the same building blocks in their own tools.</p>
+            </div>
+          </article>
+          <article>
+            <p class="mix-item-label type-meta type-caps">04 · PLAN THE PROGRAM</p>
+            <div>
+              <h3 class="type-support">Give leadership a credible path across products and teams</h3>
+              <p>I created the architecture, team model, component categories, and phased timeline used to align leadership and coordinate Verse with Dialog, NLU, Dashboard, and Mix design work.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="mix-section" aria-labelledby="figma-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">03 · FOUNDATION</p>
+          <h2 id="figma-heading" class="type-section">Teach the shared language before asking teams to adopt it</h2>
+          <p>
+            Before Bolt—the early name for Verse—was built, I made a compact Mix.tokens presentation to explain why low-level design decisions should become named, reusable values shared by design and front-end. The teaching work made the later architecture easier to discuss.
+          </p>
+        </div>
+
+        <p class="mix-gallery-label type-meta-sm type-caps">
+          Mix.tokens teaching deck · 4 slides <span>Scroll to compare · Select to expand →</span>
+        </p>
+        <div class="mix-media-scroller mix-media-scroller--tokens" role="region" aria-label="Four-slide Mix.tokens teaching presentation" tabindex="0">
+          <figure><a href="/work/verse-design-system/assets/media/web/mix-tokens-1.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Mix.tokens slide 1 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/mix-tokens-1.webp" width="1600" height="1199" alt="Mix.tokens presentation title slide." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/mix-tokens-2.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Mix.tokens slide 2 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/mix-tokens-2.webp" width="1600" height="1199" alt="Slide defining design tokens as the visual atoms of a design system." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/mix-tokens-3.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Mix.tokens slide 3 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/mix-tokens-3.webp" width="1600" height="1199" alt="Slide outlining initial token goals and future possibilities including React components and Storybook." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/mix-tokens-4.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Mix.tokens slide 4 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/mix-tokens-4.webp" width="1600" height="1199" alt="Slide explaining why shared design tokens reduce duplicated work and connect UX with front-end." loading="lazy" /></a></figure>
+        </div>
+
+        <div class="mix-three-column mix-three-column--media">
+          <figure >
+            <span class="mix-item-label type-meta-sm type-caps">TOKEN DECISIONS</span>
+            <a href="/work/verse-design-system/assets/media/Verse-Design-System-TokenProgress.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse token decisions table full size in a new tab">
+              <img
+                src="/work/verse-design-system/assets/media/Verse-Design-System-TokenProgress.png"
+                width="1852"
+                height="1213"
+                alt="Working table comparing Bolt and Fluent token categories, status, and owners."
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="type-caption">Token decisions were tracked explicitly during the transition from Bolt to a Fluent-based foundation. Open full size to zoom.</figcaption>
+          </figure>
+          <figure >
+            <span class="mix-item-label type-meta-sm type-caps">COMPLETE TOKEN SET</span>
+            <a href="/work/verse-design-system/assets/media/web/verse-tokens-complete-set.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the complete Verse token set full size in a new tab">
+              <span>
+                <img
+                  src="/work/verse-design-system/assets/media/web/verse-tokens-complete-set.webp"
+                  width="983"
+                  height="1800"
+                  alt="Long Figma canvas showing the complete Verse token set."
+                  loading="lazy"
+                />
+              </span>
+            </a>
+            <figcaption class="type-caption">The complete Figma token set connected platform foundations to the values product designers actually used. Open for an expanded view.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="system" class="mix-section mix-section-feature" aria-labelledby="architecture-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">04 · ACTION</p>
+          <h2 id="architecture-heading" class="type-section">Build on proven foundations, then customize only where Mix required it</h2>
+          <p>
+            After the Microsoft acquisition, the system moved toward Fluent 2. The architecture deliberately separated what could be adopted directly from what needed a thin Verse wrapper and what only made sense for Mix products.
+          </p>
+        </div>
+
+        <dl class="mix-three-column mix-three-column--definitions">
+          <div>
+            <dt class="type-support">Category 1 · Adopt</dt>
+            <dd class="type-body-sm">Fluent 2 or Radix UI used as-is, with shared themes and tokens supplying the platform expression.</dd>
+          </div>
+          <div>
+            <dt class="type-support">Category 2 · Extend</dt>
+            <dd class="type-body-sm">Components with targeted changes that still wrapped and preserved the Fluent 2 or Radix counterpart.</dd>
+          </div>
+          <div>
+            <dt class="type-support">Category 3 · Compose</dt>
+            <dd class="type-body-sm">Mix-specific components created for product workflows that the underlying libraries did not address.</dd>
+          </div>
+        </dl>
+
+        <figure class="mix-hero-visual mix-hero-visual--wide">
+          <span class="mix-item-label type-meta-sm type-caps">VERSE SYSTEM INVENTORY · LATER RECREATION</span>
+          <a href="/work/verse-design-system/assets/media/web/verse-components-list.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the complete Verse component inventory full size in a new tab">
+            <img
+              src="/work/verse-design-system/assets/media/web/verse-components-list.webp"
+              width="1800"
+              height="612"
+              alt="Later recreation of the Verse system inventory showing its foundations, accessibility work, shared components, Mix-specific components, structures, and full-page parts."
+              loading="lazy"
+            />
+          </a>
+          <figcaption class="type-caption">A Mix team member later recreated and organized this inventory to show how much Verse contained: dozens of shared and Mix-specific components, plus foundations, accessibility patterns, variants, structural guidance, and full-page UI parts. It makes the scale of Verse as a platform, not simply a UI kit, visible in one view. Open for an expanded view.</figcaption>
+        </figure>
+
+        <div class="mix-reading mix-reading mix-reading--followup">
+          <h3 class="type-subsection">The components were designed as composable systems, not isolated screens</h3>
+          <p>
+            Card parts, states, tokens, and layout behavior could be assembled into product-specific components without breaking the shared foundation. This was the structure I led; the Verse development team built the component kit in partnership with me and another Senior UI Engineer.
+          </p>
+        </div>
+
+        <div class="mix-three-column mix-three-column--media mix-three-column--components">
+          <figure>
+            <a href="/work/verse-design-system/assets/media/verse-card-component-light.png" target="_blank" rel="noopener noreferrer" aria-label="Open the light Verse card component anatomy full size in a new tab"><img src="/work/verse-design-system/assets/media/verse-card-component-light.png" width="1020" height="1166" alt="Verse card component anatomy shown in the light theme." loading="lazy" /></a>
+            <figcaption class="type-caption">Shared card anatomy · light theme. Open full size to zoom.</figcaption>
+          </figure>
+          <figure>
+            <a href="/work/verse-design-system/assets/media/verse-card-component-dark.png" target="_blank" rel="noopener noreferrer" aria-label="Open the dark Verse card component anatomy full size in a new tab"><img src="/work/verse-design-system/assets/media/verse-card-component-dark.png" width="1020" height="1166" alt="Verse card component anatomy shown in the dark theme." loading="lazy" /></a>
+            <figcaption class="type-caption">The same shared anatomy · dark theme. Open full size to zoom.</figcaption>
+          </figure>
+          <figure>
+            <a href="/work/verse-design-system/assets/media/verse-card-composed-dark.png" target="_blank" rel="noopener noreferrer" aria-label="Open the composed Mix card full size in a new tab"><img src="/work/verse-design-system/assets/media/verse-card-composed-dark.png" width="248" height="384" alt="A composed dark Mix component built from Verse card parts." loading="lazy" /></a>
+            <figcaption class="type-caption">A Mix-specific composition built from the shared parts. Open full size to zoom.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="mix-section" aria-labelledby="scale-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">05 · OPERATING MODEL</p>
+          <h2 id="scale-heading" class="type-section">Coordinate a system that crossed disciplines, products, and delivery teams</h2>
+          <p>
+            The plan separated the Verse platform work from product implementation while keeping both connected. UX designers defined and validated the shared experience, UX engineers bridged Figma and code, the Verse engineering team built the library, and product teams integrated it into their own surfaces.
+          </p>
+        </div>
+
+        <div class="mix-three-column mix-three-column--media">
+          <figure >
+            <span class="mix-item-label type-meta-sm type-caps">TEAM MODEL</span>
+            <a href="/work/verse-design-system/assets/media/Verse Team breakdown.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse team model full size in a new tab">
+              <img
+                src="/work/verse-design-system/assets/media/Verse Team breakdown.png"
+                width="1920"
+                height="1080"
+                alt="Planning diagram separating the Verse team from Dialog, NLU, Dashboard, and Mix UX implementation teams."
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="type-caption">The planning model clarified ownership between the system team and the product teams consuming it. Open full size to zoom.</figcaption>
+          </figure>
+          <figure >
+            <span class="mix-item-label type-meta-sm type-caps">DELIVERY PLAN</span>
+            <a href="/work/verse-design-system/assets/media/Verse Timelines with the teams of 5.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse delivery plan full size in a new tab">
+              <img
+                src="/work/verse-design-system/assets/media/Verse Timelines with the teams of 5.png"
+                width="1920"
+                height="1080"
+                alt="Year-long planning timeline for design, UX engineering, product engineering, accessibility, maintenance, and QA work."
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="type-caption">The phased plan exposed dependencies among theme work, custom components, accessibility, integration, maintenance, and QA. Open full size to zoom.</figcaption>
+          </figure>
+        </div>
+
+        <div class="mix-reading mix-reading mix-reading--followup">
+          <h3 class="type-subsection">Track the work at component level</h3>
+          <p>
+            Progress tables made category, design status, accessibility review, engineering ownership, and product adoption visible. That detail was essential for managing a program without relying on title-based authority.
+          </p>
+        </div>
+
+        <div class="mix-three-column mix-three-column--media mix-three-column--tall">
+          <figure >
+            <span class="mix-item-label type-meta-sm type-caps">SYSTEM PROGRESS</span>
+            <a href="/work/verse-design-system/assets/media/web/verse-progress-table.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse component progress table full size in a new tab">
+              <span>
+                <img
+                  src="/work/verse-design-system/assets/media/web/verse-progress-table.webp"
+                  width="468"
+                  height="1800"
+                  alt="Long progress table tracking Verse components across categories, owners, status, and products."
+                  loading="lazy"
+                />
+              </span>
+            </a>
+            <figcaption class="type-caption">A component-level progress table kept work legible across disciplines and product teams. Open for an expanded view.</figcaption>
+          </figure>
+          <figure >
+            <span class="mix-item-label type-meta-sm type-caps">IMPLEMENTATION SUPPORT</span>
+            <a href="/work/verse-design-system/assets/media/web/verse-implementation-help.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the Verse implementation support artifact full size in a new tab">
+              <span>
+                <img
+                  src="/work/verse-design-system/assets/media/web/verse-implementation-help.webp"
+                  width="517"
+                  height="1800"
+                  alt="Long implementation-support artifact with component guidance and issue details."
+                  loading="lazy"
+                />
+              </span>
+            </a>
+            <figcaption class="type-caption">Implementation guidance kept architecture decisions attached to the work as teams integrated the system. Open for an expanded view.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="mix-section mix-section-feature" aria-labelledby="a11y-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">06 · ACCESSIBILITY</p>
+          <h2 id="a11y-heading" class="type-section">Make accessibility part of component architecture and governance</h2>
+          <p>
+            Accessibility was a shared responsibility across Verse and Mix.Verse. As the Verse DRI, I was accountable for making accessibility part of the system architecture. I collaborated with Mix team members on requirements, examples, and how those principles carried into product implementation.
+          </p>
+          <p class="mix-callout type-callout">
+            The artifact below shows the scope of the accessibility work around Verse and Mix.Verse. It was authored by a Mix team member.
+          </p>
+        </div>
+
+        <figure class="mix-hero-visual mix-hero-visual--wide mix-hero-visual--spec">
+          <span class="mix-item-label type-meta-sm type-caps">LATER MIX.VERSE ACCESSIBILITY SPECIFICATION</span>
+          <a href="/work/verse-design-system/assets/media/web/verse-accessibility-spec.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the complete Verse accessibility specification full size in a new tab">
+            <span>
+              <img
+                src="/work/verse-design-system/assets/media/web/verse-accessibility-spec.webp"
+                width="1688"
+                height="1800"
+                alt="Large Figma accessibility specification covering multiple Verse components and states."
+                loading="lazy"
+              />
+            </span>
+          </a>
+          <figcaption class="type-caption">A Mix team member authored this polished accessibility specification. It appears to be a later artifact rather than the exact working material we collaborated on, but it demonstrates the scope and maturity of the Verse system. Open for an expanded view.</figcaption>
+        </figure>
+      </section>
+
+      <section class="mix-section" aria-labelledby="story-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">07 · ALIGNMENT</p>
+          <h2 id="story-heading" class="type-section">Show the organization why the system mattered</h2>
+          <p>
+            I presented the strategy at Nuance i3 in 2022 under the earlier Bolt name. The talk connected the move to Figma, design tokens, accessible headless components, composition, and the principle that product teams should take the layers they needed rather than fork the entire system.
+          </p>
+        </div>
+
+        <p class="mix-gallery-label type-meta-sm type-caps">
+          Nuance i3 · selected story slides <span>Scroll to compare · Select to expand →</span>
+        </p>
+        <div class="mix-media-scroller mix-media-wide" role="region" aria-label="Selected slides from the 2022 Nuance i3 Verse presentation" tabindex="0">
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-4.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 4 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-4.webp" width="1600" height="900" alt="Nuance i3 title slide: Design like a developer, develop like a designer." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-16-B.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 16B full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-16-B.webp" width="1600" height="900" alt="Slide asking why a design system was needed and listing consistency, accessibility, extensibility, speed, scale, usability, and prototyping." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-19.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 19 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-19.webp" width="1600" height="900" alt="Slide noting the previous Sketch and Abstract design workflow." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-27.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 27 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-27.webp" width="1600" height="900" alt="Slide announcing the switch to Figma." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-29.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 29 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-29.webp" width="1600" height="900" alt="Slide showing design tools aligned more closely with development through component and layout models." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-42.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 42 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-42.webp" width="1600" height="900" alt="Slide defining design tokens." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-48.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 48 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-48.webp" width="1600" height="900" alt="Slide introducing accessibility as a system concern." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-60.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 60 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-60.webp" width="1600" height="900" alt="Slide introducing Bolt, the early name for Verse." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-71.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 71 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-71.webp" width="1600" height="900" alt="Slide showing the proposed system stack of design tokens, headless UI components, and a styling library." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-76.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 76 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-76.webp" width="1600" height="900" alt="Slide showing atomic design used for modular system layers." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-77.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 77 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-77.webp" width="1600" height="900" alt="Slide explaining that teams could take the system layers they needed and discard the rest." loading="lazy" /></a></figure>
+          <figure><a href="/work/verse-design-system/assets/media/web/verse-i3-slide-80.webp" target="_blank" rel="noopener noreferrer" aria-label="Open Nuance i3 slide 80 full size in a new tab"><img src="/work/verse-design-system/assets/media/web/verse-i3-slide-80.webp" width="1600" height="900" alt="Closing slide stating that Mix is built on top of Bolt." loading="lazy" /></a></figure>
+        </div>
+      </section>
+
+      <section id="result" class="mix-section mix-section-feature" aria-labelledby="result-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">08 · RESULT</p>
+          <h2 id="result-heading" class="type-section">A shared foundation that product teams could turn into Mix.Verse</h2>
+          <p>
+            The Verse development teams built the production component kit with my guidance and in partnership with another Senior UI Engineer. The Mix product team then used that foundation to create Mix.Verse for the individual products.
+          </p>
+        </div>
+
+        <div class="mix-three-column mix-results-grid type-body-sm">
+          <div>
+            <h3 class="type-support">A public component library</h3>
+            <p>The live Storybook documents themes, tokens, icons, core components, accessibility utilities, and Mix-specific components.</p>
+          </div>
+          <div>
+            <h3 class="type-support">One language across tools</h3>
+            <p>Tokens, component composition, states, and naming connected Figma decisions to front-end implementation.</p>
+          </div>
+          <div>
+            <h3 class="type-support">A foundation for product expression</h3>
+            <p>Dialog, NLU, Dashboard, and Mix.home could share system behavior while adapting it to their distinct workflows.</p>
+          </div>
+        </div>
+
+        <p class="mix-section-label type-meta type-caps">WHAT THE TEAM SAID</p>
+        <div class="testimonials">
+          <figure class="testimonial">
+            <blockquote class="type-body-sm">
+              <p>“He led the new design system effort, both in Figma architecture and in developer coordination. As the official liaison to our developers, he is the essential glue between our designs and the final result.”</p>
+            </blockquote>
+            <figcaption class="type-meta-sm type-caps">
+              <span class="testimonial-role">Senior Product Designer</span>
+            </figcaption>
+          </figure>
+          <figure class="testimonial">
+            <blockquote class="type-body-sm">
+              <p>“Your dual expertise in design and coding fosters a much-needed synergy between our design and development teams. It leads to more efficient workflows and a deeper mutual understanding.”</p>
+            </blockquote>
+            <figcaption class="type-meta-sm type-caps">
+              <span class="testimonial-role">Product Designer</span>
+            </figcaption>
+          </figure>
+          <figure class="testimonial">
+            <blockquote class="type-body-sm">
+              <p>“His cross-domain expertise allows him to not only deliver exceptional UI designs but also to consider implementation details. This thoughtful approach significantly facilitates communication between the design and engineering teams.”</p>
+            </blockquote>
+            <figcaption class="type-meta-sm type-caps">
+              <span class="testimonial-role">Software Developer</span>
+            </figcaption>
+          </figure>
+        </div>
+        <p class="mix-metric-note type-caption">Colleague feedback from internal reviews, quoted by role rather than by name.</p>
+
+        <a class="mix-callout mix-callout--storybook" href="https://verse-ui.azurewebsites.net/?path=/story/intro-welcome--welcome" target="_blank" rel="noopener noreferrer">
+          <span>
+            <span class="mix-item-label type-meta type-caps">LIVE IMPLEMENTATION</span>
+            <strong class="type-subsection">Explore the live Verse UI Storybook</strong>
+            <span class="type-body-sm">The surviving live implementation of Verse documents its themes, components, accessibility utilities, and Mix-specific layer.</span>
+          </span>
+          <span class="mix-contact pill pill-primary type-action">View live Storybook <span aria-hidden="true">↗</span></span>
+        </a>
+
+        <div class="mix-four-column mix-four-column--media">
+          <figure>
+            <a href="/work/verse-design-system/assets/media/Mix.dialog-MessageNode-verse-light-mode.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Mix.dialog Mix.Verse interface full size in a new tab"><img src="/work/verse-design-system/assets/media/Mix.dialog-MessageNode-verse-light-mode.png" width="1271" height="826" alt="Mix.dialog message-node interface using the light Mix.Verse theme." loading="lazy" /></a>
+            <figcaption class="type-caption">Mix.dialog · message authoring. Open full size to zoom.</figcaption>
+          </figure>
+          <figure>
+            <a href="/work/verse-design-system/assets/media/Mix-Verse-NLU-LightMode.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Mix.nlu Mix.Verse interface full size in a new tab"><img src="/work/verse-design-system/assets/media/Mix-Verse-NLU-LightMode.png" width="1275" height="842" alt="Mix.nlu interface using the light Mix.Verse theme." loading="lazy" /></a>
+            <figcaption class="type-caption">Mix.nlu · model configuration. Open full size to zoom.</figcaption>
+          </figure>
+          <figure>
+            <a href="/work/verse-design-system/assets/media/Mix.dashboard-Verse-Light.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Mix Dashboard Mix.Verse interface full size in a new tab"><img src="/work/verse-design-system/assets/media/Mix.dashboard-Verse-Light.png" width="1272" height="795" alt="Mix Dashboard interface using the light Mix.Verse theme." loading="lazy" /></a>
+            <figcaption class="type-caption">Mix Dashboard · project management. Open full size to zoom.</figcaption>
+          </figure>
+          <figure>
+            <a href="/work/verse-design-system/assets/media/mix.home-verse-light-mode.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Mix.home Mix.Verse interface full size in a new tab"><img src="/work/verse-design-system/assets/media/mix.home-verse-light-mode.png" width="1271" height="1087" alt="Mix.home interface using the light Mix.Verse theme." loading="lazy" /></a>
+            <figcaption class="type-caption">Mix.home · platform entry point. Open full size to zoom.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="mix-section mix-section--provenance" aria-labelledby="provenance-heading">
+        <div class="mix-reading">
+          <p class="mix-section-label type-meta type-caps">PROVENANCE + CREDIT</p>
+          <h2 id="provenance-heading" class="type-section">What I led, and what the broader team built</h2>
+          <div class="mix-prose">
+            <p><strong>My responsibility.</strong> I was the Verse design-system DRI and led the strategy, design and front-end architecture, component composition model, Figma adoption, cross-team plan, and implementation guidance.</p>
+            <p><strong>Shared implementation.</strong> The component library was built by the Verse development teams with my guidance and in partnership with another Senior UI Engineer. The Mix product team carried the foundation into Mix.Verse.</p>
+            <p><strong>Accessibility credit.</strong> I was accountable for accessibility as part of the Verse system. A Mix team member authored the later specification shown here; we collaborated on the broader accessibility approach.</p>
+            <p><strong>Naming.</strong> Bolt was the earlier name used in the 2022 i3 presentation. Verse is the public name of the system that followed.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="mix-footer">
+        <h2 class="type-section">Design systems are organizational systems.</h2>
+        <p class="type-body-sm">The components mattered because the strategy made it possible for teams to build them together.</p>
+        <div class="mix-footer-actions">
+          <a class="mix-contact pill pill-primary type-action" href="/work/mix-dialog/">Read Mix.dialog</a>
+          <a class="mix-contact pill pill-secondary type-action" href="mailto:erikdrouhard@gmail.com">Get in touch</a>
+        </div>
+      </footer>
+    </article>
+  </main>
+</BaseLayout>

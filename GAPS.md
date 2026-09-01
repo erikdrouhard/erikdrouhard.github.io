@@ -2,9 +2,55 @@
 
 What this is: every place the four re-poured case studies are missing something, or where the old page held content the new template has no home for.
 
+**Then the re-pour was reverted.** The four studies are hand-written pages
+carrying the published markup verbatim, so the per-study half of this file is
+resolved — see "RESOLVED BY REVERT" immediately below for what that covers and
+for the two items in it that still deserve your eye. The **Site-wide** section
+at the end is unaffected and still open.
+
 Nothing here was filled with invented content. No metric was manufactured, no role or date was guessed, no missing caption was written. Where a source page said something and the new page does not, it is listed below as a loss, not smoothed over. Every item needs your own answer — an agent cannot supply any of them.
 
 Four studies shipped non-draft: `verse-design-system`, `microsoft`, `mix-dialog`, `dragon-drive`.
+
+---
+
+## RESOLVED BY REVERT — everything in the four study sections below
+
+Read this before acting on any per-study item.
+
+The four studies are no longer re-poured MDX prose in a shared template. Each is
+a hand-written page under `src/pages/work/`, carrying the published markup,
+prose, figures, captions and layout from `www.erikdrouhard.com` verbatim. The
+template that caused these gaps is retired to `.archive/src/`.
+
+So every item in **Verse design system**, **Microsoft**, **Mix.dialog** and
+**Dragon Drive** below is resolved by that revert, not by anyone answering it:
+
+- **case-meta fields with no source** — there is no case-meta grid. `role`,
+  `team`, `timeline`, `metric` and `description` are gone from the schema
+  (`src/content.config.ts`), so there is no cell left to guess a value for.
+- **Figures without captions** — the figures and their captions are the
+  published ones. A figure the source shipped without a caption still has none,
+  which is what the source intended.
+- **Candidate metric numbers** — no metric bar exists to fill. The numbers
+  listed are back in the prose, in the sentences they came from.
+- **Content that did not fit the template** — there is no template. Scrollers,
+  card grids, section eyebrows, callouts, the interactive condition-stack demo,
+  the interaction-map diagram and the in-article footers are all back as
+  published.
+- **Missing or excluded assets** — assets are referenced exactly as the
+  published pages referenced them, including the two filenames with literal
+  spaces and the remote learn.microsoft.com image.
+
+The sections are kept, not deleted, for two reasons: they are the record of what
+the template cost, and a handful of observations in them are about the published
+site itself rather than the re-pour — the Microsoft recommendation dates reading
+**2026**, and the Mix.dialog epilogue's dangling "The representative slides
+below". Both were already true on the live site and are still true now. Those
+two are worth your look; nothing else in the four sections is.
+
+The **Site-wide** section at the end is a different matter — those items are
+still open and still yours.
 
 ---
 
@@ -235,17 +281,29 @@ The design prototype linked the Dragon Drive card at `/work/dragon-drive-hud/`. 
 
 The old site's `styles.css` and `components/*.js` remain under `public/`, because the three experiments load them directly. They are dead weight for the new design and could be scoped down to only what the experiments actually use. A follow-up, not a blocker.
 
-### "View additional work" currently leads to the same four
+That page also still carries the old site's header markup, including two `Work`
+links to `/work/` — one in the desktop header, one in the mobile menu
+(`public/experiments/index.html`, lines 35 and 49). Both are dead now that the
+index is retired, and `check-dist.mjs` fails on them. Deleting the two anchors
+is the whole fix; it matches the header change already made on the new site.
 
-`mix-flow`, `swype` and `applause` are drafts, so the work index renders exactly
-the four studies the home page already shows. The button under the home grid
-still says "View additional work", and there is none — it goes to the same list
-in a different layout. In the prototype the index held eight entries, which is
-what made the label true.
+Same class of thing, but in the new site: `/about/`'s closing card is still
+`View the work →` pointing at `/work/`. That one is a copy and destination call,
+not a mechanical deletion, so it was left for you.
 
-Nothing was reworded, because that is copy and copy is yours. Three ways out:
-promote a draft, change the label, or drop the button until there is a fifth
-study. The count itself is computed, so it will correct on its own.
+### ~~"View additional work" currently leads to the same four~~ — RESOLVED
+
+You took the third way out: the button is gone, and so is `/work/`. The header is
+About and Download resume only, the home-page grid is the single listing of the
+work, and `/work/` now 404s by design. The three options were promote a draft,
+reword the label, or drop the button — dropping it removed the page it pointed
+at as well.
+
+One consequence worth knowing: the grid renders **every** published entry now,
+not a featured four. `getFeaturedWork()` and its `.slice(0, 4)` are gone from
+`src/lib/work.ts`, because with the index retired a cap there would have hidden
+a fifth study from the entire site. Promote a draft and it appears on the home
+page with no other change. The count stays computed.
 
 ### Out of scope by decision
 

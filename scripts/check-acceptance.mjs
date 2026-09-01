@@ -9,6 +9,11 @@
  * that every destination is still reachable with JavaScript off.
  *
  * Serves dist/, so run `npm run build` first — or use `npm run check:all`.
+ *
+ * /work/ was retired: the index page and the MDX-driven [...slug] route are in
+ * .archive/, the four studies are hand-written pages, and the home-page grid is
+ * the only listing. So the round trips below hop home -> study -> home, and
+ * /work/ is asserted to 404 rather than to render.
  */
 import { spawn } from "node:child_process";
 import { chromium } from "playwright";
@@ -70,18 +75,21 @@ await page.waitForTimeout(400);
 const baseline = await rafRate();
 ok("field runs on the home page", baseline > 20, `${baseline} rAF/s`);
 
-// --- navigate home -> work -> case -> back, five times ---
+/* --- navigate home -> case -> back, five times ---
+   Case pages run field="off", so each hop asks initField() to tear the loop
+   down and build it again. That is exactly the path that leaked a loop per
+   navigation before, and the mode change makes it a harder test than the old
+   full -> quiet hop, not an easier one. */
 for (let i = 0; i < 5; i++) {
-  await page.click('a.back, a[href="/work/"]').catch(() => {});
-  await page.goto(BASE + "/work/", { waitUntil: "networkidle" });
+  await page.goto(BASE + "/", { waitUntil: "networkidle" });
+  await page.waitForTimeout(250);
   await page.click('.grid a.card >> nth=2');
-  await page.waitForURL("**/work/**");
+  await page.waitForURL("**/work/mix-dialog/**");
   await page.waitForTimeout(250);
   await page.goBack();
   await page.waitForTimeout(250);
-  await page.goto(BASE + "/", { waitUntil: "networkidle" });
-  await page.waitForTimeout(250);
 }
+await page.goto(BASE + "/", { waitUntil: "networkidle" });
 await page.waitForTimeout(500);
 const after = await rafRate();
 // one loop == baseline. Two loops == ~2x. Allow 40% slack for scheduling noise.
@@ -91,12 +99,19 @@ ok(
   `baseline ${baseline}/s -> after ${after}/s`,
 );
 
-// --- quiet mode honored on case pages ---
+/* --- field is off on case pages ---
+   Each ported study paints its own opaque page background, so the smoke would
+   be invisible under it and the loop would burn frames for nothing. */
 await page.goto(BASE + "/work/mix-dialog/", { waitUntil: "networkidle" });
 ok(
-  'case page body carries data-field="quiet"',
-  (await page.getAttribute("body", "data-field")) === "quiet",
+  'case page body carries data-field="off"',
+  (await page.getAttribute("body", "data-field")) === "off",
 );
+
+// a case page must not run a render loop at all
+await page.waitForTimeout(300);
+const caseRate = await rafRate();
+ok("no rAF loop on a case page", caseRate < 5, `${caseRate} rAF/s`);
 
 // --- client navigation updates data-field ---
 await page.goto(BASE + "/", { waitUntil: "networkidle" });
@@ -105,8 +120,8 @@ await page.click('.grid a.card >> nth=0');
 await page.waitForURL("**/work/verse-design-system/**");
 await page.waitForTimeout(400);
 ok(
-  "data-field becomes quiet after a CLIENT navigation",
-  (await page.getAttribute("body", "data-field")) === "quiet",
+  'data-field becomes "off" after a CLIENT navigation',
+  (await page.getAttribute("body", "data-field")) === "off",
 );
 
 // --- theme persists across a client navigation ---
@@ -115,8 +130,8 @@ await page.waitForTimeout(300);
 await page.click(".theme-toggle");
 await page.waitForTimeout(200);
 const afterToggle = await page.getAttribute("html", "data-theme");
-await page.click('a[href="/work/"]');
-await page.waitForURL("**/work/**");
+await page.click('.grid a.card >> nth=0');
+await page.waitForURL("**/work/verse-design-system/**");
 await page.waitForTimeout(400);
 const afterNav = await page.getAttribute("html", "data-theme");
 ok(
@@ -165,7 +180,7 @@ await page.waitForTimeout(900);
 ok("Enter activates the closing card", page.url().includes("/about/"), page.url());
 
 // --- stagger leaves nothing stuck invisible ---
-await page.goto(BASE + "/work/", { waitUntil: "networkidle" });
+await page.goto(BASE + "/", { waitUntil: "networkidle" });
 await page.waitForTimeout(2500);
 const hidden = await page.$$eval("main.view .grid > *", (els) =>
   els.filter((e) => parseFloat(getComputedStyle(e).opacity) < 0.99).length,
@@ -185,13 +200,74 @@ ok(
 );
 
 // --- card hover transition survives the stagger ---
-await page.goto(BASE + "/work/", { waitUntil: "networkidle" });
+await page.goto(BASE + "/", { waitUntil: "networkidle" });
 await page.waitForTimeout(2500);
 const stuck = await page.evaluate(() => {
   const v = document.querySelector("main.view");
   return v.className.includes("is-entered") || v.className.includes("is-entering");
 });
 ok("stagger classes are cleaned up, so card hover stays animated", !stuck);
+
+// --- the work index is gone, and stays gone ---
+/* Fetched rather than navigated to: a 404 render would add noise to the
+   console-error assertion at the end without proving anything more. */
+const workIndex = await page.request.get(BASE + "/work/");
+ok("/work/ 404s — the index was retired", workIndex.status() === 404, `status ${workIndex.status()}`);
+
+await page.goto(BASE + "/", { waitUntil: "networkidle" });
+const navHrefs = await page.$$eval(".site-nav a[href]", (as) =>
+  as.map((a) => a.getAttribute("href")),
+);
+ok(
+  "the header has no Work link",
+  !navHrefs.some((h) => h === "/work/" || h === "/work"),
+  navHrefs.join(" "),
+);
+
+/* --- each study renders its own hand-written page ---
+   The body class is the hook every ported stylesheet is scoped to, so if a
+   study ever fell back to a shared template this is what would notice. */
+const STUDY_BODY_CLASS = {
+  "verse-design-system": "mix-page--verse",
+  microsoft: "core-ai-page",
+  "mix-dialog": "mix-page",
+  "dragon-drive": "drive-page",
+};
+for (const [slug, cls] of Object.entries(STUDY_BODY_CLASS)) {
+  await page.goto(BASE + `/work/${slug}/`, { waitUntil: "domcontentloaded" });
+  const bodyClass = (await page.getAttribute("body", "class")) || "";
+  ok(
+    `/work/${slug}/ renders its own page (.${cls})`,
+    bodyClass.split(/\s+/).includes(cls),
+    `body class "${bodyClass}"`,
+  );
+
+  /* The live site ranked the sticky chapter rail under .site-header with
+     --layer-sticky-nav / --layer-header. BaseLayout's <Nav> is not that header
+     and carries no z-index, so the two are ordered by geometry now: the nav
+     scrolls away, the rail sticks to the top of an empty viewport. Asserted
+     rather than reasoned about, because if <Nav> ever becomes sticky this is
+     the first thing that breaks and nothing else would notice. */
+  await page.evaluate(() => window.scrollTo(0, 1400));
+  await page.waitForTimeout(200);
+  const rail = await page.evaluate(() => {
+    const nav = document.querySelector(".site-nav");
+    const bar = document.querySelector("case-study-nav");
+    if (!nav || !bar) return { missing: !nav ? "nav" : "rail" };
+    const n = nav.getBoundingClientRect();
+    const r = bar.getBoundingClientRect();
+    return {
+      stuck: Math.round(r.top) === 0,
+      overlap: !(n.bottom <= r.top || r.bottom <= n.top),
+      navPosition: getComputedStyle(nav).position,
+    };
+  });
+  ok(
+    `${slug}: the sticky chapter rail never collides with the site nav`,
+    rail.stuck && !rail.overlap,
+    `nav position ${rail.navPosition}, rail stuck ${rail.stuck}, overlap ${rail.overlap}`,
+  );
+}
 
 // --- reduced motion: static field, no loop ---
 const rmCtx = await browser.newContext({ reducedMotion: "reduce" });
@@ -219,10 +295,107 @@ await nj.goto(BASE + "/", { waitUntil: "domcontentloaded" });
 const links = await nj.$$eval("a[href]", (as) =>
   as.map((a) => a.getAttribute("href")),
 );
-for (const want of ["/work/", "/about/", "/work/mix-dialog/"]) {
+/* /work/ is not in this list on purpose — the index is retired. Every study
+   is now reached from the home grid, so every study has to be linked there. */
+for (const want of [
+  "/about/",
+  "/work/verse-design-system/",
+  "/work/microsoft/",
+  "/work/mix-dialog/",
+  "/work/dragon-drive/",
+]) {
   ok(`without JS, the home page links to ${want}`, links.includes(want));
 }
 await noJs.close();
+
+/* --- the Mix.dialog condition-stack demo across client navigations ---
+   The demo is 22KB of stateful custom element written for a page that loads
+   once. It is the piece of this site most likely to break under ClientRouter,
+   and a build cannot prove any of it.
+
+   What these assertions do NOT catch, established by experiment rather than
+   assumed: listener double-binding. ClientRouter replaces the element wholesale
+   on every navigation rather than re-inserting the same node, so each visit
+   gets a freshly constructed element and listeners cannot accumulate. Moving
+   the handler binds back into connectedCallback, and removing the teardown from
+   disconnectedCallback, were both tried against this suite — it stayed green
+   for both, because neither is reachable through a swap. The teardown in the
+   source is still correct defensive practice; it is just not what is guarded
+   here.
+
+   What they do catch, verified by mutation: a demo that stops responding after
+   a navigation. Deleting the click listener turns every delta to 0 and fails
+   the first assertion.
+
+   Deltas are compared across visits rather than to a literal. One add-elseif
+   click legitimately adds nine branch nodes; asserting 9 would bake in a false
+   failure the moment the demo's template changes. */
+async function demoState() {
+  await page.waitForSelector("condition-stack-demo [data-command]");
+  const invite = page.locator('[data-command="try-demo"]');
+  if (await invite.count()) {
+    await invite.first().click();
+    await page.waitForTimeout(300);
+  }
+  const branches = () =>
+    page.evaluate(
+      () =>
+        document
+          .querySelector("condition-stack-demo")
+          .querySelectorAll("[data-branch-id]").length,
+    );
+  const before = await branches();
+  const add = page.locator('[data-command="add-elseif"]').first();
+  await add.scrollIntoViewIfNeeded();
+  await add.click();
+  await page.waitForTimeout(300);
+  return { before, delta: (await branches()) - before };
+}
+
+await page.goto(BASE + "/work/mix-dialog/", { waitUntil: "domcontentloaded" });
+await page.waitForTimeout(400);
+const demoVisits = [await demoState()];
+const demoRates = [await rafRate()];
+
+/* Client-side round trips only — a full page load would rebuild everything and
+   prove nothing about teardown. */
+for (let i = 0; i < 3; i++) {
+  await page.click("a.mark");
+  await page.waitForURL(BASE + "/");
+  await page.waitForTimeout(300);
+  await page.click('.grid a.card[href="/work/mix-dialog/"]');
+  await page.waitForURL("**/work/mix-dialog/**");
+  await page.waitForTimeout(500);
+  demoVisits.push(await demoState());
+  demoRates.push(await rafRate());
+}
+
+const spa = await page.evaluate(
+  () => performance.getEntriesByType("navigation").length === 1,
+);
+ok("the demo round trips were client-side, not full loads", spa);
+
+const deltas = demoVisits.map((v) => v.delta);
+ok(
+  "the demo still responds to a click after a client navigation",
+  new Set(deltas).size === 1 && deltas[0] > 0,
+  `branches added per click, each visit: [${deltas.join(", ")}]`,
+);
+
+const baselines = demoVisits.map((v) => v.before);
+ok(
+  "the demo resets to a cold state on re-entry",
+  new Set(baselines).size === 1,
+  `starting branch count, each visit: [${baselines.join(", ")}]`,
+);
+
+/* The demo animates, so this is not zero — it just must not grow. A leaked
+   frame loop per navigation would climb with every round trip. */
+ok(
+  "the demo does not accumulate a render loop per navigation",
+  demoRates[demoRates.length - 1] < demoRates[0] * 1.4 + 10,
+  `rAF/s after interaction, each visit: [${demoRates.join(", ")}]`,
+);
 
 ok("no console errors or page exceptions", errors.length === 0, errors.slice(0, 3).join(" | "));
 

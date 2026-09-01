@@ -1,11 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import WorkCard from "../components/WorkCard.astro";
-import { getFeaturedWork, pad } from "../lib/work";
+import { getPublishedWork, pad } from "../lib/work";
 
-const featured = await getFeaturedWork();
+const published = await getPublishedWork();
 // The count is computed. Hand-writing "04 entries" is how it goes stale.
-const count = pad(featured.length);
+const count = pad(published.length);
 ---
 
 <BaseLayout title="Erik Drouhard | AI Design Engineer" field="full">
@@ -28,17 +28,14 @@ const count = pad(featured.length);
       </div>
     </section>
 
-    <div class="section-head">
+    {/* id is the anchor /about/ links to. Renaming it breaks that link. */}
+    <div class="section-head" id="work">
       <h2>Selected work</h2>
       <span class="count">{count} entries</span>
     </div>
 
     <div class="grid">
-      {featured.map((entry) => <WorkCard entry={entry} shortcut={entry.data.key} />)}
-    </div>
-
-    <div class="more-row">
-      <a class="btn" href="/work/">View additional work <kbd data-key="V">V</kbd></a>
+      {published.map((entry) => <WorkCard entry={entry} shortcut={entry.data.key} />)}
     </div>
 
     <section

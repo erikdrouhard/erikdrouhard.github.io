@@ -1,12 +1,16 @@
 ---
 // Shared nav. Lives inside BaseLayout so every page gets the same one.
-// The W / A / R keycaps are global shortcuts, resolved by keys.js.
+// The A / R keycaps are global shortcuts, resolved by keys.js.
+//
+// There is no Work link: /work/ was retired while there is only one body of
+// work to show. The case studies are reached from the home page grid.
 ---
 
-<nav>
-  <a class="mark" href="/" aria-label="Erik Drouhard, home">D</a>
+<nav class="site-nav">
+  <a class="mark" href="/" aria-label="Erik Drouhard, home">
+    <img src="/assets/erikdrouhard-logomark.svg" width="48" height="48" alt="" />
+  </a>
   <div class="nav-right">
-    <a href="/work/">Work <kbd data-key="W">W</kbd></a>
     <a href="/about/">About <kbd data-key="A">A</kbd></a>
     <a class="resume" href="/assets/erik-drouhard-resume.pdf" download="Erik-Drouhard-Resume.pdf">
       <svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"

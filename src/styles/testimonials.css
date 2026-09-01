@@ -1,0 +1,57 @@
+/* Shared testimonial block for the case studies.
+   Layout and colour only: typography comes from the type-* classes in the
+   markup, so this file stays inside the type system that check-type-system.mjs
+   enforces. Attribution is by role, never by name. */
+
+.testimonials {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.testimonial {
+  display: grid;
+  margin: 0;
+  padding: 28px 0 0;
+  /* Deliberate change from main-ref, which hardcodes rgb(0 0 0 / 18%) here and
+     never overrides it for dark. That only misrendered for the minority of live
+     visitors on a dark OS; this branch defaults to dark, so the divider would
+     have been invisible for most readers. --line, at 14%, is the nearest token
+     to the published 18%, and it flips itself, so no dark rule is needed. */
+  border-top: 1px solid var(--line);
+  gap: 16px;
+  align-content: start;
+}
+
+.testimonial blockquote {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* The role and the org read as one unit, so they share a row and only the
+   role carries emphasis. */
+.testimonial figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  /* Same hardcoded-black fix as the border above. --ink-muted is 58% against
+     the published 62%, the nearest of the muted pair (--ink-soft is 68%). */
+  color: var(--ink-muted);
+}
+
+.testimonial figcaption .testimonial-role {
+  color: var(--ink);
+}
+
+@media (width <= 700px) {
+  .testimonials {
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .testimonial {
+    padding-top: 24px;
+  }
+}

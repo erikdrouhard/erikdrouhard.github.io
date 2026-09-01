@@ -1,0 +1,732 @@
+.mix-page {
+  --mix-accent: #6548e8;
+  --mix-accent-deep: #20194a;
+  /* Surfaces that read as dark panels against the page. Split from
+     --mix-accent-deep because the button using that token inverts to
+     near-white in dark mode while these panels lift instead. */
+  --mix-panel: #20194a;
+  --mix-accent-soft: #eeeaff;
+  --mix-cyan: #28b9d8;
+  --mix-ink-muted: rgb(0 0 0 / 67%);
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 84% 9%, rgb(101 72 232 / 11%), transparent 27rem),
+    linear-gradient(172deg, var(--page-wash) 0%, var(--page-paper) 100%);
+}
+
+.mix-page .page-shell {
+  align-items: center;
+  container-type: inline-size;
+}
+
+.mix-main {
+  padding-bottom: 0;
+  align-items: stretch;
+}
+
+.mix-content {
+  gap: 0;
+  color: var(--ink);
+}
+
+.mix-content h1,
+.mix-content h2,
+.mix-content h3,
+.mix-content p,
+.mix-content figure {
+  margin: 0;
+}
+
+.mix-content h1,
+.mix-content h2,
+.mix-content h3 {
+  color: var(--ink);
+}
+
+.mix-content p {
+  text-wrap: pretty;
+}
+
+.mix-hero {
+  display: grid;
+  padding: 112px 0 104px;
+  gap: 54px;
+  grid-template-columns: minmax(0, 11fr) minmax(330px, 9fr);
+  align-items: center;
+}
+
+.mix-hero-copy {
+  display: grid;
+  gap: 24px;
+}
+
+.mix-eyebrow,
+.mix-section-label,
+.mix-item-label {
+  color: rgb(0 0 0 / 55%);
+}
+
+.mix-hero h1 {
+  text-decoration: none;
+}
+
+.mix-deck {
+  max-width: none;
+  color: rgb(0 0 0 / 75%);
+}
+
+.mix-project-meta {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid rgb(0 0 0 / 12%);
+  border-bottom: 1px solid rgb(0 0 0 / 12%);
+}
+
+.mix-project-meta > div {
+  display: grid;
+  min-width: 0;
+  padding: 14px 0;
+  gap: 24px;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: baseline;
+}
+
+.mix-project-meta > div + div {
+  border-top: 1px solid var(--line-subtle);
+}
+
+.mix-project-meta dt,
+.mix-project-meta dd {
+  margin: 0;
+}
+
+.mix-project-meta dt {
+  color: rgb(0 0 0 / 82%);
+}
+
+.mix-project-meta dd {
+  color: rgb(0 0 0 / 72%);
+}
+
+.mix-hero-visual {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 22px;
+  background: var(--mix-panel);
+  box-shadow:
+    0 0 0 1px rgb(31 25 73 / 16%),
+    0 28px 70px rgb(43 30 106 / 17%),
+    0 8px 24px rgb(0 0 0 / 9%);
+  gap: 10px;
+  transform: rotate(1deg);
+}
+
+/* Matches the intrinsic 1446x1100 of the hero screenshot. object-fit: cover
+   crops to this box, so a mismatched ratio silently eats the app bar. */
+.mix-hero-visual img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 723 / 550;
+  border-radius: 14px;
+  object-fit: cover;
+  outline: 1px solid rgb(255 255 255 / 12%);
+  outline-offset: -1px;
+}
+
+.mix-visual-label {
+  position: absolute;
+  z-index: 1;
+  top: 20px;
+  left: 20px;
+  padding: 7px 9px;
+  border-radius: var(--radius-pill);
+  background: rgb(17 15 46 / 86%);
+  color: #fff;
+}
+
+.mix-hero-visual figcaption {
+  padding: 0 5px 4px;
+  color: rgb(255 255 255 / 72%);
+}
+
+.mix-section {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  padding: 92px 0;
+  border-top: 1px solid rgb(0 0 0 / 11%);
+  gap: 40px;
+  grid-template-columns: minmax(0, 1fr);
+  scroll-margin-top: 72px;
+}
+
+/* The band's own full-bleed `border-block` is its top edge. Keeping the
+   section's content-width rule as well stacks a short grey line on top of the
+   long tinted one. */
+.mix-section-feature {
+  border-top: 0;
+}
+
+.mix-section-feature::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0 calc((100vw - 100%) / -2);
+  border-block: 1px solid rgb(101 72 232 / 10%);
+  background:
+    radial-gradient(circle at 92% 8%, rgb(40 185 216 / 10%), transparent 24rem),
+    linear-gradient(145deg, rgb(238 234 255 / 62%), rgb(255 255 255 / 45%));
+  content: "";
+}
+
+.mix-section-feature + .mix-section {
+  border-top: 0;
+}
+
+.mix-reading {
+  display: grid;
+  max-width: 720px;
+  gap: 16px;
+}
+
+.mix-reading .mix-section-label,
+.mix-scope .mix-section-label {
+  margin-bottom: 2px;
+}
+
+.mix-prose {
+  display: grid;
+  gap: 18px;
+}
+
+.mix-callout {
+  padding: 20px 24px;
+  border: 0;
+  border-left: 3px solid var(--mix-accent);
+  border-radius: 0 14px 14px 0;
+  background: rgb(255 255 255 / 64%);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 7%);
+}
+
+.mix-three-column,
+.mix-four-column {
+  display: grid;
+  gap: 16px;
+}
+
+.mix-three-column {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.mix-four-column {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.mix-three-column > div,
+.mix-four-column > div {
+  min-width: 0;
+  padding: 22px;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 64%);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 8%),
+    0 12px 30px rgb(0 0 0 / 4%);
+}
+
+.mix-three-column h3,
+.mix-four-column h3 {
+  margin-top: 8px;
+}
+
+.mix-three-column p:last-child,
+.mix-four-column p:last-child {
+  margin-top: 6px;
+  color: rgb(0 0 0 / 67%);
+}
+
+.mix-platform-grid {
+  margin-top: 0;
+}
+
+.mix-scope {
+  display: grid;
+  margin-top: 28px;
+  padding-top: 12px;
+  gap: 16px;
+}
+
+.mix-scope > p:not(.mix-section-label) {
+  max-width: 720px;
+}
+
+.mix-scope .mix-three-column {
+  margin-top: 18px;
+}
+
+.mix-action-list {
+  display: grid;
+  max-width: 892px;
+  gap: 12px;
+}
+
+.mix-action-list > article {
+  display: grid;
+  padding: 24px;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 72%);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 8%),
+    0 12px 30px rgb(0 0 0 / 4%);
+  gap: 20px;
+  /* A shared label column so headings and body share one left edge down
+     the list. max-content sized each card from its own label and staggered
+     the copy — Verse's "CHANGE THE TOOLING" is ~40px wider than "MAKE THE CASE". */
+  grid-template-columns: 12.5rem minmax(0, 1fr);
+}
+
+.mix-action-list .mix-item-label {
+  color: var(--mix-accent);
+  white-space: nowrap;
+}
+
+.mix-action-list h3 + p {
+  margin-top: 4px;
+  color: rgb(0 0 0 / 67%);
+  /* Pretty wrap shortens lines inside the card column and reads as a
+     ragged left edge under the heading, especially in Safari. */
+  text-wrap: wrap;
+}
+
+.mix-condition-demo {
+  display: grid;
+  padding-top: 8px;
+  gap: 22px;
+}
+
+.mix-condition-demo-heading {
+  display: grid;
+  max-width: 720px;
+  gap: 12px;
+}
+
+.mix-condition-demo-heading > p:last-child {
+  color: rgb(0 0 0 / 67%);
+}
+
+.mix-media-scroller {
+  display: flex;
+  width: calc(100vw - max(16px, (100vw - 892px) / 2) - 24px);
+  padding: 0 16px 12px 0;
+  overflow-x: auto;
+  gap: 18px;
+  scroll-snap-type: x proximity;
+  scrollbar-color: rgb(0 0 0 / 24%) transparent;
+  scrollbar-width: thin;
+  overscroll-behavior-inline: contain;
+}
+
+.mix-media-scroller:focus-visible {
+  border-radius: 12px;
+  outline: var(--focus-size) solid var(--focus);
+  outline-offset: 4px;
+}
+
+.mix-media-scroller figure {
+  width: 380px;
+  flex: 0 0 380px;
+  scroll-snap-align: start;
+}
+
+.mix-media-scroller img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 45 / 32;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 14px 30px rgb(27 20 76 / 10%);
+  outline: 1px solid rgb(0 0 0 / 8%);
+  outline-offset: -1px;
+}
+
+.mix-gallery-label {
+  display: flex;
+  max-width: 892px;
+  margin-bottom: -24px;
+  color: rgb(0 0 0 / 56%);
+  justify-content: space-between;
+}
+
+.mix-gallery-label span {
+  color: var(--mix-accent);
+}
+
+/* Three Verse slides read as a complete row on desktop, so the scroll cue is
+   only useful at the site's tablet and mobile widths. */
+#verse .mix-gallery-label span {
+  display: none;
+  white-space: nowrap;
+}
+
+.mix-media-wide img {
+  aspect-ratio: 16 / 9;
+}
+
+/* A standalone product screenshot inside a section, sharing the hero's panel
+   treatment without its rotation. Intrinsic width/height on the img carries
+   the ratio, so one class serves screenshots of any shape. */
+.mix-figure {
+  display: grid;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 22px;
+  background: var(--mix-panel);
+  box-shadow:
+    0 0 0 1px rgb(31 25 73 / 16%),
+    0 18px 48px rgb(43 30 106 / 14%),
+    0 6px 18px rgb(0 0 0 / 8%);
+  gap: 10px;
+}
+
+.mix-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  outline: 1px solid rgb(255 255 255 / 12%);
+  outline-offset: -1px;
+}
+
+.mix-figure figcaption {
+  padding: 0 5px 4px;
+  color: rgb(255 255 255 / 72%);
+}
+
+.mix-results-grid {
+  margin-top: 0;
+}
+
+.mix-results-grid h3 {
+  margin-top: 0;
+}
+
+.mix-customer-note {
+  max-width: 720px;
+  margin-top: -12px;
+}
+
+.mix-metrics {
+  display: grid;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--mix-panel);
+  box-shadow:
+    0 0 0 1px rgb(32 25 74 / 15%),
+    0 22px 54px rgb(32 25 74 / 14%);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.mix-metrics article {
+  display: grid;
+  min-width: 0;
+  padding: 28px;
+  color: #fff;
+  gap: 8px;
+}
+
+.mix-metrics article + article {
+  border-left: 1px solid rgb(255 255 255 / 14%);
+}
+
+.mix-metrics strong {
+  white-space: nowrap;
+}
+
+.mix-metrics span {
+  color: rgb(255 255 255 / 68%);
+}
+
+.mix-metric-note {
+  max-width: 76ch;
+  margin-top: -24px;
+  color: var(--ink-muted);
+}
+
+.mix-footer {
+  display: flex;
+  width: 100cqi;
+  margin: 0 0 0 calc((100% - 100cqi) / 2);
+  padding: 94px 24px 104px;
+  border-top: 1px solid rgb(32 25 74 / 10%);
+  align-items: center;
+  flex-direction: column;
+  gap: 18px;
+  background:
+    radial-gradient(circle at 50% 0%, rgb(101 72 232 / 11%), transparent 28rem),
+    linear-gradient(145deg, #f4f1ff, #f8fbff);
+  color: var(--ink);
+  text-align: center;
+}
+
+.mix-footer h2 {
+  max-width: 34ch;
+}
+
+.mix-footer p {
+  color: rgb(32 25 74 / 65%);
+}
+
+.mix-footer-actions {
+  display: flex;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Appearance comes from the shared pill in styles.css; the footer pair only
+   set their own minimum width. */
+.mix-contact {
+  min-width: 158px;
+}
+
+.mix-media-scroller:focus-visible {
+  outline: 2px solid var(--mix-accent);
+  outline-offset: 3px;
+}
+
+/* The pill's hover and press states are shared with every other button on the
+   site; see the pill interaction block in styles.css. */
+
+@media (max-width: 809.98px) {
+  .mix-main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .mix-hero {
+    padding: 78px 0 72px;
+    gap: 44px;
+    grid-template-columns: 1fr;
+  }
+
+  .mix-project-meta > div {
+    gap: 16px;
+    grid-template-columns: 80px minmax(0, 1fr);
+  }
+
+  .mix-hero-visual {
+    width: min(100%, 620px);
+    transform: none;
+  }
+
+  .mix-section {
+    padding: 76px 0;
+    gap: 36px;
+  }
+
+  .mix-three-column,
+  .mix-four-column {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .mix-three-column > div,
+  .mix-four-column > div {
+    padding: 20px;
+  }
+
+  .mix-three-column h3,
+  .mix-four-column h3 {
+    margin-top: 8px;
+  }
+
+  .mix-scope {
+    margin-top: 0;
+    padding-top: 4px;
+  }
+
+  .mix-scope .mix-three-column {
+    margin-top: 12px;
+  }
+
+  .mix-action-list {
+    gap: 28px;
+  }
+
+  .mix-action-list > article {
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+
+  .mix-media-scroller {
+    width: calc(100% + 16px);
+  }
+
+  .mix-media-scroller figure {
+    width: min(82vw, 430px);
+    flex-basis: min(82vw, 430px);
+  }
+
+  .mix-gallery-label {
+    margin-bottom: -20px;
+  }
+
+  .mix-gallery-label span {
+    display: none;
+  }
+
+  #verse .mix-gallery-label {
+    column-gap: 16px;
+  }
+
+  .mix-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .mix-metrics article {
+    padding: 24px;
+  }
+
+  .mix-metrics article + article {
+    border-top: 1px solid rgb(255 255 255 / 14%);
+    border-left: 0;
+  }
+
+  .mix-customer-note {
+    margin-top: -4px;
+  }
+
+  .mix-footer {
+    padding: 76px 16px 84px;
+  }
+
+  .mix-footer h2 {
+    max-width: 16ch;
+  }
+
+}
+
+@media (max-width: 1199.98px) {
+  #verse .mix-gallery-label span {
+    display: inline;
+  }
+}
+
+@media (max-width: 359.98px) {
+  .mix-action-list > article {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* The live site's dark block was `@media (prefers-color-scheme: dark)`. Here the
+   palette is a stored choice on <html>, so each selector carries
+   [data-theme="dark"] instead. */
+
+[data-theme="dark"] .mix-page {
+  --mix-ink-muted: rgb(255 255 255 / 70%);
+  --mix-panel: #2f2760;
+  background:
+    radial-gradient(circle at 84% 9%, rgb(101 72 232 / 18%), transparent 27rem),
+    linear-gradient(172deg, #15131d 0%, #09090d 100%);
+  color: #f5f3fa;
+}
+
+[data-theme="dark"] .mix-content,
+[data-theme="dark"] .mix-content h1,
+[data-theme="dark"] .mix-content h2,
+[data-theme="dark"] .mix-content h3 {
+  color: #f5f3fa;
+}
+
+[data-theme="dark"] .mix-eyebrow,
+[data-theme="dark"] .mix-section-label,
+[data-theme="dark"] .mix-item-label,
+[data-theme="dark"] .mix-gallery-label,
+[data-theme="dark"] .mix-metric-note {
+  color: rgb(255 255 255 / 60%);
+}
+
+[data-theme="dark"] .mix-deck,
+[data-theme="dark"] .mix-three-column p:last-child,
+[data-theme="dark"] .mix-four-column p:last-child,
+[data-theme="dark"] .mix-action-list h3 + p,
+[data-theme="dark"] .mix-condition-demo-heading > p:last-child {
+  color: rgb(255 255 255 / 74%);
+}
+
+[data-theme="dark"] .mix-three-column > div,
+[data-theme="dark"] .mix-four-column > div,
+[data-theme="dark"] .mix-action-list > article,
+[data-theme="dark"] .mix-callout {
+  background: rgb(255 255 255 / 6%);
+}
+
+[data-theme="dark"] .mix-callout {
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 7%);
+}
+
+[data-theme="dark"] .mix-three-column > div,
+[data-theme="dark"] .mix-four-column > div,
+[data-theme="dark"] .mix-action-list > article {
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 10%),
+    0 12px 30px rgb(0 0 0 / 18%);
+}
+
+[data-theme="dark"] /* The light-mode rings on these panels are near-black and vanish here. */
+.mix-hero-visual,
+[data-theme="dark"] .mix-metrics {
+  box-shadow: 0 0 0 1px rgb(195 184 255 / 16%);
+}
+
+[data-theme="dark"] .mix-section {
+  border-color: rgb(255 255 255 / 12%);
+}
+
+[data-theme="dark"] .mix-project-meta {
+  border-color: rgb(255 255 255 / 12%);
+}
+
+[data-theme="dark"] .mix-project-meta > div + div {
+  border-color: rgb(255 255 255 / 8%);
+}
+
+[data-theme="dark"] .mix-project-meta dt {
+  color: rgb(255 255 255 / 82%);
+}
+
+[data-theme="dark"] .mix-project-meta dd {
+  color: rgb(255 255 255 / 74%);
+}
+
+[data-theme="dark"] .mix-section-feature::before {
+  border-color: rgb(139 116 240 / 18%);
+  background:
+    radial-gradient(circle at 92% 8%, rgb(40 185 216 / 12%), transparent 24rem),
+    linear-gradient(145deg, rgb(62 47 126 / 28%), rgb(255 255 255 / 2%));
+}
+
+[data-theme="dark"] .mix-media-scroller {
+  scrollbar-color: rgb(255 255 255 / 28%) transparent;
+}
+
+[data-theme="dark"] .mix-media-scroller img {
+  outline-color: rgb(255 255 255 / 12%);
+}
+
+[data-theme="dark"] .mix-footer {
+  border-color: rgb(255 255 255 / 12%);
+  background:
+    radial-gradient(circle at 50% 0%, rgb(101 72 232 / 18%), transparent 28rem),
+    linear-gradient(145deg, #17131f, #0d1017);
+  color: #f5f3fa;
+}
+
+[data-theme="dark"] .mix-footer p {
+  color: rgb(255 255 255 / 68%);
+}

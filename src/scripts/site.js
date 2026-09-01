@@ -15,8 +15,17 @@ import { initKeys, cancelPendingKey } from "./keys.js";
 import { initCards } from "./cards.js";
 import { initTheme, restoreTheme } from "./theme.js";
 import { initStagger, stopStagger } from "./stagger.js";
+import { initPointerHover } from "./pointer-hover.js";
+import { initPressState, stopPressState } from "./press-state.js";
+import { initCaseStudyNav } from "./case-study-nav.js";
 
 document.addEventListener("astro:page-load", () => {
+  /* First, and every navigation: the pointer class lives on <html>, which the
+     router re-stamps from the server-rendered document on every swap. */
+  initPointerHover();
+  initPressState();
+  /* No-ops on a page without a <case-study-nav>, so no page-type check. */
+  initCaseStudyNav();
   initTheme();
   initKeys();
   initCards();
@@ -31,6 +40,7 @@ document.addEventListener("astro:after-swap", restoreTheme);
 
 document.addEventListener("astro:before-swap", () => {
   stopStagger();
+  stopPressState();
   cancelPendingKey();
   // The canvas carries transition:persist, so initField() will usually adopt
   // the surviving loop rather than build a new one. Stopping here anyway would

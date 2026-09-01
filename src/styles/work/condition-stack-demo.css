@@ -1,0 +1,766 @@
+/* ==========================================================================
+   Mix.dialog condition-stack demo — SANCTIONED TYPE EXCEPTION
+   --------------------------------------------------------------------------
+   This component simulates the Mix.dialog product UI, so it deliberately does
+   NOT use the portfolio's Crimson type roles. Rendering it in Crimson serif
+   would misrepresent what the product actually looked like.
+
+   The exception is bounded: it applies only inside <condition-stack-demo>,
+   and every size/weight it uses is declared once below. Do not add values
+   here that are not in this list, and do not use these tokens outside this
+   component. See wiki/portfolio-font-and-style-guidelines.md.
+   ========================================================================== */
+
+condition-stack-demo {
+  --sim-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --sim-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* weight size/leading family */
+  --sim-title: 650 0.9375rem/1.4 var(--sim-font);
+  --sim-strong: 750 0.9375rem/1.4 var(--sim-font);
+  --sim-cta: 850 1.25rem/1.05 var(--sim-font);
+  --sim-body: 400 0.875rem/1.4 var(--sim-font);
+  --sim-control: 650 0.8125rem/1.4 var(--sim-font);
+  --sim-label: 800 0.6875rem/1.4 var(--sim-font);
+  --sim-micro: 750 0.625rem/1.4 var(--sim-font);
+  --sim-code: 400 0.75rem/1.4 var(--sim-font-mono);
+  --track-sim-label: 0.08em;
+}
+
+condition-stack-demo {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  color: #19142f;
+  font: var(--sim-body);
+  font-synthesis: none;
+}
+
+.condition-demo {
+  overflow: hidden;
+  border-radius: 24px;
+  background: #f8f7fc;
+  box-shadow:
+    0 0 0 1px rgb(32 25 74 / 12%),
+    0 24px 70px rgb(39 26 94 / 10%);
+}
+
+.condition-demo__topbar {
+  display: flex;
+  min-height: 64px;
+  padding: 10px 14px 10px 20px;
+  border-bottom: 1px solid rgb(32 25 74 / 10%);
+  background: rgb(255 255 255 / 82%);
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.condition-demo__title {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.condition-demo__title strong {
+  font: var(--sim-title);
+}
+
+.condition-demo__title span,
+.condition-demo__legend {
+  color: rgb(32 25 74 / 58%);
+  font: var(--sim-control);
+}
+
+.condition-demo__toolbar {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.condition-demo button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 10px;
+  font: inherit;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+.condition-demo button:disabled {
+  opacity: 0.34;
+  cursor: default;
+}
+
+.condition-demo button:focus-visible,
+.cs-action:focus-visible,
+.cs-block:focus-visible,
+.cs-branch:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.condition-demo__reset,
+.condition-demo__cancel {
+  padding-inline: 14px;
+  background: #fff;
+  color: #302663;
+  box-shadow: inset 0 0 0 1px rgb(48 38 99 / 18%);
+}
+
+.condition-demo__cancel {
+  background: #302663;
+  color: #fff;
+}
+
+.condition-demo__canvas {
+  padding: 116px clamp(16px, 3vw, 28px) clamp(16px, 3vw, 28px);
+  background:
+    radial-gradient(circle at 90% 0%, rgb(101 72 232 / 10%), transparent 28rem),
+    linear-gradient(145deg, #f6f3ff, #f5f8fb);
+}
+
+.condition-demo__invitation {
+  position: absolute;
+  z-index: 2;
+  top: 80px;
+  right: -18px;
+  display: grid;
+  width: min(340px, calc(100% - 48px));
+  min-height: 44px;
+  padding: 16px 20px 18px;
+  border: 3px solid #19142f;
+  border-radius: 18px;
+  appearance: none;
+  background: #ffd84a;
+  color: #19142f;
+  box-shadow: 7px 7px 0 #19142f;
+  font: inherit;
+  text-align: left;
+  touch-action: manipulation;
+  cursor: pointer;
+  gap: 4px;
+  transform: rotate(2deg);
+  transform-origin: center;
+  transition: transform 150ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.condition-demo__invitation strong {
+  font: var(--sim-cta);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.condition-demo__invitation span {
+  color: #332a20;
+  font: var(--sim-control);
+}
+
+.condition-demo__invitation .condition-demo__invitation-kicker {
+  color: #5b4710;
+  font: var(--sim-micro);
+  letter-spacing: var(--track-sim-label);
+  text-transform: uppercase;
+}
+
+.condition-demo__invitation strong span {
+  color: inherit;
+  font: inherit;
+}
+
+.condition-demo__invitation:focus-visible {
+  outline: 3px solid #6548e8;
+  outline-offset: 5px;
+}
+
+.condition-demo__legend {
+  display: flex;
+  margin: 0;
+  padding: 12px 20px 16px;
+  border-top: 1px solid rgb(32 25 74 / 9%);
+  background: rgb(255 255 255 / 72%);
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  list-style: none;
+}
+
+.condition-demo__legend li,
+.cs-action__kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.condition-demo__legend i,
+.cs-action__icon {
+  display: inline-grid;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  font: var(--sim-micro);
+  font-style: normal;
+  place-items: center;
+}
+
+.is-message .cs-action__icon,
+.condition-demo__legend .is-message {
+  background: #e8f4ff;
+  color: #126696;
+}
+
+.is-variable .cs-action__icon,
+.condition-demo__legend .is-variable {
+  background: #eee9ff;
+  color: #593ac6;
+}
+
+.is-event .cs-action__icon,
+.condition-demo__legend .is-event {
+  background: #e5f8ef;
+  color: #197046;
+}
+
+.cs-block {
+  position: relative;
+  min-width: 0;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(46 35 95 / 13%),
+    0 10px 28px rgb(32 25 74 / 6%);
+}
+
+.cs-block.is-nested {
+  margin: 10px 0 2px clamp(12px, 2.5vw, 26px);
+  box-shadow:
+    -3px 0 0 #8068e9,
+    0 0 0 1px rgb(46 35 95 / 13%),
+    0 10px 28px rgb(32 25 74 / 6%);
+}
+
+.cs-block__header {
+  display: flex;
+  min-height: 52px;
+  padding: 6px 8px 6px 14px;
+  border-bottom: 1px solid rgb(32 25 74 / 10%);
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.cs-block__identity,
+.cs-drag-handle {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.cs-drag-handle {
+  min-height: 36px;
+  color: rgb(32 25 74 / 55%);
+  cursor: grab;
+  user-select: none;
+}
+
+.cs-drag-handle:active {
+  cursor: grabbing;
+}
+
+.cs-grip {
+  font: var(--sim-strong);
+  letter-spacing: -0.2em;
+}
+
+.cs-block__identity strong {
+  overflow: hidden;
+  font: var(--sim-control);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-block__actions,
+.cs-branch__tools,
+.cs-item__tools {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+}
+
+.condition-demo .cs-tool,
+.condition-demo .cs-branch__move {
+  min-width: 44px;
+  padding-inline: 10px;
+  background: transparent;
+  color: #43377b;
+  font: var(--sim-control);
+}
+
+.condition-demo .cs-add-elseif {
+  padding-inline: 12px;
+  background: #eeeaff;
+  color: #4b35b0;
+  font: var(--sim-control);
+}
+
+.cs-branches {
+  display: grid;
+  padding: 10px;
+  gap: 8px;
+}
+
+.cs-branch {
+  min-width: 0;
+  overflow: visible;
+  border-radius: 13px;
+  background: #fbfbfd;
+  box-shadow: inset 0 0 0 1px rgb(32 25 74 / 9%);
+}
+
+.cs-branch__header {
+  display: flex;
+  min-height: 48px;
+  padding: 6px 8px 6px 12px;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.cs-branch__condition {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+}
+
+.cs-branch__label {
+  flex: 0 0 auto;
+  color: #5a43c1;
+  font: var(--sim-label);
+  letter-spacing: var(--track-sim-label);
+  text-transform: uppercase;
+}
+
+.cs-expression {
+  overflow: hidden;
+  color: #28223f;
+  font: var(--sim-code);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-branch__body {
+  position: relative;
+  min-height: 54px;
+  padding: 0 8px 8px;
+  border-radius: 0 0 13px 13px;
+  transition: background-color 140ms ease;
+}
+
+.cs-branch__body.is-drop-target {
+  background: rgb(101 72 232 / 9%);
+  box-shadow: inset 0 0 0 2px #6548e8;
+}
+
+.cs-items {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+}
+
+.cs-action {
+  display: flex;
+  min-width: 0;
+  min-height: 48px;
+  padding: 6px 7px 6px 10px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgb(32 25 74 / 10%);
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.cs-action__content {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+}
+
+.cs-action__copy {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.cs-action__copy span:first-child {
+  color: rgb(32 25 74 / 55%);
+  font: var(--sim-label);
+  letter-spacing: var(--track-sim-label);
+  text-transform: uppercase;
+}
+
+.cs-action__copy code {
+  overflow: hidden;
+  color: #28223f;
+  font: var(--sim-code);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-branch__footer {
+  position: relative;
+  display: flex;
+  min-height: 48px;
+  padding: 5px 0 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.condition-demo .cs-add-trigger,
+.condition-demo .cs-move-here {
+  padding-inline: 13px;
+  background: transparent;
+  color: #4b35b0;
+  font: var(--sim-control);
+}
+
+.condition-demo .cs-move-here {
+  width: 100%;
+  border: 1px dashed rgb(75 53 176 / 45%);
+  background: rgb(238 234 255 / 55%);
+}
+
+.cs-add-menu {
+  position: absolute;
+  z-index: 20;
+  bottom: 44px;
+  left: 0;
+  display: grid;
+  width: min(250px, calc(100vw - 72px));
+  padding: 6px;
+  border-radius: 13px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(32 25 74 / 12%),
+    0 18px 42px rgb(32 25 74 / 16%);
+  gap: 2px;
+}
+
+.cs-add-menu[hidden] {
+  display: none;
+}
+
+.condition-demo .cs-add-menu button {
+  display: flex;
+  width: 100%;
+  padding: 0 12px;
+  background: transparent;
+  color: #28223f;
+  font: var(--sim-control);
+  text-align: left;
+  align-items: center;
+  gap: 9px;
+}
+
+.cs-moving {
+  opacity: 0.48;
+}
+
+.cs-dragging {
+  opacity: 0.45;
+}
+
+.is-entering {
+  z-index: 1;
+  transform-origin: center;
+  animation: condition-pop 220ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  will-change: transform, opacity;
+}
+
+@keyframes condition-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  68% {
+    opacity: 1;
+    transform: scale(1.015);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cs-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
+   which stays false on iPadOS while a trackpad drives a cursor. See
+   /components/pointer-hover.js. */
+:where(html:not(.is-coarse-pointer)) .condition-demo__invitation:hover {
+  transform: rotate(2deg) translateY(-3px);
+}
+
+:where(html:not(.is-coarse-pointer)) .condition-demo button:hover {
+  background-color: #eeeaff;
+}
+
+:where(html:not(.is-coarse-pointer)) .cs-action:hover,
+:where(html:not(.is-coarse-pointer)) .cs-branch:hover {
+  box-shadow: inset 0 0 0 1px rgb(76 53 177 / 25%);
+}
+
+@media (max-width: 809.98px) {
+  .condition-demo__invitation {
+    position: relative;
+    top: auto;
+    right: auto;
+    z-index: 2;
+    width: calc(100% - 28px);
+    margin: 0 14px 20px;
+    transform: rotate(-1deg);
+  }
+
+  .condition-demo {
+    width: calc(100% + 16px);
+    border-radius: 18px 0 0 18px;
+  }
+
+  .condition-demo__topbar {
+    padding-left: 14px;
+  }
+
+  .condition-demo__title span {
+    display: none;
+  }
+
+  .condition-demo__canvas {
+    padding: 12px 8px 14px 10px;
+  }
+
+  .cs-block {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .cs-block.is-nested {
+    margin-left: 0;
+  }
+
+  .cs-block.is-nested .cs-block__identity > .cs-drag-handle > span:last-child {
+    display: none;
+  }
+
+  .cs-block__header {
+    padding-left: 10px;
+  }
+
+  .condition-demo .cs-tool {
+    padding-inline: 8px;
+  }
+
+  .cs-action__copy code {
+    max-width: 155px;
+  }
+
+  .condition-demo__legend {
+    padding-inline: 14px;
+  }
+}
+
+@media (max-width: 419.98px) {
+  .cs-item__tools .cs-reorder,
+  .cs-branch__tools .cs-reorder {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .condition-demo__invitation {
+    transition: none;
+  }
+
+  .cs-branch__body,
+  .is-entering {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* The live site's dark block was `@media (prefers-color-scheme: dark)`. Here the
+   palette is a stored choice on <html>, so each selector carries
+   [data-theme="dark"] instead. The two pointer-guarded hover rules take it
+   *inside* their :where(html…) — the attribute sits on that same element, so a
+   descendant combinator in front of them would never match. */
+
+[data-theme="dark"] condition-stack-demo {
+  color: #f1edff;
+}
+
+[data-theme="dark"] .condition-demo {
+  background: #13111a;
+  box-shadow:
+    0 0 0 1px rgb(195 184 255 / 16%),
+    0 24px 70px rgb(0 0 0 / 30%);
+}
+
+[data-theme="dark"] .condition-demo__topbar {
+  border-color: rgb(255 255 255 / 10%);
+  background: rgb(28 24 39 / 92%);
+}
+
+[data-theme="dark"] .condition-demo__title span,
+[data-theme="dark"] .condition-demo__legend,
+[data-theme="dark"] .cs-drag-handle,
+[data-theme="dark"] .cs-action__copy span:first-child {
+  color: rgb(241 237 255 / 60%);
+}
+
+[data-theme="dark"] .condition-demo button:focus-visible,
+[data-theme="dark"] .cs-action:focus-visible,
+[data-theme="dark"] .cs-block:focus-visible,
+[data-theme="dark"] .cs-branch:focus-visible {
+  outline-color: #f1edff;
+}
+
+[data-theme="dark"] .condition-demo__reset {
+  background: #29243a;
+  color: #d5ccff;
+  box-shadow: inset 0 0 0 1px rgb(195 184 255 / 22%);
+}
+
+[data-theme="dark"] .condition-demo__cancel {
+  background: #a794ff;
+  color: #100c20;
+}
+
+[data-theme="dark"] .condition-demo__canvas {
+  background:
+    radial-gradient(circle at 90% 0%, rgb(101 72 232 / 20%), transparent 28rem),
+    linear-gradient(145deg, #181420, #10171d);
+}
+
+[data-theme="dark"] .condition-demo__invitation {
+  border-color: #100c20;
+  background: #ffd84a;
+  color: #100c20;
+  box-shadow: 7px 7px 0 #a794ff;
+}
+
+[data-theme="dark"] .condition-demo__invitation span {
+  color: #332a20;
+}
+
+[data-theme="dark"] .condition-demo__invitation .condition-demo__invitation-kicker {
+  color: #5b4710;
+}
+
+[data-theme="dark"] .condition-demo__invitation:focus-visible {
+  outline-color: #f1edff;
+}
+
+[data-theme="dark"] .condition-demo__legend {
+  border-color: rgb(255 255 255 / 10%);
+  background: rgb(25 22 34 / 88%);
+}
+
+[data-theme="dark"] .is-message .cs-action__icon,
+[data-theme="dark"] .condition-demo__legend .is-message {
+  background: #183447;
+  color: #8fd5ff;
+}
+
+[data-theme="dark"] .is-variable .cs-action__icon,
+[data-theme="dark"] .condition-demo__legend .is-variable {
+  background: #30275a;
+  color: #c3b1ff;
+}
+
+[data-theme="dark"] .is-event .cs-action__icon,
+[data-theme="dark"] .condition-demo__legend .is-event {
+  background: #18392c;
+  color: #85ddb1;
+}
+
+[data-theme="dark"] .cs-block {
+  background: #1d1928;
+  box-shadow:
+    0 0 0 1px rgb(195 184 255 / 14%),
+    0 10px 28px rgb(0 0 0 / 22%);
+}
+
+[data-theme="dark"] .cs-block.is-nested {
+  box-shadow:
+    -3px 0 0 #8f7bea,
+    0 0 0 1px rgb(195 184 255 / 14%),
+    0 10px 28px rgb(0 0 0 / 22%);
+}
+
+[data-theme="dark"] .cs-block__header {
+  border-color: rgb(255 255 255 / 10%);
+}
+
+[data-theme="dark"] .condition-demo .cs-tool,
+[data-theme="dark"] .condition-demo .cs-branch__move,
+[data-theme="dark"] .condition-demo .cs-add-trigger,
+[data-theme="dark"] .condition-demo .cs-move-here {
+  color: #c3b8ff;
+}
+
+[data-theme="dark"] .condition-demo .cs-add-elseif {
+  background: #30275a;
+  color: #d7ceff;
+}
+
+[data-theme="dark"] .cs-branch {
+  background: #17151e;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
+}
+
+[data-theme="dark"] .cs-branch__label {
+  color: #ad9bff;
+}
+
+[data-theme="dark"] .cs-expression,
+[data-theme="dark"] .cs-action__copy code,
+[data-theme="dark"] .condition-demo .cs-add-menu button {
+  color: #eeeaff;
+}
+
+[data-theme="dark"] .cs-action {
+  background: #211e2b;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
+}
+
+[data-theme="dark"] .condition-demo .cs-move-here {
+  border-color: rgb(195 184 255 / 48%);
+  background: rgb(101 72 232 / 16%);
+}
+
+[data-theme="dark"] .cs-add-menu {
+  background: #211d2c;
+  box-shadow:
+    0 0 0 1px rgb(195 184 255 / 16%),
+    0 18px 42px rgb(0 0 0 / 34%);
+}
+
+:where(html[data-theme="dark"]:not(.is-coarse-pointer)) .condition-demo button:hover {
+  background-color: #342b5c;
+}
+
+:where(html[data-theme="dark"]:not(.is-coarse-pointer)) .cs-action:hover,
+:where(html[data-theme="dark"]:not(.is-coarse-pointer)) .cs-branch:hover {
+  box-shadow: inset 0 0 0 1px rgb(173 155 255 / 38%);
+}

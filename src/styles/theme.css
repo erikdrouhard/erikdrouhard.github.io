@@ -4,7 +4,7 @@
 
    LAYERS
    1. Tokens        — colors, type scale, surfaces, spacing. Change here first.
-   2. Base + chrome — body, field canvas, shell, nav, footer, kbd.
+   2. Base + chrome — body, field canvas, shell, .site-nav, .site-footer, kbd.
    3. Components    — cards, pills, buttons, section heads, closing card.
    4. Case studies  — prose, figures, case header, metric bar, prev/next nav.
 
@@ -95,23 +95,25 @@ body {
 a { color: inherit; }
 
 /* ------------------------------------------------------------------- nav */
-nav {
+/* Class-scoped, not a bare `nav` selector: ported case studies bring their own
+   <nav> (the chapter rail) and a bare selector would restyle it. */
+.site-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 80px;
 }
+/* The published logomark, not a letterform. The SVG ships with a black fill
+   (it was authored for the light site), so the dark ground inverts it and the
+   light theme takes it as drawn — same trick the live site uses. */
 .mark {
-  width: 38px; height: 38px;
-  display: grid; place-items: center;
-  background: var(--t1);
-  color: var(--page);
-  font-family: var(--serif);
-  font-size: 20px;
-  font-weight: 500;
-  border-radius: var(--radius);
+  width: 40px; height: 40px;
+  flex: 0 0 40px;
+  display: block;
   text-decoration: none;
 }
+.mark img { display: block; width: 100%; height: 100%; filter: invert(1); }
+[data-theme="light"] .mark img { filter: none; }
 .nav-right { display: flex; align-items: center; gap: 22px; }
 .nav-right a {
   color: var(--t2);
@@ -330,7 +332,9 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
 }
 
 /* ---------------------------------------------------------------- footer */
-footer {
+/* Class-scoped for the same reason as .site-nav — case studies carry their own
+   <footer> for the next-study block. */
+.site-footer {
   margin-top: 40px;
   padding-top: 4px;
   display: flex;
@@ -344,8 +348,8 @@ footer {
   color: var(--t3);
   text-transform: uppercase;
 }
-footer a { color: var(--t3); text-decoration: none; transition: color 150ms ease-out; }
-footer a:hover { color: var(--accent); }
+.site-footer a { color: var(--t3); text-decoration: none; transition: color 150ms ease-out; }
+.site-footer a:hover { color: var(--accent); }
 .social { display: flex; gap: 14px; flex-wrap: wrap; }
 .footer-right { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; }
 
@@ -353,7 +357,7 @@ footer a:hover { color: var(--accent); }
 @media (max-width: 720px) {
   :root { --fs-hero: 27px; }
   .shell { padding: 22px 20px 64px; }
-  nav { margin-bottom: 52px; }
+  .site-nav { margin-bottom: 52px; }
   .section-head { margin-top: 56px; }
   .close-card { margin-top: 64px; padding: 30px 24px; }
   .close-card .close-line { max-width: none; }
@@ -691,7 +695,6 @@ button.btn { font-family: inherit; cursor: pointer; }
   --field-gain:  0.45;
 }
 
-[data-theme="light"] .mark { background: var(--t1); color: #f4f6f0; }
 [data-theme="light"] kbd.hot { color: #f4f6f0; }
 
 /* ------------------------------------------------------------ theme toggle */

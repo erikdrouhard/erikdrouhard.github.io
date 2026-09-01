@@ -1,29 +1,26 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
-/* Work entries drive the homepage grid, the work index, the case pages, and
-   the prev/next sequence. `order` is the single sequence for all four, so a
-   card cannot appear in one order on the home page and another in the nav.
+/* Card metadata for the home-page grid — and nothing else.
 
-   `draft: true` keeps an entry out of every listing and off the sitemap while
-   its content is still a stub. Launch ships the four real studies. */
+   The four published studies are hand-written pages under src/pages/work/;
+   their prose, meta and figures live there. So these entries carry no body and
+   the schema keeps only what WorkCard and the home page actually read. The
+   fields the retired MDX template rendered (description, role, team, timeline,
+   metric) are gone: a field nothing renders is a field that quietly goes stale.
+   The originals are in .archive/src/content/work/ if any of it is wanted back.
+
+   `draft: true` keeps an entry out of the grid and off the entry count while
+   its copy is still a stub. */
 const work = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/work" }),
   schema: z.object({
     title: z.string(),
     org: z.string(), // display string, e.g. "Nuance · 2021–2023"
     summary: z.string(), // card blurb
-    description: z.string().optional(), // <meta name="description">
     featured: z.boolean().default(false),
     order: z.number(),
-    key: z.string().length(1), // keyboard shortcut on the work index
-    // case-meta grid. Omitted rather than guessed — an absent field renders
-    // no cell, which is the honest result when the source never said.
-    role: z.string().optional(),
-    team: z.string().optional(),
-    timeline: z.string().optional(),
-    // renders a metric bar. Present only where a real number exists.
-    metric: z.object({ label: z.string(), value: z.number().min(0).max(100) }).optional(),
+    key: z.string().length(1), // keycap on the card, resolved by keys.js
     draft: z.boolean().default(false),
   }),
 });

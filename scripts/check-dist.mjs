@@ -16,10 +16,13 @@ import { join, resolve, dirname, relative, sep } from "node:path";
 
 const DIST = resolve(process.cwd(), "dist");
 
-// Every route the previous site published. None of these may 404.
+/* Every route the previous site published. None of these may 404.
+   `work/index.html` is deliberately absent: the work index was retired while
+   there is only one body of work to show, and the case studies are reached
+   from the home-page grid. Do not add it back to "fix" a 404 — /work/ is meant
+   to 404, and check-acceptance.mjs asserts that it does. */
 const REQUIRED_ROUTES = [
   "index.html",
-  "work/index.html",
   "work/dragon-drive/index.html",
   "work/microsoft/index.html",
   "work/mix-dialog/index.html",

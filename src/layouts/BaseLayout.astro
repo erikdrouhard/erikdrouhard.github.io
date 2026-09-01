@@ -16,9 +16,15 @@ import monoLatin from "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-
 interface Props {
   title: string;
   description?: string;
-  /** "full" on home / work / about, "quiet" on reading pages, "off" for a static frame. */
+  /** "full" on home / about, "quiet" on reading pages, "off" for a static frame. */
   field?: "full" | "quiet" | "off";
   noindex?: boolean;
+  /** Extra class on <body>. Ported case studies use it to scope their CSS,
+      e.g. "drive-page" — exactly the hook those stylesheets were written for. */
+  bodyClass?: string;
+  /** "default" is the new site's 1000px shell. "case" is the published site's
+      .page-shell geometry, which the ported case-study CSS assumes. */
+  shell?: "default" | "case";
 }
 
 const {
@@ -26,7 +32,14 @@ const {
   description = "Erik Drouhard is an AI Design Engineer specializing in human-agent interaction.",
   field = "full",
   noindex = false,
+  bodyClass,
+  shell = "default",
 } = Astro.props;
+
+const bodyClassName = [shell === "case" ? "case-page" : null, bodyClass]
+  .filter(Boolean)
+  .join(" ");
+const shellClassName = shell === "case" ? "page-shell" : "shell";
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -61,10 +74,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       })();
     </script>
 
+    <slot name="head" />
+
     <ClientRouter />
   </head>
 
-  <body data-field={field}>
+  <body data-field={field} class={bodyClassName || undefined}>
     <a class="skip-link" href="#main">Skip to content</a>
 
     {/*
@@ -74,7 +89,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     */}
     <canvas id="field" aria-hidden="true" transition:persist></canvas>
 
-    <div class="shell">
+    <div class={shellClassName}>
       <Nav />
       <slot />
       <Footer />

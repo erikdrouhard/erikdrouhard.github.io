@@ -1,0 +1,392 @@
+/* Verse composes the established Mix case-study layout. This file contains
+   project tokens and modifiers only; shared type, shell, sections, cards,
+   controls, and breakpoints remain owned by theme.css, case.css, and
+   mix-dialog.css — which is why the page imports mix-dialog.css first. */
+
+.mix-page--verse {
+  /* Existing case-study values, named once so page rules do not introduce
+     one-off spacing, radius, width, or color values. */
+  --verse-accent: #c127b6;
+  --verse-accent-deep: #25162f;
+  --verse-accent-soft: #faeafa;
+  --verse-cyan: #25b9d0;
+  --verse-page-light: #fcfeff;
+  --verse-page-dark: #121117;
+  --verse-panel-dark: #2d2035;
+  --verse-copy-muted: rgb(0 0 0 / 67%);
+  --verse-copy-faint: rgb(0 0 0 / 55%);
+  --verse-rule: rgb(0 0 0 / 11%);
+  --verse-surface: rgb(255 255 255 / 68%);
+  --verse-surface-strong: rgb(255 255 255 / 84%);
+  --verse-accent-wash: rgb(193 39 182 / 10%);
+  --verse-cyan-wash: rgb(37 185 208 / 10%);
+  --verse-shadow: rgb(37 22 47 / 10%);
+  --verse-radius: 16px;
+  --verse-radius-large: 22px;
+  --verse-control-radius: 999px;
+  --verse-reading-width: 720px;
+  --verse-gallery-width: 892px;
+  --verse-gallery-item-width: 380px;
+  --verse-section-space: 92px;
+  --verse-section-space-mobile: 76px;
+  --verse-gap: 40px;
+  --verse-gap-large: 54px;
+  --verse-gap-medium: 24px;
+  --verse-gap-small: 16px;
+  --verse-control-size: 44px;
+  --verse-rule-size: 1px;
+  --verse-outline-size: 1px;
+  --verse-focus-size: 2px;
+  --verse-focus-offset: 3px;
+  --verse-media-ratio: 16 / 9;
+  --verse-document-ratio: 4 / 3;
+
+  --mix-accent: var(--verse-accent);
+  --mix-accent-deep: var(--verse-accent-deep);
+  --mix-panel: var(--verse-accent-deep);
+  --mix-accent-soft: var(--verse-accent-soft);
+  --mix-cyan: var(--verse-cyan);
+  --mix-ink-muted: var(--verse-copy-muted);
+  background:
+    radial-gradient(circle at 84% 9%, var(--verse-accent-wash), transparent 27rem),
+    linear-gradient(172deg, var(--verse-page-light) 0%, var(--page-paper) 100%);
+}
+
+.mix-page--verse .mix-hero {
+  grid-template-columns: minmax(0, 11fr) minmax(330px, 9fr);
+}
+
+.mix-page--verse .mix-hero-visual--verse {
+  background: var(--verse-surface-strong);
+  box-shadow:
+    0 0 0 var(--verse-rule-size) var(--verse-rule),
+    0 28px 70px var(--verse-shadow);
+}
+
+.mix-page--verse .mix-hero-visual--verse img {
+  aspect-ratio: var(--verse-media-ratio);
+  object-fit: contain;
+  outline-color: var(--verse-rule);
+}
+
+.mix-page--verse .mix-hero-visual--verse figcaption {
+  color: var(--verse-copy-muted);
+}
+
+.mix-page--verse .mix-section-feature::before {
+  border-color: var(--verse-accent-wash);
+  background:
+    radial-gradient(circle at 92% 8%, var(--verse-cyan-wash), transparent 24rem),
+    linear-gradient(145deg, var(--verse-accent-wash), rgb(255 255 255 / 45%));
+}
+
+.mix-page--verse .mix-three-column--media,
+.mix-page--verse .mix-three-column--definitions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mix-page--verse .mix-three-column--components {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.mix-page--verse .mix-three-column--media > figure,
+.mix-page--verse .mix-four-column--media > figure {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+  padding: var(--verse-gap-small);
+  border-radius: var(--verse-radius);
+  background: var(--verse-surface);
+  box-shadow:
+    0 0 0 var(--verse-rule-size) rgb(0 0 0 / 8%),
+    0 12px 30px rgb(0 0 0 / 4%);
+  align-content: start;
+  gap: var(--verse-gap-small);
+}
+
+.mix-page--verse .mix-three-column--media > figure > img,
+.mix-page--verse .mix-four-column--media > figure > img,
+.mix-page--verse .mix-three-column--media > figure > a > img,
+.mix-page--verse .mix-four-column--media > figure > a > img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--verse-radius);
+  outline: var(--verse-outline-size) solid rgb(0 0 0 / 8%);
+  outline-offset: calc(var(--verse-outline-size) * -1);
+}
+
+.mix-page--verse .mix-three-column--media figcaption,
+.mix-page--verse .mix-four-column--media figcaption {
+  color: var(--verse-copy-muted);
+}
+
+.mix-page--verse .mix-three-column--definitions > div {
+  display: grid;
+  align-content: start;
+  gap: calc(var(--verse-gap-small) / 2);
+}
+
+.mix-page--verse .mix-three-column--definitions > div:last-child {
+  grid-column: 1 / -1;
+}
+
+.mix-page--verse .mix-three-column--definitions dt,
+.mix-page--verse .mix-three-column--definitions dd {
+  margin: 0;
+}
+
+.mix-page--verse .mix-three-column--definitions dd {
+  color: var(--verse-copy-muted);
+}
+
+.mix-page--verse .mix-reading--followup {
+  margin-top: calc(var(--verse-gap-medium) / 2);
+}
+
+.mix-page--verse .mix-hero-visual--wide {
+  width: 100%;
+  padding: var(--verse-gap-small);
+  border-radius: var(--verse-radius-large);
+  background: var(--verse-surface);
+  box-shadow:
+    0 0 0 var(--verse-rule-size) rgb(0 0 0 / 8%),
+    0 12px 30px rgb(0 0 0 / 4%);
+  gap: var(--verse-gap-small);
+}
+
+.mix-page--verse .mix-content figure > a {
+  display: block;
+  border-radius: var(--verse-radius);
+}
+
+.mix-page--verse .mix-content figure > a:focus-visible {
+  outline: var(--verse-focus-size) solid var(--link-shimmer-highlight);
+  outline-offset: var(--verse-focus-offset);
+}
+
+.mix-page--verse .mix-hero-visual--wide img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  border-radius: var(--verse-radius);
+  object-fit: contain;
+  outline-color: rgb(0 0 0 / 8%);
+}
+
+.mix-page--verse .mix-hero-visual--wide figcaption {
+  color: var(--verse-copy-muted);
+}
+
+.mix-page--verse .mix-three-column--components > figure:last-child {
+  align-items: center;
+}
+
+.mix-page--verse .mix-three-column--components > figure:last-child img {
+  width: auto;
+  max-height: 100%;
+  justify-self: center;
+}
+
+.mix-page--verse .mix-three-column--media > figure > a > span,
+.mix-page--verse .mix-hero-visual--spec > a > span {
+  display: block;
+  aspect-ratio: var(--verse-document-ratio);
+  overflow: auto;
+  border-radius: var(--verse-radius);
+  background: #fff;
+  overscroll-behavior: contain;
+  scrollbar-color: rgb(0 0 0 / 24%) transparent;
+  scrollbar-width: thin;
+}
+
+.mix-page--verse .mix-three-column--media > figure > a > span img,
+.mix-page--verse .mix-hero-visual--spec > a > span img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  outline: 0;
+}
+
+.mix-page--verse .mix-hero-visual--spec > a > span {
+  aspect-ratio: var(--verse-media-ratio);
+}
+
+.mix-page--verse .mix-media-scroller img {
+  object-fit: contain;
+}
+
+.mix-page--verse .mix-media-scroller--tokens img {
+  aspect-ratio: var(--verse-document-ratio);
+}
+
+.mix-page--verse .mix-four-column--media {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mix-page--verse .mix-four-column--media > figure > img,
+.mix-page--verse .mix-four-column--media > figure > a > img {
+  aspect-ratio: var(--verse-media-ratio);
+  object-fit: contain;
+}
+
+.mix-page--verse .mix-callout--storybook {
+  display: flex;
+  max-width: var(--verse-gallery-width);
+  background: var(--verse-accent-deep);
+  color: #fff;
+  box-shadow:
+    0 0 0 var(--verse-rule-size) var(--verse-rule),
+    0 28px 70px var(--verse-shadow);
+  cursor: pointer;
+  text-decoration: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--verse-gap-medium);
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.mix-page--verse .mix-callout--storybook > span:first-child {
+  display: grid;
+  min-width: 0;
+  gap: calc(var(--verse-gap-small) / 2);
+}
+
+.mix-page--verse .mix-callout--storybook .mix-item-label {
+  color: var(--verse-cyan);
+}
+
+.mix-page--verse .mix-callout--storybook .type-body-sm {
+  color: rgb(255 255 255 / 74%);
+}
+
+.mix-page--verse .mix-callout--storybook .mix-contact {
+  min-width: max-content;
+  background: #fff;
+  color: var(--verse-accent-deep);
+}
+
+.mix-page--verse .mix-callout--storybook:focus-visible {
+  outline: var(--verse-focus-size) solid var(--focus);
+  outline-offset: var(--verse-focus-offset);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mix-page--verse .mix-callout--storybook:hover {
+    transform: translateY(calc(var(--verse-rule-size) * -1));
+  }
+
+  .mix-page--verse .mix-callout--storybook:hover .mix-contact {
+    opacity: 1;
+    transform: translateY(calc(var(--verse-rule-size) * -1));
+  }
+}
+
+@media (min-width: 810px) and (max-width: 1199.98px) {
+  .mix-page--verse .mix-three-column--components {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mix-page--verse .mix-three-column--components > figure:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 809.98px) {
+  .mix-page--verse .mix-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .mix-page--verse .mix-three-column--media,
+  .mix-page--verse .mix-three-column--definitions,
+  .mix-page--verse .mix-three-column--components,
+  .mix-page--verse .mix-four-column--media {
+    grid-template-columns: 1fr;
+  }
+
+  .mix-page--verse .mix-three-column--definitions > div:last-child,
+  .mix-page--verse .mix-three-column--components > figure:last-child {
+    grid-column: auto;
+  }
+
+  .mix-page--verse .mix-callout--storybook {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .mix-page--verse .mix-callout--storybook .mix-contact {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mix-page--verse .mix-callout--storybook,
+  .mix-page--verse .mix-callout--storybook .mix-contact {
+    transition: none;
+  }
+}
+
+
+/* Keyed on [data-theme="dark"] rather than prefers-color-scheme: on this site
+   the palette is a stored choice, not a system preference. */
+[data-theme="dark"] .mix-page--verse {
+  --verse-copy-muted: rgb(255 255 255 / 72%);
+  --verse-copy-faint: rgb(255 255 255 / 60%);
+  --verse-rule: rgb(255 255 255 / 12%);
+  --verse-surface: rgb(255 255 255 / 6%);
+  --verse-surface-strong: rgb(255 255 255 / 7%);
+  --verse-accent-wash: rgb(193 39 182 / 17%);
+  --verse-cyan-wash: rgb(37 185 208 / 12%);
+  --verse-shadow: transparent;
+  --mix-panel: var(--verse-panel-dark);
+  background:
+    radial-gradient(circle at 84% 9%, var(--verse-accent-wash), transparent 27rem),
+    linear-gradient(172deg, var(--verse-page-dark) 0%, #09090d 100%);
+}
+
+[data-theme="dark"] .mix-page--verse .mix-hero-visual--verse,
+[data-theme="dark"] .mix-page--verse .mix-hero-visual--wide,
+[data-theme="dark"] .mix-page--verse .mix-three-column--media > figure,
+[data-theme="dark"] .mix-page--verse .mix-four-column--media > figure {
+  background: var(--verse-surface);
+  box-shadow: 0 0 0 var(--verse-rule-size) var(--verse-rule);
+}
+
+[data-theme="dark"] .mix-page--verse .mix-hero-visual--verse img,
+[data-theme="dark"] .mix-page--verse .mix-hero-visual--wide img,
+[data-theme="dark"] .mix-page--verse .mix-three-column--media > figure > img,
+[data-theme="dark"] .mix-page--verse .mix-four-column--media > figure > img,
+[data-theme="dark"] .mix-page--verse .mix-three-column--media > figure > a > img,
+[data-theme="dark"] .mix-page--verse .mix-four-column--media > figure > a > img {
+  outline-color: var(--verse-rule);
+}
+
+[data-theme="dark"] .mix-page--verse .mix-hero-visual--verse figcaption,
+[data-theme="dark"] .mix-page--verse .mix-hero-visual--wide figcaption,
+[data-theme="dark"] .mix-page--verse .mix-three-column--media figcaption,
+[data-theme="dark"] .mix-page--verse .mix-four-column--media figcaption,
+[data-theme="dark"] .mix-page--verse .mix-three-column--definitions dd {
+  color: var(--verse-copy-muted);
+}
+
+[data-theme="dark"] .mix-page--verse .mix-section-feature::before {
+  border-color: var(--verse-rule);
+  background:
+    radial-gradient(circle at 92% 8%, var(--verse-cyan-wash), transparent 24rem),
+    linear-gradient(145deg, var(--verse-accent-wash), rgb(255 255 255 / 2%));
+}
+
+[data-theme="dark"] .mix-page--verse .mix-callout--storybook {
+  color: #f5f3fa;
+}
+
+[data-theme="dark"] .mix-page--verse .mix-callout--storybook .mix-contact {
+  background: #f5f3fa;
+  color: #100c20;
+}
+
+[data-theme="dark"] .mix-page--verse .mix-three-column--media > figure > a > span,
+[data-theme="dark"] .mix-page--verse .mix-hero-visual--spec > a > span {
+  background: #fff;
+  scrollbar-color: rgb(0 0 0 / 32%) transparent;
+}
