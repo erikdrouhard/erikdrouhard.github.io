@@ -13,6 +13,10 @@ function visibleTargets() {
     const host = el.closest("a, button");
     if (!host) return;
     if (host.offsetParent === null) return; // display:none / detached
+    // The egg sheet sets inert on .shell. Without this the About page's B
+    // would still navigate home from underneath an open sheet, because inert
+    // hides a control from tab and click but not from a document keydown.
+    if (host.closest("[inert]")) return;
     map[el.dataset.key.toLowerCase()] = host;
   });
   return map;

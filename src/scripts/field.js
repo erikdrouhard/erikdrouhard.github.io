@@ -81,6 +81,7 @@ function create(canvas, mode) {
   let speed = 0;
   let t = 0;
   let raf = 0;
+  let paused = false;
 
   const chain = [
     { x: -9999, y: -9999, vx: 0, vy: 0, k: 0.3, damp: 0.7, w: 1.0 },
@@ -276,7 +277,28 @@ function create(canvas, mode) {
   return {
     canvas,
     mode,
+    get paused() {
+      return paused;
+    },
+    /* The egg sheet covers the field, so the loop is suspended rather than
+       torn down: t, the spring chain and the per-block stagger all survive, and
+       the drift picks up where it left off instead of restarting. */
+    pause() {
+      if (paused) return;
+      paused = true;
+      cancelAnimationFrame(raf);
+      raf = 0;
+    },
+    resume() {
+      if (!paused) return;
+      paused = false;
+      // reduced motion and mode "off" never had a loop to resume; they get a
+      // fresh static frame in case the theme changed while the sheet was up.
+      if (reduce || mode === "off") render();
+      else raf = requestAnimationFrame(loop);
+    },
     stop() {
+      paused = false;
       cancelAnimationFrame(raf);
       raf = 0;
       document.removeEventListener("themechange", readTokens);
@@ -285,6 +307,14 @@ function create(canvas, mode) {
       window.removeEventListener("resize", onResize);
     },
   };
+}
+
+export function pauseField() {
+  if (running) running.pause();
+}
+
+export function resumeField() {
+  if (running) running.resume();
 }
 
 export function stopField() {
@@ -305,6 +335,8 @@ export function initField() {
 
   // Same canvas element and same mode means the swap did not touch us; leaving
   // the existing loop alone keeps the drift continuous across a navigation.
+  // A paused instance counts as alive: re-initializing one would rebuild the
+  // field under an open sheet and leave resumeField() with nothing to resume.
   if (running && running.canvas === canvas && running.mode === mode) return;
 
   stopField();

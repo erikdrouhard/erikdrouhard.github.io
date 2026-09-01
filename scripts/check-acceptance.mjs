@@ -18,11 +18,18 @@
 import { spawn } from "node:child_process";
 import { chromium } from "playwright";
 
-const BASE = "http://127.0.0.1:4321";
+/* 4321 is the default and what CI uses. The override exists so a run can be
+   pointed at a free port when a dev server is already squatting on 4321 —
+   otherwise `astro preview` fails to bind, the fetch below succeeds against
+   the other server, and the whole suite silently checks the wrong build. */
+const PORT = Number(process.env.ACCEPTANCE_PORT || 4321);
+const BASE = "http://127.0.0.1:" + PORT;
 
-const server = spawn("npx", ["astro", "preview", "--host", "127.0.0.1"], {
-  stdio: "ignore",
-});
+const server = spawn(
+  "npx",
+  ["astro", "preview", "--host", "127.0.0.1", "--port", String(PORT)],
+  { stdio: "ignore" },
+);
 const stopServer = () => server.kill();
 process.on("exit", stopServer);
 
@@ -395,6 +402,125 @@ ok(
   "the demo does not accumulate a render loop per navigation",
   demoRates[demoRates.length - 1] < demoRates[0] * 1.4 + 10,
   `rAF/s after interaction, each visit: [${demoRates.join(", ")}]`,
+);
+
+/* --- about easter egg (ticket 02) ---------------------------------------
+   The lifecycle seams only. The markup lands in ticket 03 and the gesture,
+   springs and game in 04/05, so where a check needs the button it injects a
+   minimal .egg-* DOM with page.evaluate. Ticket 06 replaces that injection
+   with the real markup and deletes the helper below.
+
+   The plan names /experiments/ as a third "not About" route; it does not
+   exist on this branch, so the second case study stands in for it. */
+
+// 1. the lazy chunk is requested on /about/ and on no other route.
+const eggUrls = [];
+const onEggRequest = (r) => {
+  if (r.url().includes("egg")) eggUrls.push(new URL(r.url()).pathname);
+};
+page.on("request", onEggRequest);
+
+for (const route of ["/", "/work/mix-dialog/", "/work/dragon-drive/"]) {
+  await page.goto(BASE + route, { waitUntil: "networkidle" });
+  await page.waitForTimeout(250);
+}
+const eggElsewhere = eggUrls.length;
+await page.goto(BASE + "/about/", { waitUntil: "networkidle" });
+await page.waitForTimeout(300);
+const eggOnAbout = eggUrls.length - eggElsewhere;
+page.off("request", onEggRequest);
+ok(
+  "the egg chunk is requested on /about/ and on no other route",
+  eggElsewhere === 0 && eggOnAbout > 0,
+  `off About: [${eggUrls.slice(0, eggElsewhere).join(", ")}] — on About: ${eggOnAbout}`,
+);
+
+// 2. about -> home -> about five times, client-side, no leaked loop.
+for (let i = 0; i < 5; i++) {
+  await page.click(".back");
+  await page.waitForURL(BASE + "/");
+  await page.waitForTimeout(250);
+  await page.click('nav a[href="/about/"]');
+  await page.waitForURL("**/about/**");
+  await page.waitForTimeout(250);
+}
+await page.waitForTimeout(400);
+const aboutRate = await rafRate();
+ok(
+  "one RAF loop on /about/ after 5 round trips",
+  aboutRate < baseline * 1.4,
+  `home baseline ${baseline}/s -> About ${aboutRate}/s`,
+);
+
+/* Inject the sheet the About markup will carry. .egg-play lives inside the
+   shell (it is the pocket button); the sheet lives outside it, because the
+   shell goes inert while the sheet is open. */
+async function injectEggDom() {
+  await page.evaluate(() => {
+    document.querySelectorAll(".egg-play, .egg-sheet").forEach((n) => n.remove());
+    // Both are pinned to the viewport, as the real pocket button and the real
+    // sheet will be. Left in normal flow they land past the end of a long page
+    // and the click times out scrolling after them.
+    const play = document.createElement("button");
+    play.className = "egg-play";
+    play.type = "button";
+    play.textContent = "Play";
+    play.style.cssText = "position:fixed;right:8px;top:8px;z-index:9998";
+    document.querySelector(".shell").append(play);
+
+    const sheet = document.createElement("div");
+    sheet.className = "egg-sheet";
+    sheet.hidden = true;
+    sheet.style.cssText =
+      "position:fixed;inset:10% 20%;z-index:9999;background:#111;padding:16px";
+    sheet.innerHTML =
+      '<button class="egg-close" type="button">Close</button>' +
+      '<p class="egg-status" aria-live="polite"></p>' +
+      '<canvas class="egg-canvas" width="320" height="200"></canvas>';
+    document.body.append(sheet);
+
+    // site.js re-runs every module on this event, which is how initEgg()
+    // gets a second chance now that the markup it queries exists.
+    document.dispatchEvent(new Event("astro:page-load"));
+  });
+  await page.waitForTimeout(300);
+}
+
+// 3. opening the sheet pauses the field; closing resumes the same instance.
+await injectEggDom();
+await page.evaluate(() => (document.getElementById("field").dataset.probe = "1"));
+await page.click(".egg-play");
+await page.waitForTimeout(200);
+const pausedRate = await rafRate();
+await page.click(".egg-close");
+await page.waitForTimeout(200);
+const resumedRate = await rafRate();
+// dataset survives only on the very same node; a rebuilt field would be a new
+// canvas from the DOM, and initField() adopting the paused one is the point.
+const sameCanvas = await page.evaluate(
+  () => document.getElementById("field").dataset.probe === "1",
+);
+ok(
+  "pauseField() stops the loop and resumeField() restarts the same instance",
+  pausedRate < 5 && resumedRate > 20 && sameCanvas,
+  `paused ${pausedRate}/s, resumed ${resumedRate}/s, same canvas: ${sameCanvas}`,
+);
+
+// 4. the [inert] shell swallows the page's single-key shortcuts.
+await page.click(".egg-play");
+await page.waitForTimeout(150);
+await page.keyboard.press("b");
+await page.waitForTimeout(500);
+const heldOnAbout = new URL(page.url()).pathname === "/about/";
+await page.click(".egg-close");
+await page.waitForTimeout(200);
+await page.keyboard.press("b");
+await page.waitForTimeout(700);
+const wentHome = new URL(page.url()).pathname === "/";
+ok(
+  "B is dead while .shell is inert and live again once the sheet closes",
+  heldOnAbout && wentHome,
+  `inert: stayed on About ${heldOnAbout}; not inert: reached home ${wentHome}`,
 );
 
 ok("no console errors or page exceptions", errors.length === 0, errors.slice(0, 3).join(" | "));
