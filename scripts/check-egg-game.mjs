@@ -323,10 +323,7 @@ ok(
 );
 
 /* --- 8. destroy leaves no window listener ------------------------------- */
-/* Dispatched rather than hit-tested: the sheet's own open/close spring (issue
-   04) owns where the button physically is, and this check is about what
-   destroy() removes, not about where Close was painted this frame. */
-await page.evaluate(() => document.querySelector(".egg-close").click());
+await page.click(".egg-close");
 await page.waitForTimeout(300);
 const keydownAfter = await page.evaluate(() => window.__win.keydown || 0);
 const statusCleared = (await status()) === "";
