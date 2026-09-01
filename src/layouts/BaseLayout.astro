@@ -100,6 +100,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       */}
       <slot name="after-footer" />
     </div>
+    {/*
+      Outside the shell on purpose: .shell goes inert and takes a transform
+      while the Easter-egg sheet is up, and both would capture an overlay
+      placed inside it — inert would kill the Close button, and a transformed
+      ancestor becomes the containing block for position: fixed.
+    */}
+    <slot name="overlay" />
 
     <script>
       import "../scripts/site.js";
