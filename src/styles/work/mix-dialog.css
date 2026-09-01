@@ -420,6 +420,7 @@
 
 .mix-metrics article {
   display: grid;
+  container-type: inline-size;
   min-width: 0;
   padding: 28px;
   color: #fff;
@@ -430,7 +431,15 @@
   border-left: 1px solid rgb(255 255 255 / 14%);
 }
 
+/* The metric is nowrap so a `5.0 → 7.0` pair never breaks across its arrow,
+   which means a long pair overflows its third of the band and the panel's
+   `overflow: hidden` clips it — `52.67 → 61.50` ran 288px into a 240px column
+   at desktop. So size the number off its own column rather than off the page:
+   the longest pair measures 6em in the display face, and the 4px keeps it off
+   the divider. The type-scale size stays the ceiling, so wide layouts and the
+   single-column mobile stack are unaffected. */
 .mix-metrics strong {
+  font-size: min(var(--type-metric-size), (100cqi - 4px) / 6);
   white-space: nowrap;
 }
 
