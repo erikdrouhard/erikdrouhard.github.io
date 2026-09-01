@@ -97,7 +97,7 @@
   gap: 16px;
 }
 
-/* The hero's two buttons are the site's shared pill; see styles.css. Only
+/* The hero's two buttons take their appearance from `.btn` in theme.css. Only
    their stacking behaviour is this page's business, further down. */
 
 .core-ai-page .prototype-loop {
@@ -106,7 +106,7 @@
   min-width: 0;
   padding: 26px;
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: 0;
   background:
     radial-gradient(circle at 100% 0%, rgb(53 183 214 / 34%), transparent 15rem),
     var(--core-panel);
@@ -144,7 +144,7 @@
   display: grid;
   min-height: 76px;
   padding: 14px 16px;
-  border-radius: 14px;
+  border-radius: 0;
   background: rgb(255 255 255 / 8%);
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
   column-gap: 12px;
@@ -162,7 +162,7 @@
   position: relative;
   z-index: 1;
   padding: 16px;
-  border-radius: 14px;
+  border-radius: 0;
   background: #fff;
   color: var(--core-ink);
   gap: 5px;
@@ -177,7 +177,7 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: 0;
   background: rgb(255 255 255 / 66%);
   box-shadow:
     0 0 0 1px var(--line-subtle),
@@ -245,7 +245,7 @@
   display: grid;
   margin: 0;
   padding: 48px;
-  border-radius: 20px;
+  border-radius: 0;
   background: rgb(255 255 255 / 74%);
   box-shadow:
     0 0 0 1px var(--line-subtle),
@@ -386,7 +386,7 @@
 .core-ai-page .media-frame {
   overflow: hidden;
   border: 0;
-  border-radius: 18px;
+  border-radius: 0;
   background: rgb(255 255 255 / 50%);
   box-shadow:
     0 0 0 1px var(--line-subtle),
@@ -426,7 +426,7 @@
 .core-ai-page .sprint-step,
 .core-ai-page .outcome {
   padding: 28px;
-  border-radius: 16px;
+  border-radius: 0;
   background: rgb(255 255 255 / 66%);
   box-shadow:
     0 0 0 1px var(--line-subtle),
@@ -453,7 +453,7 @@
   display: grid;
   padding: 48px;
   border: 0;
-  border-radius: 20px;
+  border-radius: 0;
   background: rgb(255 255 255 / 62%);
   box-shadow:
     0 0 0 1px var(--line-subtle),
@@ -487,7 +487,7 @@
 .core-ai-page .system-map {
   display: grid;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: 0;
   background: rgb(255 255 255 / 7%);
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 11%);
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -540,7 +540,7 @@
 .core-ai-page .prototype {
   padding: 28px;
   border: 0;
-  border-radius: 16px;
+  border-radius: 0;
   background: rgb(255 255 255 / 64%);
   box-shadow:
     0 0 0 1px var(--line-subtle),
@@ -565,7 +565,7 @@
   margin-bottom: 24px;
   padding: 6px 9px;
   border: 0;
-  border-radius: var(--radius-pill);
+  border-radius: 0;
   background: var(--core-soft);
   box-shadow: inset 0 0 0 1px rgb(49 91 232 / 14%);
   color: rgb(0 0 0 / 62%);
@@ -655,8 +655,8 @@
   outline-offset: var(--focus-offset);
 }
 
-/* The pill's hover and press states are shared with every other button on the
-   site; see the pill interaction block in styles.css. */
+/* Hover and press states are shared with every other button on the site; see
+   the `.btn` block in theme.css. */
 
 @media (min-width: 810px) {
   .core-ai-page .applied-work {
@@ -1054,8 +1054,8 @@
   justify-content: center;
 }
 
-/* Appearance comes from the shared pill in styles.css; the pair only set
-   their own minimum width so they read as one unit. */
+/* Appearance comes from `.btn` in theme.css; the pair only set their own
+   minimum width so they read as one unit. */
 .core-ai-page .core-contact {
   min-width: 158px;
 }
