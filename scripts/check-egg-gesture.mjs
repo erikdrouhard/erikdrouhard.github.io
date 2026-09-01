@@ -15,6 +15,19 @@
  *   npx astro build --outDir .dist-gesture
  *   EGG_PORT=4327 EGG_OUTDIR=.dist-gesture node scripts/check-egg-gesture.mjs
  * The two env overrides exist because Erik's dev server owns 4321 and dist/.
+ *
+ * Two departures from the recipe the ticket sketched, both accepted:
+ *
+ * - The overshoot and re-arm gestures are eight wheel events back to back, not
+ *   four with 30ms gaps. EVENT_CAP holds one event's contribution to 40, which
+ *   is what stops a single mouse notch from skipping the tension phase, and
+ *   pull drains 10% a frame; four events cannot reach the threshold of 110, and
+ *   Playwright's own round trip already spaces them ~25ms apart. Sampling
+ *   starts before the burst, because release fires part way through it and the
+ *   peak is behind us by the last event.
+ * - PEEK_MAX is read from the pocket rather than assumed to be the wireframe's
+ *   92, so these assertions hold at both breakpoints. See the decision note at
+ *   the top of src/scripts/egg-gesture.js.
  */
 import { spawn } from "node:child_process";
 import { chromium } from "playwright";
@@ -266,13 +279,14 @@ ok(
   `activeElement .${focused}`,
 );
 
-/* The field is paused while the sheet is open. Two loops may legitimately be
-   running here — this one, and the game's — so the bound is two, not one. A
-   field that kept running would make it three and fail. */
+/* The field is paused while the sheet is open, and two loops legitimately run
+   in its place: this one and the game's. That measures ~2.3x the home
+   baseline. A field that had not paused would make three loops and ~3x, so the
+   bound sits between them rather than at either end. */
 const openRate = await rafRate();
 ok(
-  "with the sheet open the field is paused and at most the egg's loops run",
-  openRate < baseline * 2.4,
+  "with the sheet open the field is paused and only the egg's loops run",
+  openRate < baseline * 2.65,
   `home baseline ${baseline}/s -> sheet open ${openRate}/s`,
 );
 
