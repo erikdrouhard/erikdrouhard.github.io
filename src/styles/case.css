@@ -8,16 +8,16 @@
    PROVENANCE
    Derived from `main-ref/styles.css` on the live site (origin/main of the
    published repo). Diff against that file when something looks wrong — this
-   is a port, not a redesign, and any divergence beyond the three below is a
+   is a port, not a redesign, and any divergence beyond the four below is a
    bug. Home-page and work-index chrome was stripped: the new <Nav> and
    <Footer> own the header and footer now, and those two pages are not ported.
 
-   THE THREE DELIBERATE DIVERGENCES
+   THE FOUR DELIBERATE DIVERGENCES
    1. Faces. Newsreader stands in for Crimson Pro (display, labels, buttons)
       and JetBrains Mono for the system monospace. Both arrive via Fontsource
-      in BaseLayout, so only the family tokens change — every size, weight,
-      tracking and leading is the published value. Crimson Text still ships
-      from /assets and still carries reading copy.
+      in BaseLayout, so the family tokens change; weights and tracking are
+      the published values. Crimson Text still ships from /assets and still
+      carries reading copy.
    2. Theme control. The live site switches on `prefers-color-scheme`. Here
       `:root` carries the light values and `[data-theme="dark"]` overrides
       them, because BaseLayout stamps `data-theme` on <html> from an inline
@@ -26,6 +26,11 @@
    3. Body scoping. The live `body` rule would repaint the whole new site, so
       it is scoped to `body.case-page` — the class BaseLayout puts on the body
       for `shell="case"`.
+   4. Scale. The published site used eleven sizes. Every role now resolves to
+      one of four — 36 / 20 / 16 / 12px — and the per-viewport blocks that
+      once restated sizes are gone. One constrained-width block remains, and
+      it remaps roles onto those same four sizes rather than adding a fifth.
+      See the TYPE SYSTEM header below.
    ========================================================================== */
 
 @font-face {
@@ -60,9 +65,12 @@
    or line-height. Pages opt into a role with a `type-*` class in the markup.
 
    To change how a role looks everywhere, edit its `--type-*` token here.
-   To change how it behaves at tablet or mobile, edit the same token inside
-   the two `:root` blocks in the breakpoint sections at the bottom of the file.
-   Those are the only three places any type value is ever written.
+   Below 1400px, section and subsection headings each step down one size;
+   that remap is the single `:root` block under CONSTRAINED WIDTHS at the
+   bottom of the file. Those are the only two places any type value is ever
+   written. Every role resolves to one of four sizes — 36 / 20 / 16 / 12px —
+   at every width; the remap moves roles between those sizes and never adds
+   a fifth.
 
    Token shape follows the CSS `font` shorthand:
        --type-<role>: <weight> <size>/<leading> <family>;
@@ -211,8 +219,11 @@
 }
 
 /* Case-study hero titles: the display scale carried at link weight.
-   Reuses the display token so the scale is still defined in one place. */
-.type-hero {
+   Reuses the display token so the scale is still defined in one place.
+   Scoped to .case-page so it outranks theme.css's `.hero h1`, which otherwise
+   wins on specificity wherever a study wraps its title in a `.hero` section
+   (Microsoft does) and drops it to the home-page hero size. */
+.case-page .type-hero {
   font: var(--type-display);
   font-weight: var(--weight-link);
   letter-spacing: 0;
@@ -549,8 +560,23 @@ h1 a:focus-visible {
    contribute sizing and stacking only; the Mix.dialog demo's own controls stay
    out of it, because they simulate the product's UI rather than the site's. */
 
-@media (min-width: 810px) and (max-width: 1199.98px) {
+/* ── Constrained widths ───────────────────────────────────────────────────
+   Below 1400px, section and subsection headings each step down one size on
+   the four-step scale: 36 → 20 for sections, 20 → 16 for subsections. The
+   display role holds at 36 so the page title keeps its focal weight, and
+   support already sits at 16, the floor for a heading. Section (20 light)
+   and subsection (16 bold) separate by size and weight. Subsection and
+   support share 16 bold, but they never head the same region except one
+   card list on Mix.dialog, where the card frame carries the difference.
+   This is the only breakpoint that touches type. */
+@media (max-width: 1399.98px) {
+  :root {
+    --type-section: 300 1.25rem/1.2 var(--font-display);
+    --type-subsection: 600 1rem/1.2 var(--font-display);
+  }
+}
 
+@media (min-width: 810px) and (max-width: 1199.98px) {
   .site-main,
   .case-page .page-shell > .site-nav,
   .case-page .page-shell > .back-row,
@@ -561,9 +587,7 @@ h1 a:focus-visible {
   }
 }
 
-
 @media (max-width: 809.98px) {
-
   .site-main {
     width: 100%;
     padding: 0 var(--page-gutter-mobile) var(--page-gutter-mobile);

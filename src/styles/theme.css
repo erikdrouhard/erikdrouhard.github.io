@@ -20,7 +20,7 @@
    Locked configuration:
    surface: outline + legibility fill · blur: 10px · corners: square
    seam: off · motifs: smoke rendered as blocks, corner ticks, key hints
-   type: 16px body, 18px bold titles, 28px hero
+   type: four sizes — 36px hero, 20px titles, 16px body, 12px meta
 ------------------------------------------------------------------------- */
 :root {
   --page:        #070d09;
@@ -360,7 +360,6 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
 
 /* ------------------------------------------------------------ breakpoint */
 @media (max-width: 720px) {
-  :root { --fs-hero: var(--fs-title); }
   .shell { padding: 22px 20px 64px; }
   .site-nav { margin-bottom: 52px; }
   .section-head { margin-top: 56px; }
