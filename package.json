@@ -8,12 +8,13 @@
     "test": "node --test scripts/*.test.mjs",
     "build": "astro build",
     "preview": "astro preview --host 127.0.0.1",
-    "check": "astro check",
+    "check": "astro check && node scripts/check-tokens.mjs",
+    "check:tokens": "node scripts/check-tokens.mjs",
     "check:dist": "node scripts/check-dist.mjs",
     "verify": "npm run build && npm run check:dist",
     "check:acceptance": "node scripts/check-acceptance.mjs",
     "check:square": "node scripts/check-square-style.mjs",
-    "check:all": "npm test && npm run build && npm run check:dist && npm run check:acceptance && npm run check:square"
+    "check:all": "npm test && npm run check:tokens && npm run build && npm run check:dist && npm run check:acceptance && npm run check:square"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",

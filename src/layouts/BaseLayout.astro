@@ -5,6 +5,9 @@ import Footer from "../components/Footer.astro";
 
 import "@fontsource-variable/newsreader";
 import "@fontsource-variable/jetbrains-mono";
+// tokens.css is the whole design system and must land first: every other
+// stylesheet reads from it and writes no literals of its own.
+import "../styles/tokens.css";
 import "../styles/theme.css";
 
 // Preloaded so the swap from the fallback face happens during load rather than
