@@ -1,48 +1,5 @@
-/* ==========================================================================
-   erikdrouhard.com — case.css
-   The published site's `styles.css`, re-pointed at the design system. Everything
-   a ported case study assumes about the world lives here: the type roles and the
-   page shell geometry. The button is not one of them: it is `.btn` in theme.css,
-   shared with every other page.
-
-   PROVENANCE
-   Derived from `main-ref/styles.css` on the live site (origin/main of the
-   published repo). Home-page and work-index chrome was stripped: the new <Nav>
-   and <Footer> own the header and footer now, and those two pages are not
-   ported.
-
-   THE THREE DELIBERATE DIVERGENCES
-   1. Faces and scale. Every value now comes from `tokens.css`: two faces,
-      eight roles, one spacing scale, one breakpoint. The published file's
-      per-page sizes, tints, and self-hosted reading face are gone, and no
-      @font-face block survives here — both faces arrive via Fontsource in
-      BaseLayout.
-   2. Theme control. The live site switches on `prefers-color-scheme`. Here
-      `:root` carries the light values and `[data-theme="dark"]` overrides
-      them, because BaseLayout stamps `data-theme` on <html> from an inline
-      head script before first paint. Deterministic, and it lets the footer
-      toggle work.
-   3. Body scoping. The live `body` rule would repaint the whole new site, so
-      it is scoped to `body.case-page` — the class BaseLayout puts on the body
-      for `shell="case"`.
-   ========================================================================== */
-
-/* ==========================================================================
-   TYPE SYSTEM — application only
-   --------------------------------------------------------------------------
-   Every piece of text on this site resolves to one of the eight roles in
-   `tokens.css`. Nothing here declares a family, size, weight, or leading —
-   the roles are tokens, and a rule may only apply one whole with `font:`.
-   Pages opt into a role with a `type-*` class in the markup.
-
-   To change how a role looks everywhere, edit its `--type-*` token in
-   `tokens.css`. That file, and only that file, also holds what changes below
-   the one breakpoint.
-
-   `.type-meta` is applied in theme.css rather than here: it is the one role
-   the site chrome uses on every page, and theme.css is the sheet every page
-   loads.
-   ========================================================================== */
+/* erikdrouhard.com — case.css. The case-study type roles and page shell.
+   Values and rules live in DESIGN-SYSTEM.md and tokens.css. */
 
 :root {
   color-scheme: light;

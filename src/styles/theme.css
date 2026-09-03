@@ -1,20 +1,5 @@
-/* ==========================================================================
-   erikdrouhard.com — theme.css
-   The site chrome. Every value it writes comes from `tokens.css`, which is the
-   design system; this file only decides which token each element reads.
-
-   LAYERS
-   1. Base + chrome — body, field canvas, shell, .site-nav, .site-footer, kbd.
-   2. Components    — cards, badges, buttons, section heads, closing card.
-   3. Case studies  — prose, figures, case header, metric bar, prev/next nav.
-
-   RULES OF THE SYSTEM
-   - Surfaces are opaque fills over the field, never pure glass over text.
-   - Hover changes depth (border --line -> --primary), not hue.
-   - Corners are square everywhere; corner ticks appear on cards and figures only.
-   - The mono face is functional: labels, metadata, captions, keycaps. Never prose.
-   - The metric bar renders only where a real, defensible number exists.
-   ========================================================================== */
+/* erikdrouhard.com — theme.css. The site chrome.
+   Values and rules live in DESIGN-SYSTEM.md and tokens.css. */
 
 * {
   box-sizing: border-box;
