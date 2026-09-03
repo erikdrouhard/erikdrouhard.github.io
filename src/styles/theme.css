@@ -360,7 +360,7 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
 
 /* ------------------------------------------------------------ breakpoint */
 @media (max-width: 720px) {
-  :root { --fs-hero: 27px; }
+  :root { --fs-hero: var(--fs-title); }
   .shell { padding: 22px 20px 64px; }
   .site-nav { margin-bottom: 52px; }
   .section-head { margin-top: 56px; }
