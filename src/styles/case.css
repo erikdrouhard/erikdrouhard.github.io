@@ -28,9 +28,9 @@
       for `shell="case"`.
    4. Scale. The published site used eleven sizes. Every role now resolves to
       one of four — 36 / 20 / 16 / 12px — and the per-viewport blocks that
-      once restated sizes are gone. One constrained-width block remains, and
-      it remaps roles onto those same four sizes rather than adding a fifth.
-      See the TYPE SYSTEM header below.
+      once restated sizes are gone. Two breakpoint blocks remain (below
+      1400px and below 810px), and both remap roles onto those same four
+      sizes rather than adding a fifth. See the TYPE SYSTEM header below.
    ========================================================================== */
 
 @font-face {
@@ -65,12 +65,15 @@
    or line-height. Pages opt into a role with a `type-*` class in the markup.
 
    To change how a role looks everywhere, edit its `--type-*` token here.
-   Below 1400px, section and subsection headings each step down one size;
-   that remap is the single `:root` block under CONSTRAINED WIDTHS at the
-   bottom of the file. Those are the only two places any type value is ever
-   written. Every role resolves to one of four sizes — 36 / 20 / 16 / 12px —
-   at every width; the remap moves roles between those sizes and never adds
-   a fifth.
+   Below 1400px, section and subsection headings each step down one size
+   (the `:root` block under CONSTRAINED WIDTHS). Below 810px the roles still
+   at 36px step to 20px bold (the `:root` block in the mobile section).
+   Those are the only three places any type value is ever written. Every
+   role resolves to one of four sizes — 36 / 20 / 16 / 12px — at every
+   width; the remaps move roles between those sizes and never add a fifth.
+
+   Leading is by size, not by role: 36px sits at 1.1, 20px at 1.2, and 16px
+   reading copy at 1.4. Labels and the metric numeral keep their own.
 
    Token shape follows the CSS `font` shorthand:
        --type-<role>: <weight> <size>/<leading> <family>;
@@ -90,25 +93,25 @@
     Consolas, monospace;
 
   /* -- Page hierarchy (display face) ------------------------------------- */
-  --type-display: 300 2.25rem/1.2 var(--font-display);
-  --type-section: 300 2.25rem/1.2 var(--font-display);
+  --type-display: 300 2.25rem/1.1 var(--font-display);
+  --type-section: 300 2.25rem/1.1 var(--font-display);
   --type-subsection: 600 1.25rem/1.2 var(--font-display);
-  --type-support: 600 1rem/1.25 var(--font-display);
+  --type-support: 600 1rem/1.2 var(--font-display);
 
   /* -- Editorial emphasis (display face) --------------------------------- */
-  --type-callout: 400 1.25rem/1.3 var(--font-display);
+  --type-callout: 400 1.25rem/1.2 var(--font-display);
   /* The size is its own token because the Mix metric band has to do maths on
      it: it caps a container-query-driven size against the scale. */
   --type-metric-size: 2.25rem;
   --type-metric: 400 var(--type-metric-size)/1 var(--font-display);
   --track-metric: -0.035em;
-  --type-quote: 300 2.25rem/1.2 var(--font-display);
+  --type-quote: 300 2.25rem/1.1 var(--font-display);
   --track-quote: -0.035em;
 
   /* -- Reading copy (Crimson Text) --------------------------------------- */
-  --type-deck: 400 1.25rem/1.5 var(--font-reading);
-  --type-body: 400 1rem/1.45 var(--font-reading);
-  --type-body-sm: 400 1rem/1.45 var(--font-reading);
+  --type-deck: 400 1.25rem/1.2 var(--font-reading);
+  --type-body: 400 1rem/1.4 var(--font-reading);
+  --type-body-sm: 400 1rem/1.4 var(--font-reading);
   --type-caption: 400 1rem/1.4 var(--font-reading);
 
   /* -- Labels and controls (display face) -------------------------------- */
@@ -367,6 +370,14 @@ body.case-page {
   line-height: revert;
 }
 
+/* A page may opt its whole body into the reading role (Microsoft does, via
+   BaseLayout's bodyClass). `.type-body` alone loses to the revert above on
+   specificity, and the page's running copy silently falls to the browser
+   default serif at line-height normal. This restates the role at 0,0,2,1. */
+body.case-page.type-body {
+  font: var(--type-body);
+}
+
 img {
   display: block;
 }
@@ -568,7 +579,7 @@ h1 a:focus-visible {
    and subsection (16 bold) separate by size and weight. Subsection and
    support share 16 bold, but they never head the same region except one
    card list on Mix.dialog, where the card frame carries the difference.
-   This is the only breakpoint that touches type. */
+   The mobile block further down handles the roles still at 36px here. */
 @media (max-width: 1399.98px) {
   :root {
     --type-section: 300 1.25rem/1.2 var(--font-display);
@@ -588,6 +599,17 @@ h1 a:focus-visible {
 }
 
 @media (max-width: 809.98px) {
+  /* Every role still at 36px after the constrained-width remap steps to
+     20px bold here. Section is already 20 light from that block and stays
+     light so the page title outranks it by weight. Metric keeps /1: it is a
+     single-line numeral. */
+  :root {
+    --type-display: 600 1.25rem/1.2 var(--font-display);
+    --type-quote: 600 1.25rem/1.2 var(--font-display);
+    --type-metric-size: 1.25rem;
+    --type-metric: 600 var(--type-metric-size)/1 var(--font-display);
+  }
+
   .site-main {
     width: 100%;
     padding: 0 var(--page-gutter-mobile) var(--page-gutter-mobile);

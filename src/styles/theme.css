@@ -68,7 +68,7 @@ body {
   color: var(--t1);
   font-family: var(--sans);
   font-size: var(--fs-body);
-  line-height: 1.6;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
@@ -154,7 +154,7 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
 .hero h1 {
   font-family: var(--serif);
   font-size: var(--fs-hero);
-  line-height: 1.34;
+  line-height: 1.1;
   font-weight: 300;
   margin: 0 0 44px;
   letter-spacing: 0;
@@ -206,7 +206,7 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
 .close-card .close-line {
   font-family: var(--serif);
   font-size: var(--fs-hero);
-  line-height: 1.34;
+  line-height: 1.1;
   font-weight: 300;
   color: var(--t1);
   margin: 0 0 30px;
@@ -314,7 +314,7 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
 .card h3 {
   font-family: var(--serif);
   font-size: var(--fs-title);
-  line-height: 1.38;
+  line-height: 1.2;
   font-weight: 600;
   margin: 0;
   color: var(--t1);
@@ -322,7 +322,7 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
 .card p {
   margin: 0;
   font-size: var(--fs-body);
-  line-height: 1.58;
+  line-height: 1.4;
   color: var(--t2);
 }
 
@@ -385,7 +385,7 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
 .case-header h1 {
   font-family: var(--serif);
   font-size: var(--fs-hero);
-  line-height: 1.34;
+  line-height: 1.1;
   font-weight: 300;
   margin: 0 0 28px;
   letter-spacing: 0;
@@ -412,13 +412,13 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
 .prose {
   max-width: 68ch;
   font-size: var(--fs-body);
-  line-height: 1.7;
+  line-height: 1.4;
   color: var(--t2);
 }
 .prose h2 {
   font-family: var(--serif);
   font-size: var(--fs-title);
-  line-height: 1.3;
+  line-height: 1.2;
   font-weight: 600;
   color: var(--t1);
   margin: 56px 0 16px;
@@ -446,7 +446,7 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
   border-left: 2px solid var(--line-2);
   font-family: var(--serif);
   font-size: var(--fs-title);
-  line-height: 1.5;
+  line-height: 1.2;
   color: var(--t1);
 }
 .prose code {
@@ -518,7 +518,7 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
   font-family: var(--serif);
   font-size: var(--fs-title);
   font-weight: 600;
-  line-height: 1.35;
+  line-height: 1.2;
   margin: 0;
   color: var(--t1);
 }
@@ -595,7 +595,7 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
   font-family: var(--serif);
   font-size: var(--fs-hero);
   font-weight: 300;
-  line-height: 1.3;
+  line-height: 1.1;
   margin: 0;
 }
 .back-row { margin-bottom: 28px; }
@@ -646,7 +646,7 @@ button.btn { font-family: inherit; cursor: pointer; }
 .prose .lead {
   font-family: var(--serif);
   font-size: var(--fs-title);
-  line-height: 1.45;
+  line-height: 1.2;
   font-weight: 400;
   color: var(--t1);
 }
@@ -965,4 +965,16 @@ html:has(.about-page) { overscroll-behavior-y: none; }
   /* .shell's bottom padding is 64px here, so the pocket matches it. The button
      still rests below the clip: its 88px offset is past the shorter pocket. */
   .egg-pocket { height: 64px; }
+}
+
+/* ------------------------------------------------------ mobile type step */
+/* Every 36px role steps to 20px bold on mobile. This block is last in the
+   file on purpose: the four --fs-hero rules above set weight and leading at
+   the same specificity, so this has to follow them in source order. */
+@media (max-width: 720px) {
+  :root { --fs-hero: var(--fs-title); }
+  .hero h1,
+  .close-card .close-line,
+  .case-header h1,
+  .work-head h2 { font-weight: 600; line-height: 1.2; }
 }
