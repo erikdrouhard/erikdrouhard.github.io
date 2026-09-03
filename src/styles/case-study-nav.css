@@ -1,34 +1,36 @@
 /* ==========================================================================
    case-study-nav.css — the sticky chapter rail on each case study.
 
-   Ported from the live site's components/case-study-nav.css. Two changes:
+   Ported from the live site's components/case-study-nav.css. Three changes:
    the magnetic-card @import is gone (no ported study uses a magnetic card),
-   and the dark block is keyed on [data-theme="dark"] rather than
-   prefers-color-scheme, because this site's palette is a stored choice.
+   the dark block is keyed on [data-theme="dark"] rather than
+   prefers-color-scheme because this site's palette is a stored choice, and
+   the rail's own translucent fill and blur are gone — the design system has
+   one opaque surface and no blur token, and an opaque rail over scrolling
+   text reads better than a frosted one anyway.
    ========================================================================== */
 
 case-study-nav {
   position: sticky;
-  z-index: var(--layer-sticky-nav);
+  z-index: var(--layer-sticky);
   top: 0;
   display: block;
   width: 100%;
-  border-block: 1px solid var(--line-soft);
-  background: rgb(249 249 250 / 88%);
-  backdrop-filter: blur(var(--nav-blur));
+  border-block: 1px solid var(--line);
+  background: var(--page);
 }
 
 case-study-nav[data-offset] {
-  margin-top: 30px;
+  margin-top: var(--space-4);
 }
 
 .case-study-nav__inner {
   display: flex;
-  width: min(100%, var(--page-width));
+  width: min(100%, var(--shell));
   min-width: 0;
   margin-inline: auto;
-  padding-inline: var(--page-gutter);
-  gap: 28px;
+  padding-inline: var(--space-3);
+  gap: var(--space-4);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -40,30 +42,33 @@ case-study-nav[data-offset] {
 .case-study-nav__inner a {
   position: relative;
   display: inline-flex;
-  min-height: var(--icon);
-  color: rgb(0 0 0 / 64%);
+  min-height: var(--space-5);
+  color: var(--text-muted);
   text-decoration: none;
   white-space: nowrap;
   align-items: center;
   touch-action: manipulation;
-  transition: color 150ms ease;
+  transition: color var(--duration) ease-out;
 }
 
 .case-study-nav__inner a::after {
   position: absolute;
   right: 0;
-  bottom: 8px;
+  bottom: var(--space-1);
   left: 0;
-  height: 1px;
-  background: currentColor;
+  /* The underline is a border, not a filled box: a border width is the one
+     hairline the system writes, and it keeps the element itself at zero
+     height so the scale never has to describe it. */
+  height: 0;
+  border-bottom: 1px solid currentColor;
   content: "";
   transform: scaleX(0);
   transform-origin: center;
-  transition: transform 180ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: transform var(--duration) ease-out;
 }
 
 .case-study-nav__inner a[aria-current="location"] {
-  color: var(--ink);
+  color: var(--text);
 }
 
 .case-study-nav__inner a[aria-current="location"]::after {
@@ -71,8 +76,7 @@ case-study-nav[data-offset] {
 }
 
 .case-study-nav__inner a:focus-visible {
-  border-radius: 0;
-  outline: var(--focus-size) solid var(--ink);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
@@ -81,25 +85,18 @@ case-study-nav[data-offset] {
    drops on touch, so the colour never sticks after a tap. See
    scripts/pointer-hover.js. */
 :where(html:not(.is-coarse-pointer)) .case-study-nav__inner a:hover {
-  color: var(--ink);
-}
-
-@media (min-width: 810px) and (max-width: 1199.98px) {
-  .case-study-nav__inner {
-    width: min(calc(100% - 80px), var(--page-width-tablet));
-    padding-inline: 0;
-  }
+  color: var(--text);
 }
 
 @media (max-width: 809.98px) {
   case-study-nav[data-offset] {
-    margin-top: var(--page-gutter-mobile);
+    margin-top: var(--space-2);
   }
 
   .case-study-nav__inner {
     width: 100%;
-    padding-inline: var(--page-gutter-mobile);
-    gap: 22px;
+    padding-inline: var(--space-2);
+    gap: var(--space-3);
   }
 }
 
@@ -110,26 +107,5 @@ case-study-nav[data-offset] {
   }
 }
 
-[data-theme="dark"] case-study-nav {
-  border-color: var(--line-soft);
-  background: rgb(14 16 19 / 88%);
-}
-
-[data-theme="dark"] .case-study-nav__inner a {
-  color: rgb(255 255 255 / 68%);
-}
-
-[data-theme="dark"] .case-study-nav__inner a[aria-current="location"] {
-  color: var(--ink);
-}
-
-[data-theme="dark"] .case-study-nav__inner a:focus-visible {
-  outline-color: var(--ink);
-}
-
-/* Guarded to match the light-mode hover rule, so the colour never sticks
-   on touch devices after a tap. Both the theme attribute and the pointer class
-   live on <html>, so this is one compound selector, not a descendant pair. */
-:where(html[data-theme="dark"]:not(.is-coarse-pointer)) .case-study-nav__inner a:hover {
-  color: var(--ink);
-}
+/* The rail's colours all derive from --page and --text, which the theme
+   re-authors, so there is no dark block left to write. */

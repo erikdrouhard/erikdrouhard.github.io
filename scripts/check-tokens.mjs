@@ -318,8 +318,19 @@ function cssRules(line, push, ctx) {
   }
 }
 
-/** Colour literals, wherever they appear. */
-function colorRule(line, push) {
+/**
+ * Colour literals, wherever they appear.
+ *
+ * `kind` is "css", "js", or "markup". In a script a colour function is a
+ * violation only when its arguments hold a numeric literal. A canvas fill has
+ * to be assembled as a string — there is no `var()` to write — so the field
+ * reads `--field-rgb` and wraps it: `"rgb(" + rgb + ")"`. Every channel still
+ * comes from tokens.css, which is the thing the ban exists to protect. The
+ * moment a number appears between the parentheses the palette has forked, and
+ * it is a violation again. CSS is held to the literal ban, because there a
+ * token can be written directly.
+ */
+function colorRule(line, push, kind) {
   for (const m of line.matchAll(/#[0-9a-fA-F]{3,8}\b/g)) {
     const len = m[0].length - 1;
     if (![3, 4, 6, 8].includes(len)) continue;
@@ -331,7 +342,16 @@ function colorRule(line, push) {
   const fn = line.match(
     /\b(rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\s*\(/,
   );
-  if (fn && !/\boklch\s*\(\s*from\b/.test(line)) push("color", fn[0].trim());
+  if (!fn) return;
+  if (/\boklch\s*\(\s*from\b/.test(line)) return;
+  if (kind === "js") {
+    // the arguments are whatever sits between this `(` and the next `)`
+    const open = fn.index + fn[0].length;
+    const close = line.indexOf(")", open);
+    const args = close === -1 ? line.slice(open) : line.slice(open, close);
+    if (!/\d/.test(args)) return;
+  }
+  push("color", fn[0].trim());
 }
 
 /** Only four custom properties may cross into JS. */
@@ -448,7 +468,7 @@ export function scanTree(root) {
       if (isCss && !exempt) {
         cssRules(line, push, { source, offset: starts[i] });
       }
-      if (!exempt) colorRule(line, push);
+      if (!exempt) colorRule(line, push, isCss ? "css" : kind);
       if (kind !== "css") {
         jsTokenRule(line, push);
         typeClassRule(line, push);

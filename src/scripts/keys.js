@@ -22,8 +22,17 @@ function visibleTargets() {
   return map;
 }
 
-/* The keycap flash is given 160ms before the navigation takes the frame. If
-   anything else navigates inside that window, the anchor we captured is
+/* Both timings are read from the stylesheet rather than typed here: the
+   design system owns the two durations, and prefers-reduced-motion zeroes
+   them, which turns the flash and the navigation delay off with everything
+   else. */
+function duration(name) {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue(name);
+  return parseFloat(raw) || 0;
+}
+
+/* The keycap flash is given one --duration before the navigation takes the
+   frame. If anything else navigates inside that window, the anchor we captured is
    detached by the swap — and .click() on a detached anchor still follows its
    href in Chrome, which is a full page reload straight past ClientRouter. Two
    keypresses inside the window would queue two navigations. So the pending
@@ -48,7 +57,7 @@ function onKeydown(event) {
   // flash the keycap so the shortcut is visibly acknowledged
   link.querySelectorAll("kbd").forEach((k) => {
     k.classList.add("hot");
-    setTimeout(() => k.classList.remove("hot"), 380);
+    setTimeout(() => k.classList.remove("hot"), duration("--duration-slow"));
   });
 
   link.focus();
@@ -60,7 +69,7 @@ function onKeydown(event) {
   pending = setTimeout(() => {
     pending = 0;
     if (link.isConnected) link.click();
-  }, 160);
+  }, duration("--duration"));
 }
 
 /* document survives ClientRouter swaps, so this binds once for the session. */

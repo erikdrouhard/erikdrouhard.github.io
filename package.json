@@ -18,13 +18,14 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
-    "astro": "^5.13.0",
+    "@fontsource-variable/jetbrains-mono": "^5.2.0",
     "@fontsource-variable/newsreader": "^5.2.0",
-    "@fontsource-variable/jetbrains-mono": "^5.2.0"
+    "astro": "^5.13.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
-    "typescript": "^5.9.0",
-    "playwright": "^1.62.0"
+    "@types/node": "^22.20.1",
+    "playwright": "^1.62.0",
+    "typescript": "^5.9.0"
   }
 }

@@ -68,28 +68,38 @@
   --measure-title: 24ch;
 
   /* -- Colour — light ----------------------------------------------------
-     Text is pure black on light and pure white on dark. Muted text, line,
-     and surface are color-mix() of those two and are never re-tinted by a
+     The authored colours, and only those. Text is pure black on light and
+     pure white on dark; muted text, line, surface, and the hover green are
+     mixed from them in the derived block below, and are never re-tinted by a
      stylesheet. --page-site is the site ground; --page is what everything
      reads, so a case study can re-hue it (below) and a dark panel can
      override it outright. */
   --page-site: #f4f6f0;
   --page: var(--page-site);
   --text: #000;
-  --text-muted: color-mix(in srgb, var(--text) 60%, var(--page));
-  --line: color-mix(in srgb, var(--text) 15%, var(--page));
-  --surface: color-mix(in srgb, var(--text) 5%, var(--page));
   --primary: #16713d;
-  --primary-hover: color-mix(in srgb, var(--primary) 85%, var(--text));
+
+  /* -- Dark panels -------------------------------------------------------
+     A panel that is dark in both themes sets --page and --text on itself
+     from these two aliases and nothing else; muted text, line, and surface
+     re-derive from them. This is the whole of what used to be `.on-dark`. */
+  --page-dark: #070d09;
+  --text-dark: #fff;
 
   /* -- Case-study accents ------------------------------------------------
-     One shade each, and one tint derived from it. A study sets --accent and
-     --accent-hue on its root element and nothing else. */
+     One shade each. The one tint, --accent-soft, is derived below. A study
+     sets --accent and --accent-hue on its root element and nothing else. */
   --accent-mix: #6548e8;
   --accent-msft: #315be8;
   --accent-drive: #087f91;
   --accent-verse: #c127b6;
-  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--page));
+
+  /* The oklch hue angle of each accent, so a study can re-hue the page
+     ground without writing a number of its own. */
+  --accent-hue-mix: 283.82;
+  --accent-hue-msft: 266.12;
+  --accent-hue-drive: 212.22;
+  --accent-hue-verse: 331.46;
 
   /* -- Motion — two durations, one easing --------------------------------
      Easing is the literal keyword `ease-out` at the point of use; there is
@@ -108,9 +118,36 @@
   --bp-mobile: 810px;
 
   /* -- Smoke field -------------------------------------------------------
-     The only tokens JS may read, alongside the two durations. */
-  --field-rgb: 126, 231, 162;
-  --field-gain: 1;
+     The only tokens JS may read, alongside the two durations. --field-rgb is
+     --primary written as a bare rgb triple, because a canvas fill is
+     assembled in JS and cannot use a hex token; the two must move together.
+     The gain is the ambient brightness of the smoke: the light-mode green is
+     dark against a pale ground, so it is held back to 0.45, while the dark
+     mode green sits on near-black and runs at full strength. */
+  --field-rgb: 22, 113, 61;
+  --field-gain: 0.45;
+}
+
+/* -- Derived colour ---------------------------------------------------------
+   The five tints below are declared on every element rather than on :root,
+   and that is load-bearing rather than stylistic. A custom property is
+   substituted where it is *declared*, not where it is used, so a color-mix()
+   written on :root is computed once against the root's --text, --page, and
+   --accent and then inherits as a finished colour. A dark panel that sets
+   --page and --text on itself, or a study root that sets --accent, would
+   inherit tints mixed from the palette it just replaced. Declaring them on
+   `*` makes every element re-run the mix against the values it actually
+   inherits, so a subtree re-pigments as a whole from two authored colours.
+   It also keeps --accent-soft valid: --accent is unset at the root, where
+   this mix would otherwise compute to nothing. */
+*,
+::before,
+::after {
+  --text-muted: color-mix(in srgb, var(--text) 60%, var(--page));
+  --line: color-mix(in srgb, var(--text) 15%, var(--page));
+  --surface: color-mix(in srgb, var(--text) 5%, var(--page));
+  --primary-hover: color-mix(in srgb, var(--primary) 85%, var(--text));
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--page));
 }
 
 /* -- Colour — dark ----------------------------------------------------------
@@ -122,6 +159,10 @@
   --page-site: #070d09;
   --text: #fff;
   --primary: #7ee7a2;
+
+  /* The dark --primary as a bare triple, and the full ambient gain. */
+  --field-rgb: 126, 231, 162;
+  --field-gain: 1;
 }
 
 /* -- Case-study page colour -------------------------------------------------

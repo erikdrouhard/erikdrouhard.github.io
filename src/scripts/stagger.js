@@ -10,7 +10,15 @@
    rather than appearing all at once.
    ========================================================================== */
 
-const STAGGER = 70; // ms between siblings
+/* The gap between siblings and the cleanup deadline both come from the
+   stylesheet: --duration-slow is what the CSS transition below actually runs
+   for, and half of --duration is the release interval. Nothing here is a
+   literal, so prefers-reduced-motion — which zeroes both tokens — cannot leave
+   a hardcoded timer running behind a motionless page. */
+function duration(name) {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue(name);
+  return parseFloat(raw) || 0;
+}
 
 let cleanup = 0;
 let active = null; // { view, items } currently mid-stagger
@@ -49,11 +57,13 @@ export function initStagger() {
   const items = itemsFor(view);
   if (!items.length) return;
 
+  const step = duration("--duration") / 2; // ms between siblings
+
   active = { view, items };
   view.classList.remove("is-entered");
   view.classList.add("is-entering");
   items.forEach((el, i) => {
-    el.style.transitionDelay = i * STAGGER + "ms";
+    el.style.transitionDelay = i * step + "ms";
   });
 
   // two frames: one for the browser to commit the start state, one to release
@@ -70,7 +80,7 @@ export function initStagger() {
 
   // once the longest delay has played out, drop the classes and the inline
   // delays so nothing lingers to interfere with hover transitions
-  const total = 620 + items.length * STAGGER;
+  const total = duration("--duration-slow") + items.length * step;
   cleanup = setTimeout(settle, total);
 }
 

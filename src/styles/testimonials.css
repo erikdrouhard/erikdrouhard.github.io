@@ -1,27 +1,27 @@
 /* Shared testimonial block for the case studies.
    Layout and colour only: typography comes from the type-* classes in the
-   markup, so this file stays inside the type system that check-type-system.mjs
-   enforces. Attribution is by role, never by name. */
+   markup, so this file writes no type of its own. Attribution is by role,
+   never by name. */
 
 .testimonials {
   display: grid;
   width: 100%;
   min-width: 0;
-  gap: 24px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(var(--space-7), 1fr));
 }
 
 .testimonial {
   display: grid;
   margin: 0;
-  padding: 28px 0 0;
-  /* Deliberate change from main-ref, which hardcodes rgb(0 0 0 / 18%) here and
+  padding: var(--space-4) 0 0;
+  /* Deliberate change from main-ref, which hardcodes its own black here and
      never overrides it for dark. That only misrendered for the minority of live
      visitors on a dark OS; this branch defaults to dark, so the divider would
-     have been invisible for most readers. --line, at 14%, is the nearest token
-     to the published 18%, and it flips itself, so no dark rule is needed. */
+     have been invisible for most readers. --line is the system's one rule
+     colour and it flips itself, so no dark rule is needed. */
   border-top: 1px solid var(--line);
-  gap: 16px;
+  gap: var(--space-2);
   align-content: start;
 }
 
@@ -35,23 +35,22 @@
 .testimonial figcaption {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 8px;
-  /* Same hardcoded-black fix as the border above. --ink-muted is 58% against
-     the published 62%, the nearest of the muted pair (--ink-soft is 68%). */
-  color: var(--ink-muted);
+  gap: calc(var(--space-1) / 3) calc(var(--space-1) / 2);
+  /* Same hardcoded-black fix as the border above. */
+  color: var(--text-muted);
 }
 
 .testimonial figcaption .testimonial-role {
-  color: var(--ink);
+  color: var(--text);
 }
 
-@media (width <= 700px) {
+@media (max-width: 809.98px) {
   .testimonials {
-    gap: 8px;
+    gap: var(--space-1);
     grid-template-columns: minmax(0, 1fr);
   }
 
   .testimonial {
-    padding-top: 24px;
+    padding-top: var(--space-3);
   }
 }

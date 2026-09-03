@@ -1,98 +1,77 @@
 /* ==========================================================================
    erikdrouhard.com — theme.css
-   Single source of truth for the design system. Every page links this file.
+   The site chrome. Every value it writes comes from `tokens.css`, which is the
+   design system; this file only decides which token each element reads.
 
    LAYERS
-   1. Tokens        — colors, type scale, surfaces, spacing. Change here first.
-   2. Base + chrome — body, field canvas, shell, .site-nav, .site-footer, kbd.
-   3. Components    — cards, badges, buttons, section heads, closing card.
-   4. Case studies  — prose, figures, case header, metric bar, prev/next nav.
+   1. Base + chrome — body, field canvas, shell, .site-nav, .site-footer, kbd.
+   2. Components    — cards, badges, buttons, section heads, closing card.
+   3. Case studies  — prose, figures, case header, metric bar, prev/next nav.
 
    RULES OF THE SYSTEM
-   - Surfaces are opaque-ish fills over the field, never pure glass over text.
-   - Hover changes depth (border line-1 -> line-2, fill -> fill-hover), not hue.
+   - Surfaces are opaque fills over the field, never pure glass over text.
+   - Hover changes depth (border --line -> --primary), not hue.
    - Corners are square everywhere; corner ticks appear on cards and figures only.
    - The mono face is functional: labels, metadata, captions, keycaps. Never prose.
    - The metric bar renders only where a real, defensible number exists.
    ========================================================================== */
 
-/* ------------------------------------------------------------------ tokens
-   Locked configuration:
-   surface: outline + legibility fill · blur: 10px · corners: square
-   seam: off · motifs: smoke rendered as blocks, corner ticks, key hints
-   type: 16px body, 18px bold titles, 28px hero
-------------------------------------------------------------------------- */
-:root {
-  --page:        #070d09;
-  --page-grad:   radial-gradient(120% 80% at 35% 0%, #10231a 0%, #060b08 62%);
-
-  --fill:        rgba(7,13,9,0.42);   /* set transparent for pure outline */
-  --fill-hover:  rgba(7,13,9,0.54);
-  --surface-2:   #16211a;
-  --blur:        10px;
-  --radius:      0px;
-
-  --line-1:      rgba(255,255,255,0.09);
-  --line-2:      rgba(255,255,255,0.18);
-
-  --t1:          #eef4ee;
-  --t2:          #a8b5ab;
-  --t3:          #6b7a6f;
-
-  --accent:      #7ee7a2;
-  --accent-soft: rgba(126,231,162,0.15);
-
-  --track:       #1c2a20;
-
-  /* the smoke field samples its pigment from these */
-  --field-rgb:   126,231,162;
-  --field-gain:  1;
-
-  /* type scale */
-  --fs-hero:     36px;
-  --fs-lead:     18px;
-  --fs-title:    20px;
-  --fs-body:     16px;
-  --fs-ui:       15px;
-  --fs-meta:     13px;
-  --fs-label:    10.5px;
-
-  --serif: "Newsreader Variable", "Newsreader", Georgia, "Times New Roman", serif;
-  --mono:  "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
+* {
+  box-sizing: border-box;
 }
 
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
 
 body {
-  background: var(--page-grad);
-  background-color: var(--page);
-  color: var(--t1);
-  font-family: var(--sans);
-  font-size: var(--fs-body);
-  line-height: 1.6;
+  background: var(--page);
+  color: var(--text);
+  font: var(--type-body);
   -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
+/* The canvas carries no colour. field.js reads --field-rgb and --field-gain
+   off the root, which is where the theme swaps them, so the field re-tints
+   without this rule holding a second copy of the palette. */
 #field {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: var(--layer-base);
   pointer-events: none;
 }
 
+/* Base layer like #field, but later in the DOM, so it paints over the canvas
+   without a second stacking number. */
 .shell {
   position: relative;
-  z-index: 1;
-  max-width: 1000px;
+  z-index: var(--layer-base);
+  max-width: var(--shell);
   margin: 0 auto;
-  padding: 28px 28px 88px;
+  padding: var(--gutter) var(--gutter) var(--section);
 }
 
-*:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-a { color: inherit; }
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+a {
+  color: inherit;
+}
+
+/* ------------------------------------------------------------- type role */
+/* The eight roles are applied in case.css; `.type-meta` lives here because it
+   is the one role the site chrome uses on every page. It is always mono,
+   always uppercase, always tracked out — there is no bare casing modifier. */
+.type-meta {
+  font: var(--type-meta);
+  text-transform: uppercase;
+  letter-spacing: var(--track-caps);
+}
 
 /* ------------------------------------------------------------------- nav */
 /* Class-scoped, not a bare `nav` selector: ported case studies bring their own
@@ -101,281 +80,368 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 80px;
+  margin-bottom: var(--section);
 }
 /* The published logomark, not a letterform. The SVG ships with a black fill
-   (it was authored for the light site), so the dark ground inverts it and the
-   light theme takes it as drawn — same trick the live site uses. */
+   (it was authored for the light site), so the light theme takes it as drawn
+   and the dark ground inverts it — same trick the live site uses. */
 .mark {
-  width: 40px; height: 40px;
-  flex: 0 0 40px;
+  width: var(--space-4);
+  height: var(--space-4);
+  flex: 0 0 var(--space-4);
   display: block;
   text-decoration: none;
 }
-.mark img { display: block; width: 100%; height: 100%; filter: invert(1); }
-[data-theme="light"] .mark img { filter: none; }
-.nav-right { display: flex; align-items: center; gap: 22px; }
+.mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+[data-theme="dark"] .mark img {
+  filter: invert(1);
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
 .nav-right a {
-  color: var(--t2);
+  color: var(--text-muted);
   text-decoration: none;
-  font-size: var(--fs-ui);
+  font: var(--type-body);
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  transition: color 150ms ease-out;
+  gap: var(--space-1);
+  transition: color var(--duration) ease-out;
 }
-.nav-right a:hover { color: var(--t1); }
+.nav-right a:hover {
+  color: var(--text);
+}
 .resume {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 16px;
-  border: 1px solid var(--line-2);
-  border-radius: var(--radius);
-  color: var(--t1) !important;
-  background: var(--fill);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  transition: border-color 150ms ease-out, background 150ms ease-out;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--line);
+  color: var(--text) !important;
+  background: var(--surface);
+  transition:
+    border-color var(--duration) ease-out,
+    background var(--duration) ease-out;
 }
-.resume:hover { border-color: var(--accent); background: var(--accent-soft); }
+.resume:hover {
+  border-color: var(--primary);
+}
 
+/* A keycap is metadata, not a label: mono at the meta size, but not cased —
+   the character inside it is already the literal key. */
 kbd {
-  font-family: var(--mono);
-  font-size: 10px;
-  line-height: 1;
-  padding: 4px 6px;
-  background: var(--surface-2);
-  border: 1px solid var(--line-1);
-  border-radius: 0;
-  color: var(--t3);
-  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+  font: var(--type-meta);
+  padding: calc(var(--space-1) / 3) calc(var(--space-1) / 2);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  transition:
+    background var(--duration) ease-out,
+    color var(--duration) ease-out,
+    border-color var(--duration) ease-out;
 }
-kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--page); }
+kbd.hot {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--page);
+}
 
 /* ------------------------------------------------------------------ hero */
 .hero h1 {
-  font-family: var(--serif);
-  font-size: var(--fs-hero);
-  line-height: 1.34;
-  font-weight: 300;
-  margin: 0 0 44px;
-  letter-spacing: 0;
+  font: var(--type-display);
+  margin: 0 0 var(--space-4);
 }
 .hero h1 a {
-  font-weight: 500;
   text-decoration: none;
-  border-bottom: 1px solid var(--line-2);
-  transition: border-color 150ms ease-out, color 150ms ease-out;
+  border-bottom: 1px solid var(--line);
+  transition:
+    border-color var(--duration) ease-out,
+    color var(--duration) ease-out;
 }
-.hero h1 a:hover { border-color: var(--accent); color: var(--accent); }
+.hero h1 a:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
 
 .skills-label {
-  font-family: var(--mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.16em;
-  color: var(--t3);
+  font: var(--type-meta);
   text-transform: uppercase;
-  margin-bottom: 12px;
+  letter-spacing: var(--track-caps);
+  color: var(--text-muted);
+  margin-bottom: var(--space-1);
 }
-.skills { display: flex; flex-wrap: wrap; gap: 7px; }
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
 .skills span {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.03em;
-  padding: 8px 12px;
-  border: 1px solid var(--line-1);
-  border-radius: var(--radius);
-  background: var(--fill);
-  color: var(--t2);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  transition: border-color 150ms ease-out, background 150ms ease-out, color 150ms ease-out;
+  font: var(--type-meta);
+  padding: var(--space-1);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text-muted);
+  transition:
+    border-color var(--duration) ease-out,
+    background var(--duration) ease-out,
+    color var(--duration) ease-out;
 }
 .skills span:hover {
-  border-color: var(--line-2);
-  background: var(--fill-hover);
-  color: var(--t1);
+  border-color: var(--primary);
+  color: var(--text);
 }
-
 
 /* ------------------------------------------------------- closing block */
 .close-card {
-  margin-top: 96px;
-  padding: 40px 36px;
+  margin-top: var(--space-7);
+  padding: var(--space-4);
   gap: 0;
   cursor: pointer;
 }
 .close-card .close-line {
-  font-family: var(--serif);
-  font-size: 28px;
-  line-height: 1.34;
-  font-weight: 300;
-  color: var(--t1);
-  margin: 0 0 30px;
-  max-width: 46ch;
+  font: var(--type-display);
+  color: var(--text);
+  margin: 0 0 var(--space-3);
+  max-width: var(--measure-title);
   text-wrap: balance;
 }
-.close-card .close-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.close-card .close-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 12px 18px;
-  /* The button carries its own face, weight and leading rather than
-     inheriting them. On the home page all three are what it would have
-     inherited anyway; on a case study the surrounding type role is a serif at
-     600 with a 1.45 ratio, and without these the same button renders in a
-     different typeface at a different weight. */
-  font-family: var(--sans);
-  font-size: var(--fs-ui);
-  font-weight: 400;
-  line-height: 1.6;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  /* The button carries its own role rather than inheriting it. On the home
+     page that is what it would have inherited anyway; on a case study the
+     surrounding role is a different size, and without this the same button
+     renders at two sizes on two pages. */
+  font: var(--type-label);
   text-decoration: none;
-  color: var(--t2);
-  background: var(--fill);
-  border: 1px solid var(--line-1);
-  border-radius: var(--radius);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  transition: border-color 150ms ease-out, background 150ms ease-out, color 150ms ease-out;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition:
+    border-color var(--duration) ease-out,
+    background var(--duration) ease-out,
+    color var(--duration) ease-out;
 }
-.btn:hover { border-color: var(--line-2); background: var(--fill-hover); color: var(--t1); }
-.btn.primary { border-color: var(--line-2); color: var(--t1); }
-.btn.primary:hover { border-color: var(--accent); background: var(--accent-soft); }
+.btn:hover {
+  border-color: var(--primary);
+  color: var(--text);
+}
+.btn.primary {
+  border-color: var(--primary);
+  color: var(--text);
+}
+.btn.primary:hover {
+  background: var(--surface);
+  color: var(--primary-hover);
+}
 
 /* ------------------------------------------------------- section heading */
 .section-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 16px;
-  margin: 80px 0 22px;
+  gap: var(--space-2);
+  margin: var(--section) 0 var(--space-3);
 }
 .section-head h2 {
-  font-family: var(--mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.16em;
+  font: var(--type-meta);
   text-transform: uppercase;
-  color: var(--t3);
-  font-weight: 400;
+  letter-spacing: var(--track-caps);
+  color: var(--text-muted);
   margin: 0;
 }
-.section-head .count { font-family: var(--mono); font-size: var(--fs-label); color: var(--t3); }
+.section-head .count {
+  font: var(--type-meta);
+  color: var(--text-muted);
+}
 
 /* ----------------------------------------------------------------- cards */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
+  gap: var(--space-2);
 }
 
 .card {
   position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 26px 24px;
-  background: var(--fill);
-  border: 1px solid var(--line-1);
-  border-radius: var(--radius);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--line);
   text-decoration: none;
   cursor: pointer;
-  transition: border-color 150ms ease-out, background 150ms ease-out;
+  transition:
+    border-color var(--duration) ease-out,
+    background var(--duration) ease-out;
 }
-.card.featured { border-color: var(--line-2); }
-.card:hover { border-color: var(--line-2); background: var(--fill-hover); }
+.card.featured {
+  border-color: var(--primary);
+}
+.card:hover {
+  border-color: var(--primary);
+}
 
 .card i {
   position: absolute;
-  width: 9px; height: 9px;
+  width: var(--space-1);
+  height: var(--space-1);
   opacity: 0.55;
   pointer-events: none;
-  transition: opacity 150ms ease-out;
+  transition: opacity var(--duration) ease-out;
 }
-.card:hover i { opacity: 1; }
-.card i.tl { top: 8px;    left: 8px;  border-top: 1px solid var(--accent);    border-left: 1px solid var(--accent); }
-.card i.tr { top: 8px;    right: 8px; border-top: 1px solid var(--accent);    border-right: 1px solid var(--accent); }
-.card i.bl { bottom: 8px; left: 8px;  border-bottom: 1px solid var(--accent); border-left: 1px solid var(--accent); }
-.card i.br { bottom: 8px; right: 8px; border-bottom: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+.card:hover i {
+  opacity: 1;
+}
+.card i.tl {
+  top: calc(var(--space-1) / 2);
+  left: calc(var(--space-1) / 2);
+  border-top: 1px solid var(--primary);
+  border-left: 1px solid var(--primary);
+}
+.card i.tr {
+  top: calc(var(--space-1) / 2);
+  right: calc(var(--space-1) / 2);
+  border-top: 1px solid var(--primary);
+  border-right: 1px solid var(--primary);
+}
+.card i.bl {
+  bottom: calc(var(--space-1) / 2);
+  left: calc(var(--space-1) / 2);
+  border-bottom: 1px solid var(--primary);
+  border-left: 1px solid var(--primary);
+}
+.card i.br {
+  bottom: calc(var(--space-1) / 2);
+  right: calc(var(--space-1) / 2);
+  border-bottom: 1px solid var(--primary);
+  border-right: 1px solid var(--primary);
+}
 
-.meta { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
-.badge {
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  font-weight: 600;
-  padding: 3px 8px;
-  background: var(--surface-2);
-  border: 1px solid var(--line-1);
-  color: var(--t2);
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-wrap: wrap;
 }
-.org { font-size: var(--fs-meta); color: var(--t3); }
+.badge {
+  font: var(--type-meta);
+  text-transform: uppercase;
+  letter-spacing: var(--track-caps);
+  padding: calc(var(--space-1) / 4) calc(var(--space-1) / 2);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+}
+.org {
+  font: var(--type-meta);
+  color: var(--text-muted);
+}
 
 .card h3 {
-  font-family: var(--serif);
-  font-size: var(--fs-title);
-  line-height: 1.38;
-  font-weight: 600;
+  font: var(--type-title);
   margin: 0;
-  color: var(--t1);
+  color: var(--text);
 }
 .card p {
   margin: 0;
-  font-size: var(--fs-body);
-  line-height: 1.58;
-  color: var(--t2);
+  font: var(--type-body);
+  color: var(--text);
 }
 
 .cta {
   margin-top: auto;
-  padding-top: 16px;
+  padding-top: var(--space-2);
   display: flex;
   align-items: center;
-  gap: 9px;
-  font-size: var(--fs-meta);
-  color: var(--t1);
+  gap: var(--space-1);
+  font: var(--type-meta);
+  color: var(--text);
 }
 
 /* ---------------------------------------------------------------- footer */
 /* Class-scoped for the same reason as .site-nav — case studies carry their own
    <footer> for the next-study block. */
 .site-footer {
-  margin-top: 40px;
-  padding-top: 4px;
+  margin-top: var(--space-4);
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 14px;
-  font-family: var(--mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.08em;
-  color: var(--t3);
+  gap: var(--space-1);
+  font: var(--type-meta);
   text-transform: uppercase;
+  letter-spacing: var(--track-caps);
+  color: var(--text-muted);
 }
-.site-footer a { color: var(--t3); text-decoration: none; transition: color 150ms ease-out; }
-.site-footer a:hover { color: var(--accent); }
-.social { display: flex; gap: 14px; flex-wrap: wrap; }
-.footer-right { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; }
+.site-footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--duration) ease-out;
+}
+.site-footer a:hover {
+  color: var(--primary);
+}
+.social {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
 
 /* ------------------------------------------------------------ breakpoint */
-@media (max-width: 720px) {
-  :root { --fs-hero: 27px; }
-  .shell { padding: 22px 20px 64px; }
-  .site-nav { margin-bottom: 52px; }
-  .section-head { margin-top: 56px; }
-  .close-card { margin-top: 64px; padding: 30px 24px; }
-  .close-card .close-line { max-width: none; }
-  .grid { grid-template-columns: 1fr; }
-  .nav-right { gap: 14px; }
-  .nav-right kbd { display: none; }
+@media (max-width: 809.98px) {
+  .shell {
+    padding: var(--space-3) var(--space-3) var(--section);
+  }
+  .site-nav {
+    margin-bottom: var(--space-5);
+  }
+  .section-head {
+    margin-top: var(--space-5);
+  }
+  .close-card {
+    margin-top: var(--section);
+    padding: var(--space-3);
+  }
+  .close-card .close-line {
+    max-width: none;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .nav-right {
+    gap: var(--space-2);
+  }
+  .nav-right kbd {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
+  * {
+    transition: none !important;
+  }
 }
 
 /* ==========================================================================
@@ -385,206 +451,261 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
 /* Put data-field="quiet" on <body> for reading pages; site.js dims the smoke. */
 
 /* ------------------------------------------------------------ case header */
-.case-header { margin-bottom: 64px; }
+.case-header {
+  margin-bottom: var(--section);
+}
 .case-header h1 {
-  font-family: var(--serif);
-  font-size: var(--fs-hero);
-  line-height: 1.34;
-  font-weight: 300;
-  margin: 0 0 28px;
-  letter-spacing: 0;
+  font: var(--type-display);
+  margin: 0 0 var(--space-4);
 }
 .case-meta {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1px;
-  background: var(--line-1);
-  border: 1px solid var(--line-1);
+  grid-template-columns: repeat(auto-fit, minmax(var(--space-7), 1fr));
+  /* One hairline, the same width every border on the site draws, expressed off
+     the scale so no literal is typed. The gap is the rule: the container's
+     background shows through between the opaque cells. */
+  gap: calc(var(--space-1) / 12);
+  background: var(--line);
+  border: 1px solid var(--line);
 }
-.case-meta > div { background: var(--page); padding: 14px 16px; }
+.case-meta > div {
+  background: var(--page);
+  padding: var(--space-2);
+}
 .case-meta dt {
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.13em;
+  font: var(--type-meta);
   text-transform: uppercase;
-  color: var(--t3);
-  margin: 0 0 5px;
+  letter-spacing: var(--track-caps);
+  color: var(--text-muted);
+  margin: 0 0 calc(var(--space-1) / 2);
 }
-.case-meta dd { margin: 0; font-size: var(--fs-meta); color: var(--t1); }
+.case-meta dd {
+  margin: 0;
+  font: var(--type-body-small);
+  color: var(--text);
+}
 
 /* ----------------------------------------------------------------- prose */
 .prose {
-  max-width: 68ch;
-  font-size: 17px;
-  line-height: 1.7;
-  color: var(--t2);
+  max-width: var(--measure);
+  font: var(--type-body);
+  color: var(--text);
 }
 .prose h2 {
-  font-family: var(--serif);
-  font-size: 26px;
-  line-height: 1.3;
-  font-weight: 500;
-  color: var(--t1);
-  margin: 56px 0 16px;
+  font: var(--type-section);
+  color: var(--text);
+  margin: var(--space-5) 0 var(--space-2);
 }
 .prose h3 {
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--t1);
-  margin: 36px 0 12px;
+  font: var(--type-support);
+  color: var(--text);
+  margin: var(--space-4) 0 var(--space-1);
 }
-.prose p { margin: 0 0 20px; }
-.prose strong { color: var(--t1); font-weight: 600; }
+.prose p {
+  margin: 0 0 var(--space-3);
+}
+.prose strong {
+  color: var(--text);
+}
 .prose a {
-  color: var(--t1);
+  color: var(--primary);
   text-decoration: none;
-  border-bottom: 1px solid var(--line-2);
-  transition: border-color 150ms ease-out, color 150ms ease-out;
+  border-bottom: 1px solid var(--line);
+  transition:
+    border-color var(--duration) ease-out,
+    color var(--duration) ease-out;
 }
-.prose a:hover { border-color: var(--accent); color: var(--accent); }
-.prose ul, .prose ol { margin: 0 0 20px; padding-left: 22px; }
-.prose li { margin-bottom: 8px; }
+.prose a:hover {
+  border-color: var(--primary);
+  color: var(--primary-hover);
+}
+.prose ul,
+.prose ol {
+  margin: 0 0 var(--space-3);
+  padding-left: var(--space-3);
+}
+.prose li {
+  margin-bottom: var(--space-1);
+}
 .prose blockquote {
-  margin: 28px 0;
-  padding: 4px 0 4px 20px;
-  border-left: 2px solid var(--line-2);
-  font-family: var(--serif);
-  font-size: 19px;
-  line-height: 1.5;
-  color: var(--t1);
+  margin: var(--space-4) 0;
+  padding: 0 0 0 var(--space-3);
+  border-left: 2px solid var(--line);
+  font: var(--type-title);
+  color: var(--text);
 }
 .prose code {
-  font-family: var(--mono);
-  font-size: 0.85em;
-  padding: 2px 6px;
-  background: var(--surface-2);
-  border: 1px solid var(--line-1);
+  font: var(--type-meta);
+  padding: calc(var(--space-1) / 6) calc(var(--space-1) / 2);
+  background: var(--surface);
+  border: 1px solid var(--line);
 }
 .prose pre {
-  margin: 0 0 20px;
-  padding: 18px 20px;
-  background: var(--surface-2);
-  border: 1px solid var(--line-1);
+  margin: 0 0 var(--space-3);
+  padding: var(--space-2);
+  background: var(--surface);
+  border: 1px solid var(--line);
   overflow-x: auto;
 }
-.prose pre code { padding: 0; background: none; border: none; font-size: 13px; line-height: 1.6; }
+.prose pre code {
+  padding: 0;
+  background: none;
+  border: none;
+  font: var(--type-meta);
+}
 
 /* ---------------------------------------------------------------- figures */
 .figure {
   position: relative;
-  margin: 36px 0;
-  padding: 12px;
-  background: var(--fill);
-  border: 1px solid var(--line-1);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
+  margin: var(--space-4) 0;
+  padding: var(--space-1);
+  background: var(--surface);
+  border: 1px solid var(--line);
 }
-.figure img, .figure video { display: block; width: 100%; height: auto; }
+.figure img,
+.figure video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 .figure figcaption {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.08em;
-  color: var(--t3);
+  font: var(--type-meta);
   text-transform: uppercase;
-  padding: 12px 4px 2px;
+  letter-spacing: var(--track-caps);
+  color: var(--text-muted);
+  padding: var(--space-1) 0 0;
 }
-.figure.wide { max-width: none; }
+.figure.wide {
+  max-width: none;
+}
 
 /* -------------------------------------------------------------- metric bar */
-.metric { margin: 28px 0; max-width: 46ch; }
-.metric .bar { display: flex; gap: 3px; margin-bottom: 8px; }
-.metric .bar span { flex: 1; height: 5px; background: var(--track); }
-.metric .bar span.on { background: var(--accent); }
+.metric {
+  margin: var(--space-4) 0;
+  max-width: var(--measure-title);
+}
+.metric .bar {
+  display: flex;
+  gap: calc(var(--space-1) / 4);
+  margin-bottom: var(--space-1);
+}
+.metric .bar span {
+  flex: 1;
+  height: calc(var(--space-1) / 3);
+  background: var(--line);
+}
+.metric .bar span.on {
+  background: var(--primary);
+}
 .metric .cap {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  font: var(--type-meta);
   text-transform: uppercase;
-  color: var(--t3);
+  letter-spacing: var(--track-caps);
+  color: var(--text-muted);
 }
 
 /* ------------------------------------------------------- prev / next nav */
 .case-nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-top: 80px;
+  gap: var(--space-2);
+  margin-top: var(--section);
 }
-.case-nav .card { padding: 22px 22px; gap: 8px; }
+.case-nav .card {
+  padding: var(--space-3);
+  gap: var(--space-1);
+}
 .case-nav .dir {
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.13em;
+  font: var(--type-meta);
   text-transform: uppercase;
-  color: var(--t3);
+  letter-spacing: var(--track-caps);
+  color: var(--text-muted);
 }
 .case-nav h4 {
-  font-family: var(--serif);
-  font-size: var(--fs-title);
-  font-weight: 600;
-  line-height: 1.35;
+  font: var(--type-title);
   margin: 0;
-  color: var(--t1);
+  color: var(--text);
 }
-.case-nav .next { text-align: right; align-items: flex-end; }
-
-@media (max-width: 720px) {
-  .case-nav { grid-template-columns: 1fr; }
-  .prose { font-size: 16px; }
+.case-nav .next {
+  text-align: right;
+  align-items: flex-end;
 }
 
+@media (max-width: 809.98px) {
+  .case-nav {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* ==========================================================================
    5. VIEW TRANSITION — home <-> full work index
    ========================================================================== */
 
-.view { display: block; }
+.view {
+  display: block;
+}
 
 /* The outgoing page lifts and fades. Under <ClientRouter /> this is the
-   root view-transition rather than a class on a hidden <main>, but the
-   numbers are the prototype's. */
+   root view-transition rather than a class on a hidden <main>. */
 @keyframes ed-page-leave {
-  from { transform: translateY(0);      opacity: 1; }
-  to   { transform: translateY(-32px);  opacity: 0; }
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(calc(-1 * var(--space-4)));
+    opacity: 0;
+  }
 }
 @keyframes ed-page-enter {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 ::view-transition-old(root) {
-  animation: ed-page-leave 380ms cubic-bezier(.4,0,.2,1) both;
+  animation: ed-page-leave var(--duration-slow) ease-out both;
 }
 ::view-transition-new(root) {
   /* a plain fade: the per-child stagger below carries the incoming motion */
-  animation: ed-page-enter 300ms ease-out both;
+  animation: ed-page-enter var(--duration-slow) ease-out both;
 }
 
 /* incoming children start low and transparent, then stagger in */
 .view.is-entering > * {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(var(--space-3));
 }
 .view.is-entered > * {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 460ms ease-out, transform 520ms cubic-bezier(.2,.7,.3,1);
+  transition:
+    opacity var(--duration-slow) ease-out,
+    transform var(--duration-slow) ease-out;
 }
 
 /* grid children stagger individually rather than as one block */
 .view.is-entering .grid > *,
-.view.is-entering .work-head { opacity: 0; transform: translateY(30px); }
+.view.is-entering .work-head {
+  opacity: 0;
+  transform: translateY(var(--space-3));
+}
 .view.is-entered .grid > *,
 .view.is-entered .work-head {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 460ms ease-out, transform 560ms cubic-bezier(.2,.7,.3,1);
+  transition:
+    opacity var(--duration-slow) ease-out,
+    transform var(--duration-slow) ease-out;
 }
 
 /* ------------------------------------------------------------- more row */
 .more-row {
   display: flex;
   justify-content: center;
-  margin-top: 22px;
+  margin-top: var(--space-3);
 }
 
 /* --------------------------------------------------------- work index view */
@@ -592,39 +713,43 @@ kbd.hot { background: var(--accent); border-color: var(--accent); color: var(--p
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 16px;
-  margin: 0 0 22px;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
 }
 .work-head h2 {
-  font-family: var(--serif);
-  font-size: var(--fs-hero);
-  font-weight: 300;
-  line-height: 1.3;
+  font: var(--type-section);
   margin: 0;
 }
-.back-row { margin-bottom: 28px; }
+.back-row {
+  margin-bottom: var(--space-4);
+}
 .back {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 10px 15px;
-  font-size: var(--fs-meta);
-  font-family: var(--mono);
-  letter-spacing: 0.06em;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  font: var(--type-meta);
   text-transform: uppercase;
-  color: var(--t2);
+  letter-spacing: var(--track-caps);
+  color: var(--text-muted);
   text-decoration: none;
-  background: var(--fill);
-  border: 1px solid var(--line-1);
-  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--line);
   cursor: pointer;
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  transition: border-color 150ms ease-out, background 150ms ease-out, color 150ms ease-out;
+  transition:
+    border-color var(--duration) ease-out,
+    background var(--duration) ease-out,
+    color var(--duration) ease-out;
 }
-.back:hover { border-color: var(--line-2); background: var(--fill-hover); color: var(--t1); }
+.back:hover {
+  border-color: var(--primary);
+  color: var(--text);
+}
 
-button.btn { font-family: inherit; cursor: pointer; }
+button.btn {
+  font-family: inherit;
+  cursor: pointer;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .view.is-leaving,
@@ -638,143 +763,108 @@ button.btn { font-family: inherit; cursor: pointer; }
   }
 }
 
-
 /* --------------------------------------------------------------- about view */
 .about-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 44px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
   align-items: start;
-  margin-bottom: 40px;
+  margin-bottom: var(--space-4);
 }
 .prose .lead {
-  font-family: var(--serif);
-  font-size: 22px;
-  line-height: 1.45;
-  font-weight: 400;
-  color: var(--t1);
+  font: var(--type-title);
+  color: var(--text);
 }
 .portrait {
   margin: 0;
-  padding: 10px;
+  padding: var(--space-1);
   position: relative;
-  background: var(--fill);
-  border: 1px solid var(--line-1);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
+  background: var(--surface);
+  border: 1px solid var(--line);
 }
-.portrait img { display: block; width: 100%; height: auto; }
-.about-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 56px; }
-.view-work-card { cursor: pointer; }
-.view-work-card .close-line { margin: 0; }
-
-@media (max-width: 720px) {
-  .about-layout { grid-template-columns: 1fr; }
-  .portrait { max-width: 340px; }
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
-
-/* ==========================================================================
-   LIGHT THEME
-   Same structure, re-pigmented. The accent darkens because mint fails
-   contrast on white, and the top highlight goes near-opaque because light
-   still comes from above.
-   ========================================================================== */
-[data-theme="light"] {
-  --page:        #f4f6f0;
-  --page-grad:   radial-gradient(120% 80% at 35% 0%, #e6ede1 0%, #f6f8f2 62%);
-
-  --fill:        rgba(255,255,255,0.62);
-  --fill-hover:  rgba(255,255,255,0.82);
-  --surface-2:   #edf1e8;
-
-  --line-1:      rgba(20,26,18,0.12);
-  --line-2:      rgba(20,26,18,0.26);
-  --top-light:   rgba(255,255,255,0.95);
-
-  --t1:          #141a12;
-  --t2:          #4d574a;
-  --t3:          #7b877c;
-
-  --accent:      #16713d;
-  --accent-soft: rgba(22,113,61,0.11);
-
-  --track:       #dce3d6;
-
-  --field-rgb:   22,113,61;
-  --field-gain:  0.45;
+.about-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+}
+.view-work-card {
+  cursor: pointer;
+}
+.view-work-card .close-line {
+  margin: 0;
 }
 
-[data-theme="light"] kbd.hot { color: #f4f6f0; }
-
-/* ------------------------------------------------ surfaces locked to dark */
-/* A few panels keep a dark face in both themes — a case-study callout printed
-   on its brand colour, say. Under the light theme the shared components inside
-   them inherit light-theme pigment and go unreadable: `.btn` is the loudest
-   case, because both its resting and hover colour resolve to `--t1`, which is
-   near-black there. Re-pigmenting the token set for the subtree fixes every
-   such component at once instead of per page. Neutral rather than mint, so it
-   sits on whatever hue the panel happens to be; a page can point `--accent` at
-   its own colour. */
-.on-dark {
-  --fill:        rgba(7,13,9,0.30);
-  --fill-hover:  rgba(255,255,255,0.12);
-
-  --line-1:      rgba(255,255,255,0.20);
-  --line-2:      rgba(255,255,255,0.38);
-
-  --t1:          #ffffff;
-  --t2:          rgba(255,255,255,0.80);
-  --t3:          rgba(255,255,255,0.62);
-
-  --accent:      #ffffff;
-  --accent-soft: rgba(255,255,255,0.16);
+@media (max-width: 809.98px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ------------------------------------------------------------ theme toggle */
 .theme-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: var(--space-1);
   background: none;
   border: none;
   padding: 0;
-  font-family: var(--mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.08em;
+  font: var(--type-meta);
   text-transform: uppercase;
-  color: var(--t3);
+  letter-spacing: var(--track-caps);
+  color: var(--text-muted);
   cursor: pointer;
-  transition: color 150ms ease-out;
+  transition: color var(--duration) ease-out;
 }
-.theme-toggle:hover { color: var(--t1); }
+.theme-toggle:hover {
+  color: var(--text);
+}
 
+/* Square track, square knob: the design system has no radius. */
 .switch {
   position: relative;
   flex: none;
-  width: 34px;
-  height: 18px;
-  border-radius: 999px;
-  background: var(--fill);
-  border: 1px solid var(--line-1);
-  transition: background 200ms ease-out, border-color 200ms ease-out;
+  width: var(--space-4);
+  height: var(--space-2);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition:
+    background var(--duration) ease-out,
+    border-color var(--duration) ease-out;
 }
-.theme-toggle:hover .switch { border-color: var(--line-2); }
+.theme-toggle:hover .switch {
+  border-color: var(--primary);
+}
 .switch::after {
   content: "";
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--t2);
-  transition: transform 220ms cubic-bezier(.4,0,.2,1), background 200ms ease-out;
+  top: calc(var(--space-1) / 6);
+  left: calc(var(--space-1) / 6);
+  width: var(--space-1);
+  height: var(--space-1);
+  background: var(--primary);
+  transform: translateX(var(--space-3));
+  transition:
+    transform var(--duration) ease-out,
+    background var(--duration) ease-out;
 }
-[data-theme="light"] .switch { background: var(--accent-soft); border-color: var(--line-2); }
-[data-theme="light"] .switch::after { transform: translateX(16px); background: var(--accent); }
+/* Knob left in dark, right in light — the light palette is the default here,
+   so only the dark state moves it back. */
+[data-theme="dark"] .switch::after {
+  background: var(--text-muted);
+  transform: translateX(0);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .switch, .switch::after { transition: none; }
+  .switch,
+  .switch::after {
+    transition: none;
+  }
 }
 
 /* ==========================================================================
@@ -784,7 +874,7 @@ button.btn { font-family: inherit; cursor: pointer; }
    ========================================================================== */
 
 /* Reduced motion kills the cross-page animation too — ClientRouter falls back
-   to an instant swap rather than a 380ms lift. */
+   to an instant swap rather than a lift. */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
@@ -799,14 +889,18 @@ button.btn { font-family: inherit; cursor: pointer; }
   border-bottom: none;
   text-decoration: none;
 }
-.figure a:focus-visible { outline-offset: 0; }
+.figure a:focus-visible {
+  outline-offset: 0;
+}
 
-/* The prototype had no MDX bodies, so .prose could carry the 68ch measure on
-   the container itself. Now figures are siblings of the paragraphs, and a
-   .figure.wide inside a 68ch container cannot be wide. So the measure moves off
-   the container and onto the text elements: prose still reads at 68ch, a plain
-   figure matches it, and .wide spans the shell. */
-.case-body .prose { max-width: none; }
+/* The prototype had no MDX bodies, so .prose could carry the measure on the
+   container itself. Now figures are siblings of the paragraphs, and a
+   .figure.wide inside a measured container cannot be wide. So the measure moves
+   off the container and onto the text elements: prose still reads at the
+   measure, a plain figure matches it, and .wide spans the shell. */
+.case-body .prose {
+  max-width: none;
+}
 .case-body .prose > p,
 .case-body .prose > h2,
 .case-body .prose > h3,
@@ -814,43 +908,63 @@ button.btn { font-family: inherit; cursor: pointer; }
 .case-body .prose > ol,
 .case-body .prose > pre,
 .case-body .prose > blockquote,
-.case-body .prose > .figure { max-width: 68ch; }
-.case-body .prose > .figure.wide { max-width: none; }
+.case-body .prose > .figure {
+  max-width: var(--measure);
+}
+.case-body .prose > .figure.wide {
+  max-width: none;
+}
 
-/* Skip link — the old site had one and losing it would be a regression. */
+/* Skip link — the old site had one and losing it would be a regression. It
+   parks itself one full height above the viewport rather than at a large
+   negative offset, so there is no off-screen distance to write down. */
 .skip-link {
   position: absolute;
-  left: -9999px;
+  left: 0;
   top: 0;
-  z-index: 10;
-  padding: 10px 16px;
-  font-family: var(--mono);
-  font-size: var(--fs-meta);
-  background: var(--surface-2);
-  border: 1px solid var(--line-2);
-  color: var(--t1);
+  transform: translateY(-100%);
+  z-index: var(--layer-sticky);
+  padding: var(--space-1) var(--space-2);
+  font: var(--type-meta);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
   text-decoration: none;
 }
-.skip-link:focus-visible { left: 8px; top: 8px; }
+.skip-link:focus-visible {
+  left: var(--space-1);
+  top: var(--space-1);
+  transform: translateY(0);
+}
 
 /* Case-study page rhythm: the meta grid and prose share the shell, but the
    prev/next cards run full width beneath them. */
-.case-body { margin-bottom: 40px; }
+.case-body {
+  margin-bottom: var(--space-4);
+}
 
 /* The field is persisted across navigations (transition:persist), but an
    element with no view-transition-name of its own is captured inside
-   ::view-transition-old/new(root) — so the root's translateY(-32px) + fade
-   would sweep the whole fixed canvas up the screen on every page change. The
-   loop stays continuous either way; this is about what you see. Giving it its
-   own name pulls it out of the root snapshot, and killing the animation on
-   that name holds it still while the content transitions over it. */
-#field { view-transition-name: field; }
-::view-transition-group(field) { animation: none; }
-::view-transition-old(field) { display: none; }
-::view-transition-new(field) { animation: none; }
+   ::view-transition-old/new(root) — so the root's lift + fade would sweep the
+   whole fixed canvas up the screen on every page change. The loop stays
+   continuous either way; this is about what you see. Giving it its own name
+   pulls it out of the root snapshot, and killing the animation on that name
+   holds it still while the content transitions over it. */
+#field {
+  view-transition-name: field;
+}
+::view-transition-group(field) {
+  animation: none;
+}
+::view-transition-old(field) {
+  display: none;
+}
+::view-transition-new(field) {
+  animation: none;
+}
 
 /* ==========================================================================
-   5. ABOUT-PAGE EASTER EGG
+   7. ABOUT-PAGE EASTER EGG
 
    All of this is scoped to /about/ via body.about-page or the .egg-* classes,
    which appear on no other page. Nothing here is announced: there is no hint
@@ -864,7 +978,9 @@ button.btn { font-family: inherit; cursor: pointer; }
 /* Claim the overscroll gesture so the browser does not spend it on a rubber
    band or a pull-to-refresh. Only on this page; every other page scrolls
    normally. */
-html:has(.about-page) { overscroll-behavior-y: none; }
+html:has(.about-page) {
+  overscroll-behavior-y: none;
+}
 
 /* The shell scales back when the sheet rises, so it needs an origin and a
    compositing hint. Its bottom padding becomes the pocket, below. */
@@ -874,50 +990,57 @@ html:has(.about-page) { overscroll-behavior-y: none; }
   will-change: transform;
 }
 
-/* The clip that hides the button. Its height is what .shell gave up. */
+/* The clip that hides the button. Its height is what .shell gave up — the same
+   token at every width, so there is no second value to keep in step. */
 .egg-pocket {
   position: relative;
-  height: 88px;
+  height: var(--section);
   overflow: hidden;
 }
 
 /* Resting position is one pocket-height down: fully outside the clip. The
-   gesture drives translateY between 0 and -92px. */
+   gesture drives translateY between 0 and one pocket height up. Centred by
+   auto margins rather than a half-width offset, so the gesture owns the whole
+   transform and there is no percentage to keep the two in step. */
 .egg-play {
   position: absolute;
-  left: 50%;
-  top: 88px;
-  transform: translate(-50%, 0);
+  left: 0;
+  right: 0;
+  width: fit-content;
+  margin-inline: auto;
+  top: var(--section);
+  transform: translateY(0);
 }
 
 .egg-play,
 .egg-close {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 12px 18px;
-  font-family: var(--mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.1em;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  font: var(--type-meta);
   text-transform: uppercase;
-  color: var(--t1);
-  background: var(--fill);
-  border: 1px solid var(--line-2);
-  border-radius: var(--radius);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
+  letter-spacing: var(--track-caps);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
   cursor: pointer;
-  transition: border-color 150ms ease-out, background 150ms ease-out;
+  transition:
+    border-color var(--duration) ease-out,
+    background var(--duration) ease-out;
 }
 .egg-play:hover,
-.egg-close:hover { border-color: var(--accent); background: var(--accent-soft); }
+.egg-close:hover {
+  border-color: var(--primary);
+}
 
 /* Dims the page behind the sheet. Always present, transparent until the sheet
-   rises, and never in the way of a pointer. */
+   rises, and never in the way of a pointer. Scrim and sheet share the overlay
+   layer and are ordered by DOM position: the scrim is written first. */
 .egg-scrim {
   position: fixed;
   inset: 0;
-  z-index: 40;
+  z-index: var(--layer-overlay);
   background: var(--page);
   opacity: 0;
   pointer-events: none;
@@ -926,47 +1049,57 @@ html:has(.about-page) { overscroll-behavior-y: none; }
 .egg-sheet {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: var(--layer-overlay);
   transform: translateY(100%);
   background: var(--page);
-  border-top: 1px solid var(--line-2);
+  border-top: 1px solid var(--line);
   display: flex;
   flex-direction: column;
 }
 /* display:flex above outranks the UA's [hidden] rule, so restate it. Without
    this the sheet is laid over the page from first paint. */
-.egg-sheet[hidden] { display: none; }
+.egg-sheet[hidden] {
+  display: none;
+}
 
 .egg-bar {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--line-1);
-  font-family: var(--mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.1em;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-bottom: 1px solid var(--line);
+  font: var(--type-meta);
   text-transform: uppercase;
-  color: var(--t3);
+  letter-spacing: var(--track-caps);
+  color: var(--text-muted);
 }
 /* The status line takes the slack so Close sits hard right. */
-.egg-status { flex: 1; margin: 0; color: var(--t3); }
+.egg-status {
+  flex: 1;
+  margin: 0;
+  color: var(--text-muted);
+}
 
+/* The game canvas cannot read a custom property — the design system lets JS
+   read four tokens and none of them are colours — so it carries its palette on
+   three ordinary colour properties instead. egg-game.js reads them back off
+   computed style: `color` is a live brick, `caret-color` a spent one, and
+   `accent-color` the paddle and ball. None of the three has any other effect
+   on a <canvas>. */
 .egg-canvas {
   flex: 1;
   width: 100%;
   display: block;
   touch-action: none;
+  color: var(--text);
+  caret-color: var(--line);
+  accent-color: var(--primary);
 }
 
 /* A discovery mechanic built on a gesture is inaccessible by nature, so when
    motion is turned down the button is simply out — no pull, no spring. */
 @media (prefers-reduced-motion: reduce) {
-  .about-page .egg-play { transform: translate(-50%, -92px); }
-}
-
-@media (max-width: 720px) {
-  /* .shell's bottom padding is 64px here, so the pocket matches it. The button
-     still rests below the clip: its 88px offset is past the shorter pocket. */
-  .egg-pocket { height: 64px; }
+  .about-page .egg-play {
+    transform: translateY(calc(-1 * var(--section)));
+  }
 }

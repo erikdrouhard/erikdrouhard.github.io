@@ -11,11 +11,25 @@
    - Handlers are bound in the constructor. The live version bound them inside
      connectedCallback, so a node that was detached and re-attached got fresh
      function identities and addEventListener bound a *second* copy of each.
-   - The deferred work — the 260ms is-entering timer and the focus rAF — is
+   - The deferred work — the is-entering timer and the focus rAF — is
      tracked and cancelled. Both outlive a swap otherwise: the timer keeps a
      detached instance alive for its duration, and the rAF fires against a DOM
      that no longer exists.
    ========================================================================== */
+
+/* The `condition-pop` animation runs for --duration, so the is-entering class
+   comes off after exactly that long. Reading the token rather than hardcoding
+   a number is what makes prefers-reduced-motion work: the media query zeroes
+   --duration in tokens.css and this timer collapses with it. */
+function enterDuration() {
+  const raw = getComputedStyle(document.documentElement)
+    .getPropertyValue("--duration")
+    .trim();
+  const ms = raw.endsWith("ms")
+    ? parseFloat(raw)
+    : parseFloat(raw) * 1000;
+  return Number.isFinite(ms) ? ms : 0;
+}
 
 const actionCopy = {
   message: [
@@ -412,7 +426,7 @@ class ConditionStackDemo extends HTMLElement {
     this.enterTimer = window.setTimeout(() => {
       this.enterTimer = 0;
       this.enteringId = null;
-    }, 260);
+    }, enterDuration());
   }
 
   reorderItem(itemId, direction) {

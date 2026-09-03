@@ -36,16 +36,18 @@ export function mountGame(canvas, statusEl) {
   let launch = false;
   let restart = false;
 
-  /* render() is handed every colour it uses. --accent is the ball and the
-     paddle, --t1 the live bricks, --track the dead ones. */
-  const palette = { brick: "#eef4ee", track: "#1c2a20", paddle: "#7ee7a2" };
+  /* render() is handed every colour it uses, and every one of them is read
+     back off the canvas element rather than out of a custom property: the
+     design system lets a script read four tokens and none of them is a colour.
+     theme.css parks the three the game needs on ordinary colour properties
+     that have no other effect on a <canvas> — `color` is a live brick,
+     `caret-color` a spent one, and `accent-color` the paddle and the ball. */
+  const palette = { brick: "", track: "", paddle: "" };
   function readPalette() {
-    const cs = getComputedStyle(document.documentElement);
-    const pick = (name, fallback) =>
-      (cs.getPropertyValue(name) || "").trim() || fallback;
-    palette.brick = pick("--t1", palette.brick);
-    palette.track = pick("--track", palette.track);
-    palette.paddle = pick("--accent", palette.paddle);
+    const cs = getComputedStyle(canvas);
+    palette.brick = cs.color;
+    palette.track = cs.caretColor;
+    palette.paddle = cs.accentColor;
     if (state) draw();
   }
 

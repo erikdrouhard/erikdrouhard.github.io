@@ -95,12 +95,18 @@ function create(canvas, mode) {
   const SMOKE_MAX = 0.3 * DIM; // ceiling for the ambient smoke
   const IDLE = 0.02 * DIM; // floor, so the grid never disappears entirely
 
-  // pigment comes from CSS, so the field follows the active theme
-  const FIELD = { rgb: "126,231,162", gain: 1 };
+  /* Pigment and gain both come from CSS, so the field follows the active
+     theme and no colour is written here. --field-rgb is the primary green as
+     a bare triple, because a canvas fill is a string and cannot hold a var();
+     wrapping it keeps every channel in tokens.css. --field-gain is the
+     ambient brightness, which differs per theme because the light-mode green
+     is dark against a pale ground. */
+  const FIELD = { color: "", gain: 1 };
   function readTokens() {
-    const cs = getComputedStyle(document.documentElement);
-    FIELD.rgb = (cs.getPropertyValue("--field-rgb") || "126,231,162").trim();
-    FIELD.gain = parseFloat(cs.getPropertyValue("--field-gain")) || 1;
+    const root = getComputedStyle(document.documentElement);
+    const rgb = root.getPropertyValue("--field-rgb").trim();
+    FIELD.color = "rgb(" + rgb + ")";
+    FIELD.gain = parseFloat(root.getPropertyValue("--field-gain")) || 1;
   }
 
   function build() {
@@ -151,6 +157,9 @@ function create(canvas, mode) {
     const w = window.innerWidth;
     const h = window.innerHeight;
     ctx.clearRect(0, 0, w, h);
+    /* One pigment for the whole frame; per-block density rides on globalAlpha
+       rather than on a per-block colour string. */
+    ctx.fillStyle = FIELD.color;
 
     speed *= 0.92;
     const sp = Math.min(speed, 48) / 48; // 0 still, 1 fast
@@ -251,10 +260,12 @@ function create(canvas, mode) {
         if (a < 0.014) continue;
         if (a > 0.92) a = 0.92;
 
-        ctx.fillStyle = "rgba(" + FIELD.rgb + "," + (a * FIELD.gain).toFixed(3) + ")";
+        ctx.globalAlpha = a * FIELD.gain;
         ctx.fillRect(x * CELLW, y * CELLH, BW, BH);
       }
     }
+
+    ctx.globalAlpha = 1;
   }
 
   function loop() {

@@ -115,6 +115,36 @@ test("4. colour literals are violations", () => {
   rmSync(dir, { recursive: true });
 });
 
+/* A canvas fill is assembled as a string, so a script cannot write
+   `var(--field-rgb)` the way a stylesheet would; it reads the token and wraps
+   it. What makes that safe is that the wrapper carries no number of its own —
+   every channel comes from the token — so the palette still lives in one file.
+   A colour function in a script is therefore a violation only when its
+   arguments contain a numeric literal. */
+test("4a. a script colour function built only from tokens is allowed", () => {
+  const dir = tree({
+    "src/scripts/a.js": [
+      'const rgb = getComputedStyle(el).getPropertyValue("--field-rgb");', // 1 — fine
+      'ctx.fillStyle = "rgb(" + rgb + ")";', // 2 — fine, no number
+      "ctx.fillStyle = `rgb(${rgb})`;", // 3 — fine, no number
+      'ctx.fillStyle = "rgb(" + rgb + " / 0.4)";', // 4 — a number crept in
+      'ctx.fillStyle = "rgba(0, 0, 0, 0.4)";', // 5
+      "",
+    ].join("\n"),
+  });
+  only(dir, ["src/scripts/a.js:4 color", "src/scripts/a.js:5 color"]);
+  rmSync(dir, { recursive: true });
+});
+
+/* The same relaxation must not reach CSS, where `var()` is available. */
+test("4b. a stylesheet colour function with no number is still a violation", () => {
+  const dir = tree({
+    "src/styles/a.css": ".a { color: rgb(var(--field-rgb)); }\n",
+  });
+  only(dir, ["src/styles/a.css:1 color"]);
+  rmSync(dir, { recursive: true });
+});
+
 test("5. shadows are violations", () => {
   const dir = tree({
     "src/styles/a.css":
