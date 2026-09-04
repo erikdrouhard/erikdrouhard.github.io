@@ -483,28 +483,25 @@
   gap: var(--space-2);
 }
 
-.core-ai-page .prototype,
+/* Public links are a ruled two-column list: a hairline under each row and one
+   between the columns. */
 .core-ai-page .public-link {
   padding: var(--space-4) var(--space-4) var(--space-4) 0;
   border-bottom: 1px solid var(--line);
 }
 
-.core-ai-page .prototype {
-  padding: var(--space-3);
-  border: 1px solid var(--line);
-  background: var(--surface);
-}
-
-.core-ai-page .prototype:nth-child(even),
 .core-ai-page .public-link:nth-child(even) {
   padding-right: 0;
   padding-left: var(--space-4);
   border-left: 1px solid var(--line);
 }
 
-.core-ai-page .prototype:nth-child(even) {
+/* Prototypes are self-contained cards; the grid gap separates them, so they
+   own their full border at every width. */
+.core-ai-page .prototype {
   padding: var(--space-3);
-  border-left: 1px solid var(--line);
+  border: 1px solid var(--line);
+  background: var(--surface);
 }
 
 .core-ai-page .label {
@@ -768,8 +765,6 @@
   .core-ai-page .outcome:first-child,
   .core-ai-page .system-layer,
   .core-ai-page .system-layer:first-child,
-  .core-ai-page .prototype,
-  .core-ai-page .prototype:nth-child(even),
   .core-ai-page .public-link,
   .core-ai-page .public-link:nth-child(even) {
     padding: var(--space-3);

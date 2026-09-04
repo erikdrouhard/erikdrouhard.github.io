@@ -96,11 +96,13 @@
   object-fit: contain;
 }
 
-.mix-page--verse .mix-three-column--components > figure:last-child {
+/* A portrait composition sits centred at natural width instead of filling
+   the column like the anatomy diagrams beside it. */
+.mix-page--verse .mix-figure--portrait {
   align-items: center;
 }
 
-.mix-page--verse .mix-three-column--components > figure:last-child img {
+.mix-page--verse .mix-figure--portrait img {
   width: auto;
   max-height: 100%;
   justify-self: center;
@@ -210,8 +212,7 @@
     grid-template-columns: 1fr;
   }
 
-  .mix-page--verse .mix-three-column--definitions > div:last-child,
-  .mix-page--verse .mix-three-column--components > figure:last-child {
+  .mix-page--verse .mix-three-column--definitions > div:last-child {
     grid-column: auto;
   }
 
