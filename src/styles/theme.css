@@ -61,9 +61,13 @@ a {
 /* ------------------------------------------------------------------- nav */
 /* Class-scoped, not a bare `nav` selector: ported case studies bring their own
    <nav> (the chapter rail) and a bare selector would restyle it. */
+/* Baseline, not centre: the logomark's glyph fills its box top to bottom, so
+   its synthesized flex baseline is the box's bottom edge and it lands on the
+   same line as "About" and "Download resume". Centring floated it below that
+   line by half the difference in item heights. */
 .site-nav {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   margin-bottom: var(--section);
 }
@@ -822,15 +826,18 @@ button.btn {
 .theme-toggle:hover .switch {
   border-color: var(--primary);
 }
+/* `inset: 0` plus `margin: auto` parks the knob dead centre of the track on
+   both axes; the two states then travel half the gap either way, so the knob
+   keeps the same margin at whichever end it rests. */
 .switch::after {
   content: "";
   position: absolute;
-  top: calc(var(--space-1) / 6);
-  left: calc(var(--space-1) / 6);
+  inset: 0;
+  margin: auto;
   width: var(--space-1);
   height: var(--space-1);
   background: var(--primary);
-  transform: translateX(var(--space-3));
+  transform: translateX(calc(var(--space-3) / 2));
   transition:
     transform var(--duration) ease-out,
     background var(--duration) ease-out;
@@ -839,7 +846,7 @@ button.btn {
    so only the dark state moves it back. */
 [data-theme="dark"] .switch::after {
   background: var(--text-muted);
-  transform: translateX(0);
+  transform: translateX(calc(var(--space-3) / -2));
 }
 
 @media (prefers-reduced-motion: reduce) {
