@@ -1,12 +1,11 @@
 /* Microsoft CoreAI case study.
 
-   Every value here comes from `tokens.css`. The page opts into its accent on
-   the root element and nothing else: `--page` is re-hued from `--accent-hue`
-   in tokens.css, and line, surface, and muted text follow it, so the whole
-   study shifts together in both themes. There is no second palette. */
+   Every value here comes from `tokens.css`. The page opts into its hue on the
+   root element and nothing else: `--page` and `--accent` are both derived
+   from `--accent-hue` in tokens.css, and line, surface, and muted text follow,
+   so the whole study shifts together in both themes. There is no second palette. */
 
 .core-ai-page {
-  --accent: var(--accent-msft);
   --accent-hue: var(--accent-hue-msft);
   background: var(--page);
   color: var(--text);
@@ -99,6 +98,8 @@
 .core-ai-page .prototype-loop {
   --page: var(--page-dark);
   --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
   position: relative;
   display: grid;
   isolation: isolate;
@@ -423,6 +424,8 @@
 .core-ai-page .section-dark {
   --page: var(--page-dark);
   --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
   position: relative;
   overflow: hidden;
   background: var(--page);

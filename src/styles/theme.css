@@ -466,7 +466,7 @@ kbd.hot {
 }
 .case-meta dd {
   margin: 0;
-  font: var(--type-body-small);
+  font: var(--type-body);
   color: var(--text);
 }
 

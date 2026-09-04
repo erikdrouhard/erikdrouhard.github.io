@@ -34,7 +34,17 @@
 
   /* -- Type roles --------------------------------------------------------
      Eight roles. Markup carries one `type-*` class; CSS writes
-     `font: var(--type-*)`. Nothing else sets type. */
+     `font: var(--type-*)`. Nothing else sets type.
+
+     The two 12px roles are for labels, never for subtext. Anything that
+     reads as a sentence — a figure caption, a card description, a metric
+     note, a testimonial, a definition value, a list item, anything that
+     wraps to a second line — is running copy and takes --type-body. 12px is
+     for what is read as a mark: eyebrows and section labels, one-line metric
+     captions, table headers, tags, figure numbers, diagram node labels, and
+     the interactive demo's own tool chrome. There is deliberately nothing in
+     between; a label that needs more words becomes body copy, not a new
+     size. */
   --type-display: var(--display-1);
   --type-section: var(--display-1);
   --type-title: var(--display-2);
@@ -80,22 +90,39 @@
   --primary: #16713d;
 
   /* -- Dark panels -------------------------------------------------------
-     A panel that is dark in both themes sets --page and --text on itself
-     from these two aliases and nothing else; muted text, line, and surface
-     re-derive from them. This is the whole of what used to be `.on-dark`. */
+     A panel that is dark in both themes sets four properties on itself and
+     nothing else: --page and --text from the two aliases here, and
+     --accent-l/--accent-c from the dark accent pair below. Muted text, line,
+     surface, and the accent itself re-derive from those. That is the whole
+     contract, and the whole of what used to be `.on-dark`. Without the two
+     accent lines a light-theme dark panel would inherit the dark, rich light
+     accent and fail contrast against its own near-black ground. */
   --page-dark: #070d09;
   --text-dark: #fff;
 
   /* -- Case-study accents ------------------------------------------------
-     One shade each. The one tint, --accent-soft, is derived below. A study
-     sets --accent and --accent-hue on its root element and nothing else. */
-  --accent-mix: #6548e8;
-  --accent-msft: #315be8;
-  --accent-drive: #087f91;
-  --accent-verse: #c127b6;
+     There is no per-study shade. A study sets --accent-hue on its root
+     element and nothing else; --accent is derived below as
+     oklch(L C var(--accent-hue)) from one lightness and one chroma, so the
+     four studies share a saturation and a weight and differ only in hue.
+
+     Two pairs, because one shade cannot read on both grounds. The light pair
+     is dark and rich enough to clear 4.5:1 as text on the re-hued light page;
+     the dark pair is a pale, low-chroma tint that clears 4.5:1 on
+     --page-dark. The dark theme swaps in the dark pair, and so does every
+     dark-in-both-themes panel — see "Dark panels" above.
+
+     The teal hue cannot hold 0.18 chroma anywhere in sRGB, so the browser
+     gamut-maps it down to about 0.084. That is a property of the hue, not an
+     exception written here: the authored chroma is still one number. The one
+     tint, --accent-soft, is derived below. */
+  --accent-l: 0.47;
+  --accent-c: 0.18;
+  --accent-l-dark: 0.8;
+  --accent-c-dark: 0.1;
 
   /* The oklch hue angle of each accent, so a study can re-hue the page
-     ground without writing a number of its own. */
+     ground and derive its accent without writing a number of its own. */
   --accent-hue-mix: 283.82;
   --accent-hue-msft: 266.12;
   --accent-hue-drive: 212.22;
@@ -147,6 +174,7 @@
   --line: color-mix(in srgb, var(--text) 15%, var(--page));
   --surface: color-mix(in srgb, var(--text) 5%, var(--page));
   --primary-hover: color-mix(in srgb, var(--primary) 85%, var(--text));
+  --accent: oklch(var(--accent-l) var(--accent-c) var(--accent-hue));
   --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--page));
 }
 
@@ -159,6 +187,8 @@
   --page-site: #070d09;
   --text: #fff;
   --primary: #7ee7a2;
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
 
   /* The dark --primary as a bare triple, and the full ambient gain. */
   --field-rgb: 126, 231, 162;
@@ -169,8 +199,9 @@
    The site ground re-hued to the study's accent. Lightness and chroma stay
    identical in both themes; only the hue moves, so the whole study shifts
    together and text, line, surface, and muted text follow. A case-study page
-   opts in with `data-accent` on its root element and sets --accent and
-   --accent-hue there. */
+   opts in with `data-accent` on its root element and sets --accent-hue
+   there. Outside a study --accent-hue is unset, so the derived --accent is
+   invalid and no element can pick up an accent by accident. */
 [data-accent] {
   --page: oklch(from var(--page-site) l c var(--accent-hue));
 }

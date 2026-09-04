@@ -6,11 +6,10 @@
    first. */
 
 .mix-page--verse {
-  /* The study's accent and its page hue, and nothing else. BaseLayout stamps
-     `data-accent` on <body> from the page's `accent` prop; the [data-accent]
-     rule in tokens.css re-hues --page from these two, and text, line, surface,
-     and muted text follow it. */
-  --accent: var(--accent-verse);
+  /* The study's hue, and nothing else. BaseLayout stamps `data-accent` on
+     <body> from the page's `accent` prop; tokens.css re-hues --page and
+     derives --accent from this one angle, and text, line, surface, and muted
+     text follow. */
   --accent-hue: var(--accent-hue-verse);
 }
 
@@ -156,6 +155,8 @@
 .mix-page--verse .mix-callout--storybook {
   --page: var(--page-dark);
   --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
   display: flex;
   max-width: var(--shell);
   background: var(--page);
@@ -178,7 +179,7 @@
   color: var(--accent);
 }
 
-.mix-page--verse .mix-callout--storybook .type-body-small {
+.mix-page--verse .mix-callout--storybook .type-body {
   color: var(--text-muted);
 }
 

@@ -94,7 +94,7 @@ condition-stack-demo {
 
 .condition-demo__cancel {
   background: var(--accent);
-  color: var(--text-dark);
+  color: var(--page);
 }
 
 .condition-demo__canvas {
@@ -108,6 +108,8 @@ condition-stack-demo {
 .condition-demo__invitation {
   --page: var(--page-dark);
   --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
   position: absolute;
   z-index: var(--layer-overlay);
   top: var(--space-6);
@@ -120,7 +122,7 @@ condition-stack-demo {
   border-radius: 0;
   appearance: none;
   background: var(--accent);
-  color: var(--text);
+  color: var(--page);
   font: inherit;
   text-align: left;
   touch-action: manipulation;
@@ -138,7 +140,7 @@ condition-stack-demo {
 
 .condition-demo__invitation span {
   color: var(--text);
-  font: var(--type-body-small);
+  font: var(--type-body);
 }
 
 .condition-demo__invitation .condition-demo__invitation-kicker {

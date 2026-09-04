@@ -1,11 +1,10 @@
 /* Dragon Drive — the study's accent and nothing else.
 
-   The page ground, text, line, surface, and muted text all come from
-   tokens.css: `data-accent` on <body> re-hues --page to the accent below, and
-   every derived tint follows it. This file writes no colour, size, spacing,
+   The page ground, accent, text, line, surface, and muted text all come from
+   tokens.css: `data-accent` on <body> plus the one hue below, from which
+   tokens.css derives --page and --accent, and every tint follows them. This file writes no colour, size, spacing,
    radius, shadow, or duration literal of its own. */
 .drive-page {
-  --accent: var(--accent-drive);
   --accent-hue: var(--accent-hue-drive);
   overflow-x: hidden;
 }
@@ -100,6 +99,8 @@
 .drive-video-frame {
   --page: var(--page-dark);
   --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
 
   position: relative;
   overflow: hidden;
@@ -293,6 +294,8 @@
 .drive-interaction-map {
   --page: var(--page-dark);
   --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
 
   display: grid;
   min-width: 0;
@@ -398,6 +401,8 @@
 .drive-outcome {
   --page: var(--page-dark);
   --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
 
   position: relative;
   isolation: isolate;
