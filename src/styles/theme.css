@@ -355,7 +355,7 @@ kbd.hot {
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  font: var(--type-meta);
+  font: var(--type-body);
   color: var(--text);
 }
 
