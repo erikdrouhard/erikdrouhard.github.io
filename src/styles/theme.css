@@ -61,13 +61,13 @@ a {
 /* ------------------------------------------------------------------- nav */
 /* Class-scoped, not a bare `nav` selector: ported case studies bring their own
    <nav> (the chapter rail) and a bare selector would restyle it. */
-/* Baseline, not centre: the logomark's glyph fills its box top to bottom, so
-   its synthesized flex baseline is the box's bottom edge and it lands on the
-   same line as "About" and "Download resume". Centring floated it below that
-   line by half the difference in item heights. */
+/* Centre, not baseline: the logomark is a 48px block, taller than the text
+   row, and centring puts the About link and the resume button on its vertical
+   midline. Baseline alignment sat them on the mark's bottom edge, which read as
+   the row hanging off the logo. */
 .site-nav {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: var(--section);
 }

@@ -35,9 +35,9 @@ const BASE = `http://127.0.0.1:${PORT}`;
    spacing hold still is the egg growing a pocket, which is the thing this
    check exists to catch. Do not re-record to make a red build green. */
 const SCROLL_HEIGHTS = [
-  { width: 1200, height: 900, expected: 1208 },
-  { width: 810, height: 900, expected: 1275 },
-  { width: 390, height: 800, expected: 1612 },
+  { width: 1200, height: 900, expected: 1202 },
+  { width: 810, height: 900, expected: 1269 },
+  { width: 390, height: 800, expected: 1604 },
 ];
 
 const server = spawn(
