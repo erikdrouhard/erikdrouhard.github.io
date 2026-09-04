@@ -20,7 +20,14 @@ const DIST = resolve(process.cwd(), "dist");
    `work/index.html` is deliberately absent: the work index was retired while
    there is only one body of work to show, and the case studies are reached
    from the home-page grid. Do not add it back to "fix" a 404 — /work/ is meant
-   to 404, and check-acceptance.mjs asserts that it does. */
+   to 404, and check-acceptance.mjs asserts that it does.
+
+   The four /experiments/ routes are gone for the same reason. They were built
+   on the retired stylesheet and are now at `public/.archive/experiments/`;
+   DESIGN-SYSTEM.md retires them outright, and an integration in
+   astro.config.mjs strips `dist/.archive` after the build so they are kept but
+   not served. Reviving one means rebuilding it on tokens, not restoring a
+   route here. */
 const REQUIRED_ROUTES = [
   "index.html",
   "work/dragon-drive/index.html",
@@ -28,10 +35,6 @@ const REQUIRED_ROUTES = [
   "work/mix-dialog/index.html",
   "work/verse-design-system/index.html",
   "work/core-ai/index.html",
-  "experiments/index.html",
-  "experiments/seeded-tower-defense/index.html",
-  "experiments/resume-as-a-system/index.html",
-  "experiments/verse-token-playground/index.html",
   // added by the redesign
   "about/index.html",
 ];

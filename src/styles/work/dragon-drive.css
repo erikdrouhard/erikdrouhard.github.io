@@ -1,20 +1,12 @@
+/* Dragon Drive — the study's accent and nothing else.
+
+   The page ground, accent, text, line, surface, and muted text all come from
+   tokens.css: `data-accent` on <body> plus the one hue below, from which
+   tokens.css derives --page and --accent, and every tint follows them. This file writes no colour, size, spacing,
+   radius, shadow, or duration literal of its own. */
 .drive-page {
-  --drive-ink: #071e26;
-  --drive-ink-soft: rgb(7 30 38 / 68%);
-  /* Surfaces that read as dark panels against the page. Split from
-     --drive-ink because the two invert in opposite directions in dark mode:
-     ink flips to near-white, panels lift to a lighter shade of the page. */
-  --drive-panel: #071e26;
-  --drive-cyan: #087f91;
-  --drive-cyan-bright: #29d3df;
-  --drive-cyan-soft: #e2f7f7;
-  --drive-paper: #f4f9f8;
-  --drive-line: rgb(7 30 38 / 14%);
+  --accent-hue: var(--accent-hue-drive);
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at 84% 8%, rgb(41 211 223 / 13%), transparent 28rem),
-    linear-gradient(170deg, #fbfdfc 0%, var(--drive-paper) 100%);
-  color: var(--drive-ink);
 }
 
 .drive-page .page-shell {
@@ -29,7 +21,6 @@
 
 .drive-content {
   gap: 0;
-  color: var(--drive-ink);
 }
 
 .drive-content h1,
@@ -44,7 +35,7 @@
 }
 
 .drive-content h2 {
-  max-width: 24ch;
+  max-width: var(--measure-title);
 }
 
 .drive-content p {
@@ -53,33 +44,32 @@
 
 .drive-hero {
   display: grid;
-  padding: 108px 0 104px;
-  gap: 54px;
-  grid-template-columns: minmax(0, 9fr) minmax(380px, 11fr);
+  padding: var(--space-7) 0;
+  gap: var(--space-5);
+  grid-template-columns: minmax(0, 9fr) minmax(0, 11fr);
   align-items: center;
 }
 
 .drive-hero-copy {
   display: grid;
   min-width: 0;
-  gap: 24px;
+  gap: var(--space-3);
 }
 
 .drive-eyebrow,
 .drive-section-label,
-.drive-moment-number,
 .drive-translation-flow > li > span {
-  color: rgb(7 30 38 / 56%);
+  color: var(--text-muted);
 }
 
 .drive-hero h1 {
-  max-width: 12ch;
+  max-width: var(--measure-title);
   text-decoration: none;
 }
 
 .drive-deck {
-  max-width: 31ch;
-  color: var(--drive-ink-soft);
+  max-width: var(--measure-title);
+  color: var(--text-muted);
 }
 
 .drive-badges {
@@ -87,36 +77,37 @@
   margin: 0;
   padding: 0;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: var(--space-1);
   list-style: none;
 }
 
 .drive-badges li {
-  min-height: 28px;
-  padding: 5px 14px;
-  border-radius: 0;
-  background: rgb(255 255 255 / 74%);
-  box-shadow: 0 0 0 1px rgb(7 30 38 / 13%);
+  padding: var(--space-1);
+  border: 1px solid var(--line);
+  background: var(--surface);
 }
 
 .drive-hero-visual {
   display: grid;
   min-width: 0;
-  gap: 12px;
+  gap: var(--space-1);
 }
 
+/* Dark in both themes, so it sets --page and --text and nothing else. Every
+   tint inside it re-derives from those two, because tokens.css declares the
+   derived colours on `*` rather than on :root. */
 .drive-video-frame {
-  --frame-radius: 0;
-  --frame-padding: 10px;
+  --page: var(--page-dark);
+  --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
+
   position: relative;
   overflow: hidden;
-  padding: var(--frame-padding);
-  border-radius: var(--frame-radius);
-  background: var(--drive-panel);
-  box-shadow:
-    0 0 0 1px rgb(7 30 38 / 16%),
-    0 30px 72px rgb(7 30 38 / 18%),
-    0 8px 22px rgb(0 0 0 / 9%);
+  padding: var(--space-1);
+  border: 1px solid var(--line);
+  background: var(--page);
+  color: var(--text);
 }
 
 .drive-video-frame video {
@@ -124,77 +115,74 @@
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
-  border-radius: 0;
   object-fit: cover;
-  outline: 1px solid rgb(255 255 255 / 12%);
+  outline: 1px solid var(--line);
   outline-offset: -1px;
 }
 
+/* Positioned and last in the frame, so it paints over the video without a
+   z-index of its own. */
 .drive-live-label {
   position: absolute;
-  z-index: 1;
-  top: 22px;
-  left: 22px;
-  padding: 7px 9px;
-  border-radius: 0;
-  background: rgb(7 30 38 / 86%);
-  color: #fff;
+  top: var(--space-3);
+  left: var(--space-3);
+  padding: var(--space-1);
+  background: var(--page);
+  color: var(--text);
   pointer-events: none;
 }
 
 .drive-hero-visual figcaption,
 .drive-wide-media figcaption,
 .drive-highlight figcaption {
-  max-width: 70ch;
-  color: rgb(7 30 38 / 58%);
+  max-width: var(--measure);
+  color: var(--text-muted);
 }
 
 .drive-section {
-  --drive-section-gap: 48px;
-
   position: relative;
   isolation: isolate;
   display: grid;
   width: 100%;
   min-width: 0;
-  padding: 104px 0;
-  border-top: 1px solid var(--drive-line);
-  gap: var(--drive-section-gap);
-  scroll-margin-top: 72px;
+  padding: var(--space-7) 0;
+  border-top: 1px solid var(--line);
+  gap: var(--space-5);
+  scroll-margin-top: var(--space-6);
 }
 
 .drive-reading {
   display: grid;
-  gap: 18px;
+  gap: var(--space-2);
 }
 
 .drive-reading > p,
 .drive-prose {
-  max-width: 720px;
+  max-width: var(--measure);
 }
 
 .drive-reading > p:not(.drive-section-label),
 .drive-prose {
-  color: var(--drive-ink-soft);
+  color: var(--text-muted);
 }
 
 .drive-prose {
   display: grid;
-  gap: 1.5em;
+  gap: var(--space-3);
 }
 
 .drive-context {
   display: grid;
   padding: 0;
-  border-block: 1px solid var(--drive-line);
+  border-block: 1px solid var(--line);
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .drive-context > div {
   display: grid;
   min-width: 0;
-  padding: 26px;
-  gap: 8px;
+  padding: var(--space-3);
+  gap: var(--space-1);
   align-content: start;
 }
 
@@ -207,17 +195,17 @@
 }
 
 .drive-context > div + div {
-  border-left: 1px solid var(--drive-line);
+  border-left: 1px solid var(--line);
 }
 
 .drive-context dd {
-  color: var(--drive-ink-soft);
+  color: var(--text-muted);
 }
 
 .drive-wide-media,
 .drive-highlight {
   display: grid;
-  gap: 12px;
+  gap: var(--space-1);
 }
 
 .drive-wide-media img,
@@ -225,9 +213,8 @@
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 0;
   object-fit: cover;
-  outline: 1px solid rgb(7 30 38 / 10%);
+  outline: 1px solid var(--line);
   outline-offset: -1px;
 }
 
@@ -242,16 +229,25 @@
   border-top: 0;
 }
 
+/* The tinted band is a ::before, so it is the first thing painted inside the
+   section's isolated stack. Its siblings below take `position: relative` and
+   therefore paint above it by DOM order, which is what the old `z-index: -1`
+   was for. Width comes from the shell's container query, not the viewport,
+   because `calc((100vw - 100%) / -2)` cannot be written in tokens. */
 .drive-section-feature::before {
   position: absolute;
-  z-index: -1;
-  inset: 0 calc((100vw - 100%) / -2);
-  border-block: 1px solid rgb(8 127 145 / 11%);
-  background:
-    radial-gradient(circle at 92% 10%, rgb(41 211 223 / 15%), transparent 24rem),
-    linear-gradient(150deg, rgb(226 247 247 / 78%), rgb(255 255 255 / 52%));
+  top: 0;
+  bottom: 0;
+  left: calc((100% - 100cqi) / 2);
+  width: 100cqi;
+  border-block: 1px solid var(--line);
+  background: var(--accent-soft);
   content: "";
   pointer-events: none;
+}
+
+.drive-section-feature > * {
+  position: relative;
 }
 
 /* The feature band's full-bleed bottom edge already separates it from the
@@ -263,15 +259,15 @@
 
 .drive-moments {
   display: grid;
-  border-block: 1px solid var(--drive-line);
+  border-block: 1px solid var(--line);
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .drive-moments article {
   display: grid;
   min-width: 0;
-  padding: 28px;
-  gap: 10px;
+  padding: var(--space-3);
+  gap: var(--space-1);
 }
 
 .drive-moments article:first-child {
@@ -283,28 +279,31 @@
 }
 
 .drive-moments article + article {
-  border-left: 1px solid var(--drive-line);
+  border-left: 1px solid var(--line);
 }
 
 .drive-moments article > p:last-child {
-  color: var(--drive-ink-soft);
+  color: var(--text-muted);
 }
 
 .drive-moment-number {
-  color: var(--drive-cyan);
+  color: var(--accent);
 }
 
+/* Dark in both themes; see .drive-video-frame. */
 .drive-interaction-map {
+  --page: var(--page-dark);
+  --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
+
   display: grid;
   min-width: 0;
-  padding: 28px;
-  border-radius: 0;
-  background: var(--drive-panel);
-  box-shadow:
-    0 0 0 1px rgb(7 30 38 / 16%),
-    0 24px 56px rgb(7 30 38 / 13%);
-  color: #fff;
-  gap: 16px;
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  background: var(--page);
+  color: var(--text);
+  gap: var(--space-2);
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: stretch;
   user-select: none;
@@ -313,45 +312,41 @@
 .drive-map-step {
   display: grid;
   min-width: 0;
-  min-height: 150px;
-  padding: 20px;
-  border-radius: 0;
-  background: rgb(255 255 255 / 8%);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
-  gap: 6px;
+  min-height: var(--space-7);
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  gap: var(--space-1);
   align-content: center;
 }
 
 .drive-map-step-accent {
-  background: rgb(41 211 223 / 14%);
-  box-shadow: inset 0 0 0 1px rgb(41 211 223 / 34%);
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
-.drive-map-step span {
-  color: rgb(255 255 255 / 56%);
-}
-
+.drive-map-step span,
 .drive-map-step small {
-  color: rgb(255 255 255 / 66%);
+  color: var(--text-muted);
 }
 
 .drive-map-arrow {
-  color: var(--drive-cyan-bright);
+  color: var(--accent);
   align-self: center;
 }
 
 .drive-callout {
-  max-width: 740px;
-  padding-left: 24px;
-  border-left: 3px solid var(--drive-cyan);
-  color: var(--drive-ink);
+  max-width: var(--measure);
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--accent);
+  color: var(--text);
 }
 
 .drive-translation-flow {
   display: grid;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--drive-line);
+  border-top: 1px solid var(--line);
   list-style: none;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -359,9 +354,9 @@
 .drive-translation-flow li {
   display: grid;
   min-width: 0;
-  padding: 30px;
-  border-bottom: 1px solid var(--drive-line);
-  gap: 10px;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--line);
+  gap: var(--space-1);
   align-content: start;
 }
 
@@ -371,27 +366,26 @@
 
 .drive-translation-flow li:nth-child(even) {
   padding-right: 0;
-  border-left: 1px solid var(--drive-line);
+  border-left: 1px solid var(--line);
 }
 
 .drive-translation-flow li p {
-  max-width: 42ch;
-  color: var(--drive-ink-soft);
+  max-width: var(--measure);
+  color: var(--text-muted);
 }
 
 .drive-role-note {
   display: grid;
-  max-width: 760px;
-  padding: 34px;
-  border-radius: 0;
-  background: var(--drive-cyan-soft);
-  box-shadow: inset 0 0 0 1px rgb(8 127 145 / 13%);
-  gap: 12px;
+  max-width: var(--measure);
+  padding: var(--space-4);
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  gap: var(--space-1);
 }
 
 .drive-role-note > p:last-child {
-  max-width: 58ch;
-  color: var(--drive-ink-soft);
+  max-width: var(--measure);
+  color: var(--text-muted);
 }
 
 .drive-section-showcase {
@@ -400,134 +394,135 @@
 
 .drive-highlight video {
   aspect-ratio: 16 / 9;
-  background: var(--drive-panel);
-  box-shadow: 0 20px 54px rgb(7 30 38 / 13%);
+  background: var(--surface);
 }
 
+/* Dark in both themes; see .drive-video-frame. */
 .drive-outcome {
+  --page: var(--page-dark);
+  --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
+
   position: relative;
+  isolation: isolate;
   display: grid;
   width: 100cqi;
   /* Preserve the section's row gap below the video caption. The showcase's
      zero bottom padding still keeps this panel flush with the footer below. */
   margin-left: calc((100% - 100cqi) / 2);
-  padding: 64px max(24px, calc((100cqi - 892px) / 2)) 96px;
+  padding: var(--space-6) max(var(--gutter), calc((100cqi - var(--shell)) / 2))
+    var(--space-7);
   overflow: hidden;
-  background: var(--drive-panel);
-  color: #fff;
-  gap: 20px;
+  background: var(--page);
+  color: var(--text);
+  gap: var(--space-3);
 }
 
-.drive-outcome::after {
+/* A ::before rather than an ::after, so the ring paints first and the copy
+   below paints over it by DOM order instead of by a negative z-index.
+
+   Drawn in --line, not --accent. It used to be the accent at 20% alpha, and
+   the alpha ban has no tint to swap in: --accent-soft is a fill mixed toward
+   --page, which on this dark panel disappears. At full strength the accent
+   ring cuts a bright arc straight through the paragraph in front of it,
+   badly at mobile width. DESIGN-SYSTEM.md gives --line as the colour of
+   "every rule, border, and tick", which is what this is; Microsoft's matching
+   ring behind .prototype-loop already uses it. */
+.drive-outcome::before {
   position: absolute;
-  right: -80px;
-  bottom: -120px;
-  width: 360px;
-  height: 360px;
-  border: 1px solid rgb(41 211 223 / 20%);
+  right: calc(var(--space-6) * -1);
+  bottom: calc(var(--space-7) * -1);
+  width: calc(var(--space-6) * 5);
+  height: calc(var(--space-6) * 5);
+  border: 1px solid var(--line);
   border-radius: 50%;
   content: "";
   pointer-events: none;
 }
 
+.drive-outcome > * {
+  position: relative;
+}
+
 .drive-outcome .drive-section-label {
-  color: var(--drive-cyan-bright);
+  color: var(--accent);
 }
 
 .drive-outcome blockquote {
-  position: relative;
-  z-index: 1;
-  max-width: 26ch;
+  max-width: var(--measure-title);
 }
 
 .drive-outcome-copy {
-  position: relative;
-  z-index: 1;
-  max-width: 70ch;
-  color: rgb(255 255 255 / 66%);
+  max-width: var(--measure);
+  color: var(--text-muted);
 }
 
 .drive-outcome-copy a {
   color: inherit;
-  text-decoration-color: var(--drive-cyan-bright);
-  text-underline-offset: 0.18em;
+  text-decoration-color: var(--accent);
 }
 
 .drive-outcome-copy a:hover {
-  color: #fff;
+  color: var(--text);
 }
 
 .drive-footer {
   display: grid;
   width: 100cqi;
   margin-left: calc((100% - 100cqi) / 2);
-  padding: 96px max(24px, calc((100cqi - 892px) / 2)) 104px;
-  background:
-    radial-gradient(circle at 88% 0%, rgb(41 211 223 / 16%), transparent 24rem),
-    var(--drive-cyan-soft);
-  gap: 18px;
+  padding: var(--space-7) max(var(--gutter), calc((100cqi - var(--shell)) / 2))
+    var(--space-7);
+  background: var(--accent-soft);
+  gap: var(--space-2);
 }
 
 .drive-footer h2 {
-  max-width: 18ch;
+  max-width: var(--measure-title);
 }
 
 .drive-footer > p:not(.drive-section-label) {
-  max-width: 52ch;
-  color: var(--drive-ink-soft);
+  max-width: var(--measure);
+  color: var(--text-muted);
 }
 
 .drive-footer-actions {
   display: flex;
-  padding-top: 8px;
+  padding-top: var(--space-1);
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--space-1);
 }
 
 /* Appearance comes from `.btn` in theme.css; the footer pair only set their
    own minimum width. */
 .drive-contact {
-  min-width: 158px;
+  min-width: calc(var(--space-7) + var(--space-4));
 }
 
-.drive-video-frame video:focus-visible,
-.drive-highlight video:focus-visible {
-  outline: 2px solid var(--drive-ink);
-  outline-offset: 3px;
-}
-
-/* The button's hover and focus states are shared with every other button on
+/* The video focus ring is the site's `*:focus-visible` ring in theme.css.
+   The button's hover and focus states are shared with every other button on
    the site; see the `.btn` block in theme.css. */
 
 @media (max-width: 809.98px) {
   .drive-main {
-    padding-right: 16px;
-    padding-left: 16px;
+    padding-right: var(--space-2);
+    padding-left: var(--space-2);
   }
 
   .drive-hero {
-    padding: 76px 0 72px;
-    gap: 44px;
+    padding: var(--space-6) 0;
+    gap: var(--space-4);
     grid-template-columns: 1fr;
   }
 
-  .drive-deck {
-    max-width: 34ch;
-  }
-
-  .drive-hero-visual {
-    width: min(100%, 620px);
-  }
-
   .drive-live-label {
-    top: 18px;
-    left: 18px;
+    top: var(--space-2);
+    left: var(--space-2);
   }
 
   .drive-section {
-    --drive-section-gap: 38px;
-
-    padding: 76px 0;
+    padding: var(--space-6) 0;
+    gap: var(--space-4);
   }
 
   .drive-context,
@@ -545,12 +540,12 @@
   .drive-translation-flow li,
   .drive-translation-flow li:nth-child(odd),
   .drive-translation-flow li:nth-child(even) {
-    padding: 22px 0;
+    padding: var(--space-3) 0;
   }
 
   .drive-context > div + div,
   .drive-moments article + article {
-    border-top: 1px solid var(--drive-line);
+    border-top: 1px solid var(--line);
     border-left: 0;
   }
 
@@ -559,12 +554,7 @@
   }
 
   .drive-interaction-map {
-    padding: 20px;
     grid-template-columns: 1fr;
-  }
-
-  .drive-map-step {
-    min-height: 126px;
   }
 
   .drive-map-arrow {
@@ -573,91 +563,25 @@
   }
 
   .drive-callout {
-    padding-left: 18px;
+    padding-left: var(--space-2);
   }
 
   .drive-role-note {
-    padding: 26px;
+    padding: var(--space-3);
   }
 
   .drive-outcome,
   .drive-footer {
-    padding-right: 16px;
-    padding-left: 16px;
+    padding-right: var(--space-2);
+    padding-left: var(--space-2);
   }
 
   .drive-outcome {
-    padding-bottom: 80px;
+    padding-bottom: var(--space-6);
   }
 
   .drive-footer {
-    padding-top: 76px;
-    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+    padding-top: var(--space-6);
+    padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom));
   }
-}
-
-@media (max-width: 359.98px) {
-  .drive-live-label {
-    max-width: calc(100% - 36px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-
-/* Remapping the tokens carries most of the page on its own: everything
-   that reads `var(--drive-ink)` for text, buttons, or focus rings flips
-   here, and the panel surfaces lift instead of staying near-black. */
-[data-theme="dark"] .drive-page {
-  --drive-ink: #e8f8f9;
-  --drive-ink-soft: rgb(232 248 249 / 72%);
-  --drive-panel: #142c33;
-  --drive-cyan-soft: #102a2e;
-  --drive-line: rgb(232 248 249 / 14%);
-  background:
-    radial-gradient(circle at 84% 8%, rgb(41 211 223 / 15%), transparent 28rem),
-    linear-gradient(170deg, #0b1a1d 0%, #060d0f 100%);
-}
-
-/* The light-mode rings are near-black and vanish on a dark page. */
-[data-theme="dark"] .drive-video-frame,
-[data-theme="dark"] .drive-interaction-map {
-  box-shadow: 0 0 0 1px rgb(232 248 249 / 12%);
-}
-
-[data-theme="dark"] .drive-eyebrow,
-[data-theme="dark"] .drive-section-label,
-[data-theme="dark"] .drive-moment-number,
-[data-theme="dark"] .drive-translation-flow > li > span,
-[data-theme="dark"] .drive-hero-visual figcaption,
-[data-theme="dark"] .drive-wide-media figcaption,
-[data-theme="dark"] .drive-highlight figcaption {
-  color: rgb(232 248 249 / 62%);
-}
-
-[data-theme="dark"] .drive-badges li {
-  background: rgb(255 255 255 / 7%);
-  box-shadow: 0 0 0 1px rgb(232 248 249 / 14%);
-}
-
-[data-theme="dark"] .drive-wide-media img,
-[data-theme="dark"] .drive-highlight video {
-  outline-color: rgb(232 248 249 / 12%);
-}
-
-[data-theme="dark"] .drive-section-feature::before {
-  border-color: rgb(41 211 223 / 16%);
-  background:
-    radial-gradient(circle at 92% 10%, rgb(41 211 223 / 14%), transparent 24rem),
-    linear-gradient(150deg, rgb(16 62 68 / 66%), rgb(255 255 255 / 2%));
-}
-
-[data-theme="dark"] .drive-role-note {
-  box-shadow: inset 0 0 0 1px rgb(41 211 223 / 18%);
-}
-
-[data-theme="dark"] .drive-footer {
-  background:
-    radial-gradient(circle at 88% 0%, rgb(41 211 223 / 14%), transparent 24rem),
-    var(--drive-cyan-soft);
 }

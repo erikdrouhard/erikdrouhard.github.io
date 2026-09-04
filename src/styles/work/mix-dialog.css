@@ -1,17 +1,16 @@
+/* ==========================================================================
+   Mix.dialog case study.
+
+   Colour comes entirely from tokens.css: the page root carries `data-accent`
+   and one hue, from which tokens.css derives both --page and --accent, and
+   text, line, and surface derive from those. The dark panels set --page,
+   --text, and the dark accent pair on themselves, per the dark-panel contract
+   in tokens.css, so every tint inside them re-derives.
+   ========================================================================== */
+
 .mix-page {
-  --mix-accent: #6548e8;
-  --mix-accent-deep: #20194a;
-  /* Surfaces that read as dark panels against the page. Split from
-     --mix-accent-deep because the button using that token inverts to
-     near-white in dark mode while these panels lift instead. */
-  --mix-panel: #20194a;
-  --mix-accent-soft: #eeeaff;
-  --mix-cyan: #28b9d8;
-  --mix-ink-muted: rgb(0 0 0 / 67%);
+  --accent-hue: var(--accent-hue-mix);
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at 84% 9%, rgb(101 72 232 / 11%), transparent 27rem),
-    linear-gradient(172deg, var(--page-wash) 0%, var(--page-paper) 100%);
 }
 
 .mix-page .page-shell {
@@ -26,7 +25,7 @@
 
 .mix-content {
   gap: 0;
-  color: var(--ink);
+  color: var(--text);
 }
 
 .mix-content h1,
@@ -40,7 +39,7 @@
 .mix-content h1,
 .mix-content h2,
 .mix-content h3 {
-  color: var(--ink);
+  color: var(--text);
 }
 
 .mix-content p {
@@ -49,21 +48,21 @@
 
 .mix-hero {
   display: grid;
-  padding: 112px 0 104px;
-  gap: 54px;
+  padding: var(--space-7) 0;
+  gap: var(--space-5);
   grid-template-columns: minmax(0, 11fr) minmax(330px, 9fr);
   align-items: center;
 }
 
 .mix-hero-copy {
   display: grid;
-  gap: 24px;
+  gap: var(--space-3);
 }
 
 .mix-eyebrow,
 .mix-section-label,
 .mix-item-label {
-  color: rgb(0 0 0 / 55%);
+  color: var(--text-muted);
 }
 
 .mix-hero h1 {
@@ -72,54 +71,49 @@
 
 .mix-deck {
   max-width: none;
-  color: rgb(0 0 0 / 75%);
+  color: var(--text-muted);
 }
 
 .mix-project-meta {
   display: grid;
   margin: 0;
   padding: 0;
-  border-top: 1px solid rgb(0 0 0 / 12%);
-  border-bottom: 1px solid rgb(0 0 0 / 12%);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .mix-project-meta > div {
   display: grid;
   min-width: 0;
-  padding: 14px 0;
-  gap: 24px;
+  padding: var(--space-1) 0;
+  gap: var(--space-3);
   grid-template-columns: 96px minmax(0, 1fr);
   align-items: baseline;
 }
 
 .mix-project-meta > div + div {
-  border-top: 1px solid var(--line-subtle);
-}
-
-.mix-project-meta dt,
-.mix-project-meta dd {
-  margin: 0;
-}
-
-.mix-project-meta dt {
-  color: rgb(0 0 0 / 82%);
+  border-top: 1px solid var(--line);
 }
 
 .mix-project-meta dd {
-  color: rgb(0 0 0 / 72%);
+  color: var(--text-muted);
 }
 
+/* A panel that is dark in both themes sets --page and --text and nothing
+   else; the caption's muted tint re-derives from those two. */
 .mix-hero-visual {
+  --page: var(--page-dark);
+  --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
   position: relative;
   display: grid;
   min-width: 0;
-  padding: 10px;
-  background: var(--mix-panel);
-  box-shadow:
-    0 0 0 1px rgb(31 25 73 / 16%),
-    0 28px 70px rgb(43 30 106 / 17%),
-    0 8px 24px rgb(0 0 0 / 9%);
-  gap: 10px;
+  padding: var(--space-1);
+  border: 1px solid var(--line);
+  background: var(--page);
+  color: var(--text);
+  gap: var(--space-1);
   transform: rotate(1deg);
 }
 
@@ -130,23 +124,22 @@
   height: auto;
   aspect-ratio: 723 / 550;
   object-fit: cover;
-  outline: 1px solid rgb(255 255 255 / 12%);
+  outline: 1px solid var(--line);
   outline-offset: -1px;
 }
 
 .mix-visual-label {
   position: absolute;
-  z-index: 1;
-  top: 20px;
-  left: 20px;
-  padding: 7px 9px;
-  background: rgb(17 15 46 / 86%);
-  color: #fff;
+  top: var(--space-3);
+  left: var(--space-3);
+  padding: var(--space-1);
+  background: var(--page);
+  color: var(--text);
 }
 
 .mix-hero-visual figcaption {
-  padding: 0 5px 4px;
-  color: rgb(255 255 255 / 72%);
+  padding: 0;
+  color: var(--text-muted);
 }
 
 .mix-section {
@@ -155,29 +148,23 @@
   display: grid;
   width: 100%;
   min-width: 0;
-  padding: 92px 0;
-  border-top: 1px solid rgb(0 0 0 / 11%);
-  gap: 40px;
+  padding: var(--section) 0;
+  border-top: 1px solid var(--line);
+  gap: var(--space-4);
   grid-template-columns: minmax(0, 1fr);
-  scroll-margin-top: 72px;
+  scroll-margin-top: var(--section);
 }
 
-/* The band's own full-bleed `border-block` is its top edge. Keeping the
-   section's content-width rule as well stacks a short grey line on top of the
-   long tinted one. */
+/* A full-bleed tinted band. The published version painted it with an
+   absolutely positioned ::before at `z-index: -1` and a 100vw inset; both are
+   banned now, so the band is the section itself — widened to the shell
+   container and padded back in, exactly the trick .mix-footer already uses. */
 .mix-section-feature {
-  border-top: 0;
-}
-
-.mix-section-feature::before {
-  position: absolute;
-  z-index: -1;
-  inset: 0 calc((100vw - 100%) / -2);
-  border-block: 1px solid rgb(101 72 232 / 10%);
-  background:
-    radial-gradient(circle at 92% 8%, rgb(40 185 216 / 10%), transparent 24rem),
-    linear-gradient(145deg, rgb(238 234 255 / 62%), rgb(255 255 255 / 45%));
-  content: "";
+  width: 100cqi;
+  margin-inline: calc((100% - 100cqi) / 2);
+  padding-inline: calc((100cqi - 100%) / 2);
+  border-bottom: 1px solid var(--line);
+  background: var(--accent-soft);
 }
 
 .mix-section-feature + .mix-section {
@@ -186,32 +173,26 @@
 
 .mix-reading {
   display: grid;
-  max-width: 720px;
-  gap: 16px;
-}
-
-.mix-reading .mix-section-label,
-.mix-scope .mix-section-label {
-  margin-bottom: 2px;
+  max-width: var(--measure);
+  gap: var(--space-2);
 }
 
 .mix-prose {
   display: grid;
-  gap: 18px;
+  gap: var(--space-2);
 }
 
 .mix-callout {
-  padding: 20px 24px;
-  border: 0;
-  border-left: 3px solid var(--mix-accent);
-  background: rgb(255 255 255 / 64%);
-  box-shadow: 0 0 0 1px rgb(0 0 0 / 7%);
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
 }
 
 .mix-three-column,
 .mix-four-column {
   display: grid;
-  gap: 16px;
+  gap: var(--space-2);
 }
 
 .mix-three-column {
@@ -225,22 +206,20 @@
 .mix-three-column > div,
 .mix-four-column > div {
   min-width: 0;
-  padding: 22px;
-  background: rgb(255 255 255 / 64%);
-  box-shadow:
-    0 0 0 1px rgb(0 0 0 / 8%),
-    0 12px 30px rgb(0 0 0 / 4%);
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  background: var(--surface);
 }
 
 .mix-three-column h3,
 .mix-four-column h3 {
-  margin-top: 8px;
+  margin-top: var(--space-1);
 }
 
 .mix-three-column p:last-child,
 .mix-four-column p:last-child {
-  margin-top: 6px;
-  color: rgb(0 0 0 / 67%);
+  margin-top: var(--space-1);
+  color: var(--text-muted);
 }
 
 .mix-platform-grid {
@@ -249,33 +228,30 @@
 
 .mix-scope {
   display: grid;
-  margin-top: 28px;
-  padding-top: 12px;
-  gap: 16px;
+  margin-top: var(--space-3);
+  padding-top: var(--space-1);
+  gap: var(--space-2);
 }
 
 .mix-scope > p:not(.mix-section-label) {
-  max-width: 720px;
+  max-width: var(--measure);
 }
 
 .mix-scope .mix-three-column {
-  margin-top: 18px;
+  margin-top: var(--space-2);
 }
 
 .mix-action-list {
   display: grid;
-  max-width: 892px;
-  gap: 12px;
+  gap: var(--space-1);
 }
 
 .mix-action-list > article {
   display: grid;
-  padding: 24px;
-  background: rgb(255 255 255 / 72%);
-  box-shadow:
-    0 0 0 1px rgb(0 0 0 / 8%),
-    0 12px 30px rgb(0 0 0 / 4%);
-  gap: 20px;
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  gap: var(--space-3);
   /* A shared label column so headings and body share one left edge down
      the list. max-content sized each card from its own label and staggered
      the copy — Verse's "CHANGE THE TOOLING" is ~40px wider than "MAKE THE CASE". */
@@ -283,13 +259,12 @@
 }
 
 .mix-action-list .mix-item-label {
-  color: var(--mix-accent);
+  color: var(--accent);
   white-space: nowrap;
 }
 
 .mix-action-list h3 + p {
-  margin-top: 4px;
-  color: rgb(0 0 0 / 67%);
+  color: var(--text-muted);
   /* Pretty wrap shortens lines inside the card column and reads as a
      ragged left edge under the heading, especially in Safari. */
   text-wrap: wrap;
@@ -297,40 +272,42 @@
 
 .mix-condition-demo {
   display: grid;
-  padding-top: 8px;
-  gap: 22px;
+  padding-top: var(--space-1);
+  gap: var(--space-3);
 }
 
 .mix-condition-demo-heading {
   display: grid;
-  max-width: 720px;
-  gap: 12px;
+  max-width: var(--measure);
+  gap: var(--space-1);
 }
 
 .mix-condition-demo-heading > p:last-child {
-  color: rgb(0 0 0 / 67%);
+  color: var(--text-muted);
 }
 
 .mix-media-scroller {
   display: flex;
-  width: calc(100vw - max(16px, (100vw - 892px) / 2) - 24px);
-  padding: 0 16px 12px 0;
+  width: 100%;
+  padding: 0 0 var(--space-1);
   overflow-x: auto;
-  gap: 18px;
+  gap: var(--space-2);
   scroll-snap-type: x proximity;
-  scrollbar-color: rgb(0 0 0 / 24%) transparent;
+  scrollbar-color: var(--line) transparent;
   scrollbar-width: thin;
   overscroll-behavior-inline: contain;
 }
 
 .mix-media-scroller:focus-visible {
-  outline: var(--focus-size) solid var(--focus);
-  outline-offset: 4px;
+  outline: 1px solid var(--primary);
+  outline-offset: 2px;
 }
 
+/* A third of the page column, so three slides read as a row and the width is
+   the shell divided rather than a literal of its own. */
 .mix-media-scroller figure {
-  width: 380px;
-  flex: 0 0 380px;
+  width: calc(var(--shell) / 3);
+  flex: 0 0 auto;
   scroll-snap-align: start;
 }
 
@@ -339,25 +316,23 @@
   height: auto;
   aspect-ratio: 45 / 32;
   object-fit: cover;
-  box-shadow: 0 14px 30px rgb(27 20 76 / 10%);
-  outline: 1px solid rgb(0 0 0 / 8%);
+  outline: 1px solid var(--line);
   outline-offset: -1px;
 }
 
 .mix-gallery-label {
   display: flex;
-  max-width: 892px;
-  margin-bottom: -24px;
-  color: rgb(0 0 0 / 56%);
+  margin-bottom: calc(var(--space-3) * -1);
+  color: var(--text-muted);
   justify-content: space-between;
 }
 
 .mix-gallery-label span {
-  color: var(--mix-accent);
+  color: var(--accent);
 }
 
 /* Three Verse slides read as a complete row on desktop, so the scroll cue is
-   only useful at the site's tablet and mobile widths. */
+   only useful below the breakpoint. */
 #verse .mix-gallery-label span {
   display: none;
   white-space: nowrap;
@@ -371,28 +346,30 @@
    treatment without its rotation. Intrinsic width/height on the img carries
    the ratio, so one class serves screenshots of any shape. */
 .mix-figure {
+  --page: var(--page-dark);
+  --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
   display: grid;
   min-width: 0;
-  padding: 10px;
-  background: var(--mix-panel);
-  box-shadow:
-    0 0 0 1px rgb(31 25 73 / 16%),
-    0 18px 48px rgb(43 30 106 / 14%),
-    0 6px 18px rgb(0 0 0 / 8%);
-  gap: 10px;
+  padding: var(--space-1);
+  border: 1px solid var(--line);
+  background: var(--page);
+  color: var(--text);
+  gap: var(--space-1);
 }
 
 .mix-figure img {
   display: block;
   width: 100%;
   height: auto;
-  outline: 1px solid rgb(255 255 255 / 12%);
+  outline: 1px solid var(--line);
   outline-offset: -1px;
 }
 
 .mix-figure figcaption {
-  padding: 0 5px 4px;
-  color: rgb(255 255 255 / 72%);
+  padding: 0;
+  color: var(--text-muted);
 }
 
 .mix-results-grid {
@@ -404,17 +381,20 @@
 }
 
 .mix-customer-note {
-  max-width: 720px;
-  margin-top: -12px;
+  max-width: var(--measure);
+  margin-top: calc(var(--space-1) * -1);
 }
 
 .mix-metrics {
+  --page: var(--page-dark);
+  --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
   display: grid;
   overflow: hidden;
-  background: var(--mix-panel);
-  box-shadow:
-    0 0 0 1px rgb(32 25 74 / 15%),
-    0 22px 54px rgb(32 25 74 / 14%);
+  border: 1px solid var(--line);
+  background: var(--page);
+  color: var(--text);
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
@@ -422,309 +402,138 @@
   display: grid;
   container-type: inline-size;
   min-width: 0;
-  padding: 28px;
-  color: #fff;
-  gap: 8px;
+  padding: var(--space-3);
+  gap: var(--space-1);
 }
 
 .mix-metrics article + article {
-  border-left: 1px solid rgb(255 255 255 / 14%);
+  border-left: 1px solid var(--line);
 }
 
-/* The metric is nowrap so a `5.0 → 7.0` pair never breaks across its arrow,
-   which means a long pair overflows its third of the band and the panel's
-   `overflow: hidden` clips it — `52.67 → 61.50` ran 288px into a 240px column
-   at desktop. So size the number off its own column rather than off the page:
-   the longest pair measures 6em in the display face, and the 4px keeps it off
-   the divider. The type-scale size stays the ceiling, so wide layouts and the
-   single-column mobile stack are unaffected. */
+/* The metric is nowrap so a `5.0 → 7.0` pair never breaks across its arrow. */
 .mix-metrics strong {
-  font-size: min(var(--type-metric-size), (100cqi - 4px) / 6);
   white-space: nowrap;
 }
 
 .mix-metrics span {
-  color: rgb(255 255 255 / 68%);
+  color: var(--text-muted);
 }
 
 .mix-metric-note {
-  max-width: 76ch;
-  margin-top: -24px;
-  color: var(--ink-muted);
+  max-width: var(--measure);
+  margin-top: calc(var(--space-3) * -1);
+  color: var(--text-muted);
 }
 
 .mix-footer {
   display: flex;
   width: 100cqi;
   margin: 0 0 0 calc((100% - 100cqi) / 2);
-  padding: 94px 24px 104px;
-  border-top: 1px solid rgb(32 25 74 / 10%);
+  padding: var(--space-7) var(--space-3);
+  border-top: 1px solid var(--line);
   align-items: center;
   flex-direction: column;
-  gap: 18px;
-  background:
-    radial-gradient(circle at 50% 0%, rgb(101 72 232 / 11%), transparent 28rem),
-    linear-gradient(145deg, #f4f1ff, #f8fbff);
-  color: var(--ink);
+  gap: var(--space-2);
+  background: var(--surface);
+  color: var(--text);
   text-align: center;
 }
 
 .mix-footer h2 {
-  max-width: 34ch;
+  max-width: var(--measure-title);
 }
 
 .mix-footer p {
-  color: rgb(32 25 74 / 65%);
+  color: var(--text-muted);
 }
 
 .mix-footer-actions {
   display: flex;
-  margin-top: 8px;
+  margin-top: var(--space-1);
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--space-1);
   justify-content: center;
 }
 
-/* Appearance comes from `.btn` in theme.css; `.mix-contact` only sets its own
-   minimum width. */
-.mix-contact {
-  min-width: 158px;
-}
-
-.mix-media-scroller:focus-visible {
-  outline: 2px solid var(--mix-accent);
-  outline-offset: 3px;
-}
-
-/* Hover and press states are shared with every other button on the site; see
-   the `.btn` block in theme.css. */
+/* Appearance and every state come from `.btn` in theme.css. */
 
 @media (max-width: 809.98px) {
   .mix-main {
-    padding-right: 16px;
-    padding-left: 16px;
+    padding-right: var(--space-2);
+    padding-left: var(--space-2);
   }
 
   .mix-hero {
-    padding: 78px 0 72px;
-    gap: 44px;
+    padding: var(--section) 0;
+    gap: var(--space-4);
     grid-template-columns: 1fr;
   }
 
   .mix-project-meta > div {
-    gap: 16px;
+    gap: var(--space-2);
     grid-template-columns: 80px minmax(0, 1fr);
   }
 
   .mix-hero-visual {
-    width: min(100%, 620px);
+    width: 100%;
     transform: none;
   }
 
   .mix-section {
-    padding: 76px 0;
-    gap: 36px;
+    padding: var(--section) 0;
+    gap: var(--space-4);
   }
 
   .mix-three-column,
   .mix-four-column {
     grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .mix-three-column > div,
-  .mix-four-column > div {
-    padding: 20px;
-  }
-
-  .mix-three-column h3,
-  .mix-four-column h3 {
-    margin-top: 8px;
+    gap: var(--space-1);
   }
 
   .mix-scope {
     margin-top: 0;
-    padding-top: 4px;
+    padding-top: 0;
   }
 
   .mix-scope .mix-three-column {
-    margin-top: 12px;
+    margin-top: var(--space-1);
   }
 
   .mix-action-list {
-    gap: 28px;
+    gap: var(--space-3);
   }
 
   .mix-action-list > article {
-    gap: 16px;
+    gap: var(--space-2);
     grid-template-columns: 1fr;
-  }
-
-  .mix-media-scroller {
-    width: calc(100% + 16px);
-  }
-
-  .mix-media-scroller figure {
-    width: min(82vw, 430px);
-    flex-basis: min(82vw, 430px);
-  }
-
-  .mix-gallery-label {
-    margin-bottom: -20px;
   }
 
   .mix-gallery-label span {
     display: none;
   }
 
+  #verse .mix-gallery-label span {
+    display: inline;
+  }
+
   #verse .mix-gallery-label {
-    column-gap: 16px;
+    column-gap: var(--space-2);
   }
 
   .mix-metrics {
     grid-template-columns: 1fr;
   }
 
-  .mix-metrics article {
-    padding: 24px;
-  }
-
   .mix-metrics article + article {
-    border-top: 1px solid rgb(255 255 255 / 14%);
+    border-top: 1px solid var(--line);
     border-left: 0;
   }
 
   .mix-customer-note {
-    margin-top: -4px;
+    margin-top: 0;
   }
 
   .mix-footer {
-    padding: 76px 16px 84px;
+    padding: var(--section) var(--space-2);
   }
-
-  .mix-footer h2 {
-    max-width: 16ch;
-  }
-
-}
-
-@media (max-width: 1199.98px) {
-  #verse .mix-gallery-label span {
-    display: inline;
-  }
-}
-
-@media (max-width: 359.98px) {
-  .mix-action-list > article {
-    grid-template-columns: 1fr;
-  }
-
-}
-
-/* The live site's dark block was `@media (prefers-color-scheme: dark)`. Here the
-   palette is a stored choice on <html>, so each selector carries
-   [data-theme="dark"] instead. */
-
-[data-theme="dark"] .mix-page {
-  --mix-ink-muted: rgb(255 255 255 / 70%);
-  --mix-panel: #2f2760;
-  background:
-    radial-gradient(circle at 84% 9%, rgb(101 72 232 / 18%), transparent 27rem),
-    linear-gradient(172deg, #15131d 0%, #09090d 100%);
-  color: #f5f3fa;
-}
-
-[data-theme="dark"] .mix-content,
-[data-theme="dark"] .mix-content h1,
-[data-theme="dark"] .mix-content h2,
-[data-theme="dark"] .mix-content h3 {
-  color: #f5f3fa;
-}
-
-[data-theme="dark"] .mix-eyebrow,
-[data-theme="dark"] .mix-section-label,
-[data-theme="dark"] .mix-item-label,
-[data-theme="dark"] .mix-gallery-label,
-[data-theme="dark"] .mix-metric-note {
-  color: rgb(255 255 255 / 60%);
-}
-
-[data-theme="dark"] .mix-deck,
-[data-theme="dark"] .mix-three-column p:last-child,
-[data-theme="dark"] .mix-four-column p:last-child,
-[data-theme="dark"] .mix-action-list h3 + p,
-[data-theme="dark"] .mix-condition-demo-heading > p:last-child {
-  color: rgb(255 255 255 / 74%);
-}
-
-[data-theme="dark"] .mix-three-column > div,
-[data-theme="dark"] .mix-four-column > div,
-[data-theme="dark"] .mix-action-list > article,
-[data-theme="dark"] .mix-callout {
-  background: rgb(255 255 255 / 6%);
-}
-
-[data-theme="dark"] .mix-callout {
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 7%);
-}
-
-[data-theme="dark"] .mix-three-column > div,
-[data-theme="dark"] .mix-four-column > div,
-[data-theme="dark"] .mix-action-list > article {
-  box-shadow:
-    0 0 0 1px rgb(255 255 255 / 10%),
-    0 12px 30px rgb(0 0 0 / 18%);
-}
-
-[data-theme="dark"] /* The light-mode rings on these panels are near-black and vanish here. */
-.mix-hero-visual,
-[data-theme="dark"] .mix-metrics {
-  box-shadow: 0 0 0 1px rgb(195 184 255 / 16%);
-}
-
-[data-theme="dark"] .mix-section {
-  border-color: rgb(255 255 255 / 12%);
-}
-
-[data-theme="dark"] .mix-project-meta {
-  border-color: rgb(255 255 255 / 12%);
-}
-
-[data-theme="dark"] .mix-project-meta > div + div {
-  border-color: rgb(255 255 255 / 8%);
-}
-
-[data-theme="dark"] .mix-project-meta dt {
-  color: rgb(255 255 255 / 82%);
-}
-
-[data-theme="dark"] .mix-project-meta dd {
-  color: rgb(255 255 255 / 74%);
-}
-
-[data-theme="dark"] .mix-section-feature::before {
-  border-color: rgb(139 116 240 / 18%);
-  background:
-    radial-gradient(circle at 92% 8%, rgb(40 185 216 / 12%), transparent 24rem),
-    linear-gradient(145deg, rgb(62 47 126 / 28%), rgb(255 255 255 / 2%));
-}
-
-[data-theme="dark"] .mix-media-scroller {
-  scrollbar-color: rgb(255 255 255 / 28%) transparent;
-}
-
-[data-theme="dark"] .mix-media-scroller img {
-  outline-color: rgb(255 255 255 / 12%);
-}
-
-[data-theme="dark"] .mix-footer {
-  border-color: rgb(255 255 255 / 12%);
-  background:
-    radial-gradient(circle at 50% 0%, rgb(101 72 232 / 18%), transparent 28rem),
-    linear-gradient(145deg, #17131f, #0d1017);
-  color: #f5f3fa;
-}
-
-[data-theme="dark"] .mix-footer p {
-  color: rgb(255 255 255 / 68%);
 }

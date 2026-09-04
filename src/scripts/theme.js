@@ -26,11 +26,25 @@ function persist(value) {
   }
 }
 
+/* The browser-chrome colour is the page ground, so it is read back off the
+   rendered body rather than written here: the design system keeps every colour
+   in tokens.css, and a literal in this file would be a second source for one
+   of them. The tag is created on demand because there is nothing sensible to
+   put in it server-side, where no stylesheet has resolved yet. */
+function paintBrowserChrome() {
+  let meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.setAttribute("name", "theme-color");
+    document.head.appendChild(meta);
+  }
+  meta.setAttribute("content", getComputedStyle(document.body).backgroundColor);
+}
+
 export function apply(theme) {
   document.documentElement.setAttribute("data-theme", theme);
 
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute("content", theme === "light" ? "#f4f6f0" : "#070d09");
+  if (document.body) paintBrowserChrome();
 
   document.querySelectorAll(".theme-toggle").forEach((button) => {
     button.setAttribute("aria-pressed", String(theme === "light"));

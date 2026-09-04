@@ -22,13 +22,22 @@ const PORT = Number(process.env.EGG_PORT || 4321);
 const OUTDIR = process.env.EGG_OUTDIR || "dist";
 const BASE = `http://127.0.0.1:${PORT}`;
 
-/* Recorded from a build made before any egg file was touched. The egg adds a
-   pocket exactly as tall as the shell's bottom padding, which it zeroes — so
-   these numbers must survive the feature unchanged. */
+/* The egg adds a pocket exactly as tall as the shell's bottom padding, which
+   it zeroes, so the page it sits on must be the same height with the feature
+   as without it. These numbers are how that is held.
+
+   They are a baseline, not a constant. The first set (1233 / 1377 / 1800) was
+   recorded before any egg file was touched; the set below was re-recorded
+   after the design-system migration, which re-sourced the type scale and the
+   spacing scale from tokens.css and so moved every page's height on purpose.
+   Re-baselining is correct when a change to type or spacing is the *reason*
+   the number moved — and only then. A height that moves while type and
+   spacing hold still is the egg growing a pocket, which is the thing this
+   check exists to catch. Do not re-record to make a red build green. */
 const SCROLL_HEIGHTS = [
-  { width: 1200, height: 900, expected: 1233 },
-  { width: 810, height: 900, expected: 1377 },
-  { width: 390, height: 800, expected: 1800 },
+  { width: 1200, height: 900, expected: 1208 },
+  { width: 810, height: 900, expected: 1275 },
+  { width: 390, height: 800, expected: 1612 },
 ];
 
 const server = spawn(

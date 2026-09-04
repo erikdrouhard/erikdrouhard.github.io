@@ -8,22 +8,24 @@
     "test": "node --test scripts/*.test.mjs",
     "build": "astro build",
     "preview": "astro preview --host 127.0.0.1",
-    "check": "astro check",
+    "check": "astro check && node scripts/check-tokens.mjs",
+    "check:tokens": "node scripts/check-tokens.mjs",
     "check:dist": "node scripts/check-dist.mjs",
     "verify": "npm run build && npm run check:dist",
     "check:acceptance": "node scripts/check-acceptance.mjs",
     "check:square": "node scripts/check-square-style.mjs",
-    "check:all": "npm test && npm run build && npm run check:dist && npm run check:acceptance && npm run check:square"
+    "check:all": "npm test && npm run check:tokens && npm run build && npm run check:dist && npm run check:acceptance && npm run check:square"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
-    "astro": "^5.13.0",
+    "@fontsource-variable/jetbrains-mono": "^5.2.0",
     "@fontsource-variable/newsreader": "^5.2.0",
-    "@fontsource-variable/jetbrains-mono": "^5.2.0"
+    "astro": "^5.13.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
-    "typescript": "^5.9.0",
-    "playwright": "^1.62.0"
+    "@types/node": "^22.20.1",
+    "playwright": "^1.62.0",
+    "typescript": "^5.9.0"
   }
 }

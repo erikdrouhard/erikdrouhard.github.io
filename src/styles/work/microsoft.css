@@ -1,23 +1,20 @@
+/* Microsoft CoreAI case study.
+
+   Every value here comes from `tokens.css`. The page opts into its hue on the
+   root element and nothing else: `--page` and `--accent` are both derived
+   from `--accent-hue` in tokens.css, and line, surface, and muted text follow,
+   so the whole study shifts together in both themes. There is no second palette. */
+
 .core-ai-page {
-  --core-accent: #315be8;
-  --core-cyan: #35b7d6;
-  --core-ink: #0b162b;
-  --core-soft: #edf2ff;
-  /* Surfaces that read as dark panels against the page. Split from
-     --core-ink, which stays a near-black text colour in both modes
-     (the white prototype-loop output card still sits on it). */
-  --core-panel: #0b162b;
-  min-width: var(--page-min);
-  color: var(--ink);
-  background:
-    radial-gradient(circle at 84% 8%, rgb(49 91 232 / 11%), transparent 29rem),
-    linear-gradient(172deg, var(--page-wash) 0%, var(--page-paper) 100%);
+  --accent-hue: var(--accent-hue-msft);
+  background: var(--page);
+  color: var(--text);
 }
 
 .core-ai-page .core-shell {
-  width: min(100%, var(--page-width));
+  width: min(100%, var(--shell));
   margin-inline: auto;
-  padding-inline: var(--page-gutter);
+  padding-inline: var(--gutter);
 }
 
 .core-ai-page .core-main {
@@ -36,16 +33,16 @@
 }
 
 .core-ai-page h1 {
-  max-width: 24ch;
+  max-width: var(--measure-title);
   text-decoration: none;
 }
 
 .core-ai-page h2 {
-  margin-bottom: 22px;
+  margin-bottom: var(--space-3);
 }
 
 .core-ai-page h3 {
-  margin-bottom: 10px;
+  margin-bottom: var(--space-1);
 }
 
 .core-ai-page p:last-child {
@@ -55,22 +52,19 @@
 .core-ai-page .eyebrow,
 .core-ai-page .number,
 .core-ai-page time {
-  color: var(--ink-muted);
+  color: var(--text-muted);
 }
 
 .core-ai-page .hero {
   position: relative;
   overflow: hidden;
-  padding: 104px 0 88px;
-  border-bottom: 1px solid rgb(49 91 232 / 10%);
-  background:
-    radial-gradient(circle at 83% 42%, rgb(53 183 214 / 16%), transparent 22rem),
-    radial-gradient(circle at 68% 4%, rgb(49 91 232 / 13%), transparent 26rem);
+  padding: var(--space-7) 0 var(--space-6);
+  border-bottom: 1px solid var(--line);
 }
 
 .core-ai-page .hero-grid {
   display: grid;
-  gap: 72px;
+  gap: var(--space-6);
   grid-template-columns: minmax(0, 11fr) minmax(320px, 9fr);
   align-items: center;
 }
@@ -78,7 +72,7 @@
 .core-ai-page .hero-copy {
   display: grid;
   min-width: 0;
-  gap: 24px;
+  gap: var(--space-3);
 }
 
 .core-ai-page .hero-copy > * {
@@ -86,45 +80,45 @@
 }
 
 .core-ai-page .hero-deck {
-  max-width: 670px;
-  color: rgb(0 0 0 / 72%);
+  max-width: var(--measure);
 }
 
 .core-ai-page .button-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-2);
 }
 
 /* The hero's two buttons take their appearance from `.btn` in theme.css. Only
    their stacking behaviour is this page's business, further down. */
 
+/* A panel that reads dark in both themes sets --page and --text on itself and
+   nothing else. Muted text, line, and surface re-derive from those two. */
 .core-ai-page .prototype-loop {
+  --page: var(--page-dark);
+  --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
   position: relative;
   display: grid;
+  isolation: isolate;
   min-width: 0;
-  padding: 26px;
+  padding: var(--space-3);
   overflow: hidden;
-  border-radius: 0;
-  background:
-    radial-gradient(circle at 100% 0%, rgb(53 183 214 / 34%), transparent 15rem),
-    var(--core-panel);
-  box-shadow:
-    0 0 0 1px rgb(10 22 43 / 14%),
-    0 30px 72px rgb(19 42 102 / 18%),
-    0 8px 22px rgb(0 0 0 / 9%);
-  color: #fff;
-  gap: 20px;
+  border: 1px solid var(--line);
+  background: var(--page);
+  color: var(--text);
+  gap: var(--space-3);
 }
 
 .core-ai-page .prototype-loop::after {
   position: absolute;
-  right: -48px;
-  bottom: -64px;
-  width: 180px;
-  height: 180px;
-  border: 1px solid rgb(255 255 255 / 13%);
+  right: calc(var(--space-5) * -1);
+  bottom: calc(var(--space-6) * -1);
+  width: calc(var(--space-6) * 2.5);
+  height: calc(var(--space-6) * 2.5);
+  border: 1px solid var(--line);
   border-radius: 50%;
   content: "";
 }
@@ -132,44 +126,39 @@
 .core-ai-page .prototype-loop-label,
 .core-ai-page .prototype-loop-track span,
 .core-ai-page .prototype-loop-output span {
-  color: rgb(255 255 255 / 58%);
+  color: var(--text-muted);
 }
 
 .core-ai-page .prototype-loop-track {
   display: grid;
-  gap: 8px;
+  gap: var(--space-1);
 }
 
 .core-ai-page .prototype-loop-track > div {
   display: grid;
-  min-height: 76px;
-  padding: 14px 16px;
-  border-radius: 0;
-  background: rgb(255 255 255 / 8%);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
-  column-gap: 12px;
+  min-height: var(--space-6);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  column-gap: var(--space-1);
   grid-template-columns: 26px minmax(0, 1fr);
   align-content: center;
 }
 
 .core-ai-page .prototype-loop-track small {
-  color: rgb(255 255 255 / 62%);
+  color: var(--text-muted);
   grid-column: 2;
 }
 
 .core-ai-page .prototype-loop-output {
   display: grid;
   position: relative;
+  isolation: isolate;
   z-index: 1;
-  padding: 16px;
-  border-radius: 0;
-  background: #fff;
-  color: var(--core-ink);
-  gap: 5px;
-}
-
-.core-ai-page .prototype-loop-output span {
-  color: rgb(11 22 43 / 52%);
+  padding: var(--space-2);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  gap: var(--space-1);
 }
 
 .core-ai-page .snapshot {
@@ -177,28 +166,25 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  border-radius: 0;
-  background: rgb(255 255 255 / 66%);
-  box-shadow:
-    0 0 0 1px var(--line-subtle),
-    0 16px 40px rgb(23 42 91 / 6%);
+  border: 1px solid var(--line);
+  background: var(--surface);
   list-style: none;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .core-ai-page .snapshot-section {
-  padding-top: 32px;
+  padding-top: var(--space-4);
 }
 
 .core-ai-page .snapshot li {
   display: grid;
-  padding: 24px;
-  gap: 8px;
+  padding: var(--space-3);
+  gap: var(--space-1);
   align-content: start;
 }
 
 .core-ai-page .snapshot li:first-child {
-  padding-left: 24px;
+  padding-left: var(--space-3);
 }
 
 .core-ai-page .snapshot li + li {
@@ -206,16 +192,16 @@
 }
 
 .core-ai-page .snapshot span {
-  color: rgb(0 0 0 / 62%);
+  color: var(--text-muted);
 }
 
 .core-ai-page .section {
-  padding: 112px 0;
-  scroll-margin-top: 72px;
+  padding: var(--space-7) 0;
+  scroll-margin-top: var(--section);
 }
 
 .core-ai-page .section-rule .core-shell {
-  padding-top: 112px;
+  padding-top: var(--space-7);
   border-top: 1px solid var(--line);
 }
 
@@ -231,26 +217,21 @@
 }
 
 .core-ai-page .recommendation-section {
-  padding: 0 0 112px;
+  padding: 0 0 var(--space-7);
 }
 
 .core-ai-page .recommendation-section-lower {
-  padding-top: 112px;
-  background:
-    radial-gradient(circle at 12% 14%, rgb(53 183 214 / 10%), transparent 24rem),
-    rgb(237 242 255 / 42%);
+  padding-top: var(--space-7);
+  background: var(--accent-soft);
 }
 
 .core-ai-page .recommendation {
   display: grid;
   margin: 0;
-  padding: 48px;
-  border-radius: 0;
-  background: rgb(255 255 255 / 74%);
-  box-shadow:
-    0 0 0 1px var(--line-subtle),
-    0 24px 54px rgb(20 39 88 / 8%);
-  gap: 72px;
+  padding: var(--space-5);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  gap: var(--space-6);
   grid-template-columns: minmax(210px, 0.62fr) minmax(0, 1.38fr);
 }
 
@@ -259,71 +240,70 @@
 }
 
 .core-ai-page .recommendation-attribution .eyebrow {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-3);
 }
 
 .core-ai-page .recommendation-attribution h2 {
-  margin-bottom: 18px;
+  margin-bottom: var(--space-2);
 }
 
 .core-ai-page .recommendation-attribution > p:not(.eyebrow) {
-  margin-bottom: 10px;
-  color: rgb(0 0 0 / 62%);
+  margin-bottom: var(--space-1);
+  color: var(--text-muted);
 }
 
 .core-ai-page .recommendation-quote {
   position: relative;
   margin: 0;
-  padding: 4px 0 0 34px;
-  border-left: 1px solid rgb(49 91 232 / 34%);
+  padding: 0 0 0 var(--space-4);
+  border-left: 1px solid var(--accent);
 }
 
 .core-ai-page .recommendation-quote::before {
   position: absolute;
-  top: -8px;
-  left: 2px;
-  color: rgb(49 91 232 / 34%);
+  top: calc(var(--space-1) / -2);
+  left: 0;
+  color: var(--accent);
   content: "“";
-  font: var(--type-quote);
+  font: var(--type-display);
 }
 
 .core-ai-page .recommendation-quote::after {
   position: absolute;
   right: 0;
-  bottom: -20px;
-  color: rgb(49 91 232 / 36%);
+  bottom: calc(var(--space-3) * -1);
+  color: var(--accent);
   content: "”";
-  font: var(--type-quote);
+  font: var(--type-display);
 }
 
 .core-ai-page .recommendation-quote p {
   position: relative;
-  margin-bottom: 1.25em;
+  margin-bottom: var(--space-3);
 }
 
 .core-ai-page .section-heading {
-  max-width: 760px;
-  margin-bottom: 64px;
+  max-width: var(--measure);
+  margin-bottom: var(--space-6);
 }
 
 .core-ai-page .section-heading > p:last-child {
-  max-width: 650px;
-  color: var(--ink-soft);
+  max-width: var(--measure);
 }
 
 .core-ai-page .timeline {
-  margin: 0 0 0 7px;
+  margin: 0;
   padding: 0;
-  border-left: 1px solid rgb(49 91 232 / 28%);
+  border-left: 1px solid var(--line);
   list-style: none;
 }
 
 .core-ai-page .timeline li {
   position: relative;
   display: grid;
-  padding: 30px 0 30px 30px;
+  padding: var(--space-4) 0 var(--space-4) var(--space-4);
   border-bottom: 1px solid var(--line);
-  column-gap: 28px;
+  column-gap: var(--space-3);
   grid-template-columns: 160px minmax(220px, 1fr) minmax(260px, 1.45fr);
   align-items: start;
 }
@@ -334,14 +314,13 @@
 
 .core-ai-page .timeline li::before {
   position: absolute;
-  top: 36px;
-  left: -6px;
-  width: 11px;
-  height: 11px;
-  border: 3px solid #f8f9fb;
+  top: var(--space-4);
+  left: calc(var(--space-1) / -2);
+  width: var(--space-1);
+  height: var(--space-1);
+  border: 1px solid var(--page);
   border-radius: 50%;
-  background: var(--core-accent);
-  box-shadow: 0 0 0 1px rgb(49 91 232 / 35%);
+  background: var(--accent);
   content: "";
 }
 
@@ -350,47 +329,31 @@
   margin-bottom: 0;
 }
 
-.core-ai-page .timeline p,
-.core-ai-page .body-copy p,
-.core-ai-page .prototype p,
-.core-ai-page .outcome p,
-.core-ai-page .public-link p,
-.core-ai-page .sprint-step p,
-.core-ai-page .scope-note p,
-.core-ai-page .applied-work p,
-.core-ai-page .map-of-truth p {
-  color: var(--ink-soft);
-}
-
 .core-ai-page .split {
   display: grid;
-  gap: 72px;
+  gap: var(--space-6);
   grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
   align-items: start;
 }
 
 .core-ai-page .body-copy p + p {
-  margin-top: var(--space-paragraph);
+  margin-top: var(--space-3);
 }
 
 .core-ai-page .pullquote {
   margin-bottom: 0;
-  padding-left: 28px;
-  border-left: 1px solid #000;
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--line);
 }
 
 .core-ai-page .media {
-  margin: 64px 0 0;
+  margin: var(--space-6) 0 0;
 }
 
 .core-ai-page .media-frame {
   overflow: hidden;
-  border: 0;
-  border-radius: 0;
-  background: rgb(255 255 255 / 50%);
-  box-shadow:
-    0 0 0 1px var(--line-subtle),
-    0 18px 44px rgb(20 39 88 / 9%);
+  border: 1px solid var(--line);
+  background: var(--surface);
 }
 
 .core-ai-page .media-frame img {
@@ -399,66 +362,52 @@
 }
 
 .core-ai-page .architecture-frame {
-  padding: 20px;
+  padding: var(--space-3);
 }
 
 .core-ai-page figcaption {
-  max-width: 760px;
-  margin-top: 14px;
-  color: var(--ink-muted);
+  max-width: var(--measure);
+  margin-top: var(--space-1);
+  color: var(--text-muted);
 }
 
 .core-ai-page figcaption a,
 .core-ai-page .public-link a,
 .core-ai-page .applied-work-link a {
-  font-weight: var(--weight-link);
   text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 .core-ai-page .sprint-grid,
 .core-ai-page .outcome-grid {
   display: grid;
-  gap: 16px;
+  gap: var(--space-2);
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .core-ai-page .sprint-step,
 .core-ai-page .outcome {
-  padding: 28px;
-  border-radius: 0;
-  background: rgb(255 255 255 / 66%);
-  box-shadow:
-    0 0 0 1px var(--line-subtle),
-    0 12px 30px rgb(23 42 91 / 5%);
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  background: var(--surface);
 }
 
 .core-ai-page .sprint-step:first-child,
 .core-ai-page .outcome:first-child {
-  padding-left: 28px;
-}
-
-.core-ai-page .sprint-step + .sprint-step,
-.core-ai-page .outcome + .outcome {
-  border-left: 0;
+  padding-left: var(--space-3);
 }
 
 .core-ai-page .number {
   display: block;
-  margin-bottom: 28px;
+  margin-bottom: var(--space-3);
 }
 
 .core-ai-page .bridge,
 .core-ai-page .map-of-truth {
   display: grid;
-  padding: 48px;
-  border: 0;
-  border-radius: 0;
-  background: rgb(255 255 255 / 62%);
-  box-shadow:
-    0 0 0 1px var(--line-subtle),
-    0 20px 48px rgb(20 39 88 / 7%);
-  gap: 56px;
+  padding: var(--space-5);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  gap: var(--space-5);
   grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
 }
 
@@ -467,54 +416,57 @@
 }
 
 .core-ai-page .bridge-copy p + p {
-  margin-top: var(--space-paragraph);
+  margin-top: var(--space-3);
 }
 
+/* Dark in both themes. Same contract as `.prototype-loop`: two tokens, and
+   everything inside re-derives from them. */
 .core-ai-page .section-dark {
+  --page: var(--page-dark);
+  --text: var(--text-dark);
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 85% 0%, rgb(53 183 214 / 27%), transparent 28rem),
-    var(--core-panel);
-  color: #fff;
+  background: var(--page);
+  color: var(--text);
 }
 
 .core-ai-page .section-dark .eyebrow,
 .core-ai-page .section-dark .section-heading > p:last-child {
-  color: rgb(255 255 255 / 68%);
+  color: var(--text-muted);
 }
 
 .core-ai-page .system-map {
   display: grid;
   overflow: hidden;
-  border-radius: 0;
-  background: rgb(255 255 255 / 7%);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 11%);
+  border: 1px solid var(--line);
+  background: var(--surface);
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .core-ai-page .system-layer {
   display: grid;
-  padding: 30px;
-  gap: 10px;
+  padding: var(--space-4);
+  gap: var(--space-1);
 }
 
 .core-ai-page .system-layer:first-child {
-  padding-left: 30px;
+  padding-left: var(--space-4);
 }
 
 .core-ai-page .system-layer + .system-layer {
-  border-left: 1px solid rgb(255 255 255 / 12%);
+  border-left: 1px solid var(--line);
 }
 
 .core-ai-page .system-layer span {
-  color: rgb(255 255 255 / 64%);
+  color: var(--text-muted);
 }
 
 .core-ai-page .system-arrow {
-  padding: 18px 0;
-  border-top: 1px solid rgb(255 255 255 / 12%);
-  color: rgb(255 255 255 / 58%);
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--line);
+  color: var(--text-muted);
   grid-column: 1 / -1;
   text-align: center;
 }
@@ -528,55 +480,49 @@
 
 .core-ai-page .prototype-grid {
   border-top: 0;
-  gap: 16px;
+  gap: var(--space-2);
 }
 
 .core-ai-page .prototype,
 .core-ai-page .public-link {
-  padding: 32px 36px 32px 0;
+  padding: var(--space-4) var(--space-4) var(--space-4) 0;
   border-bottom: 1px solid var(--line);
 }
 
 .core-ai-page .prototype {
-  padding: 28px;
-  border: 0;
-  border-radius: 0;
-  background: rgb(255 255 255 / 64%);
-  box-shadow:
-    0 0 0 1px var(--line-subtle),
-    0 12px 30px rgb(23 42 91 / 5%);
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  background: var(--surface);
 }
 
 .core-ai-page .prototype:nth-child(even),
 .core-ai-page .public-link:nth-child(even) {
   padding-right: 0;
-  padding-left: 36px;
+  padding-left: var(--space-4);
   border-left: 1px solid var(--line);
 }
 
 .core-ai-page .prototype:nth-child(even) {
-  padding: 28px;
-  border-left: 0;
+  padding: var(--space-3);
+  border-left: 1px solid var(--line);
 }
 
 .core-ai-page .label {
   display: inline-flex;
   width: fit-content;
-  margin-bottom: 24px;
-  padding: 6px 9px;
-  border: 0;
-  border-radius: 0;
-  background: var(--core-soft);
-  box-shadow: inset 0 0 0 1px rgb(49 91 232 / 14%);
-  color: rgb(0 0 0 / 62%);
+  margin-bottom: var(--space-3);
+  padding: calc(var(--space-1) / 2) calc(var(--space-1) * 0.75);
+  border: 1px solid var(--line);
+  background: var(--accent-soft);
+  color: var(--text-muted);
 }
 
 .core-ai-page .applied-work {
   display: grid;
-  margin-top: 72px;
-  padding-top: 40px;
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
   border-top: 1px solid var(--line);
-  gap: 64px;
+  gap: var(--space-6);
   grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
   align-items: start;
 }
@@ -584,23 +530,23 @@
 .core-ai-page .applied-work-link,
 .core-ai-page .scope-note {
   display: grid;
-  padding-left: 28px;
-  border-left: 1px solid rgb(0 0 0 / 18%);
-  gap: 10px;
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--line);
+  gap: var(--space-1);
 }
 
 .core-ai-page .applied-work-link span,
 .core-ai-page .map-node span {
-  color: rgb(0 0 0 / 62%);
+  color: var(--text-muted);
 }
 
 .core-ai-page .applied-work-context {
   display: grid;
-  gap: 10px;
+  gap: var(--space-1);
 }
 
 .core-ai-page .map-of-truth {
-  margin-top: 64px;
+  margin-top: var(--space-6);
 }
 
 .core-ai-page .map-flow {
@@ -610,17 +556,17 @@
 
 .core-ai-page .map-node {
   display: grid;
-  padding: 18px 0;
+  padding: var(--space-2) 0;
   border-bottom: 1px solid var(--line);
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .core-ai-page .evidence-key {
   display: flex;
-  margin: -30px 0 0;
+  margin: calc(var(--space-4) * -1) 0 0;
   padding: 0;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-1);
   list-style: none;
 }
 
@@ -629,18 +575,18 @@
 }
 
 .core-ai-page .link-grid {
-  margin-top: 48px;
+  margin-top: var(--space-5);
 }
 
 .core-ai-page .core-page-footer {
-  padding: 36px 0 48px;
+  padding: var(--space-4) 0 var(--space-5);
 }
 
 .core-ai-page .footer-inner {
   display: flex;
-  padding-top: 28px;
+  padding-top: var(--space-3);
   border-top: 1px solid var(--line);
-  color: var(--ink-muted);
+  color: var(--text-muted);
   justify-content: space-between;
 }
 
@@ -648,19 +594,12 @@
   margin-bottom: 0;
 }
 
-.core-ai-page figcaption a:focus-visible,
-.core-ai-page .public-link a:focus-visible,
-.core-ai-page .applied-work-link a:focus-visible {
-  outline: var(--focus-size) solid var(--focus);
-  outline-offset: var(--focus-offset);
-}
-
-/* Hover and press states are shared with every other button on the site; see
-   the `.btn` block in theme.css. */
+/* Focus rings and button hover/press are shared with every other page; see
+   theme.css. Nothing about them is this page's business. */
 
 @media (min-width: 810px) {
   .core-ai-page .applied-work {
-    column-gap: 64px;
+    column-gap: var(--space-6);
     row-gap: 0;
     grid-template-rows: auto auto auto;
     align-items: first baseline;
@@ -706,59 +645,18 @@
   }
 }
 
-@media (min-width: 810px) and (max-width: 1199.98px) {
-  .core-ai-page .core-shell {
-    width: min(calc(100% - 80px), var(--page-width-tablet));
-    padding-inline: 0;
-  }
-
-  .core-ai-page .hero {
-    padding-top: 104px;
-  }
-
-  .core-ai-page .hero-grid {
-    gap: 44px;
-    grid-template-columns: minmax(0, 11fr) minmax(290px, 9fr);
-  }
-
-  .core-ai-page .button-row {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .core-ai-page .button-row .btn {
-    width: 100%;
-  }
-
-  .core-ai-page .timeline li {
-    grid-template-columns: 130px minmax(180px, 0.9fr) minmax(240px, 1.3fr);
-  }
-
-  .core-ai-page .split {
-    gap: 40px;
-    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
-  }
-
-  .core-ai-page .bridge,
-  .core-ai-page .map-of-truth {
-    padding: 40px;
-    gap: 40px;
-  }
-}
-
 @media (max-width: 809.98px) {
   .core-ai-page .core-shell {
     width: 100%;
-    padding-inline: 16px;
+    padding-inline: var(--space-2);
   }
 
   .core-ai-page .hero {
-    padding: 72px 0 56px;
+    padding: var(--space-6) 0 var(--space-5);
   }
 
   .core-ai-page .hero-grid {
-    gap: 48px;
+    gap: var(--space-5);
     grid-template-columns: 1fr;
   }
 
@@ -768,8 +666,8 @@
   }
 
   .core-ai-page .prototype-loop {
-    width: min(100%, 520px);
-    padding: 22px;
+    width: 100%;
+    padding: var(--space-3);
   }
 
   .core-ai-page .snapshot,
@@ -787,12 +685,7 @@
 
   .core-ai-page .snapshot li,
   .core-ai-page .snapshot li:first-child {
-    padding: 20px 0;
-  }
-
-  .core-ai-page .snapshot li,
-  .core-ai-page .snapshot li:first-child {
-    padding-inline: 20px;
+    padding: var(--space-3);
   }
 
   .core-ai-page .snapshot li + li {
@@ -800,17 +693,15 @@
     border-left: 0;
   }
 
-  /* Dark mode does not restyle these stacked dividers. Leave the literal so
-     --line's 18% white dark value does not appear here. */
   .core-ai-page .sprint-step + .sprint-step,
   .core-ai-page .outcome + .outcome,
   .core-ai-page .system-layer + .system-layer {
-    border-top: 1px solid rgb(0 0 0 / 14%);
+    border-top: 1px solid var(--line);
     border-left: 0;
   }
 
   .core-ai-page .section {
-    padding: 80px 0;
+    padding: var(--space-6) 0;
   }
 
   .core-ai-page .section-rule {
@@ -818,11 +709,11 @@
   }
 
   .core-ai-page .section-rule .core-shell {
-    padding-top: 80px;
+    padding-top: var(--space-6);
   }
 
   .core-ai-page .section-heading {
-    margin-bottom: 48px;
+    margin-bottom: var(--space-5);
   }
 
   .core-ai-page .timeline li,
@@ -835,39 +726,39 @@
   }
 
   .core-ai-page .recommendation-section {
-    padding-bottom: 80px;
+    padding-bottom: var(--space-6);
   }
 
   .core-ai-page .recommendation-section-lower {
-    padding-top: 80px;
+    padding-top: var(--space-6);
   }
 
   .core-ai-page .recommendation {
-    padding: 28px;
-    gap: 34px;
+    padding: var(--space-3);
+    gap: var(--space-4);
   }
 
   .core-ai-page .recommendation-quote {
-    padding: 28px 0 0;
-    border-top: 1px solid rgb(49 91 232 / 34%);
+    padding: var(--space-3) 0 0;
+    border-top: 1px solid var(--accent);
     border-left: 0;
   }
 
   .core-ai-page .recommendation-quote::before {
-    top: 10px;
-    left: -6px;
+    top: var(--space-1);
+    left: calc(var(--space-1) / -2);
   }
 
   .core-ai-page .timeline li {
-    padding-left: 24px;
-    gap: 12px;
+    padding-left: var(--space-3);
+    gap: var(--space-1);
   }
 
   .core-ai-page .pullquote,
   .core-ai-page .scope-note,
   .core-ai-page .applied-work-link {
-    padding: 24px 0 0;
-    border-top: 1px solid rgb(0 0 0 / 18%);
+    padding: var(--space-3) 0 0;
+    border-top: 1px solid var(--line);
     border-left: 0;
   }
 
@@ -881,141 +772,33 @@
   .core-ai-page .prototype:nth-child(even),
   .core-ai-page .public-link,
   .core-ai-page .public-link:nth-child(even) {
-    padding: 24px;
+    padding: var(--space-3);
     border-right: 0;
     border-left: 0;
   }
 
-  .core-ai-page .prototype,
-  .core-ai-page .prototype:nth-child(even) {
-    padding: 24px;
-  }
-
   .core-ai-page .bridge,
   .core-ai-page .map-of-truth {
-    padding: 28px;
-    gap: 36px;
+    padding: var(--space-3);
+    gap: var(--space-4);
   }
 
   .core-ai-page .applied-work {
-    gap: 36px;
+    gap: var(--space-4);
   }
 
   .core-ai-page .media {
-    margin-top: 48px;
+    margin-top: var(--space-5);
   }
 
   .core-ai-page .architecture-frame {
-    padding: 8px;
+    padding: var(--space-1);
   }
 
   .core-ai-page .footer-inner {
     display: grid;
-    gap: 8px;
+    gap: var(--space-1);
   }
-}
-
-
-[data-theme="dark"] .core-ai-page {
-  --core-soft: #182344;
-  --core-panel: #1f2949;
-  color: #f2f5fb;
-  background:
-    radial-gradient(circle at 84% 8%, rgb(49 91 232 / 18%), transparent 29rem),
-    linear-gradient(172deg, #101522 0%, #080a0f 100%);
-}
-
-[data-theme="dark"] .core-ai-page .eyebrow,
-[data-theme="dark"] .core-ai-page .number,
-[data-theme="dark"] .core-ai-page time,
-[data-theme="dark"] .core-ai-page figcaption,
-[data-theme="dark"] .core-ai-page .footer-inner {
-  color: rgb(255 255 255 / 62%);
-}
-
-[data-theme="dark"] .core-ai-page .hero {
-  border-color: rgb(72 112 240 / 18%);
-  background:
-    radial-gradient(circle at 83% 42%, rgb(53 183 214 / 16%), transparent 22rem),
-    radial-gradient(circle at 68% 4%, rgb(49 91 232 / 18%), transparent 26rem);
-}
-
-[data-theme="dark"] .core-ai-page .hero-deck,
-[data-theme="dark"] .core-ai-page .section-heading > p:last-child,
-[data-theme="dark"] .core-ai-page .timeline p,
-[data-theme="dark"] .core-ai-page .body-copy p,
-[data-theme="dark"] .core-ai-page .prototype p,
-[data-theme="dark"] .core-ai-page .outcome p,
-[data-theme="dark"] .core-ai-page .public-link p,
-[data-theme="dark"] .core-ai-page .sprint-step p,
-[data-theme="dark"] .core-ai-page .scope-note p,
-[data-theme="dark"] .core-ai-page .applied-work p,
-[data-theme="dark"] .core-ai-page .map-of-truth p {
-  color: var(--ink-soft);
-}
-
-[data-theme="dark"] .core-ai-page .snapshot,
-[data-theme="dark"] .core-ai-page .recommendation,
-[data-theme="dark"] .core-ai-page .sprint-step,
-[data-theme="dark"] .core-ai-page .outcome,
-[data-theme="dark"] .core-ai-page .bridge,
-[data-theme="dark"] .core-ai-page .map-of-truth,
-[data-theme="dark"] .core-ai-page .prototype {
-  background: rgb(255 255 255 / 6%);
-  box-shadow:
-    0 0 0 1px var(--line-subtle),
-    0 18px 44px rgb(0 0 0 / 22%);
-}
-
-[data-theme="dark"] .core-ai-page .snapshot li + li,
-[data-theme="dark"] .core-ai-page .section-rule .core-shell,
-[data-theme="dark"] .core-ai-page .timeline li,
-[data-theme="dark"] .core-ai-page .prototype-grid,
-[data-theme="dark"] .core-ai-page .link-grid,
-[data-theme="dark"] .core-ai-page .public-link,
-/* Kept: the light-mode `border-left` shorthand on this selector outranks
-   the plain `.public-link` above it. */
-[data-theme="dark"] .core-ai-page .public-link:nth-child(even),
-[data-theme="dark"] .core-ai-page .applied-work,
-[data-theme="dark"] .core-ai-page .applied-work-link,
-[data-theme="dark"] .core-ai-page .scope-note,
-[data-theme="dark"] .core-ai-page .map-flow,
-[data-theme="dark"] .core-ai-page .map-node,
-[data-theme="dark"] .core-ai-page .footer-inner {
-  border-color: rgb(255 255 255 / 14%);
-}
-
-[data-theme="dark"] .core-ai-page .snapshot span,
-[data-theme="dark"] .core-ai-page .recommendation-attribution > p:not(.eyebrow),
-[data-theme="dark"] .core-ai-page .applied-work-link span,
-[data-theme="dark"] .core-ai-page .map-node span {
-  color: rgb(255 255 255 / 66%);
-}
-
-[data-theme="dark"] .core-ai-page .recommendation-section-lower {
-  background:
-    radial-gradient(circle at 12% 14%, rgb(53 183 214 / 12%), transparent 24rem),
-    rgb(49 91 232 / 7%);
-}
-
-[data-theme="dark"] .core-ai-page .timeline li::before {
-  border-color: #0c1019;
-}
-
-[data-theme="dark"] .core-ai-page .pullquote {
-  border-color: rgb(255 255 255 / 24%);
-}
-
-[data-theme="dark"] .core-ai-page .media-frame {
-  background: rgb(255 255 255 / 5%);
-  box-shadow:
-    0 0 0 1px var(--line-subtle),
-    0 18px 44px rgb(0 0 0 / 24%);
-}
-
-[data-theme="dark"] .core-ai-page .label {
-  color: rgb(255 255 255 / 66%);
-  box-shadow: inset 0 0 0 1px rgb(92 124 238 / 28%);
 }
 
 /* Closing call to action. Mirrors the band the other case studies end on, so
@@ -1024,60 +807,36 @@
    touch" so the same action is not offered twice under the same name. */
 .core-ai-page .core-cta {
   display: flex;
-  padding: 94px 24px 104px;
-  border-top: 1px solid rgb(32 25 74 / 10%);
+  padding: var(--space-7) var(--space-3) var(--space-7);
+  border-top: 1px solid var(--line);
   align-items: center;
   flex-direction: column;
-  gap: 18px;
-  background:
-    radial-gradient(circle at 50% 0%, rgb(101 72 232 / 11%), transparent 28rem),
-    linear-gradient(145deg, #f4f1ff, #f8fbff);
-  color: #000;
+  gap: var(--space-2);
+  background: var(--surface);
+  color: var(--text);
   text-align: center;
 }
 
 .core-ai-page .core-cta h2 {
-  max-width: 34ch;
+  max-width: var(--measure-title);
   margin: 0;
 }
 
 .core-ai-page .core-cta p {
   margin: 0;
-  color: rgb(32 25 74 / 65%);
+  color: var(--text-muted);
 }
 
 .core-ai-page .core-cta-actions {
   display: flex;
-  margin-top: 8px;
+  margin-top: var(--space-1);
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--space-1);
   justify-content: center;
-}
-
-/* Appearance comes from `.btn` in theme.css; the pair only set their own
-   minimum width so they read as one unit. */
-.core-ai-page .core-contact {
-  min-width: 158px;
 }
 
 @media (max-width: 809.98px) {
   .core-ai-page .core-cta {
-    padding: 76px 16px 84px;
+    padding: var(--space-6) var(--space-2) var(--space-6);
   }
-
-  .core-ai-page .core-cta h2 {
-    max-width: 16ch;
-  }
-}
-
-[data-theme="dark"] .core-ai-page .core-cta {
-  border-color: rgb(255 255 255 / 12%);
-  background:
-    radial-gradient(circle at 50% 0%, rgb(101 72 232 / 18%), transparent 28rem),
-    linear-gradient(145deg, #17131f, #0d1017);
-  color: #f5f3fa;
-}
-
-[data-theme="dark"] .core-ai-page .core-cta p {
-  color: rgb(255 255 255 / 68%);
 }

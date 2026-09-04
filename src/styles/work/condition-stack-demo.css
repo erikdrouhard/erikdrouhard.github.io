@@ -1,88 +1,70 @@
 /* ==========================================================================
-   Mix.dialog condition-stack demo — SANCTIONED TYPE EXCEPTION
-   --------------------------------------------------------------------------
-   This component simulates the Mix.dialog product UI, so it deliberately does
-   NOT use the portfolio's Crimson type roles. Rendering it in Crimson serif
-   would misrepresent what the product actually looked like.
+   Mix.dialog condition-stack demo.
 
-   The exception is bounded: it applies only inside <condition-stack-demo>,
-   and every size/weight it uses is declared once below. Do not add values
-   here that are not in this list, and do not use these tokens outside this
-   component. See wiki/portfolio-font-and-style-guidelines.md.
+   There is no type exception any more. The demo wears the same two faces, the
+   same eight roles, the same spacing scale, and the same colour tokens as the
+   rest of the site; its Inter stack, its --sim-* scale, and its purples,
+   yellow, and green literals are gone. Structure and interaction copy are
+   unchanged — only the values are re-sourced.
+
+   The Mix accent carries the emphasis the old palette split across four hues,
+   but only on structure — the nested-block spine, the drop target, the
+   variable chip, and the invitation. It is one fixed shade in both themes, so
+   small text stays on --text and --text-muted, which follow the theme.
    ========================================================================== */
-
-condition-stack-demo {
-  --sim-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --sim-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-
-  /* weight size/leading family */
-  --sim-title: 650 0.9375rem/1.4 var(--sim-font);
-  --sim-strong: 750 0.9375rem/1.4 var(--sim-font);
-  --sim-cta: 850 1.25rem/1.05 var(--sim-font);
-  --sim-body: 400 0.875rem/1.4 var(--sim-font);
-  --sim-control: 650 0.8125rem/1.4 var(--sim-font);
-  --sim-label: 800 0.6875rem/1.4 var(--sim-font);
-  --sim-micro: 750 0.625rem/1.4 var(--sim-font);
-  --sim-code: 400 0.75rem/1.4 var(--sim-font-mono);
-  --track-sim-label: 0.08em;
-}
 
 condition-stack-demo {
   position: relative;
   display: block;
   width: 100%;
   min-width: 0;
-  color: #19142f;
-  font: var(--sim-body);
+  color: var(--text);
+  font: var(--type-body-small);
   font-synthesis: none;
 }
 
 .condition-demo {
   overflow: hidden;
-  border-radius: 24px;
-  background: #f8f7fc;
-  box-shadow:
-    0 0 0 1px rgb(32 25 74 / 12%),
-    0 24px 70px rgb(39 26 94 / 10%);
+  border: 1px solid var(--line);
+  background: var(--surface);
 }
 
 .condition-demo__topbar {
   display: flex;
-  min-height: 64px;
-  padding: 10px 14px 10px 20px;
-  border-bottom: 1px solid rgb(32 25 74 / 10%);
-  background: rgb(255 255 255 / 82%);
+  min-height: var(--space-6);
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
+  border-bottom: 1px solid var(--line);
+  background: var(--page);
   align-items: center;
-  gap: 16px;
+  gap: var(--space-2);
   justify-content: space-between;
 }
 
 .condition-demo__title {
   display: grid;
   min-width: 0;
-  gap: 2px;
 }
 
 .condition-demo__title strong {
-  font: var(--sim-title);
+  font: var(--type-support);
 }
 
 .condition-demo__title span,
 .condition-demo__legend {
-  color: rgb(32 25 74 / 58%);
-  font: var(--sim-control);
+  color: var(--text-muted);
+  font: var(--type-body-small);
 }
 
 .condition-demo__toolbar {
   display: flex;
   flex: 0 0 auto;
-  gap: 8px;
+  gap: var(--space-1);
 }
 
 .condition-demo button {
-  min-height: 44px;
+  min-height: var(--space-5);
   border: 0;
-  border-radius: 10px;
+  border-radius: 0;
   font: inherit;
   touch-action: manipulation;
   cursor: pointer;
@@ -96,71 +78,71 @@ condition-stack-demo {
 .condition-demo button:focus-visible,
 .cs-action:focus-visible,
 .cs-block:focus-visible,
-.cs-branch:focus-visible {
-  outline: 2px solid #000;
+.cs-branch:focus-visible,
+.condition-demo__invitation:focus-visible {
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
 .condition-demo__reset,
 .condition-demo__cancel {
-  padding-inline: 14px;
-  background: #fff;
-  color: #302663;
-  box-shadow: inset 0 0 0 1px rgb(48 38 99 / 18%);
+  padding-inline: var(--space-2);
+  border: 1px solid var(--line);
+  background: var(--page);
+  color: var(--text);
 }
 
 .condition-demo__cancel {
-  background: #302663;
-  color: #fff;
+  background: var(--accent);
+  color: var(--page);
 }
 
 .condition-demo__canvas {
-  padding: 116px clamp(16px, 3vw, 28px) clamp(16px, 3vw, 28px);
-  background:
-    radial-gradient(circle at 90% 0%, rgb(101 72 232 / 10%), transparent 28rem),
-    linear-gradient(145deg, #f6f3ff, #f5f8fb);
+  padding: var(--space-7) var(--space-3) var(--space-3);
+  background: var(--page);
 }
 
+/* Dark in both themes, so it sets --page and --text and lets the rest
+   re-derive. The published version was a yellow sticker with a hard offset
+   shadow; both the hue and the shadow are gone. */
 .condition-demo__invitation {
   position: absolute;
-  z-index: 2;
-  top: 80px;
-  right: -18px;
+  z-index: var(--layer-overlay);
+  top: var(--space-6);
+  right: 0;
   display: grid;
-  width: min(340px, calc(100% - 48px));
-  min-height: 44px;
-  padding: 16px 20px 18px;
-  border: 3px solid #19142f;
-  border-radius: 18px;
+  width: min(calc(var(--shell) / 3), 100%);
+  min-height: var(--space-5);
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: 0;
   appearance: none;
-  background: #ffd84a;
-  color: #19142f;
-  box-shadow: 7px 7px 0 #19142f;
+  background: var(--accent);
+  color: var(--page);
   font: inherit;
   text-align: left;
   touch-action: manipulation;
   cursor: pointer;
-  gap: 4px;
+  gap: var(--space-1);
   transform: rotate(2deg);
   transform-origin: center;
-  transition: transform 150ms cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform var(--duration) ease-out;
 }
 
 .condition-demo__invitation strong {
-  font: var(--sim-cta);
-  letter-spacing: -0.02em;
+  font: var(--type-title);
   text-transform: uppercase;
 }
 
 .condition-demo__invitation span {
-  color: #332a20;
-  font: var(--sim-control);
+  color: inherit;
+  font: var(--type-body);
 }
 
 .condition-demo__invitation .condition-demo__invitation-kicker {
-  color: #5b4710;
-  font: var(--sim-micro);
-  letter-spacing: var(--track-sim-label);
+  color: inherit;
+  font: var(--type-meta);
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
 }
 
@@ -169,19 +151,14 @@ condition-stack-demo {
   font: inherit;
 }
 
-.condition-demo__invitation:focus-visible {
-  outline: 3px solid #6548e8;
-  outline-offset: 5px;
-}
-
 .condition-demo__legend {
   display: flex;
   margin: 0;
-  padding: 12px 20px 16px;
-  border-top: 1px solid rgb(32 25 74 / 9%);
-  background: rgb(255 255 255 / 72%);
+  padding: var(--space-1) var(--space-3) var(--space-2);
+  border-top: 1px solid var(--line);
+  background: var(--page);
   flex-wrap: wrap;
-  gap: 12px 20px;
+  gap: var(--space-1) var(--space-3);
   list-style: none;
 }
 
@@ -189,63 +166,59 @@ condition-stack-demo {
 .cs-action__kind {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: var(--space-1);
 }
 
 .condition-demo__legend i,
 .cs-action__icon {
   display: inline-grid;
-  width: 22px;
-  height: 22px;
-  border-radius: 7px;
-  font: var(--sim-micro);
+  width: var(--space-3);
+  height: var(--space-3);
+  border-radius: 0;
+  font: var(--type-meta);
   font-style: normal;
   place-items: center;
 }
 
+/* Three action kinds, three system tints — surface, accent tint, line — since
+   the old blue, purple, and green chips were three private palettes. */
 .is-message .cs-action__icon,
 .condition-demo__legend .is-message {
-  background: #e8f4ff;
-  color: #126696;
+  background: var(--surface);
+  color: var(--text-muted);
 }
 
 .is-variable .cs-action__icon,
 .condition-demo__legend .is-variable {
-  background: #eee9ff;
-  color: #593ac6;
+  background: var(--accent-soft);
+  color: var(--text);
 }
 
 .is-event .cs-action__icon,
 .condition-demo__legend .is-event {
-  background: #e5f8ef;
-  color: #197046;
+  background: var(--line);
+  color: var(--text);
 }
 
 .cs-block {
   position: relative;
   min-width: 0;
-  border-radius: 17px;
-  background: #fff;
-  box-shadow:
-    0 0 0 1px rgb(46 35 95 / 13%),
-    0 10px 28px rgb(32 25 74 / 6%);
+  border: 1px solid var(--line);
+  background: var(--page);
 }
 
 .cs-block.is-nested {
-  margin: 10px 0 2px clamp(12px, 2.5vw, 26px);
-  box-shadow:
-    -3px 0 0 #8068e9,
-    0 0 0 1px rgb(46 35 95 / 13%),
-    0 10px 28px rgb(32 25 74 / 6%);
+  margin: var(--space-1) 0 0 var(--space-3);
+  border-left: 3px solid var(--accent);
 }
 
 .cs-block__header {
   display: flex;
-  min-height: 52px;
-  padding: 6px 8px 6px 14px;
-  border-bottom: 1px solid rgb(32 25 74 / 10%);
+  min-height: var(--space-5);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2);
+  border-bottom: 1px solid var(--line);
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1);
   justify-content: space-between;
 }
 
@@ -254,12 +227,12 @@ condition-stack-demo {
   display: inline-flex;
   min-width: 0;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1);
 }
 
 .cs-drag-handle {
-  min-height: 36px;
-  color: rgb(32 25 74 / 55%);
+  min-height: var(--space-4);
+  color: var(--text-muted);
   cursor: grab;
   user-select: none;
 }
@@ -269,13 +242,12 @@ condition-stack-demo {
 }
 
 .cs-grip {
-  font: var(--sim-strong);
-  letter-spacing: -0.2em;
+  font: var(--type-support);
 }
 
 .cs-block__identity strong {
   overflow: hidden;
-  font: var(--sim-control);
+  font: var(--type-body-small);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -286,45 +258,44 @@ condition-stack-demo {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .condition-demo .cs-tool,
 .condition-demo .cs-branch__move {
-  min-width: 44px;
-  padding-inline: 10px;
+  min-width: var(--space-5);
+  padding-inline: var(--space-1);
   background: transparent;
-  color: #43377b;
-  font: var(--sim-control);
+  color: var(--text);
+  font: var(--type-body-small);
 }
 
 .condition-demo .cs-add-elseif {
-  padding-inline: 12px;
-  background: #eeeaff;
-  color: #4b35b0;
-  font: var(--sim-control);
+  padding-inline: var(--space-1);
+  background: var(--accent-soft);
+  color: var(--text);
+  font: var(--type-body-small);
 }
 
 .cs-branches {
   display: grid;
-  padding: 10px;
-  gap: 8px;
+  padding: var(--space-1);
+  gap: var(--space-1);
 }
 
 .cs-branch {
   min-width: 0;
   overflow: visible;
-  border-radius: 13px;
-  background: #fbfbfd;
-  box-shadow: inset 0 0 0 1px rgb(32 25 74 / 9%);
+  border: 1px solid var(--line);
+  background: var(--surface);
 }
 
 .cs-branch__header {
   display: flex;
-  min-height: 48px;
-  padding: 6px 8px 6px 12px;
+  min-height: var(--space-5);
+  padding: var(--space-1);
   align-items: center;
-  gap: 10px;
+  gap: var(--space-1);
   justify-content: space-between;
 }
 
@@ -332,54 +303,58 @@ condition-stack-demo {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: 9px;
+  gap: var(--space-1);
 }
 
+/* The accent is one fixed shade in both themes, so it stays on structure —
+   the nested spine, the drop target, the invitation — and never carries small
+   text that would fall under contrast on the dark ground. */
 .cs-branch__label {
   flex: 0 0 auto;
-  color: #5a43c1;
-  font: var(--sim-label);
-  letter-spacing: var(--track-sim-label);
+  color: var(--text);
+  font: var(--type-meta);
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
 }
 
 .cs-expression {
   overflow: hidden;
-  color: #28223f;
-  font: var(--sim-code);
+  color: var(--text);
+  font: var(--type-meta);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+/* The transparent border is the drop target's resting state, so accepting a
+   drop recolours it instead of adding a line and shifting the layout. */
 .cs-branch__body {
   position: relative;
-  min-height: 54px;
-  padding: 0 8px 8px;
-  border-radius: 0 0 13px 13px;
-  transition: background-color 140ms ease;
+  min-height: var(--space-5);
+  padding: 0 var(--space-1) var(--space-1);
+  border: 1px solid transparent;
+  transition: background-color var(--duration) ease-out;
 }
 
 .cs-branch__body.is-drop-target {
-  background: rgb(101 72 232 / 9%);
-  box-shadow: inset 0 0 0 2px #6548e8;
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .cs-items {
   display: grid;
   min-width: 0;
-  gap: 7px;
+  gap: var(--space-1);
 }
 
 .cs-action {
   display: flex;
   min-width: 0;
-  min-height: 48px;
-  padding: 6px 7px 6px 10px;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: inset 0 0 0 1px rgb(32 25 74 / 10%);
+  min-height: var(--space-5);
+  padding: var(--space-1);
+  border: 1px solid var(--line);
+  background: var(--page);
   align-items: center;
-  gap: 10px;
+  gap: var(--space-1);
   justify-content: space-between;
 }
 
@@ -387,26 +362,25 @@ condition-stack-demo {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: 9px;
+  gap: var(--space-1);
 }
 
 .cs-action__copy {
   display: grid;
   min-width: 0;
-  gap: 1px;
 }
 
 .cs-action__copy span:first-child {
-  color: rgb(32 25 74 / 55%);
-  font: var(--sim-label);
-  letter-spacing: var(--track-sim-label);
+  color: var(--text-muted);
+  font: var(--type-meta);
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
 }
 
 .cs-action__copy code {
   overflow: hidden;
-  color: #28223f;
-  font: var(--sim-code);
+  color: var(--text);
+  font: var(--type-meta);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -414,40 +388,36 @@ condition-stack-demo {
 .cs-branch__footer {
   position: relative;
   display: flex;
-  min-height: 48px;
-  padding: 5px 0 0;
+  min-height: var(--space-5);
+  padding: var(--space-1) 0 0;
   align-items: center;
   justify-content: space-between;
 }
 
 .condition-demo .cs-add-trigger,
 .condition-demo .cs-move-here {
-  padding-inline: 13px;
+  padding-inline: var(--space-1);
   background: transparent;
-  color: #4b35b0;
-  font: var(--sim-control);
+  color: var(--text);
+  font: var(--type-body-small);
 }
 
 .condition-demo .cs-move-here {
   width: 100%;
-  border: 1px dashed rgb(75 53 176 / 45%);
-  background: rgb(238 234 255 / 55%);
+  border: 1px dashed var(--accent);
+  background: var(--accent-soft);
 }
 
 .cs-add-menu {
   position: absolute;
-  z-index: 20;
-  bottom: 44px;
+  z-index: var(--layer-overlay);
+  bottom: var(--space-5);
   left: 0;
   display: grid;
-  width: min(250px, calc(100vw - 72px));
-  padding: 6px;
-  border-radius: 13px;
-  background: #fff;
-  box-shadow:
-    0 0 0 1px rgb(32 25 74 / 12%),
-    0 18px 42px rgb(32 25 74 / 16%);
-  gap: 2px;
+  width: min(calc(var(--shell) / 4), 100%);
+  padding: var(--space-1);
+  border: 1px solid var(--line);
+  background: var(--page);
 }
 
 .cs-add-menu[hidden] {
@@ -457,13 +427,13 @@ condition-stack-demo {
 .condition-demo .cs-add-menu button {
   display: flex;
   width: 100%;
-  padding: 0 12px;
+  padding: 0 var(--space-1);
   background: transparent;
-  color: #28223f;
-  font: var(--sim-control);
+  color: var(--text);
+  font: var(--type-body-small);
   text-align: left;
   align-items: center;
-  gap: 9px;
+  gap: var(--space-1);
 }
 
 .cs-moving {
@@ -474,10 +444,13 @@ condition-stack-demo {
   opacity: 0.45;
 }
 
+/* A local stack, so the popping element lifts above its siblings without
+   reaching a page layer. */
 .is-entering {
+  isolation: isolate;
   z-index: 1;
   transform-origin: center;
-  animation: condition-pop 220ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  animation: condition-pop var(--duration) ease-out;
   will-change: transform, opacity;
 }
 
@@ -496,30 +469,28 @@ condition-stack-demo {
   }
 }
 
+/* Visually hidden, still announced. Clipped rather than sized to zero, since
+   the spacing scale has no 1px and a zero-sized node can be skipped by AT. */
 .cs-live {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
 }
 
 /* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
-   which stays false on iPadOS while a trackpad drives a cursor. See
-   /components/pointer-hover.js. */
+   which stays false on iPadOS while a trackpad drives a cursor. */
 :where(html:not(.is-coarse-pointer)) .condition-demo__invitation:hover {
   transform: rotate(2deg) translateY(-3px);
 }
 
 :where(html:not(.is-coarse-pointer)) .condition-demo button:hover {
-  background-color: #eeeaff;
+  background-color: var(--accent-soft);
 }
 
 :where(html:not(.is-coarse-pointer)) .cs-action:hover,
 :where(html:not(.is-coarse-pointer)) .cs-branch:hover {
-  box-shadow: inset 0 0 0 1px rgb(76 53 177 / 25%);
+  border-color: var(--accent);
 }
 
 @media (max-width: 809.98px) {
@@ -527,19 +498,13 @@ condition-stack-demo {
     position: relative;
     top: auto;
     right: auto;
-    z-index: 2;
-    width: calc(100% - 28px);
-    margin: 0 14px 20px;
+    width: 100%;
+    margin: 0 0 var(--space-3);
     transform: rotate(-1deg);
   }
 
-  .condition-demo {
-    width: calc(100% + 16px);
-    border-radius: 18px 0 0 18px;
-  }
-
   .condition-demo__topbar {
-    padding-left: 14px;
+    padding-left: var(--space-2);
   }
 
   .condition-demo__title span {
@@ -547,7 +512,7 @@ condition-stack-demo {
   }
 
   .condition-demo__canvas {
-    padding: 12px 8px 14px 10px;
+    padding: var(--space-1);
   }
 
   .cs-block {
@@ -563,27 +528,8 @@ condition-stack-demo {
     display: none;
   }
 
-  .cs-block__header {
-    padding-left: 10px;
-  }
-
-  .condition-demo .cs-tool {
-    padding-inline: 8px;
-  }
-
-  .cs-action__copy code {
-    max-width: 155px;
-  }
-
   .condition-demo__legend {
-    padding-inline: 14px;
-  }
-}
-
-@media (max-width: 419.98px) {
-  .cs-item__tools .cs-reorder,
-  .cs-branch__tools .cs-reorder {
-    display: none;
+    padding-inline: var(--space-2);
   }
 }
 
@@ -597,170 +543,4 @@ condition-stack-demo {
     animation: none;
     transition: none;
   }
-}
-
-/* The live site's dark block was `@media (prefers-color-scheme: dark)`. Here the
-   palette is a stored choice on <html>, so each selector carries
-   [data-theme="dark"] instead. The two pointer-guarded hover rules take it
-   *inside* their :where(html…) — the attribute sits on that same element, so a
-   descendant combinator in front of them would never match. */
-
-[data-theme="dark"] condition-stack-demo {
-  color: #f1edff;
-}
-
-[data-theme="dark"] .condition-demo {
-  background: #13111a;
-  box-shadow:
-    0 0 0 1px rgb(195 184 255 / 16%),
-    0 24px 70px rgb(0 0 0 / 30%);
-}
-
-[data-theme="dark"] .condition-demo__topbar {
-  border-color: rgb(255 255 255 / 10%);
-  background: rgb(28 24 39 / 92%);
-}
-
-[data-theme="dark"] .condition-demo__title span,
-[data-theme="dark"] .condition-demo__legend,
-[data-theme="dark"] .cs-drag-handle,
-[data-theme="dark"] .cs-action__copy span:first-child {
-  color: rgb(241 237 255 / 60%);
-}
-
-[data-theme="dark"] .condition-demo button:focus-visible,
-[data-theme="dark"] .cs-action:focus-visible,
-[data-theme="dark"] .cs-block:focus-visible,
-[data-theme="dark"] .cs-branch:focus-visible {
-  outline-color: #f1edff;
-}
-
-[data-theme="dark"] .condition-demo__reset {
-  background: #29243a;
-  color: #d5ccff;
-  box-shadow: inset 0 0 0 1px rgb(195 184 255 / 22%);
-}
-
-[data-theme="dark"] .condition-demo__cancel {
-  background: #a794ff;
-  color: #100c20;
-}
-
-[data-theme="dark"] .condition-demo__canvas {
-  background:
-    radial-gradient(circle at 90% 0%, rgb(101 72 232 / 20%), transparent 28rem),
-    linear-gradient(145deg, #181420, #10171d);
-}
-
-[data-theme="dark"] .condition-demo__invitation {
-  border-color: #100c20;
-  background: #ffd84a;
-  color: #100c20;
-  box-shadow: 7px 7px 0 #a794ff;
-}
-
-[data-theme="dark"] .condition-demo__invitation span {
-  color: #332a20;
-}
-
-[data-theme="dark"] .condition-demo__invitation .condition-demo__invitation-kicker {
-  color: #5b4710;
-}
-
-[data-theme="dark"] .condition-demo__invitation:focus-visible {
-  outline-color: #f1edff;
-}
-
-[data-theme="dark"] .condition-demo__legend {
-  border-color: rgb(255 255 255 / 10%);
-  background: rgb(25 22 34 / 88%);
-}
-
-[data-theme="dark"] .is-message .cs-action__icon,
-[data-theme="dark"] .condition-demo__legend .is-message {
-  background: #183447;
-  color: #8fd5ff;
-}
-
-[data-theme="dark"] .is-variable .cs-action__icon,
-[data-theme="dark"] .condition-demo__legend .is-variable {
-  background: #30275a;
-  color: #c3b1ff;
-}
-
-[data-theme="dark"] .is-event .cs-action__icon,
-[data-theme="dark"] .condition-demo__legend .is-event {
-  background: #18392c;
-  color: #85ddb1;
-}
-
-[data-theme="dark"] .cs-block {
-  background: #1d1928;
-  box-shadow:
-    0 0 0 1px rgb(195 184 255 / 14%),
-    0 10px 28px rgb(0 0 0 / 22%);
-}
-
-[data-theme="dark"] .cs-block.is-nested {
-  box-shadow:
-    -3px 0 0 #8f7bea,
-    0 0 0 1px rgb(195 184 255 / 14%),
-    0 10px 28px rgb(0 0 0 / 22%);
-}
-
-[data-theme="dark"] .cs-block__header {
-  border-color: rgb(255 255 255 / 10%);
-}
-
-[data-theme="dark"] .condition-demo .cs-tool,
-[data-theme="dark"] .condition-demo .cs-branch__move,
-[data-theme="dark"] .condition-demo .cs-add-trigger,
-[data-theme="dark"] .condition-demo .cs-move-here {
-  color: #c3b8ff;
-}
-
-[data-theme="dark"] .condition-demo .cs-add-elseif {
-  background: #30275a;
-  color: #d7ceff;
-}
-
-[data-theme="dark"] .cs-branch {
-  background: #17151e;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
-}
-
-[data-theme="dark"] .cs-branch__label {
-  color: #ad9bff;
-}
-
-[data-theme="dark"] .cs-expression,
-[data-theme="dark"] .cs-action__copy code,
-[data-theme="dark"] .condition-demo .cs-add-menu button {
-  color: #eeeaff;
-}
-
-[data-theme="dark"] .cs-action {
-  background: #211e2b;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
-}
-
-[data-theme="dark"] .condition-demo .cs-move-here {
-  border-color: rgb(195 184 255 / 48%);
-  background: rgb(101 72 232 / 16%);
-}
-
-[data-theme="dark"] .cs-add-menu {
-  background: #211d2c;
-  box-shadow:
-    0 0 0 1px rgb(195 184 255 / 16%),
-    0 18px 42px rgb(0 0 0 / 34%);
-}
-
-:where(html[data-theme="dark"]:not(.is-coarse-pointer)) .condition-demo button:hover {
-  background-color: #342b5c;
-}
-
-:where(html[data-theme="dark"]:not(.is-coarse-pointer)) .cs-action:hover,
-:where(html[data-theme="dark"]:not(.is-coarse-pointer)) .cs-branch:hover {
-  box-shadow: inset 0 0 0 1px rgb(173 155 255 / 38%);
 }

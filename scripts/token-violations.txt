@@ -1,0 +1,2 @@
+# path\trule\tcount\ttext — see scripts/check-tokens.mjs.
+# This file only ever shrinks. Regenerate with: node scripts/check-tokens.mjs --write

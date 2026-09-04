@@ -1,0 +1,228 @@
+/* ==========================================================================
+   tokens.css — the whole design system
+
+   Every visual value on the site is written here and nowhere else. The rules
+   live in `DESIGN-SYSTEM.md`; this file is their only implementation.
+   `scripts/check-tokens.mjs` fails on any literal font, size, weight,
+   line-height, letter-spacing, colour, radius, spacing, shadow, duration,
+   easing, breakpoint, or z-index written outside this file.
+
+   There are deliberately no radius tokens, no shadow tokens, and no easing
+   token. Corners are square, depth comes from --line, and the only easing is
+   the literal keyword `ease-out`.
+   ========================================================================== */
+
+:root {
+  /* -- Faces -------------------------------------------------------------
+     Two typefaces. Both arrive via Fontsource in BaseLayout, so neither
+     needs an @font-face block. */
+  --font-primary: "Newsreader Variable", "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+
+  /* -- Type scale --------------------------------------------------------
+     Written in the CSS `font` shorthand order — weight size/leading family —
+     so a role token can be applied whole with `font: var(--type-*)`.
+     Three title sizes and two body sizes on desktop; 18px exists only below
+     the breakpoint. Body copy never changes size. */
+  --display-1: 300 36px/1.1 var(--font-primary);
+  --display-2: 500 20px/1.2 var(--font-primary);
+  --display-2-mobile: 500 18px/1.2 var(--font-primary);
+  --display-3: 700 16px/1.3 var(--font-primary);
+  --body: 400 16px/1.4 var(--font-primary);
+  --body-small: 400 12px/1.4 var(--font-primary);
+
+  /* -- Type roles --------------------------------------------------------
+     Eight roles. Markup carries one `type-*` class; CSS writes
+     `font: var(--type-*)`. Nothing else sets type.
+
+     The two 12px roles are for labels, never for subtext. Anything that
+     reads as a sentence — a figure caption, a card description, a metric
+     note, a testimonial, a definition value, a list item, anything that
+     wraps to a second line — is running copy and takes --type-body. 12px is
+     for what is read as a mark: eyebrows and section labels, one-line metric
+     captions, table headers, tags, figure numbers, diagram node labels, and
+     the interactive demo's own tool chrome. There is deliberately nothing in
+     between; a label that needs more words becomes body copy, not a new
+     size. */
+  --type-display: var(--display-1);
+  --type-section: var(--display-1);
+  --type-title: var(--display-2);
+  --type-support: var(--display-3);
+  --type-label: var(--display-3);
+  --type-body: var(--body);
+  --type-body-small: var(--body-small);
+  /* type-meta is the only mono role: 12px metadata, always uppercase, always
+     tracked out by --track-caps. It is not --body-small in another face. */
+  --type-meta: 400 12px/1.4 var(--font-mono);
+
+  --track-caps: 0.08em;
+
+  /* -- Spacing — one scale ----------------------------------------------
+     Matches the type scale. Nothing on the site is spaced off it. */
+  --space-1: 12px;
+  --space-2: 16px;
+  --space-3: 20px;
+  --space-4: 36px;
+  --space-5: 54px;
+  --space-6: 72px;
+  --space-7: 112px;
+
+  --gutter: var(--space-4);
+  --section: var(--space-6);
+
+  /* -- Widths — three measures ------------------------------------------
+     `ch` scales with the font, so mobile needs no width overrides. */
+  --shell: 1000px;
+  --measure: 68ch;
+  --measure-title: 24ch;
+
+  /* -- Colour — light ----------------------------------------------------
+     The authored colours, and only those. Text is pure black on light and
+     pure white on dark; muted text, line, surface, and the hover green are
+     mixed from them in the derived block below, and are never re-tinted by a
+     stylesheet. --page-site is the site ground; --page is what everything
+     reads, so a case study can re-hue it (below) and a dark panel can
+     override it outright. */
+  --page-site: #f4f6f0;
+  --page: var(--page-site);
+  --text: #000;
+  --primary: #16713d;
+
+  /* -- Dark panels -------------------------------------------------------
+     A panel that is dark in both themes sets four properties on itself and
+     nothing else: --page and --text from the two aliases here, and
+     --accent-l/--accent-c from the dark accent pair below. Muted text, line,
+     surface, and the accent itself re-derive from those. That is the whole
+     contract, and the whole of what used to be `.on-dark`. Without the two
+     accent lines a light-theme dark panel would inherit the dark, rich light
+     accent and fail contrast against its own near-black ground. */
+  --page-dark: #070d09;
+  --text-dark: #fff;
+
+  /* -- Case-study accents ------------------------------------------------
+     There is no per-study shade. A study sets --accent-hue on its root
+     element and nothing else; --accent is derived below as
+     oklch(L C var(--accent-hue)) from one lightness and one chroma, so the
+     four studies share a saturation and a weight and differ only in hue.
+
+     Two pairs, because one shade cannot read on both grounds. The light pair
+     is dark and rich enough to clear 4.5:1 as text on the re-hued light page;
+     the dark pair is a pale, low-chroma tint that clears 4.5:1 on
+     --page-dark. The dark theme swaps in the dark pair, and so does every
+     dark-in-both-themes panel — see "Dark panels" above.
+
+     The teal hue cannot hold 0.18 chroma anywhere in sRGB, so the browser
+     gamut-maps it down to about 0.084. That is a property of the hue, not an
+     exception written here: the authored chroma is still one number. The one
+     tint, --accent-soft, is derived below. */
+  --accent-l: 0.47;
+  --accent-c: 0.18;
+  --accent-l-dark: 0.8;
+  --accent-c-dark: 0.1;
+
+  /* The oklch hue angle of each accent, so a study can re-hue the page
+     ground and derive its accent without writing a number of its own. */
+  --accent-hue-mix: 283.82;
+  --accent-hue-msft: 266.12;
+  --accent-hue-drive: 212.22;
+  --accent-hue-verse: 331.46;
+
+  /* -- Motion — two durations, one easing --------------------------------
+     Easing is the literal keyword `ease-out` at the point of use; there is
+     no token for it, so no other curve can be typed. */
+  --duration: 150ms;
+  --duration-slow: 450ms;
+
+  /* -- Layers — three, no numbers ---------------------------------------- */
+  --layer-base: 0;
+  --layer-sticky: 1;
+  --layer-overlay: 2;
+
+  /* -- Breakpoint — one --------------------------------------------------
+     CSS media queries cannot read a custom property, so this token documents
+     the value and the check asserts the two literals below match it. */
+  --bp-mobile: 810px;
+
+  /* -- Smoke field -------------------------------------------------------
+     The only tokens JS may read, alongside the two durations. --field-rgb is
+     --primary written as a bare rgb triple, because a canvas fill is
+     assembled in JS and cannot use a hex token; the two must move together.
+     The gain is the ambient brightness of the smoke: the light-mode green is
+     dark against a pale ground, so it is held back to 0.45, while the dark
+     mode green sits on near-black and runs at full strength. */
+  --field-rgb: 22, 113, 61;
+  --field-gain: 0.45;
+}
+
+/* -- Derived colour ---------------------------------------------------------
+   The five tints below are declared on every element rather than on :root,
+   and that is load-bearing rather than stylistic. A custom property is
+   substituted where it is *declared*, not where it is used, so a color-mix()
+   written on :root is computed once against the root's --text, --page, and
+   --accent and then inherits as a finished colour. A dark panel that sets
+   --page and --text on itself, or a study root that sets --accent, would
+   inherit tints mixed from the palette it just replaced. Declaring them on
+   `*` makes every element re-run the mix against the values it actually
+   inherits, so a subtree re-pigments as a whole from two authored colours.
+   It also keeps --accent-soft valid: --accent is unset at the root, where
+   this mix would otherwise compute to nothing. */
+*,
+::before,
+::after {
+  --text-muted: color-mix(in srgb, var(--text) 60%, var(--page));
+  --line: color-mix(in srgb, var(--text) 15%, var(--page));
+  --surface: color-mix(in srgb, var(--text) 5%, var(--page));
+  --primary-hover: color-mix(in srgb, var(--primary) 85%, var(--text));
+  --accent: oklch(var(--accent-l) var(--accent-c) var(--accent-hue));
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--page));
+}
+
+/* -- Colour — dark ----------------------------------------------------------
+   BaseLayout stamps data-theme on <html> before first paint, so the dark
+   palette is a stored choice rather than a system preference. Only the three
+   authored colours change; muted text, line, surface, and the hover green
+   re-derive from them automatically. */
+[data-theme="dark"] {
+  --page-site: #070d09;
+  --text: #fff;
+  --primary: #7ee7a2;
+  --accent-l: var(--accent-l-dark);
+  --accent-c: var(--accent-c-dark);
+
+  /* The dark --primary as a bare triple, and the full ambient gain. */
+  --field-rgb: 126, 231, 162;
+  --field-gain: 1;
+}
+
+/* -- Case-study page colour -------------------------------------------------
+   The site ground re-hued to the study's accent. Lightness and chroma stay
+   identical in both themes; only the hue moves, so the whole study shifts
+   together and text, line, surface, and muted text follow. A case-study page
+   opts in with `data-accent` on its root element and sets --accent-hue
+   there. Outside a study --accent-hue is unset, so the derived --accent is
+   invalid and no element can pick up an accent by accident. */
+[data-accent] {
+  --page: oklch(from var(--page-site) l c var(--accent-hue));
+}
+
+/* -- Mobile ----------------------------------------------------------------
+   The one breakpoint. 36 becomes 20, 20 becomes 18, 16 stays 16, and both
+   body sizes never move. This is the only place the display roles shift. */
+@media (max-width: 809.98px) {
+  :root {
+    --type-display: var(--display-2);
+    --type-section: var(--display-2);
+    --type-title: var(--display-2-mobile);
+  }
+}
+
+/* -- Reduced motion --------------------------------------------------------
+   Zeroing the tokens stops CSS transitions and the scripts that read them,
+   which is why no timer is hardcoded anywhere. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration: 0ms;
+    --duration-slow: 0ms;
+  }
+}

@@ -15,4 +15,10 @@ export default {
     ".core-ai-page .prototype",
     ".core-ai-page .label",
   ],
+  /* The two Microsoft data dots: the ring behind the prototype loop and the
+     timeline marker. See dragon-drive.mjs. */
+  circles: [
+    ".core-ai-page .prototype-loop::after",
+    ".core-ai-page .timeline li::before",
+  ],
 };

@@ -11,4 +11,6 @@ export default {
     ".mix-page--verse .mix-content figure > a",
     ".mix-page--verse .mix-hero-visual--spec > a > span",
   ],
+  /* No round corner on this page. */
+  circles: [],
 };

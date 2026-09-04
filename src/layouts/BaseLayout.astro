@@ -5,6 +5,9 @@ import Footer from "../components/Footer.astro";
 
 import "@fontsource-variable/newsreader";
 import "@fontsource-variable/jetbrains-mono";
+// tokens.css is the whole design system and must land first: every other
+// stylesheet reads from it and writes no literals of its own.
+import "../styles/tokens.css";
 import "../styles/theme.css";
 
 // Preloaded so the swap from the fallback face happens during load rather than
@@ -25,6 +28,11 @@ interface Props {
   /** "default" is the new site's 1000px shell. "case" is the published site's
       .page-shell geometry, which the ported case-study CSS assumes. */
   shell?: "default" | "case";
+  /** Which case study's accent the page is printed in. It lands as
+      `data-accent` on <body>, where tokens.css re-hues --page to match; the
+      study's own stylesheet sets --accent and --accent-hue on its root class.
+      Omitted on the home and About pages, which keep the site's green. */
+  accent?: "mix" | "msft" | "drive" | "verse";
 }
 
 const {
@@ -34,6 +42,7 @@ const {
   noindex = false,
   bodyClass,
   shell = "default",
+  accent,
 } = Astro.props;
 
 const bodyClassName = [shell === "case" ? "case-page" : null, bodyClass]
@@ -50,11 +59,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#070d09" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
-    <link rel="preload" href={newsreaderLatin} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={monoLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={newsreaderLatin} as="font" type="font/woff2" crossorigin transition:persist="font-newsreader" />
+    <link rel="preload" href={monoLatin} as="font" type="font/woff2" crossorigin transition:persist="font-mono" />
     {noindex && <meta name="robots" content="noindex" />}
     <title>{title}</title>
 
@@ -79,7 +87,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <ClientRouter />
   </head>
 
-  <body data-field={field} class={bodyClassName || undefined}>
+  <body data-field={field} data-accent={accent} class={bodyClassName || undefined}>
     <a class="skip-link" href="#main">Skip to content</a>
 
     {/*

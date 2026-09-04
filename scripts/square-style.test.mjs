@@ -75,6 +75,29 @@ test("3. no stylesheet declares a .pill selector", () => {
   }
 });
 
+/* The browser check reads `square` and `circles` off each manifest and asserts
+   one is square and the other round. A manifest that forgot `circles` would
+   make the round-corner assertion silently vacuous, and the whole reason those
+   three dots are listed rather than exempted is that nobody should be able to
+   add a fourth without saying so. So the shape is checked here, without a
+   browser, where a missing key fails in `npm test`. */
+test("5. every page manifest declares both a square and a circles list", async () => {
+  const { default: manifests } = await import("./square-style/manifest.mjs");
+  assert.equal(manifests.length, 4, "expected the four case studies");
+  const circles = [];
+  for (const m of manifests) {
+    assert.ok(m.slug && m.path, "a manifest is missing slug or path");
+    assert.ok(Array.isArray(m.square) && m.square.length > 0, `${m.slug}: square`);
+    assert.ok(Array.isArray(m.circles), `${m.slug}: circles must be an array`);
+    for (const s of m.circles) {
+      assert.match(s, /::(before|after)$/, `${m.slug}: ${s} is not a pseudo`);
+    }
+    circles.push(...m.circles);
+  }
+  /* DESIGN-SYSTEM.md: "3 `50%` data dots (Dragon Drive 1, Microsoft 2) kept". */
+  assert.equal(circles.length, 3, `expected three data dots, got ${circles}`);
+});
+
 test("4. press-state.js is retired and unwired", () => {
   assert.ok(
     !existsSync(new URL("src/scripts/press-state.js", root)),

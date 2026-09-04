@@ -1,182 +1,18 @@
-/* ==========================================================================
-   erikdrouhard.com — case.css
-   The published site's `styles.css`, re-pointed at the new fonts and the new
-   theme control. Everything a ported case study assumes about the world lives
-   here: the type roles, the page shell geometry, the link shimmer. The button is
-   not one of them: it is `.btn` in theme.css, shared with every other page.
-
-   PROVENANCE
-   Derived from `main-ref/styles.css` on the live site (origin/main of the
-   published repo). Diff against that file when something looks wrong — this
-   is a port, not a redesign, and any divergence beyond the four below is a
-   bug. Home-page and work-index chrome was stripped: the new <Nav> and
-   <Footer> own the header and footer now, and those two pages are not ported.
-
-   THE FOUR DELIBERATE DIVERGENCES
-   1. Faces. Newsreader stands in for Crimson Pro (display, labels, buttons)
-      and JetBrains Mono for the system monospace. Both arrive via Fontsource
-      in BaseLayout, so the family tokens change; weights and tracking are
-      the published values. Crimson Text still ships from /assets and still
-      carries reading copy.
-   2. Theme control. The live site switches on `prefers-color-scheme`. Here
-      `:root` carries the light values and `[data-theme="dark"]` overrides
-      them, because BaseLayout stamps `data-theme` on <html> from an inline
-      head script before first paint. Deterministic, and it lets the footer
-      toggle work.
-   3. Body scoping. The live `body` rule would repaint the whole new site, so
-      it is scoped to `body.case-page` — the class BaseLayout puts on the body
-      for `shell="case"`.
-   4. Scale. The published site used eleven sizes. Every role now resolves to
-      one of four — 36 / 20 / 16 / 12px — and the per-viewport blocks that
-      once restated sizes are gone. One constrained-width block remains, and
-      it remaps roles onto those same four sizes rather than adding a fifth.
-      See the TYPE SYSTEM header below.
-   ========================================================================== */
-
-@font-face {
-  font-family: "Crimson Text";
-  src: url("/assets/crimson-text-regular.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Crimson Text";
-  src: url("/assets/crimson-text-semibold.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Crimson Text";
-  src: url("/assets/crimson-text-bold.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-}
-
-/* ==========================================================================
-   TYPE SYSTEM — single source of truth
-   --------------------------------------------------------------------------
-   Every piece of text on this site resolves to one of the roles below.
-   Nothing outside this block may declare font-family, font-size, font-weight,
-   or line-height. Pages opt into a role with a `type-*` class in the markup.
-
-   To change how a role looks everywhere, edit its `--type-*` token here.
-   Below 1400px, section and subsection headings each step down one size;
-   that remap is the single `:root` block under CONSTRAINED WIDTHS at the
-   bottom of the file. Those are the only two places any type value is ever
-   written. Every role resolves to one of four sizes — 36 / 20 / 16 / 12px —
-   at every width; the remap moves roles between those sizes and never adds
-   a fifth.
-
-   Token shape follows the CSS `font` shorthand:
-       --type-<role>: <weight> <size>/<leading> <family>;
-       --track-<role>: <letter-spacing>;   (only where it is non-zero)
-
-   The one sanctioned exception is the Mix.dialog condition-stack demo, which
-   simulates the product's own UI in Inter and carries its own scoped tokens.
-   ========================================================================== */
+/* erikdrouhard.com — case.css. The case-study type roles and page shell.
+   Values and rules live in DESIGN-SYSTEM.md and tokens.css. */
 
 :root {
-  /* -- Families ----------------------------------------------------------
-     Newsreader and JetBrains Mono are loaded by BaseLayout via Fontsource;
-     they need no @font-face here. Crimson Text is still self-hosted above. */
-  --font-display: "Newsreader Variable", "Newsreader", Georgia, "Times New Roman", serif;
-  --font-reading: "Crimson Text", serif;
-  --font-meta: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
-    Consolas, monospace;
-
-  /* -- Page hierarchy (display face) ------------------------------------- */
-  --type-display: 300 2.25rem/1.2 var(--font-display);
-  --type-section: 300 2.25rem/1.2 var(--font-display);
-  --type-subsection: 600 1.25rem/1.2 var(--font-display);
-  --type-support: 600 1rem/1.25 var(--font-display);
-
-  /* -- Editorial emphasis (display face) --------------------------------- */
-  --type-callout: 400 1.25rem/1.3 var(--font-display);
-  /* The size is its own token because the Mix metric band has to do maths on
-     it: it caps a container-query-driven size against the scale. */
-  --type-metric-size: 2.25rem;
-  --type-metric: 400 var(--type-metric-size)/1 var(--font-display);
-  --track-metric: -0.035em;
-  --type-quote: 300 2.25rem/1.2 var(--font-display);
-  --track-quote: -0.035em;
-
-  /* -- Reading copy (Crimson Text) --------------------------------------- */
-  --type-deck: 400 1.25rem/1.5 var(--font-reading);
-  --type-body: 400 1rem/1.45 var(--font-reading);
-  --type-body-sm: 400 1rem/1.45 var(--font-reading);
-  --type-caption: 400 1rem/1.4 var(--font-reading);
-
-  /* -- Labels and controls (display face) -------------------------------- */
-  --type-action: 800 1rem/1 var(--font-display);
-  --track-action: 0.025em;
-  --type-eyebrow: 500 1rem/1.2 var(--font-display);
-  --track-eyebrow: 0.025em;
-  --type-badge: 800 0.75rem/1.2 var(--font-display);
-  --track-badge: 0.015em;
-
-  /* -- Metadata (monospace) ---------------------------------------------- */
-  --type-meta-lg: 600 0.75rem/1.2 var(--font-meta);
-  --type-meta: 600 0.75rem/1.2 var(--font-meta);
-  --type-meta-sm: 600 0.75rem/1.45 var(--font-meta);
-  --track-meta: 0.08em;
-  --track-meta-sm: 0.07em;
-
-  /* -- Shared type behaviour --------------------------------------------- */
-  --weight-strong: 700;
-  --weight-link: 600;
-  --weight-heavy: 800;
-  --space-paragraph: 1.45em;
-
-  /* -- Page --------------------------------------------------------------
-     Shared site chrome only. Case-study brand palettes (--drive-*, --mix-*,
-     --core-*, --verse-*) stay on those pages and must not be folded in. */
-  --page-wash: #fcfeff;
-  --page-paper: #f6f6f6;
-  --page-paper-deep: #f6f6f6;
-  --ink: #000;
-  --ink-inverse: #fff;
-  --ink-muted: rgb(0 0 0 / 58%);
-  --ink-soft: rgb(0 0 0 / 68%);
-  --line: rgb(0 0 0 / 14%);
-  --line-subtle: rgb(0 0 0 / 8%);
-  --line-soft: rgb(0 0 0 / 10%);
-
-  /* -- Focus ------------------------------------------------------------- */
-  --focus: #1677ff;
-  --focus-size: 2px;
-  --focus-offset: 3px;
-  --link-shimmer-highlight: var(--focus);
-
-  /* -- Shell ------------------------------------------------------------- */
-  --page-width: 940px;
-  --page-width-tablet: 730px;
-  --page-gutter: 24px;
-  --page-gutter-mobile: 16px;
-  --page-min: 320px;
-
-  /* -- Control ----------------------------------------------------------- */
-  --tap: 44px;
-  --icon: 48px;
-  --hover-fade: 0.78;
-  --nav-blur: 14px;
-
-  --layer-content: 0;
-  --layer-sticky-nav: 1;
-  --layer-header: 2;
-  --layer-popover: 1;
-  --layer-skip: 30;
   color-scheme: light;
-  color: var(--ink);
-  background: var(--page-paper);
+  color: var(--text);
+  background: var(--page);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 /* -- Role application -----------------------------------------------------
@@ -187,148 +23,58 @@
 
 .type-display,
 .type-section,
-.type-hero,
-.type-subsection,
+.type-title,
 .type-support,
-.type-callout,
-.type-metric,
-.type-quote,
-.type-deck,
+.type-label,
 .type-body,
-.type-body-sm,
-.type-caption,
-.type-action,
-.type-eyebrow,
-.type-badge,
-.type-meta-lg,
-.type-meta,
-.type-meta-sm {
+.type-body-small,
+.type-meta {
   font-synthesis: none;
 }
 
 .type-display {
   font: var(--type-display);
-  letter-spacing: 0;
   text-wrap: balance;
 }
 
 .type-section {
   font: var(--type-section);
-  letter-spacing: 0;
   text-wrap: balance;
 }
 
-/* Case-study hero titles: the display scale carried at link weight.
-   Reuses the display token so the scale is still defined in one place.
-   Scoped to .case-page so it outranks theme.css's `.hero h1`, which otherwise
-   wins on specificity wherever a study wraps its title in a `.hero` section
-   (Microsoft does) and drops it to the home-page hero size. */
-.case-page .type-hero {
-  font: var(--type-display);
-  font-weight: var(--weight-link);
-  letter-spacing: 0;
+.type-title {
+  font: var(--type-title);
   text-wrap: balance;
-}
-
-.type-subsection {
-  font: var(--type-subsection);
-  letter-spacing: 0;
 }
 
 .type-support {
   font: var(--type-support);
-  letter-spacing: 0;
 }
 
-.type-callout {
-  font: var(--type-callout);
-  letter-spacing: 0;
-  text-wrap: pretty;
-}
-
-.type-metric {
-  font: var(--type-metric);
-  letter-spacing: var(--track-metric);
-}
-
-.type-quote {
-  font: var(--type-quote);
-  letter-spacing: var(--track-quote);
-}
-
-.type-deck {
-  font: var(--type-deck);
-  letter-spacing: 0;
-  text-wrap: pretty;
+.type-label {
+  font: var(--type-label);
 }
 
 .type-body {
   font: var(--type-body);
-  letter-spacing: 0;
 }
 
-.type-body-sm {
-  font: var(--type-body-sm);
-  letter-spacing: 0;
-}
-
-.type-caption {
-  font: var(--type-caption);
-  letter-spacing: 0;
-}
-
-.type-action {
-  font: var(--type-action);
-  letter-spacing: var(--track-action);
-}
-
-.type-eyebrow {
-  font: var(--type-eyebrow);
-  letter-spacing: var(--track-eyebrow);
-}
-
-.type-badge {
-  font: var(--type-badge);
-  letter-spacing: var(--track-badge);
-}
-
-.type-meta-lg {
-  font: var(--type-meta-lg);
-  letter-spacing: var(--track-meta);
-}
-
-.type-meta {
-  font: var(--type-meta);
-  letter-spacing: var(--track-meta);
-}
-
-.type-meta-sm {
-  font: var(--type-meta-sm);
-  letter-spacing: var(--track-meta-sm);
-}
-
-/* Casing composes with any role rather than doubling the role list. */
-.type-caps {
-  text-transform: uppercase;
+.type-body-small {
+  font: var(--type-body-small);
 }
 
 /* Inline treatments that ride on whatever role the parent established.
    `:where()` keeps these at zero specificity for the ancestor, so a child
-   carrying its own `type-*` class always wins over the inherited treatment. */
-:where(.type-body, .type-body-sm, .type-deck, .type-caption) strong {
-  font-weight: var(--weight-strong);
-}
-
+   carrying its own `type-*` class always wins over the inherited treatment.
+   Weight is not restated: it belongs to the role, and <strong> is already
+   bold by the user agent. */
 :where(
   .type-body,
-  .type-body-sm,
-  .type-deck,
-  .type-caption,
+  .type-body-small,
+  .type-title,
   .type-display,
-  .type-section,
-  .type-hero
+  .type-section
 ) a {
-  font-weight: var(--weight-link);
   text-decoration: underline;
 }
 
@@ -338,7 +84,7 @@
    homepage's one-line separation. Normal specificity so it out-ranks the
    `margin: 0` resets; `>` so it never reaches into a nested grid. */
 .type-prose > p + p {
-  margin-top: var(--space-paragraph);
+  margin-top: var(--space-3);
 }
 
 * {
@@ -352,16 +98,15 @@ body {
 }
 
 /* Scoped to the case pages, which are the only ones this stylesheet dresses.
-   Unscoped it would repaint the whole redesign in paper white.
+   Unscoped it would repaint the whole redesign.
 
    The three `revert`s are the part that is not in the published file: theme.css
-   gives every body the new site's sans, and the published pages inherit the
+   gives every body the body role, and the published pages inherit the
    user-agent default instead — every visible string carries a `type-*` class,
    so the difference only shows on text that was never meant to be styled. */
 body.case-page {
-  min-width: var(--page-min);
-  background: linear-gradient(172deg, var(--page-wash) 0%, var(--page-paper-deep) 100%);
-  color: var(--ink);
+  background: var(--page);
+  color: var(--text);
   font-family: revert;
   font-size: revert;
   line-height: revert;
@@ -388,10 +133,9 @@ a {
    .page-shell centres its children, and BaseLayout renders <Nav> and <Footer>
    as direct children of it, so without help they collapse to content width.
    The published .site-header and .social-footer set their own measure; these
-   rules hand the new chrome the same one, at the published values — the
-   header's 88px band with 40px above it, the footer's gutter/40px padding.
-   They sit here, above the breakpoints, because the breakpoint blocks restate
-   the same selectors at the same specificity and must win.
+   rules hand the new chrome the same one. They sit here, above the breakpoint,
+   because the breakpoint block restates the same selectors at the same
+   specificity and must win.
 
    `margin-top: auto` is the one thing the published file does not do:
    .page-shell is a min-height:100dvh column, and a short case page would
@@ -399,28 +143,28 @@ a {
 .case-page .page-shell > .site-nav,
 .case-page .page-shell > .back-row,
 .case-page .page-shell > .site-footer {
-  width: min(100%, var(--page-width));
-  padding-inline: var(--page-gutter);
+  width: min(100%, var(--shell));
+  padding-inline: var(--space-3);
 }
 
 /* .page-shell centres its children, so without the page measure above the back
    row shrinks to its own content and floats to the middle of the page. It has
    to line up with the left edge of the case-study content instead. */
 .case-page .page-shell > .back-row {
-  margin-top: 24px;
+  margin-top: var(--space-3);
 }
 
 .case-page .page-shell > .site-nav {
-  min-height: 88px;
-  padding-top: 40px;
+  min-height: var(--space-6);
+  padding-top: var(--space-4);
   padding-bottom: 0;
   margin-bottom: 0;
 }
 
 .case-page .page-shell > .site-footer {
   margin-top: auto;
-  padding-top: var(--page-gutter);
-  padding-bottom: 40px;
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-4);
 }
 
 /* Appearance comes from .btn; this only carries what is specific to the
@@ -432,10 +176,10 @@ a {
 .site-main {
   isolation: isolate;
   position: relative;
-  z-index: var(--layer-content);
+  z-index: var(--layer-base);
   display: flex;
-  width: min(100%, var(--page-width));
-  padding: 0 var(--page-gutter) 40px;
+  width: min(100%, var(--shell));
+  padding: 0 var(--space-3) var(--space-4);
   flex-direction: column;
   align-items: center;
 }
@@ -443,7 +187,7 @@ a {
 .core-main {
   isolation: isolate;
   position: relative;
-  z-index: var(--layer-content);
+  z-index: var(--layer-base);
 }
 
 .content {
@@ -452,7 +196,7 @@ a {
   min-width: 0;
   flex-direction: column;
   align-items: flex-start;
-  gap: 40px;
+  gap: var(--space-4);
 }
 
 h1 {
@@ -461,97 +205,17 @@ h1 {
 
 .btn:focus-visible,
 h1 a:focus-visible {
-  outline: var(--focus-size) solid var(--focus);
-  outline-offset: var(--focus-offset);
-}
-
-/* Keep underlined link text fully visible while a narrow highlight sweeps
-   across its existing color. Classless anchors are editorial links; named
-   selectors below cover the other intentionally underlined treatments without
-   reaching button-like links whose background owns the full element. */
-@supports (-webkit-background-clip: text) or (background-clip: text) {
-  :where(
-    .type-body,
-    .type-body-sm,
-    .type-deck,
-    .type-caption,
-    .type-display,
-    .type-section,
-    .type-hero
-  ) a:not([class]),
-  .core-ai-page figcaption a,
-  .core-ai-page .public-link a,
-  .core-ai-page .applied-work-link a {
-    background-image: linear-gradient(
-      110deg,
-      currentColor 0%,
-      currentColor 40%,
-      var(--link-shimmer-highlight) 50%,
-      currentColor 60%,
-      currentColor 100%
-    );
-    background-position: 100% 0;
-    background-size: 250% 100%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 /* Site chrome is not editorial prose. The Microsoft page carries type-body on
-   <body> (ported as published), which makes the classless-anchor rules above
-   reach the header's About link — the one chrome anchor without a class. Its
-   <kbd> inherited the transparent text fill but not the gradient and rendered
-   as an empty box, and the link itself went bold. Chrome keeps its own
-   treatment regardless of what the page body is classed. */
+   <body> (ported as published), which makes the inherited link treatment above
+   reach the header's About link — the one chrome anchor without a class, which
+   then rendered underlined. Chrome keeps its own treatment regardless of what
+   the page body is classed. */
 .case-page :is(.site-nav, .site-footer, .back-row) a {
-  font-weight: inherit;
   text-decoration: none;
-  background: none;
-  -webkit-text-fill-color: currentColor;
-  animation: none;
-}
-
-@keyframes link-shimmer {
-  from {
-    background-position: 100% 0;
-  }
-
-  to {
-    background-position: 0 0;
-  }
-}
-
-.drive-outcome-copy {
-  --link-shimmer-highlight: var(--drive-cyan-bright, #8fc7ff);
-}
-
-/* Hover affordances follow the pointer actually in use rather than
-   (hover: hover) and (pointer: fine), which stays false on iPadOS even while a
-   trackpad drives a cursor. components/pointer-hover.js keeps
-   .is-coarse-pointer on <html> in step with live pointer events, so a tap still
-   never leaves a hover state behind. :where() holds the guard at zero
-   specificity, leaving the cascade exactly as it was. */
-@supports (-webkit-background-clip: text) or (background-clip: text) {
-  :where(html:not(.is-coarse-pointer))
-    :where(
-      .type-body,
-      .type-body-sm,
-      .type-deck,
-      .type-caption,
-      .type-display,
-      .type-section,
-      .type-hero
-    )
-    a:not([class]):is(:hover, :focus-visible),
-  :where(html:not(.is-coarse-pointer)) .core-ai-page figcaption a:is(:hover, :focus-visible),
-  :where(html:not(.is-coarse-pointer)) .core-ai-page .public-link a:is(:hover, :focus-visible),
-  :where(html:not(.is-coarse-pointer))
-    .core-ai-page
-    .applied-work-link
-    a:is(:hover, :focus-visible) {
-    animation: link-shimmer 550ms ease-out;
-  }
 }
 
 /* ── The button ───────────────────────────────────────────────────────────
@@ -560,58 +224,31 @@ h1 a:focus-visible {
    contribute sizing and stacking only; the Mix.dialog demo's own controls stay
    out of it, because they simulate the product's UI rather than the site's. */
 
-/* ── Constrained widths ───────────────────────────────────────────────────
-   Below 1400px, section and subsection headings each step down one size on
-   the four-step scale: 36 → 20 for sections, 20 → 16 for subsections. The
-   display role holds at 36 so the page title keeps its focal weight, and
-   support already sits at 16, the floor for a heading. Section (20 light)
-   and subsection (16 bold) separate by size and weight. Subsection and
-   support share 16 bold, but they never head the same region except one
-   card list on Mix.dialog, where the card frame carries the difference.
-   This is the only breakpoint that touches type. */
-@media (max-width: 1399.98px) {
-  :root {
-    --type-section: 300 1.25rem/1.2 var(--font-display);
-    --type-subsection: 600 1rem/1.2 var(--font-display);
-  }
-}
-
-@media (min-width: 810px) and (max-width: 1199.98px) {
-  .site-main,
-  .case-page .page-shell > .site-nav,
-  .case-page .page-shell > .back-row,
-  .case-page .page-shell > .site-footer {
-    width: min(calc(100% - 80px), var(--page-width-tablet));
-    padding-right: 0;
-    padding-left: 0;
-  }
-}
-
 @media (max-width: 809.98px) {
   .site-main {
     width: 100%;
-    padding: 0 var(--page-gutter-mobile) var(--page-gutter-mobile);
+    padding: 0 var(--space-2) var(--space-2);
   }
 
   .content {
-    gap: 24px;
+    gap: var(--space-3);
   }
 
   /* Mirrors the published .site-header / .social-footer mobile rules. */
   .case-page .page-shell > .site-nav {
     width: 100%;
-    min-height: 64px;
-    padding: var(--page-gutter-mobile) var(--page-gutter-mobile) 0;
+    min-height: var(--space-5);
+    padding: var(--space-2) var(--space-2) 0;
   }
 
   .case-page .page-shell > .back-row {
     width: 100%;
-    padding-inline: var(--page-gutter-mobile);
+    padding-inline: var(--space-2);
   }
 
   .case-page .page-shell > .site-footer {
-    width: calc(100% - (var(--page-gutter-mobile) * 2));
-    padding: var(--page-gutter) 0 calc(32px + env(safe-area-inset-bottom));
+    width: calc(100% - (var(--space-2) * 2));
+    padding: var(--space-3) 0 calc(var(--space-4) + env(safe-area-inset-bottom));
   }
 }
 
@@ -621,67 +258,13 @@ h1 a:focus-visible {
   *::after {
     scroll-behavior: auto !important;
   }
-
-  :where(
-    .type-body,
-    .type-body-sm,
-    .type-deck,
-    .type-caption,
-    .type-display,
-    .type-section,
-    .type-hero
-  ) a:not([class]),
-  .core-ai-page figcaption a,
-  .core-ai-page .public-link a,
-  .core-ai-page .applied-work-link a {
-    animation: none;
-  }
 }
 
 /* ==========================================================================
    DARK THEME
-   The published file kept these under `@media (prefers-color-scheme: dark)`.
-   Here they hang off the attribute BaseLayout writes on <html>, so the footer
-   toggle can move between them and a first visit lands on dark by choice
-   rather than by the OS.
+   The published file kept a whole second palette here. There is no second
+   palette any more: `tokens.css` re-authors three colours under
+   `[data-theme="dark"]` and every tint on the site re-derives from them, so
+   this file has nothing left to say about dark mode beyond `color-scheme`,
+   set at the top.
    ========================================================================== */
-[data-theme="dark"] {
-  --page-wash: #121417;
-  --page-paper: #090a0c;
-  --page-paper-deep: #08090b;
-  --ink: #f4f4f5;
-  --ink-inverse: #fff;
-  --ink-muted: rgb(255 255 255 / 62%);
-  --ink-soft: rgb(255 255 255 / 72%);
-  --line: rgb(255 255 255 / 18%);
-  --line-subtle: rgb(255 255 255 / 10%);
-  --line-soft: rgb(255 255 255 / 12%);
-  --focus: #8fc7ff;
-
-  color-scheme: dark;
-  color: var(--ink);
-  background: var(--page-paper);
-}
-
-[data-theme="dark"] body.case-page {
-  background: linear-gradient(172deg, var(--page-wash) 0%, var(--page-paper-deep) 100%);
-  color: var(--ink);
-}
-
-@media (forced-colors: active) {
-  :where(
-    .type-body,
-    .type-body-sm,
-    .type-deck,
-    .type-caption,
-    .type-display,
-    .type-section,
-    .type-hero
-  ) a:not([class]),
-  .core-ai-page figcaption a,
-  .core-ai-page .public-link a,
-  .core-ai-page .applied-work-link a {
-    background: none;
-    -webkit-text-fill-color: currentColor;
-  }
-}

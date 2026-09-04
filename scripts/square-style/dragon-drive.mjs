@@ -12,4 +12,8 @@ export default {
     ".drive-map-step",
     ".drive-role-note",
   ],
+  /* The ring behind the outcome panel. `50%` is geometry, not styling, so
+     DESIGN-SYSTEM.md keeps it; it is listed rather than exempted so a fourth
+     round corner cannot appear without someone adding a line here. */
+  circles: [".drive-outcome::before"],
 };

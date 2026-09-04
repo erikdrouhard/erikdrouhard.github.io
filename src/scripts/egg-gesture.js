@@ -21,17 +21,16 @@
    costs no frames beyond the smoke field.
 
    --- PEEK_MAX is read from the DOM, not hard-coded (decision, ticket 04) ----
-   The wireframe's PEEK_MAX is 92, but the pocket that clips the button is
-   exactly as tall as the shell padding it replaced: 88px, and 64px below the
-   720px breakpoint. Travelling 92 would push the button 4px above the pocket,
-   where `overflow: hidden` cuts its top edge off, and 28px above it on a
-   phone. So PEEK_MAX is the pocket's clientHeight, re-read on resize. The
-   alternative was changing the CSS, which this ticket does not own and which
-   would still have needed a second value for the narrow breakpoint.
+   The wireframe's PEEK_MAX is a literal. The pocket that clips the button is
+   exactly as tall as the shell padding it replaced, and that height is a
+   spacing token — so travelling any other distance would push the button above
+   the pocket, where `overflow: hidden` cuts its top edge off. PEEK_MAX is
+   therefore the pocket's clientHeight, re-read on resize, and it stays correct
+   if the token behind it ever moves.
 
-   The same number is written under prefers-reduced-motion, where theme.css
-   places the button at -92px: one frame of inline transform corrects it at
-   both breakpoints rather than fighting it.
+   theme.css parks the button at the same distance under
+   prefers-reduced-motion: one frame of inline transform corrects it rather
+   than fighting it.
 
    --- constants -------------------------------------------------------------
    Every value below is the wireframe's, except EVENT_CAP. A scroll-wheel
@@ -110,7 +109,7 @@ function addPull(delta) {
    through a view transition. */
 function draw() {
   const out = Math.round(btn.x * 100) / 100;
-  els.play.style.transform = `translate(-50%, ${-out}px)`;
+  els.play.style.transform = `translateY(${-out}px)`;
 
   if (!playing && sheet.x <= 0) {
     els.sheet.style.transform = "";

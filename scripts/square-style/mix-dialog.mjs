@@ -18,4 +18,6 @@ export default {
     ".mix-figure img",
     ".mix-metrics",
   ],
+  /* No round corner on this page. */
+  circles: [],
 };
