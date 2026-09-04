@@ -61,8 +61,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/assets/erikdrouhard-logomark.svg" type="image/svg+xml" />
-    <link rel="preload" href={newsreaderLatin} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={monoLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={newsreaderLatin} as="font" type="font/woff2" crossorigin transition:persist="font-newsreader" />
+    <link rel="preload" href={monoLatin} as="font" type="font/woff2" crossorigin transition:persist="font-mono" />
     {noindex && <meta name="robots" content="noindex" />}
     <title>{title}</title>
 
