@@ -48,10 +48,15 @@
   gap: var(--space-2);
 }
 
-.mix-page--verse .mix-three-column--media > figure > img,
-.mix-page--verse .mix-four-column--media > figure > img,
-.mix-page--verse .mix-three-column--media > figure > a > img,
-.mix-page--verse .mix-four-column--media > figure > a > img {
+/* Default media image: fills its figure. :where() keeps this at a single
+   class of specificity so a figure modifier such as .mix-figure--portrait
+   can override it without escalating. */
+.mix-page--verse :where(
+    .mix-three-column--media > figure > img,
+    .mix-four-column--media > figure > img,
+    .mix-three-column--media > figure > a > img,
+    .mix-four-column--media > figure > a > img
+  ) {
   width: 100%;
   height: auto;
   outline: 1px solid var(--line);
