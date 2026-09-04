@@ -275,9 +275,6 @@ kbd.hot {
     border-color var(--duration) ease-out,
     background var(--duration) ease-out;
 }
-.card.featured {
-  border-color: var(--primary);
-}
 .card:hover {
   border-color: var(--primary);
 }
