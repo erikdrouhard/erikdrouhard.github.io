@@ -480,7 +480,7 @@
   }
 
   .mix-section {
-    padding: var(--section) 0;
+    padding-block: var(--section);
     gap: var(--space-4);
   }
 
