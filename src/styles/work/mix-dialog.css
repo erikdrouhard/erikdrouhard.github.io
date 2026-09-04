@@ -28,11 +28,8 @@
   color: var(--text);
 }
 
-.mix-content h1,
-.mix-content h2,
-.mix-content h3,
-.mix-content p,
-.mix-content figure {
+/* Zero-specificity reset: any class on the element wins over it. */
+.mix-content :where(h1, h2, h3, p, figure) {
   margin: 0;
 }
 
@@ -322,7 +319,6 @@
 
 .mix-gallery-label {
   display: flex;
-  margin-bottom: calc(var(--space-3) * -1);
   color: var(--text-muted);
   justify-content: space-between;
 }
@@ -382,7 +378,6 @@
 
 .mix-customer-note {
   max-width: var(--measure);
-  margin-top: calc(var(--space-1) * -1);
 }
 
 .mix-metrics {
@@ -421,7 +416,6 @@
 
 .mix-metric-note {
   max-width: var(--measure);
-  margin-top: calc(var(--space-3) * -1);
   color: var(--text-muted);
 }
 
@@ -527,10 +521,6 @@
   .mix-metrics article + article {
     border-top: 1px solid var(--line);
     border-left: 0;
-  }
-
-  .mix-customer-note {
-    margin-top: 0;
   }
 
   .mix-footer {
