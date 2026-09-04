@@ -106,10 +106,6 @@ condition-stack-demo {
    re-derive. The published version was a yellow sticker with a hard offset
    shadow; both the hue and the shadow are gone. */
 .condition-demo__invitation {
-  --page: var(--page-dark);
-  --text: var(--text-dark);
-  --accent-l: var(--accent-l-dark);
-  --accent-c: var(--accent-c-dark);
   position: absolute;
   z-index: var(--layer-overlay);
   top: var(--space-6);
@@ -139,12 +135,12 @@ condition-stack-demo {
 }
 
 .condition-demo__invitation span {
-  color: var(--text);
+  color: inherit;
   font: var(--type-body);
 }
 
 .condition-demo__invitation .condition-demo__invitation-kicker {
-  color: var(--text-muted);
+  color: inherit;
   font: var(--type-meta);
   letter-spacing: var(--track-caps);
   text-transform: uppercase;
