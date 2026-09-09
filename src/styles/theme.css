@@ -361,11 +361,18 @@ kbd.hot {
   row-gap: var(--space-1);
 }
 .grid > .card h3 {
-  max-inline-size: var(--measure-work-title);
   text-wrap: balance;
 }
 .grid > .card p {
   text-wrap: pretty;
+}
+
+/* Constrain titles only when neighboring cards need matching line counts.
+   Stacked cards use the full available measure. */
+@media (min-width: 810px) {
+  .grid > .card h3 {
+    max-inline-size: var(--measure-work-title);
+  }
 }
 
 .cta {
