@@ -76,6 +76,7 @@
   --shell: 1000px;
   --measure: 68ch;
   --measure-title: 24ch;
+  --measure-work-title: 26ch;
 
   /* -- Colour — light ----------------------------------------------------
      The authored colours, and only those. Text is pure black on light and

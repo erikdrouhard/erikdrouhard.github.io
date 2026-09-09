@@ -352,6 +352,29 @@ kbd.hot {
   color: var(--text);
 }
 
+/* Selected work shares metadata, title, summary, and action rows. This also
+   absorbs the Featured badge's extra height without offsetting its title. */
+.grid > .card {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 4;
+  row-gap: var(--space-1);
+}
+.grid > .card h3 {
+  text-wrap: balance;
+}
+.grid > .card p {
+  text-wrap: pretty;
+}
+
+/* Constrain titles only when neighboring cards need matching line counts.
+   Stacked cards use the full available measure. */
+@media (min-width: 810px) {
+  .grid > .card h3 {
+    max-inline-size: var(--measure-work-title);
+  }
+}
+
 .cta {
   margin-top: auto;
   padding-top: var(--space-2);
