@@ -17,7 +17,7 @@ function init() {
 function initMagnetic(){
  if(motion!==2)return;
  const front=document.getElementById('preview'),deck=document.querySelector('.deck');
- const hit=document.createElement('div');hit.className='magnetic-hit';hit.setAttribute('aria-hidden','true');deck.append(hit);front.classList.add('magnetic-card');
+ const hit=deck;hit.classList.add('magnetic-hit');front.classList.add('magnetic-card');
  const fine=matchMedia('(hover: hover) and (pointer: fine)');
  let inside=false,x=0,y=0,frame=0,press=null,drag=null,dragFrame=0;
  const enabled=()=>fine.matches&&!reduced.matches;
@@ -115,7 +115,7 @@ function initMagnetic(){
   if(hit.hasPointerCapture(pointer))hit.releasePointerCapture(pointer);
  }
  listen(hit,'pointerdown',e=>{
-  if(busy||press||reduced.matches||!e.isPrimary||e.button!==0)return;
+  if(busy||press||reduced.matches||!e.isPrimary||e.button!==0||e.target.closest('a'))return;
   press={id:e.pointerId,x:e.clientX,y:e.clientY,type:e.pointerType};
   hit.setPointerCapture(e.pointerId);
  });
@@ -155,13 +155,11 @@ function setCaseColor(index){
  setCaseBlend(index,index);
 }
 function updateTabs(selected=active){setCaseColor(selected);
- const pick=picks[selected], read=document.getElementById('stack-read');
- read.href=pick.dataset.href;read.textContent=`Read ${pick.dataset.name} case study →`;
  document.getElementById('stack-count').textContent=`0${selected+1} / 04`;
 document.querySelectorAll('[data-case-pick]').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.casePick)===selected))}
 function settle(i){const front=document.getElementById('preview');front.innerHTML=content(i);front.dataset.caseIndex=i;front.style.visibility='';active=i;updateTabs()}
 function clearMotion(){animations.forEach(a=>a.cancel());extras.forEach(e=>e.remove());animations=[];extras=[];document.getElementById('preview').style.visibility=''}
-function layer(i,z){const node=document.createElement('article');node.className='card deck-card motion-layer';node.dataset.caseIndex=i;node.innerHTML=content(i);node.style.zIndex=z;node.setAttribute('aria-hidden','true');document.querySelector('.deck').append(node);extras.push(node);return node}
+function layer(i,z){const node=document.createElement('article');node.className='card deck-card motion-layer';node.dataset.caseIndex=i;node.innerHTML=content(i);node.style.zIndex=z;node.setAttribute('aria-hidden','true');node.inert=true;document.querySelector('.deck').append(node);extras.push(node);return node}
 function animate(node,frames,ms,opts={}){const a=node.animate(frames,{duration:ms/speed,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both',...opts});animations.push(a);return a.finished.catch(()=>{})}
 async function retargetKeyboard(to){
  // Capture every visible card before canceling, so a new key never resets its pose.
@@ -216,7 +214,6 @@ async function swap(to,{instant=false,replay=false,keyboard=false}={}){
 
  settle(0);initMagnetic();
  picks.forEach((button,i)=>listen(button,'click',()=>swap(i,{keyboard:true})));
- listen(document.getElementById('stack-next'),'click',()=>swap(((settlingTarget??active)+1)%4,{keyboard:true}));
  listen(window,'keydown',e=>{
   if(e.defaultPrevented||e.repeat||e.isComposing||e.metaKey||e.ctrlKey||e.altKey)return;
   if(e.target instanceof Element&&(e.target.closest('input,textarea,select,[role="textbox"]')||e.target.isContentEditable))return;

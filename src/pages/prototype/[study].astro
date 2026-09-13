@@ -42,26 +42,24 @@ const names: Record<string, string> = {
         <h2 class="type-meta">Selected work</h2>
         <span class="count type-meta" id="stack-count">01 / 04</span>
       </div>
+      <div class="stack-layout">
       <nav class="stack-tabs" aria-label="Choose a case study">
         {published.map((entry, i) => <button class="type-meta" data-case-pick={i} data-case-index={i} data-href={`/work/${entry.id}/`} data-name={names[entry.id]} aria-keyshortcuts={String(i+1)} aria-pressed={i === 0}><kbd>{i+1}</kbd>{names[entry.id]}</button>)}
       </nav>
       <div class="deck">
-        <div class="stack-sizer" aria-hidden="true">
+        <div class="stack-sizer" aria-hidden="true" inert>
           {published.map((entry, i) => <article class="card deck-card" data-case-index={i}>
             <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
             <div class="meta type-meta"><span class="org">{entry.data.org}</span><span class="stack-name">{names[entry.id]}</span></div>
             <h3 class="type-display">{entry.data.title}</h3>
             <p class="type-body">{entry.data.summary}</p>
-            <div class="stack-card-foot type-meta"><span>{entry.data.featured ? "Featured case study" : "Case study"}</span><span>{String(i+1).padStart(2,'0')} / 04</span></div>
+            <div class="stack-card-foot type-meta"><a class="stack-read type-body" href={`/work/${entry.id}/`} aria-label={`Read ${names[entry.id]} case study`}>Read case study →</a><span>{String(i+1).padStart(2,'0')} / 04</span></div>
           </article>)}
         </div>
         <article class="card deck-card" id="preview" data-case-index="0" aria-label="Current case study"></article>
       </div>
-      <div class="stack-actions">
-        <a class="btn primary type-label" id="stack-read" href={`/work/${published[0].id}/`}>Read Verse case study →</a>
-        <button class="btn type-label" id="stack-next">Next case →</button>
-      </div>
       <p class="stack-help type-meta">Drag to peek · Release to switch · Keys 1–4</p>
+      </div>
       <span class="stack-status" id="stack-status" role="status" aria-live="polite"></span>
     </section>
     <section
