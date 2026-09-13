@@ -227,3 +227,26 @@
     --duration-slow: 0ms;
   }
 }
+
+/* Local card-stack study only. No production path is generated for this page.
+   Case identities reuse the website's current accent hues. */
+.stack-prototype {
+  --duration-slow: 480ms;
+  --stack-easing: cubic-bezier(.22,.61,.36,1);
+  --stack-blend-duration: 100ms;
+  --stack-blend-easing: linear;
+  --stack-card-height: 324px;
+  --stack-hit-layer: 1000;
+  --stack-ambient-layer: -1;
+  --stack-glow: .28;
+}
+.stack-prototype [data-case-index="0"] { --accent-hue: var(--accent-hue-verse); }
+.stack-prototype [data-case-index="1"] { --accent-hue: var(--accent-hue-msft); }
+.stack-prototype [data-case-index="2"] { --accent-hue: var(--accent-hue-mix); }
+.stack-prototype [data-case-index="3"] { --accent-hue: var(--accent-hue-drive); }
+.stack-prototype .stack-ambient i {
+  --stack-gradient: linear-gradient(to bottom, transparent 50%, var(--accent) 100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .stack-prototype { --duration-slow: 0ms; --stack-blend-duration: 0ms; }
+}
