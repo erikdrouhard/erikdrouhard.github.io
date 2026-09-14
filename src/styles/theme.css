@@ -193,14 +193,14 @@ kbd.hot {
 }
 
 /* ------------------------------------------------------- closing block */
-.close-card {
+.card.close-card {
   margin-top: var(--space-7);
-  padding: var(--space-4);
+  padding: var(--feature-card-padding);
   gap: 0;
   cursor: pointer;
 }
 .close-card .close-line {
-  font: var(--type-display);
+  font: var(--type-title);
   color: var(--text);
   margin: 0 0 var(--space-3);
   max-width: var(--measure-title);
@@ -435,9 +435,8 @@ kbd.hot {
   .section-head {
     margin-top: var(--space-5);
   }
-  .close-card {
+  .card.close-card {
     margin-top: var(--section);
-    padding: var(--space-3);
   }
   .close-card .close-line {
     max-width: none;
@@ -1121,3 +1120,5 @@ html:has(.about-page) {
     transform: translateY(calc(-1 * var(--section)));
   }
 }
+
+.card.close-card:not([href]):not([data-href]) { cursor: default; }

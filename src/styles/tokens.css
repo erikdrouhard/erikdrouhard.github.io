@@ -68,6 +68,8 @@
   --space-6: 72px;
   --space-7: 112px;
 
+  --feature-card-padding: var(--space-4);
+  --target-min: 44px;
   --gutter: var(--space-4);
   --section: var(--space-6);
 
@@ -212,6 +214,7 @@
    body sizes never move. This is the only place the display roles shift. */
 @media (max-width: 809.98px) {
   :root {
+    --feature-card-padding: var(--space-3);
     --type-display: var(--display-2);
     --type-section: var(--display-2);
     --type-title: var(--display-2-mobile);
@@ -243,6 +246,12 @@
 [data-case-color-prototype],
 [data-case-color-prototype] * {
   --primary: var(--accent);
+}
+/* The ambient gradient sits behind help/footer text. The normal 60% muted
+   mix is too faint over its strongest tint in either theme. */
+.stack-prototype,
+.stack-prototype * {
+  --text-muted: color-mix(in srgb, var(--text) 72%, var(--page));
 }
 .stack-prototype {
   --stack-color-0: oklch(var(--accent-l) var(--accent-c) var(--accent-hue-verse));

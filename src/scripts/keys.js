@@ -45,6 +45,7 @@ export function cancelPendingKey() {
 }
 
 function onKeydown(event) {
+  if (document.querySelector("[data-shortcuts-toggle]")?.checked === false) return;
   if (event.metaKey || event.ctrlKey || event.altKey || event.repeat) return;
   const t = event.target;
   if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;

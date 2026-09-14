@@ -9,13 +9,14 @@ function init() {
  const cards=[...document.querySelectorAll('.stack-sizer .deck-card')].map(node=>node.innerHTML);
  const picks=[...document.querySelectorAll('[data-case-pick]')];
  const letters=picks.map(node=>node.dataset.name);
- const motion=2, motions=[null,null,['Lift & reveal','',480]],speed=1;
+ const shortcutToggle=document.querySelector('[data-shortcuts-toggle]');
+ // Keep the selected full-length motion even when keys interrupt a swap.
+ const swapDuration=480;
  let active=0,busy=false,queued=null,lastPair=[0,1];
  let animations=[],extras=[],runToken=0,settlingTarget=null;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  let magnetic={freeze:()=> 'none',resume:()=>{},cancel:()=>{}};
 function initMagnetic(){
- if(motion!==2)return;
  const front=document.getElementById('preview'),deck=document.querySelector('.deck');
  const hit=deck;hit.classList.add('magnetic-hit');front.classList.add('magnetic-card');
  const fine=matchMedia('(hover: hover) and (pointer: fine)');
@@ -39,12 +40,12 @@ function initMagnetic(){
  function freeze(){const pose=getComputedStyle(front).transform;cancelAnimationFrame(frame);frame=0;front.style.transition='none';front.style.transform='none';front.style.willChange='';return pose}
  function beginDrag(){
   const pose=freeze(),r=hit.getBoundingClientRect();
+  preserveFocus(active);
   busy=true;++runToken;queued=null;
-  drag={from:active,to:(active+1)%4,dx:0,dy:0,pose,threshold:Math.max(80,Math.min(140,Math.min(r.width,r.height)*.25)),armed:false};
+  drag={from:active,to:(active+1)%4,dx:0,dy:0,pose,threshold:Math.max(80,Math.min(140,Math.min(r.width,r.height)*.25))};
   drag.out=layer(drag.from,5);drag.under=layer(drag.to,4);
   drag.out.style.transform=pose;drag.under.style.transform='translate(18px,18px) scale(.985)';
   front.style.visibility='hidden';hit.dataset.dragging='true';
-  notifyState(`Peeking at Case ${letters[drag.to]} · pull farther to swap, release early to return`);
  }
  function drawDrag(){
   dragFrame=0;if(!drag)return;
@@ -62,8 +63,6 @@ function initMagnetic(){
   d.out.style.opacity=d.opacity;
   d.underTransform=`translate(${18*(1-progress)}px,${18*(1-progress)}px) scale(${.985+.015*progress})`;
   d.under.style.transform=d.underTransform;
-  const armed=progress===1;
-  if(armed!==d.armed){d.armed=armed;notifyState(armed?`Release to open Case ${letters[d.to]}`:`Peeking at Case ${letters[d.to]} · release to return`)}
  }
  function move(e){
   track(e);if(!press||press.id!==e.pointerId)return;
@@ -71,7 +70,7 @@ function initMagnetic(){
   if(!drag){
    if(Math.hypot(dx,dy)<7)return;
    // Let vertical touch movement continue scrolling the page.
-   if(press.type==='touch'&&Math.abs(dy)>Math.abs(dx))return;
+   if(press.type==='touch'&&Math.abs(dy)>Math.abs(dx)){end(e,true);return;}
    beginDrag();
   }
   drag.dx=dx;drag.dy=dy;
@@ -85,7 +84,6 @@ function initMagnetic(){
   const token=runToken;settlingTarget=commit?d.to:d.from;setCaseColor(settlingTarget);
   if(commit){
    lastPair=[d.from,d.to];
-   notifyState(`Opening Case ${letters[d.to]}`);
    const length=Math.max(1,Math.hypot(d.dx,d.dy)),r=hit.getBoundingClientRect();
    const travel=Math.max(Math.max(r.width,r.height)*1.05,length+Math.max(r.width,r.height)*.65);
    const exitX=d.dx/length*travel,exitY=d.dy/length*travel;
@@ -97,7 +95,6 @@ function initMagnetic(){
     animate(d.under,[{transform:d.underTransform},{transform:'translate(0,0) scale(1)'}],300)
    ]);
   }else{
-   notifyState(`Returning to Case ${letters[d.from]}`);
    await Promise.all([
     animate(d.out,[{transform:d.transform,opacity:d.opacity},{transform:'translate(0,0) rotate(0deg)',opacity:1}],280),
     animate(d.under,[{transform:d.underTransform,opacity:1},{transform:'translate(18px,18px) scale(.985)',opacity:0}],280)
@@ -105,7 +102,7 @@ function initMagnetic(){
   }
   if(token!==runToken)return;
   settle(commit?d.to:d.from);clearMotion();settlingTarget=null;busy=false;magnetic.resume();
-  notifyState(`Case ${letters[active]} · drag to peek at Case ${letters[(active+1)%4]}`);
+
   const next=queued;queued=null;if(next!==null&&next!==active)swap(next);
  }
  function end(e,cancel=false){
@@ -130,8 +127,9 @@ function initMagnetic(){
  listen(window,'keydown',e=>{if(e.key==='Escape')cancel()});
  listen(document,'visibilitychange',()=>{if(document.hidden)cancel()});
  const disable=()=>{
+  cancelAnimationFrame(frame);frame=0;
   inside=false;const pointer=press?.id;press=null;
-  if(drag){const original=drag.from;drag=null;++runToken;cancelAnimationFrame(dragFrame);dragFrame=0;clearMotion();busy=false;queued=null;settle(original);hit.removeAttribute('data-dragging');notifyState(`Case ${letters[active]} · ready`)}
+  if(drag){const original=drag.from;drag=null;++runToken;cancelAnimationFrame(dragFrame);dragFrame=0;clearMotion();busy=false;queued=null;settle(original);hit.removeAttribute('data-dragging')}
   if(pointer!==undefined&&hit.hasPointerCapture(pointer))hit.releasePointerCapture(pointer);
   front.style.transition='none';front.style.transform='none';front.style.willChange='';
  };
@@ -140,7 +138,7 @@ function initMagnetic(){
 }
 
 function content(i){return cards[i]}
-function notifyState(message){document.getElementById('stack-status').textContent=message.replaceAll('Case ', '')}
+
 function setCaseBlend(from,to,amount=0,dragging=false){
  const mix=Math.max(0,Math.min(1,amount));
  document.documentElement.toggleAttribute('data-color-dragging',dragging);
@@ -158,11 +156,16 @@ function setCaseColor(index){
 function updateTabs(selected=active){setCaseColor(selected);
  document.getElementById('stack-count').textContent=`0${selected+1} / 04`;
 document.querySelectorAll('[data-case-pick]').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.casePick)===selected))}
-function settle(i){const front=document.getElementById('preview');front.innerHTML=content(i);front.dataset.caseIndex=i;front.style.visibility='';active=i;updateTabs()}
+function preserveFocus(i){
+ const front=document.getElementById('preview');
+ if(front.contains(document.activeElement))picks[i].focus({preventScroll:true});
+}
+function settle(i){preserveFocus(i);const front=document.getElementById('preview');front.innerHTML=content(i);front.dataset.caseIndex=i;front.style.visibility='';active=i;updateTabs();document.getElementById('stack-status').textContent=`${letters[i]}, case ${i+1} of ${cards.length}`}
 function clearMotion(){animations.forEach(a=>a.cancel());extras.forEach(e=>e.remove());animations=[];extras=[];document.getElementById('preview').style.visibility=''}
 function layer(i,z){const node=document.createElement('article');node.className='card deck-card motion-layer';node.dataset.caseIndex=i;node.innerHTML=content(i);node.style.zIndex=z;node.setAttribute('aria-hidden','true');node.inert=true;document.querySelector('.deck').append(node);extras.push(node);return node}
-function animate(node,frames,ms,opts={}){const a=node.animate(frames,{duration:ms/speed,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both',...opts});animations.push(a);return a.finished.catch(()=>{})}
+function animate(node,frames,ms,opts={}){const a=node.animate(frames,{duration:ms,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both',...opts});animations.push(a);return a.finished.catch(()=>{})}
 async function retargetKeyboard(to){
+ preserveFocus(to);
  // Capture every visible card before canceling, so a new key never resets its pose.
  const poses=extras.filter(node=>node.isConnected).map(node=>{
   const style=getComputedStyle(node);
@@ -171,7 +174,7 @@ async function retargetKeyboard(to){
  }).sort((a,b)=>a.z-b.z);
  magnetic.cancel();++runToken;clearMotion();queued=null;
  if(reduced.matches){busy=false;settlingTarget=null;settle(to);return}
- const token=runToken,duration=motions[motion][2];
+ const token=runToken,duration=swapDuration;
  busy=true;settlingTarget=to;lastPair=[active,to];updateTabs(to);
  document.getElementById('preview').style.visibility='hidden';
  const jobs=[];let found=false;
@@ -189,34 +192,45 @@ async function retargetKeyboard(to){
   jobs.push(animate(incoming,[{transform:'translate(18px,30px) scale(.965)',opacity:0},
    {transform:'translate(0,0) scale(1)',opacity:1}],duration));
  }
- notifyState(`Case ${letters[to]} · redirecting · ${Math.round(duration/speed)} ms`);
+
  await Promise.all(jobs);if(token!==runToken)return;
  settle(to);clearMotion();settlingTarget=null;busy=false;magnetic.resume();
- notifyState(`Case ${letters[to]} · ready`);
+
  const next=queued;queued=null;if(next!==null&&next!==active)swap(next);
 }
-async function swap(to,{instant=false,replay=false,keyboard=false}={}){
+async function swap(to,{keyboard=false}={}){
  if(keyboard&&busy)return retargetKeyboard(to);
- if(busy){queued=to;notifyState(`Switching · Case ${letters[to]} queued next`);return}
+ if(busy){queued=to;return}
  if(to===active)return;
+ preserveFocus(to);
  const from=active;lastPair=[from,to];queued=null;
- if(instant||reduced.matches){settle(to);notifyState(`Case ${letters[to]} · ${reduced.matches?'reduced motion: instant swap':'instant keyboard swap'}`);return}
- const hoverPose=magnetic.freeze();busy=true;const token=++runToken,duration=motions[motion][2];
+ if(reduced.matches){settle(to);return}
+ const hoverPose=magnetic.freeze();busy=true;const token=++runToken,duration=swapDuration;
  settlingTarget=to;updateTabs(to);
- notifyState(`${replay?'Replay · ':''}Case ${letters[from]} → Case ${letters[to]} · ${Math.round(duration/speed)} ms`);
  const front=document.getElementById('preview');
  const outgoing=layer(from,5),incoming=layer(to,4);front.style.visibility='hidden';
- let jobs=[];
- if(motion===2){jobs=[animate(outgoing,[{transform:hoverPose==='none'?'translateY(0) scale(1)':hoverPose,opacity:1},{transform:'translateY(-95px) scale(.96)',opacity:0}],duration*.7),animate(incoming,[{transform:'translate(18px,30px) scale(.965)',opacity:.45},{transform:'translate(0,0) scale(1)',opacity:1}],duration)]}
+ const jobs=[animate(outgoing,[{transform:hoverPose==='none'?'translateY(0) scale(1)':hoverPose,opacity:1},{transform:'translateY(-95px) scale(.96)',opacity:0}],duration*.7),animate(incoming,[{transform:'translate(18px,30px) scale(.965)',opacity:.45},{transform:'translate(0,0) scale(1)',opacity:1}],duration)];
  await Promise.all(jobs);if(token!==runToken)return;
- settle(to);clearMotion();settlingTarget=null;busy=false;magnetic.resume();notifyState(`Case ${letters[to]} · ready`);
+ settle(to);clearMotion();settlingTarget=null;busy=false;magnetic.resume();
  const next=queued;queued=null;if(next!==null&&next!==active)swap(next);
 }
 
+ document.querySelector('.stack-tabs').hidden=false;
+ document.querySelector('.stack-help').hidden=false;
+ document.getElementById('preview').hidden=false;
+ const sizer=document.querySelector('.stack-sizer');
+ sizer.inert=true;sizer.setAttribute('aria-hidden','true');
+ document.body.classList.add('stack-ready');
  settle(0);initMagnetic();
+ listen(shortcutToggle,'change',()=>{
+  picks.forEach((button,i)=>{
+   if(shortcutToggle.checked)button.setAttribute('aria-keyshortcuts',String(i+1));
+   else button.removeAttribute('aria-keyshortcuts');
+  });
+ });
  picks.forEach((button,i)=>listen(button,'click',()=>swap(i,{keyboard:true})));
  listen(window,'keydown',e=>{
-  if(e.defaultPrevented||e.repeat||e.isComposing||e.metaKey||e.ctrlKey||e.altKey)return;
+  if(!shortcutToggle.checked||e.defaultPrevented||e.repeat||e.isComposing||e.metaKey||e.ctrlKey||e.altKey)return;
   if(e.target instanceof Element&&(e.target.closest('input,textarea,select,[role="textbox"]')||e.target.isContentEditable))return;
   const index=['1','2','3','4'].indexOf(e.key);if(index<0)return;
   e.preventDefault();swap(index,{keyboard:true});
