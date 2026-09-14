@@ -7,7 +7,7 @@
 .stack-prototype .stack-layout { display: grid; grid-template-columns: max-content minmax(0,1fr); grid-template-areas: "nav card" ". help"; gap: var(--space-3) var(--space-4); align-items: start; }
 .stack-prototype:where(.stack-nav-right) .stack-layout { grid-template-columns: minmax(0,1fr) max-content; grid-template-areas: "card nav" "help ."; }
 .stack-prototype .stack-tabs { grid-area: nav; display: grid; gap: var(--space-1); }
-.stack-prototype .stack-tabs button { display: flex; align-items: center; justify-content: flex-start; gap: var(--space-1); padding: var(--space-1); min-height: var(--target-min); touch-action: manipulation; border: var(--border-width) solid var(--line); background: var(--surface); color: var(--text-muted); cursor: pointer; font: var(--type-meta); }
+.stack-prototype .stack-tabs button { display: flex; align-items: center; justify-content: flex-start; gap: var(--space-1); padding: var(--space-1); min-height: var(--target-min); touch-action: manipulation; border: var(--border-width) solid var(--line); background: var(--surface); color: var(--text-muted); cursor: pointer; font: var(--type-meta); text-transform: none; }
 .stack-prototype .stack-tabs button[aria-pressed="true"] { border-color: var(--accent); color: var(--text); background: var(--accent-soft); }
 .stack-prototype .stack-tabs kbd { padding: 0; border: 0; background: none; color: inherit; }
 .stack-prototype .deck { grid-area: card; position: relative; isolation: isolate; margin-right: var(--space-2); margin-bottom: 0; }
