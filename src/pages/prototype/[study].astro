@@ -60,7 +60,7 @@ const names: Record<string, string> = {
             <div class="meta type-meta"><span class="org type-meta">{entry.data.org}</span><span class="stack-name">{names[entry.id]}</span></div>
             <h2 class="type-section">{entry.data.title}</h2>
             <p class="type-body">{entry.data.summary}</p>
-            <div class="stack-card-foot type-meta"><a class="stack-read type-body" href={`/work/${entry.id}/`} aria-label={`Read case study: ${names[entry.id]}`}>Read case study →</a><span>{String(i+1).padStart(2,'0')} / 04</span></div>
+            <div class="stack-card-foot"><a class="stack-read btn primary type-label" href={`/work/${entry.id}/`} aria-label={`Read case study: ${names[entry.id]}`}>Read case study →</a><span class="type-meta">{String(i+1).padStart(2,'0')} / 04</span></div>
           </article>)}
         </div>
         <article class="card deck-card" id="preview" data-case-index="0" aria-label="Current case study" hidden></article>
