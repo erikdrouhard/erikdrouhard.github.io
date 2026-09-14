@@ -69,6 +69,7 @@ let running = null;
 function create(canvas, mode) {
   const ctx = canvas.getContext("2d");
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const interactive = !reduce && mode === "full";
 
   let cols = 0;
   let rows = 0;
@@ -89,23 +90,16 @@ function create(canvas, mode) {
     { x: -9999, y: -9999, vx: 0, vy: 0, k: 0.11, damp: 0.78, w: 0.38 },
   ];
 
-  // "quiet" reading pages keep the pointer distortion but drop the ambient
-  // gain to 40%, so the field is present without competing with body text.
+  // Legacy "quiet" mode dims ambient motion; only "full" accepts pointers.
   const DIM = mode === "quiet" ? 0.4 : 1;
   const SMOKE_MAX = 0.3 * DIM; // ceiling for the ambient smoke
   const IDLE = 0.02 * DIM; // floor, so the grid never disappears entirely
 
-  /* Pigment and gain both come from CSS, so the field follows the active
-     theme and no colour is written here. --field-rgb is the primary green as
-     a bare triple, because a canvas fill is a string and cannot hold a var();
-     wrapping it keeps every channel in tokens.css. --field-gain is the
-     ambient brightness, which differs per theme because the light-mode green
-     is dark against a pale ground. */
+  /* The resolved primary color is shared with CSS. No duplicated RGB palette. */
   const FIELD = { color: "", gain: 1 };
   function readTokens() {
     const root = getComputedStyle(document.documentElement);
-    const rgb = root.getPropertyValue("--field-rgb").trim();
-    FIELD.color = "rgb(" + rgb + ")";
+    FIELD.color = getComputedStyle(canvas).color;
     FIELD.gain = parseFloat(root.getPropertyValue("--field-gain")) || 1;
   }
 
@@ -150,10 +144,14 @@ function create(canvas, mode) {
 
   function onResize() {
     build();
-    if (reduce) render();
+    if (reduce || mode === "off") render();
   }
 
   function render() {
+    // Follow the homepage's animated primary and each case's resolved accent.
+    if (document.body.classList.contains("stack-prototype") || document.body.hasAttribute("data-case-color-prototype")) {
+      FIELD.color = getComputedStyle(canvas).color;
+    }
     const w = window.innerWidth;
     const h = window.innerHeight;
     ctx.clearRect(0, 0, w, h);
@@ -275,9 +273,15 @@ function create(canvas, mode) {
   }
 
   readTokens();
-  document.addEventListener("themechange", readTokens);
-  window.addEventListener("pointermove", onPointerMove);
-  window.addEventListener("pointerleave", onPointerLeave);
+  function onThemeChange() {
+    readTokens();
+    if (reduce || mode === "off") render();
+  }
+  document.addEventListener("themechange", onThemeChange);
+  if (interactive) {
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerleave", onPointerLeave);
+  }
   window.addEventListener("resize", onResize);
 
   build();
@@ -288,6 +292,10 @@ function create(canvas, mode) {
   return {
     canvas,
     mode,
+    refresh() {
+      readTokens();
+      if (reduce || mode === "off") render();
+    },
     get paused() {
       return paused;
     },
@@ -312,7 +320,7 @@ function create(canvas, mode) {
       paused = false;
       cancelAnimationFrame(raf);
       raf = 0;
-      document.removeEventListener("themechange", readTokens);
+      document.removeEventListener("themechange", onThemeChange);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerleave", onPointerLeave);
       window.removeEventListener("resize", onResize);
@@ -340,15 +348,18 @@ export function initField() {
     stopField();
     return;
   }
-  // data-field is read fresh every page-load: home and the work index run
-  // "full", case studies run "quiet".
-  const mode = document.body.dataset.field || "full";
+  // Read the mode on every navigation: homepage layouts opt into "full";
+  // inner pages retain the static texture without pointer interaction.
+  const mode = document.body.dataset.field || "off";
 
   // Same canvas element and same mode means the swap did not touch us; leaving
   // the existing loop alone keeps the drift continuous across a navigation.
   // A paused instance counts as alive: re-initializing one would rebuild the
   // field under an open sheet and leave resumeField() with nothing to resume.
-  if (running && running.canvas === canvas && running.mode === mode) return;
+  if (running && running.canvas === canvas && running.mode === mode) {
+    running.refresh();
+    return;
+  }
 
   stopField();
   running = create(canvas, mode);

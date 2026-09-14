@@ -1,5 +1,7 @@
 // @ts-check
-import { rmSync } from "node:fs";
+import { existsSync, mkdtempSync, renameSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
@@ -18,10 +20,12 @@ function dropPublicArchive() {
     name: "drop-public-archive",
     hooks: {
       "astro:build:done": ({ dir }) => {
-        rmSync(fileURLToPath(new URL(".archive", dir)), {
-          recursive: true,
-          force: true,
-        });
+        const archive = fileURLToPath(new URL(".archive", dir));
+        if (existsSync(archive)) {
+          // Preserve generated copies too: retirement never deletes originals.
+          const destination = mkdtempSync(join(tmpdir(), "portfolio-build-archive-"));
+          renameSync(archive, join(destination, ".archive"));
+        }
       },
     },
   };

@@ -1,67 +1,5 @@
-/* erikdrouhard.com — case.css. The case-study type roles and page shell.
-   Values and rules live in DESIGN-SYSTEM.md and tokens.css. */
-
-:root {
-  color-scheme: light;
-  color: var(--text);
-  background: var(--page);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-[data-theme="dark"] {
-  color-scheme: dark;
-}
-
-/* -- Role application -----------------------------------------------------
-   The `font` shorthand resets `font-synthesis`, so every role restates it.
-   Do not replace these with individual font-* properties; the shorthand is
-   what lets a single token carry family, size, weight, and leading together.
-   -------------------------------------------------------------------------- */
-
-.type-display,
-.type-section,
-.type-title,
-.type-support,
-.type-label,
-.type-body,
-.type-body-small,
-.type-meta {
-  font-synthesis: none;
-}
-
-.type-display {
-  font: var(--type-display);
-  text-wrap: balance;
-}
-
-.type-section {
-  font: var(--type-section);
-  text-wrap: balance;
-}
-
-.type-title {
-  font: var(--type-title);
-  text-wrap: balance;
-}
-
-.type-support {
-  font: var(--type-support);
-}
-
-.type-label {
-  font: var(--type-label);
-}
-
-.type-body {
-  font: var(--type-body);
-}
-
-.type-body-small {
-  font: var(--type-body-small);
-}
+/* erikdrouhard.com — case.css. The case-study page shell and editorial treatments.
+   Visual values live in tokens.css; type roles live in theme.css. */
 
 /* Inline treatments that ride on whatever role the parent established.
    `:where()` keeps these at zero specificity for the ancestor, so a child
@@ -87,40 +25,18 @@
   margin-top: var(--space-3);
 }
 
-* {
-  box-sizing: border-box;
-}
-
 html,
 body {
   min-height: 100%;
   margin: 0;
 }
 
-/* Scoped to the case pages, which are the only ones this stylesheet dresses.
-   Unscoped it would repaint the whole redesign.
-
-   The three `revert`s are the part that is not in the published file: theme.css
-   gives every body the body role, and the published pages inherit the
-   user-agent default instead — every visible string carries a `type-*` class,
-   so the difference only shows on text that was never meant to be styled. */
-body.case-page {
-  background: var(--page);
-  color: var(--text);
-  font-family: revert;
-  font-size: revert;
-  line-height: revert;
-}
-
 img {
   display: block;
 }
 
-a {
-  color: inherit;
-}
-
 .page-shell {
+  container-type: inline-size;
   isolation: isolate;
   display: flex;
   min-height: 100dvh;
@@ -144,7 +60,7 @@ a {
 .case-page .page-shell > .back-row,
 .case-page .page-shell > .site-footer {
   width: min(100%, var(--shell));
-  padding-inline: var(--space-3);
+  padding-inline: var(--case-gutter);
 }
 
 /* .page-shell centres its children, so without the page measure above the back
@@ -179,7 +95,7 @@ a {
   z-index: var(--layer-base);
   display: flex;
   width: min(100%, var(--shell));
-  padding: 0 var(--space-3) var(--space-4);
+  padding: 0 var(--case-gutter) var(--space-4);
   flex-direction: column;
   align-items: center;
 }
@@ -203,12 +119,6 @@ h1 {
   margin: 0;
 }
 
-.btn:focus-visible,
-h1 a:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-
 /* Site chrome is not editorial prose. The Microsoft page carries type-body on
    <body> (ported as published), which makes the inherited link treatment above
    reach the header's About link — the one chrome anchor without a class, which
@@ -227,7 +137,7 @@ h1 a:focus-visible {
 @media (max-width: 809.98px) {
   .site-main {
     width: 100%;
-    padding: 0 var(--space-2) var(--space-2);
+    padding: 0 var(--case-gutter) var(--space-2);
   }
 
   .content {
@@ -238,17 +148,11 @@ h1 a:focus-visible {
   .case-page .page-shell > .site-nav {
     width: 100%;
     min-height: var(--space-5);
-    padding: var(--space-2) var(--space-2) 0;
-  }
-
-  .case-page .page-shell > .back-row {
-    width: 100%;
-    padding-inline: var(--space-2);
+    padding: var(--space-2) var(--case-gutter) 0;
   }
 
   .case-page .page-shell > .site-footer {
-    width: calc(100% - (var(--space-2) * 2));
-    padding: var(--space-3) 0 calc(var(--space-4) + env(safe-area-inset-bottom));
+    padding: var(--space-3) var(--case-gutter) calc(var(--space-4) + env(safe-area-inset-bottom));
   }
 }
 
@@ -260,11 +164,61 @@ h1 a:focus-visible {
   }
 }
 
-/* ==========================================================================
-   DARK THEME
-   The published file kept a whole second palette here. There is no second
-   palette any more: `tokens.css` re-authors three colours under
-   `[data-theme="dark"]` and every tint on the site re-derives from them, so
-   this file has nothing left to say about dark mode beyond `color-scheme`,
-   set at the top.
-   ========================================================================== */
+/* Shared closing band for the existing case-study footers. */
+:where(.mix-footer, .drive-footer, .core-ai-page .core-cta) {
+  display: flex;
+  padding: var(--space-7) var(--case-edge);
+  border-top: var(--border-width) solid var(--line);
+  align-items: flex-start;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+}
+
+.case-page :is(.mix-footer, .drive-footer, .core-cta) h2 {
+  max-width: var(--measure-title);
+  margin: 0;
+}
+
+.case-page :is(.mix-footer, .drive-footer, .core-cta) > p {
+  max-width: var(--measure);
+  margin: 0;
+  color: var(--text-muted);
+}
+
+:where(.mix-footer-actions, .drive-footer-actions, .core-ai-page .core-cta-actions) {
+  display: flex;
+  margin-top: var(--space-1);
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+@media (max-width: 809.98px) {
+  :where(.mix-footer, .drive-footer, .core-ai-page .core-cta) {
+    padding-block: var(--space-6);
+  }
+}
+
+/* One inset and surface recipe for the existing editorial containers. */
+:where(
+  .core-ai-page .prototype-loop-output,
+  .core-ai-page .recommendation,
+  .core-ai-page .sprint-step,
+  .core-ai-page .outcome,
+  .core-ai-page .bridge,
+  .core-ai-page .map-of-truth,
+  .core-ai-page .prototype,
+  .mix-callout,
+  .mix-three-column > div,
+  .mix-four-column > div,
+  .mix-action-list > article,
+  .drive-map-step,
+  .mix-page--verse .mix-three-column--media > figure,
+  .mix-page--verse .mix-four-column--media > figure
+) {
+  padding: var(--case-inset);
+  border: var(--border-width) solid var(--line);
+  background: var(--surface);
+}

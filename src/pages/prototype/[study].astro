@@ -1,18 +1,31 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { getPublishedWork } from "../lib/work";
-import "../styles/prototype-card-stack.css";
+// THROWAWAY: does the refined card stack work inside the current homepage?
+// No production path is generated. Run npm run dev, then /prototype/card-stack/.
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPublishedWork } from "../../lib/work";
+import "../../styles/prototype-card-stack.css";
+export function getStaticPaths() {
+  return import.meta.env.DEV
+    ? ["card-stack", "card-stack-right"].map(study => ({ params: { study } }))
+    : [];
+}
+const navRight = Astro.params.study === "card-stack-right";
 const published = await getPublishedWork();
 const names: Record<string, string> = {
   "verse-design-system": "Verse", microsoft: "Microsoft",
   "mix-dialog": "Mix.dialog", "dragon-drive": "Dragon Drive",
 };
 ---
-<BaseLayout title="Erik Drouhard | Designer & Engineer" field="full" bodyClass="stack-prototype stack-nav-right">
+<BaseLayout title={`Prototype · Card stack${navRight ? " · Right nav" : ""} | Erik Drouhard`} field="full" bodyClass={`stack-prototype${navRight ? " stack-nav-right" : ""}`} noindex>
   <div slot="overlay" class="stack-ambient" aria-hidden="true">
     {published.map((_, i) => <i data-case-index={i}></i>)}
   </div>
   <main id="main" class="view">
+    <div class="prototype-note type-meta">
+      <span>Local prototype · Card stack · {navRight ? "Right" : "Left"} nav</span>
+      <a href={navRight ? "/prototype/card-stack/" : "/prototype/card-stack-right/"}>Try {navRight ? "left" : "right"} nav ↔</a>
+      <a href="/" data-astro-reload>Compare current homepage ↗</a>
+    </div>
     <section class="hero">
       <h1 class="type-display">
         I’m <a href="https://www.linkedin.com/in/erikdrouhard">Erik Drouhard</a>, a Designer &amp;
@@ -34,7 +47,7 @@ const names: Record<string, string> = {
     <section id="work" aria-label="Selected work">
       <div class="section-head">
         <h2 class="type-section">Selected work</h2>
-        <span class="count type-meta" id="stack-count">01 / {String(published.length).padStart(2, "0")}</span>
+        <span class="count type-meta" id="stack-count">01 / 04</span>
       </div>
       <div class="stack-layout">
       <nav class="stack-tabs" aria-label="Choose a case study" hidden>
@@ -47,7 +60,7 @@ const names: Record<string, string> = {
             <div class="meta type-meta"><span class="org type-meta">{entry.data.org}</span><span class="stack-name">{names[entry.id]}</span></div>
             <h2 class="type-section">{entry.data.title}</h2>
             <p class="type-body">{entry.data.summary}</p>
-            <div class="stack-card-foot type-meta"><a class="stack-read type-body" href={`/work/${entry.id}/`} aria-label={`Read case study: ${names[entry.id]}`}>Read case study →</a><span>{String(i+1).padStart(2,'0')} / {String(published.length).padStart(2, "0")}</span></div>
+            <div class="stack-card-foot type-meta"><a class="stack-read type-body" href={`/work/${entry.id}/`} aria-label={`Read case study: ${names[entry.id]}`}>Read case study →</a><span>{String(i+1).padStart(2,'0')} / 04</span></div>
           </article>)}
         </div>
         <article class="card deck-card" id="preview" data-case-index="0" aria-label="Current case study" hidden></article>
@@ -79,5 +92,5 @@ const names: Record<string, string> = {
     </section>
 
   </main>
-  <script>import "../scripts/prototype-card-stack.js";</script>
+  <script>import "../../scripts/prototype-card-stack.js";</script>
 </BaseLayout>

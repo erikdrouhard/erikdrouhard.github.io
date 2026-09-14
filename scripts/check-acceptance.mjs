@@ -11,7 +11,7 @@
  * Serves dist/, so run `npm run build` first — or use `npm run check:all`.
  *
  * /work/ was retired: the index page and the MDX-driven [...slug] route are in
- * .archive/, the four studies are hand-written pages, and the home-page grid is
+ * .archive/, the four studies are hand-written pages, and the home-page stack is
  * the only listing. So the round trips below hop home -> study -> home, and
  * /work/ is asserted to 404 rather than to render.
  */
@@ -77,6 +77,15 @@ async function rafRate(ms = 1000) {
   return page.evaluate(() => window.__raf);
 }
 
+// Select through the real controls, then follow the visible native case link.
+async function openStudy(index) {
+  await page.locator(`[data-case-pick="${index}"]`).click();
+  await page.waitForFunction((selected) =>
+    document.querySelector('#preview')?.dataset.caseIndex === String(selected) &&
+    !document.querySelector('.motion-layer'), index);
+  await page.locator('#preview .stack-read').click();
+}
+
 await page.goto(BASE + "/", { waitUntil: "networkidle" });
 await page.waitForTimeout(400);
 const baseline = await rafRate();
@@ -90,7 +99,7 @@ ok("field runs on the home page", baseline > 20, `${baseline} rAF/s`);
 for (let i = 0; i < 5; i++) {
   await page.goto(BASE + "/", { waitUntil: "networkidle" });
   await page.waitForTimeout(250);
-  await page.click('.grid a.card >> nth=2');
+  await openStudy(2);
   await page.waitForURL("**/work/mix-dialog/**");
   await page.waitForTimeout(250);
   await page.goBack();
@@ -123,7 +132,7 @@ ok("no rAF loop on a case page", caseRate < 5, `${caseRate} rAF/s`);
 // --- client navigation updates data-field ---
 await page.goto(BASE + "/", { waitUntil: "networkidle" });
 await page.waitForTimeout(300);
-await page.click('.grid a.card >> nth=0');
+await openStudy(0);
 await page.waitForURL("**/work/verse-design-system/**");
 await page.waitForTimeout(400);
 ok(
@@ -137,7 +146,7 @@ await page.waitForTimeout(300);
 await page.click(".theme-toggle");
 await page.waitForTimeout(200);
 const afterToggle = await page.getAttribute("html", "data-theme");
-await page.click('.grid a.card >> nth=0');
+await openStudy(0);
 await page.waitForURL("**/work/verse-design-system/**");
 await page.waitForTimeout(400);
 const afterNav = await page.getAttribute("html", "data-theme");
@@ -156,43 +165,100 @@ const early = await p2.evaluate(() =>
 ok("saved theme is on <html> before the body renders", early === "light", `got ${early}`);
 await p2.close();
 
-// --- keyboard shortcut ---
-await page.goto(BASE + "/", { waitUntil: "networkidle" });
-await page.waitForTimeout(400);
-await page.keyboard.press("d");
-await page.waitForTimeout(900);
-ok(
-  'pressing D on the home page opens Mix.dialog',
-  page.url().includes("/work/mix-dialog/"),
-  page.url(),
-);
+// --- Enter uses the latest selection while the card is still animating ---
+for (const [keys, slug] of [[["2"], "microsoft"], [["2", "3"], "mix-dialog"]]) {
+  await page.goto(BASE + "/", { waitUntil: "networkidle" });
+  for (const key of keys) await page.keyboard.press(key);
+  const stillAnimating = await page.locator('.motion-layer').count() > 0;
+  await page.keyboard.press("Enter");
+  await page.waitForURL(`**/work/${slug}/**`);
+  ok(`${keys.join(", ")}, Enter opens ${slug} before the swap ends`,
+    stillAnimating && new URL(page.url()).pathname === `/work/${slug}/`);
+}
 
-// --- a shortcut from another page must not fire here ---
-await page.waitForTimeout(300);
+// Home shortcuts must be torn down after a client navigation.
+await page.goto(BASE + "/", { waitUntil: "networkidle" });
+await openStudy(0);
+await page.waitForURL("**/work/verse-design-system/**");
 const before = page.url();
-await page.keyboard.press("h"); // H is a home-page card key; not on a case page
-await page.waitForTimeout(700);
-ok(
-  "a home-page shortcut does not fire from a case page",
-  page.url() === before,
-  `${before} -> ${page.url()}`,
-);
-
-// --- Enter activates the card-shaped closing block ---
-await page.goto(BASE + "/", { waitUntil: "networkidle" });
-await page.waitForTimeout(400);
-await page.focus(".close-card");
+await page.keyboard.press("2");
 await page.keyboard.press("Enter");
-await page.waitForTimeout(900);
-ok("Enter activates the closing card", page.url().includes("/about/"), page.url());
+await page.waitForTimeout(300);
+ok("home shortcuts do not fire from a case page", page.url() === before);
 
-// --- stagger leaves nothing stuck invisible ---
+// Native links and buttons retain their own Enter action.
 await page.goto(BASE + "/", { waitUntil: "networkidle" });
-await page.waitForTimeout(2500);
-const hidden = await page.$$eval("main.view .grid > *", (els) =>
-  els.filter((e) => parseFloat(getComputedStyle(e).opacity) < 0.99).length,
-);
-ok("every work card is fully visible after the stagger", hidden === 0, `${hidden} still faded`);
+await page.focus('.close-card a[href="/about/"]');
+await page.keyboard.press("Enter");
+await page.waitForURL("**/about/**");
+ok("Enter activates the closing section About link", page.url().includes("/about/"));
+await page.goto(BASE + "/", { waitUntil: "networkidle" });
+await page.focus('[data-case-pick="3"]');
+await page.keyboard.press("Enter");
+await page.waitForFunction(() => document.querySelector('#preview')?.dataset.caseIndex === "3");
+ok("Enter on a selector selects its case without navigating",
+  new URL(page.url()).pathname === "/" &&
+  await page.getAttribute('[data-case-pick="3"]', 'aria-pressed') === "true");
+await page.focus('#preview .stack-read');
+await page.keyboard.press("Enter");
+await page.waitForURL("**/work/dragon-drive/**");
+ok("Enter on the selected case link follows that native link", page.url().includes("/work/dragon-drive/"));
+
+await page.goto(BASE + "/", { waitUntil: "networkidle" });
+await page.locator('[data-shortcuts-toggle]').uncheck();
+await page.locator('[data-shortcuts-toggle]').evaluate((node) => node.blur());
+await page.keyboard.press("2");
+await page.keyboard.press("Enter");
+await page.waitForTimeout(300);
+ok("shortcut opt-out prevents selection and Enter navigation",
+  new URL(page.url()).pathname === "/" &&
+  await page.getAttribute('#preview', 'data-case-index') === "0");
+
+// Count card animations to expose duplicate global listeners on re-entry.
+await page.goto(BASE + "/", { waitUntil: "networkidle" });
+await page.evaluate(() => {
+  window.__cardAnimations = 0;
+  const animate = Element.prototype.animate;
+  Element.prototype.animate = function (...args) {
+    if (this.classList.contains('motion-layer')) window.__cardAnimations++;
+    return animate.apply(this, args);
+  };
+});
+for (let i = 0; i < 3; i++) {
+  await openStudy(0);
+  await page.waitForURL("**/work/verse-design-system/**");
+  await page.click("a.mark");
+  await page.waitForURL(BASE + "/");
+  await page.waitForSelector('body.stack-ready');
+}
+await page.evaluate(() => { window.__cardAnimations = 0; document.activeElement?.blur(); });
+await page.keyboard.press("2");
+const animations = await page.evaluate(() => window.__cardAnimations);
+ok("returning home keeps one selection handler", animations === 2, `${animations} card animations for one key`);
+await page.waitForFunction(() => !document.querySelector('.motion-layer'));
+ok("the selected card settles fully visible",
+  await page.locator('#preview').isVisible() &&
+  await page.getAttribute('#preview', 'data-case-index') === "1");
+
+// The promoted right rail becomes the top row at the mobile breakpoint.
+for (const width of [1200, 810, 390]) {
+  await page.setViewportSize({ width, height: 900 });
+  const geometry = await page.evaluate(() => {
+    const nav = document.querySelector('.stack-tabs').getBoundingClientRect();
+    const deck = document.querySelector('.deck').getBoundingClientRect();
+    return { right: nav.left >= deck.right, above: nav.bottom <= deck.top };
+  });
+  ok(`case selectors sit ${width < 810 ? "above" : "right of"} the stack at ${width}px`,
+    width < 810 ? geometry.above : geometry.right, JSON.stringify(geometry));
+}
+await page.setViewportSize({ width: 1200, height: 900 });
+ok("the homepage has no prototype notice or noindex",
+  await page.locator('.prototype-note').count() === 0 &&
+  await page.evaluate(() => !/noindex/i.test(document.querySelector('meta[name="robots"]')?.content || "")));
+for (const route of ["/prototype/card-stack/", "/prototype/card-stack-right/"]) {
+  const response = await page.request.get(BASE + route);
+  ok(`${route} is absent from the production build`, response.status() === 404);
+}
 
 // --- the field must sit outside the root view transition ---
 await page.goto(BASE + "/", { waitUntil: "networkidle" });
@@ -303,7 +369,7 @@ const links = await nj.$$eval("a[href]", (as) =>
   as.map((a) => a.getAttribute("href")),
 );
 /* /work/ is not in this list on purpose — the index is retired. Every study
-   is now reached from the home grid, so every study has to be linked there. */
+   is now reached from the home stack, so every study has to be linked there. */
 for (const want of [
   "/about/",
   "/work/verse-design-system/",
@@ -312,6 +378,14 @@ for (const want of [
   "/work/dragon-drive/",
 ]) {
   ok(`without JS, the home page links to ${want}`, links.includes(want));
+}
+for (const slug of ["verse-design-system", "microsoft", "mix-dialog", "dragon-drive"]) {
+  await nj.goto(BASE + "/", { waitUntil: "domcontentloaded" });
+  const link = nj.locator(`.stack-fallback a[href="/work/${slug}/"]`);
+  const visible = await link.isVisible();
+  await link.click();
+  await nj.waitForURL(`**/work/${slug}/**`);
+  ok(`without JS, the visible fallback opens ${slug}`, visible && new URL(nj.url()).pathname === `/work/${slug}/`);
 }
 await noJs.close();
 
@@ -370,7 +444,7 @@ for (let i = 0; i < 3; i++) {
   await page.click("a.mark");
   await page.waitForURL(BASE + "/");
   await page.waitForTimeout(300);
-  await page.click('.grid a.card[href="/work/mix-dialog/"]');
+  await openStudy(2);
   await page.waitForURL("**/work/mix-dialog/**");
   await page.waitForTimeout(500);
   demoVisits.push(await demoState());
@@ -447,8 +521,8 @@ for (let i = 0; i < 5; i++) {
 await page.waitForTimeout(400);
 const aboutRate = await rafRate();
 ok(
-  "one RAF loop on /about/ after 5 round trips",
-  aboutRate < baseline * 1.4,
+  "no field RAF loop on /about/ after 5 round trips",
+  aboutRate < 5,
   `home baseline ${baseline}/s -> About ${aboutRate}/s`,
 );
 
@@ -486,24 +560,45 @@ async function injectEggDom() {
   await page.waitForTimeout(300);
 }
 
-// 3. opening the sheet pauses the field; closing resumes the same instance.
+// 3. About has a static field; sheet pause/resume must preserve that mode.
 await injectEggDom();
-await page.evaluate(() => (document.getElementById("field").dataset.probe = "1"));
+// Count actual renders separately: the game and sheet springs legitimately
+// schedule animation frames while the background field is paused.
+await page.evaluate(() => {
+  document.getElementById("field").dataset.probe = "1";
+  window.__canvasFrames = { field: 0, game: 0 };
+  const clearRect = CanvasRenderingContext2D.prototype.clearRect;
+  CanvasRenderingContext2D.prototype.clearRect = function (...args) {
+    if (this.canvas.id === "field") window.__canvasFrames.field++;
+    if (this.canvas.classList.contains("egg-canvas")) window.__canvasFrames.game++;
+    return clearRect.apply(this, args);
+  };
+});
 await page.click(".egg-play");
-await page.waitForTimeout(200);
-const pausedRate = await rafRate();
+await page.waitForTimeout(1000);
+const openFrames = await page.evaluate(() => ({ ...window.__canvasFrames }));
+await page.evaluate(() => { window.__canvasFrames = { field: 0, game: 0 }; });
 await page.click(".egg-close");
-await page.waitForTimeout(200);
-const resumedRate = await rafRate();
+const closingFrames = await page.evaluate(() => ({ ...window.__canvasFrames }));
+await page.evaluate(() => { window.__canvasFrames = { field: 0, game: 0 }; });
+await page.waitForTimeout(1000);
+const closedFrames = await page.evaluate(() => ({ ...window.__canvasFrames }));
 // dataset survives only on the very same node; a rebuilt field would be a new
 // canvas from the DOM, and initField() adopting the paused one is the point.
 const sameCanvas = await page.evaluate(
   () => document.getElementById("field").dataset.probe === "1",
 );
 ok(
-  "pauseField() stops the loop and resumeField() restarts the same instance",
-  pausedRate < 5 && resumedRate > 20 && sameCanvas,
-  `paused ${pausedRate}/s, resumed ${resumedRate}/s, same canvas: ${sameCanvas}`,
+  "static About field stays static through pause/resume on the same canvas",
+  (await page.getAttribute("body", "data-field")) === "off" &&
+    openFrames.field === 0 && closingFrames.field === 1 &&
+    closedFrames.field === 0 && sameCanvas,
+  `field renders: open ${openFrames.field}, close ${closingFrames.field}, after close ${closedFrames.field}; same canvas: ${sameCanvas}`,
+);
+ok(
+  "the game renders while open and stops after the sheet closes",
+  openFrames.game > 20 && closedFrames.game === 0,
+  `game renders: open ${openFrames.game}, after close ${closedFrames.game}`,
 );
 
 // 4. the [inert] shell swallows the page's single-key shortcuts.

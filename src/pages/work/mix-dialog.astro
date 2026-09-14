@@ -20,7 +20,7 @@ import "../../styles/work/condition-stack-demo.css";
   accent="mix"
 >
   <div class="back-row">
-    <a class="back" href="/">← Back <kbd data-key="B">B</kbd></a>
+    <a class="back type-meta" href="/">← Back <kbd class="type-meta" data-key="B">B</kbd></a>
   </div>
 
   <case-study-nav>
@@ -38,7 +38,7 @@ import "../../styles/work/condition-stack-demo.css";
         <div class="mix-hero-copy">
           <p class="mix-eyebrow type-meta">Mix.dialog · Nuance · 2019–2022</p>
           <h1 class="type-display">Making complex conversation logic visible and controllable</h1>
-          <p class="mix-deck type-title">
+          <p class="mix-deck type-body">
             I led interaction design for behavior authoring, condition building, and QA workflows so enterprise conversation designers could build, understand, and verify deeply nested IVR logic.
           </p>
           <dl class="mix-project-meta" aria-label="Project details">
@@ -73,7 +73,7 @@ import "../../styles/work/condition-stack-demo.css";
               fetchpriority="high"
             />
           </a>
-          <figcaption class="type-body">The condition stack in the product, authoring nested logic on a QA node. Open full size to zoom.</figcaption>
+          <figcaption class="type-body-small">The condition stack in the product, authoring nested logic on a QA node. Open full size to zoom.</figcaption>
         </figure>
       </header>
 
@@ -82,14 +82,14 @@ import "../../styles/work/condition-stack-demo.css";
           <p class="mix-section-label type-meta">01 · SITUATION</p>
           <h2 id="situation-heading" class="type-section">Enterprise IVR teams needed behavior they could inspect and control</h2>
           <div class="mix-prose">
-            <p>
+            <p class="type-body">
               Conversation designers specified deterministic voice experiences: explicit rules decided what the system said or did after a recognized intent, a no-match or no-input event, a retry, or an escalation.
             </p>
-            <p>
+            <p class="type-body">
               Unlike simpler chatbot flows, that behavior could vary by channel and modality and sit inside deeply nested business rules. Authors needed to predict and verify each path because a wrong branch could misroute a call or interrupt a transaction.
             </p>
           </div>
-          <p class="mix-callout">
+          <p class="mix-callout type-body">
             The workaround was a long conditional spreadsheet passed between conversation designers, customers, and engineers. It was difficult to read and change, and it separated design intent from implementation.
           </p>
         </div>
@@ -99,7 +99,7 @@ import "../../styles/work/condition-stack-demo.css";
         <div class="mix-reading">
           <p class="mix-section-label type-meta">02 · PLATFORM CONTEXT</p>
           <h2 id="platform-heading" class="type-section">Mix.dialog turned intent recognition into authored behavior</h2>
-          <p>
+          <p class="type-body">
             Within the connected Mix platform, Mix.dialog was the product conversation designers used to author deterministic prompts, conditions, actions, and recovery behavior across voice and digital channels.
           </p>
         </div>
@@ -107,17 +107,17 @@ import "../../styles/work/condition-stack-demo.css";
           <div>
             <p class="mix-item-label type-meta">NLU</p>
             <h3 class="type-support">Mix.nlu</h3>
-            <p>Defined intents and entities the experience could recognize.</p>
+            <p class="type-body">Defined intents and entities the experience could recognize.</p>
           </div>
           <div>
             <p class="mix-item-label type-meta">Dialog</p>
             <h3 class="type-support">Mix.dialog</h3>
-            <p>Authored prompts, conditions, actions, and recovery behavior.</p>
+            <p class="type-body">Authored prompts, conditions, actions, and recovery behavior.</p>
           </div>
           <div>
             <p class="mix-item-label type-meta">DASHBOARD</p>
             <h3 class="type-support">Dashboard</h3>
-            <p>Managed and deployed dialog and NLU configurations.</p>
+            <p class="type-body">Managed and deployed dialog and NLU configurations.</p>
           </div>
         </div>
 
@@ -136,7 +136,7 @@ import "../../styles/work/condition-stack-demo.css";
               loading="lazy"
             />
           </a>
-          <figcaption class="type-body">The authoring surface conversation designers worked in, with the flow canvas and node properties side by side. Open full size to zoom.</figcaption>
+          <figcaption class="type-body-small">The authoring surface conversation designers worked in, with the flow canvas and node properties side by side. Open full size to zoom.</figcaption>
         </figure>
       </section>
 
@@ -144,7 +144,7 @@ import "../../styles/work/condition-stack-demo.css";
         <div class="mix-reading">
           <p class="mix-section-label type-meta">03 · MY ROLE</p>
           <h2 id="role-heading" class="type-section">I led interaction design for the behavior-authoring model</h2>
-          <p>
+          <p class="type-body">
             I worked with conversation designers, product leadership, and engineering directors to translate authoring needs into feasible data and interface structures. I led the condition-building model and core node, modality, and channel patterns; prototyped interaction and failure states; and defined reusable patterns for the wider tool.
           </p>
         </div>
@@ -152,24 +152,24 @@ import "../../styles/work/condition-stack-demo.css";
         <div class="mix-scope">
           <p class="mix-section-label type-meta">SCOPE</p>
           <h2 class="type-section">The core authoring surfaces I shaped</h2>
-          <p>
+          <p class="type-body">
             I designed the authoring primitives and verification surfaces that conversation designers built on—not the conversations themselves.
           </p>
           <div class="mix-three-column type-body">
             <div>
               <p class="mix-item-label type-meta">ANCHOR PATTERN</p>
               <h3 class="type-support">Question + QA nodes</h3>
-              <p>Shaped question behavior and the QA verification surface, using their complex properties to inform the wider authoring experience.</p>
+              <p class="type-body">Shaped question behavior and the QA verification surface, using their complex properties to inform the wider authoring experience.</p>
             </div>
             <div>
               <p class="mix-item-label type-meta">BEHAVIOR BUILDING</p>
               <h3 class="type-support">Messages + conditions</h3>
-              <p>Designed how authors created prompts and nested conditional logic without translating spreadsheets or writing generated code.</p>
+              <p class="type-body">Designed how authors created prompts and nested conditional logic without translating spreadsheets or writing generated code.</p>
             </div>
             <div>
               <p class="mix-item-label type-meta">CHANNEL SEMANTICS</p>
               <h3 class="type-support">Modalities + actions</h3>
-              <p>Defined rich text, audio, DTMF, and per-channel output patterns that connected recognized intents to downstream behavior.</p>
+              <p class="type-body">Defined rich text, audio, DTMF, and per-channel output patterns that connected recognized intents to downstream behavior.</p>
             </div>
           </div>
 
@@ -188,7 +188,7 @@ import "../../styles/work/condition-stack-demo.css";
                 loading="lazy"
               />
             </a>
-            <figcaption class="type-body">The channel dock expanded over the condition stack: one authored behavior, targeted per channel. Open full size to zoom.</figcaption>
+            <figcaption class="type-body-small">The channel dock expanded over the condition stack: one authored behavior, targeted per channel. Open full size to zoom.</figcaption>
           </figure>
         </div>
       </section>
@@ -197,7 +197,7 @@ import "../../styles/work/condition-stack-demo.css";
         <div class="mix-reading">
           <p class="mix-section-label type-meta">04 · ACTION</p>
           <h2 id="action-heading" class="type-section">Making conditional logic visible and direct</h2>
-          <p>
+          <p class="type-body">
             For the condition stack, I tested interaction models with conversation designers and engineering, then used what we learned to shape both the interface and its underlying logic structure.
           </p>
         </div>
@@ -207,28 +207,28 @@ import "../../styles/work/condition-stack-demo.css";
             <p class="mix-item-label type-meta">01 · DIVERGE</p>
             <div>
               <h3 class="type-support">Test competing interaction models</h3>
-              <p>Code-forward concepts exposed power but raised the learning burden. Form-heavy designs hid context, while flatter structures could not express the depth IVR teams needed.</p>
+              <p class="type-body">Code-forward concepts exposed power but raised the learning burden. Form-heavy designs hid context, while flatter structures could not express the depth IVR teams needed.</p>
             </div>
           </article>
           <article>
             <p class="mix-item-label type-meta">02 · LISTEN</p>
             <div>
               <h3 class="type-support">Find the real comprehension problem</h3>
-              <p>Feedback showed that syntax was only part of the problem. Authors needed clear starting points, visible hierarchy, readable content, and confidence about what an edit would affect.</p>
+              <p class="type-body">Feedback showed that syntax was only part of the problem. Authors needed clear starting points, visible hierarchy, readable content, and confidence about what an edit would affect.</p>
             </div>
           </article>
           <article>
             <p class="mix-item-label type-meta">03 · CONVERGE</p>
             <div>
               <h3 class="type-support">Make valid logic directly manipulable</h3>
-              <p>The selected direction treated conditional groups as objects. Authors could read hierarchy, add branches, move content, and understand the output without translating a spreadsheet or writing code.</p>
+              <p class="type-body">The selected direction treated conditional groups as objects. Authors could read hierarchy, add branches, move content, and understand the output without translating a spreadsheet or writing code.</p>
             </div>
           </article>
           <article>
             <p class="mix-item-label type-meta">04 · REFINE</p>
             <div>
               <h3 class="type-support">Define predictable editing rules</h3>
-              <p>Adding, deleting, reordering, and changing an if branch into an else-if branch each needed explicit rules so deep logic felt safe to edit.</p>
+              <p class="type-body">Adding, deleting, reordering, and changing an if branch into an else-if branch each needed explicit rules so deep logic felt safe to edit.</p>
             </div>
           </article>
         </div>
@@ -237,12 +237,12 @@ import "../../styles/work/condition-stack-demo.css";
           <div class="mix-condition-demo-heading">
             <p class="mix-section-label type-meta">INTERACTIVE RECONSTRUCTION</p>
             <h3 class="type-support">Nestable condition blocks made the logic directly manipulable</h3>
-            <p>
+            <p class="type-body">
               Every condition block kept its if, optional else-if branches, and else together as one movable structure. Authors could nest whole blocks, move messages, variable assignments, and events between levels, and reorder else-if branches without detaching them from their parent logic.
             </p>
           </div>
           <condition-stack-demo>
-            <p>Enable JavaScript to explore the interactive condition-stack reconstruction.</p>
+            <p class="type-body">Enable JavaScript to explore the interactive condition-stack reconstruction.</p>
           </condition-stack-demo>
         </div>
 
@@ -250,14 +250,14 @@ import "../../styles/work/condition-stack-demo.css";
           <p class="mix-section-label type-meta">SYSTEM DESIGN</p>
           <h3 class="type-support">The actions inside a condition were a shared system, not a list</h3>
           <div class="mix-prose">
-            <p>
+            <p class="type-body">
               A condition is only useful if something can happen inside it, and that set of actions did not exist yet. I ran design interviews with the VUI designers who would be authoring with them to establish what was actually needed inside a branch, then worked the set out with product management and my UX design team.
             </p>
-            <p>
+            <p class="type-body">
               That defined the actions—messages, variable assignments, events, notes, and returns—which I then designed as one system rather than as features of the condition builder. Each had to hold up in more than one place: nested several levels deep inside a condition, sitting flat on a node with no conditions at all, and reused by the other node types. That meant settling their structure, their properties, their editing and reordering rules, and how they read when stacked together.
             </p>
           </div>
-          <p class="mix-callout">
+          <p class="mix-callout type-body">
             Because the actions were shared, they set the boundaries other designers worked inside. New behavior had to compose from the same pieces and follow the same structure, which kept the authoring language consistent as the product grew.
           </p>
         </div>
@@ -287,7 +287,7 @@ import "../../styles/work/condition-stack-demo.css";
         <div class="mix-reading">
           <p class="mix-section-label type-meta">HOW I WORKED</p>
           <h2 id="process-heading" class="type-section">Research, design, validate, implement</h2>
-          <p>
+          <p class="type-body">
             This was not a screen-design handoff. The condition model evolved in a continuous loop with conversation designers, product, and engineering. Interface discoveries frequently became architecture conversations.
           </p>
         </div>
@@ -296,22 +296,22 @@ import "../../styles/work/condition-stack-demo.css";
           <div>
             <p class="mix-item-label type-meta">01</p>
             <h3 class="type-support">Research real authoring work</h3>
-            <p>Study spreadsheets, tools, handoffs, and nested IVR scenarios.</p>
+            <p class="type-body">Study spreadsheets, tools, handoffs, and nested IVR scenarios.</p>
           </div>
           <div>
             <p class="mix-item-label type-meta">02</p>
             <h3 class="type-support">Prototype competing mental models</h3>
-            <p>Tables, forms, graphs, code-like syntax, and direct manipulation.</p>
+            <p class="type-body">Tables, forms, graphs, code-like syntax, and direct manipulation.</p>
           </div>
           <div>
             <p class="mix-item-label type-meta">03</p>
             <h3 class="type-support">Validate comprehension and control</h3>
-            <p>Test context, nesting, add points, movement, and recovery.</p>
+            <p class="type-body">Test context, nesting, add points, movement, and recovery.</p>
           </div>
           <div>
             <p class="mix-item-label type-meta">04</p>
             <h3 class="type-support">Shape implementation with engineering</h3>
-            <p>Align interaction rules with valid generated logic and data.</p>
+            <p class="type-body">Align interaction rules with valid generated logic and data.</p>
           </div>
         </div>
 
@@ -321,41 +321,41 @@ import "../../styles/work/condition-stack-demo.css";
         <div class="mix-reading">
           <p class="mix-section-label type-meta">05 · RESULT</p>
           <h2 id="result-heading" class="type-section">A more usable language for complex behavior</h2>
-          <p>
+          <p class="type-body">
             The work improved deeply nested condition authoring while establishing interaction patterns that influenced the wider Mix platform.
           </p>
         </div>
 
         <div class="mix-metrics" role="group" aria-label="Condition-stack research outcomes">
           <article>
-            <strong class="type-display">17</strong>
+            <strong class="type-support">17</strong>
             <span class="type-body-small">IVR + digital-VA designers</span>
           </article>
           <article>
-            <strong class="type-display">5.0 → 7.0</strong>
+            <strong class="type-support">5.0 → 7.0</strong>
             <span class="type-body-small">CSAT · +40%</span>
           </article>
           <article>
-            <strong class="type-display">52.67 → 61.50</strong>
+            <strong class="type-support">52.67 → 61.50</strong>
             <span class="type-body-small">SUS · +8.83 points</span>
           </article>
         </div>
-        <p class="mix-metric-note type-body">
+        <p class="mix-metric-note type-body-small">
           Three-session longitudinal study run by our embedded PhD researcher, tracking the condition stack as it was built. Both old-table-to-Session-3 gains were statistically significant at p &lt; .05; the source deck does not report per-session completion counts.
         </p>
 
         <div class="mix-three-column mix-results-grid type-body">
           <div>
             <h3 class="type-support">A validated direction</h3>
-            <p>The new stack significantly improved satisfaction and perceived usability while revealing findability and hierarchy issues that still needed iteration.</p>
+            <p class="type-body">The new stack significantly improved satisfaction and perceived usability while revealing findability and hierarchy issues that still needed iteration.</p>
           </div>
           <div>
             <h3 class="type-support">Proven in enterprise contexts</h3>
-            <p>The workflows supported customers including Sony Interactive Entertainment and Rakuten, where reliability and complex branching mattered.</p>
+            <p class="type-body">The workflows supported customers including Sony Interactive Entertainment and Rakuten, where reliability and complex branching mattered.</p>
           </div>
           <div>
             <h3 class="type-support">A platform-level template</h3>
-            <p>The QA node and condition work established properties and interaction patterns that informed other nodes and shared product behavior.</p>
+            <p class="type-body">The QA node and condition work established properties and interaction patterns that informed other nodes and shared product behavior.</p>
           </div>
         </div>
 
@@ -363,7 +363,7 @@ import "../../styles/work/condition-stack-demo.css";
         <div class="testimonials">
           <figure class="testimonial">
             <blockquote class="type-body">
-              <p>“The work he has done for the Dialog tool and the condition stack is simply put amazing. The Mix platform would not be where it is today without Erik and his dedication to excellence and being a true team player.”</p>
+              <p class="type-body">“The work he has done for the Dialog tool and the condition stack is simply put amazing. The Mix platform would not be where it is today without Erik and his dedication to excellence and being a true team player.”</p>
             </blockquote>
             <figcaption class="type-meta">
               <span class="testimonial-role">Senior Design Manager</span>
@@ -371,7 +371,7 @@ import "../../styles/work/condition-stack-demo.css";
           </figure>
           <figure class="testimonial">
             <blockquote class="type-body">
-              <p>“You are constantly pushing for the potential of Engineering and UX collaboration on complex design implementations.”</p>
+              <p class="type-body">“You are constantly pushing for the potential of Engineering and UX collaboration on complex design implementations.”</p>
             </blockquote>
             <figcaption class="type-meta">
               <span class="testimonial-role">Senior Software Engineering Manager</span>
@@ -379,14 +379,14 @@ import "../../styles/work/condition-stack-demo.css";
           </figure>
           <figure class="testimonial">
             <blockquote class="type-body">
-              <p>“You have both UX and frontend development knowledge and are in this unique position to provide guidance to both designers and developers.”</p>
+              <p class="type-body">“You have both UX and frontend development knowledge and are in this unique position to provide guidance to both designers and developers.”</p>
             </blockquote>
             <figcaption class="type-meta">
               <span class="testimonial-role">Principal Software Developer</span>
             </figcaption>
           </figure>
         </div>
-        <p class="mix-metric-note type-body">Colleague feedback from internal reviews, quoted by role rather than by name.</p>
+        <p class="mix-metric-note type-body-small">Colleague feedback from internal reviews, quoted by role rather than by name.</p>
 
         <p class="mix-gallery-label type-meta">
           Condition-stack results <span>Scroll to compare →</span>
@@ -399,7 +399,7 @@ import "../../styles/work/condition-stack-demo.css";
           <figure><a href="/work/mix-dialog/assets/media/condition-tale--18.avif" target="_blank" rel="noopener noreferrer" aria-label="Open condition stack results slide 5 of 5 full size in a new tab"><img src="/work/mix-dialog/assets/media/condition-tale--18.avif" width="380" height="270" alt="Condition stack results, slide 5 of 5." /></a></figure>
         </div>
 
-        <p class="mix-callout mix-customer-note">
+        <p class="mix-callout mix-customer-note type-body">
           Customer context. Sony Interactive Entertainment used Mix.dialog and its condition system in work supporting voice functionality for PlayStation 5. This case study focuses on the authoring system—not Sony’s implementation details.
         </p>
       </section>
@@ -408,22 +408,22 @@ import "../../styles/work/condition-stack-demo.css";
         <div class="mix-reading">
           <p class="mix-section-label type-meta">06 · EPILOGUE · 2021–2023</p>
           <h2 id="verse-heading" class="type-section">The product patterns became a shared system</h2>
-          <p>
+          <p class="type-body">
             Mix.dialog exposed a broader need for consistency, accessibility, and shared language between design and engineering. I made the case for a platform design system over several years, secured leadership buy-in, and led the architecture of what became Verse. Built with React, Radix, and vanilla-extract, the system was implemented across Mix.dialog and the surrounding platform by multiple engineering teams.
           </p>
-          <p>
+          <p class="type-body">
             As the design–engineering liaison, I aligned teams around shared components, interaction patterns, tokens, and implementation practices. After the Microsoft acquisition, we migrated Verse to Fluent 2 to align with Microsoft&rsquo;s design language. The representative slides below are from my 2022 Nuance i3 talk, &ldquo;Design like a developer&hellip; Develop like a designer!&rdquo;
           </p>
-          <p><a href="/work/verse-design-system/">Read the full Verse Design System case study →</a></p>
+          <p class="type-body"><a href="/work/verse-design-system/">Read the full Verse Design System case study →</a></p>
         </div>
       </section>
 
       <footer class="mix-footer">
         <h2 class="type-section">Let’s make complex systems understandable.</h2>
-        <p>Senior UX Designer · UX Engineer · Design systems and AI tools</p>
+        <p class="type-body">Senior UX Designer · UX Engineer · Design systems and AI tools</p>
         <div class="mix-footer-actions">
-          <a class="mix-contact btn primary" href="/work/microsoft/">Next: Microsoft</a>
-          <a class="mix-contact btn" href="mailto:erikdrouhard@gmail.com">Get in touch</a>
+          <a class="mix-contact btn primary type-label" href="/work/microsoft/">Next: Microsoft</a>
+          <a class="mix-contact btn type-label" href="mailto:erikdrouhard@gmail.com">Get in touch</a>
         </div>
       </footer>
     </article>

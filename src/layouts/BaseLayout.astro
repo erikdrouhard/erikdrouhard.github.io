@@ -19,7 +19,7 @@ import monoLatin from "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-
 interface Props {
   title: string;
   description?: string;
-  /** "full" on home / about, "quiet" on reading pages, "off" for a static frame. */
+  /** "full" on homepage layouts, "off" for static inner pages. */
   field?: "full" | "quiet" | "off";
   noindex?: boolean;
   /** Extra class on <body>. Ported case studies use it to scope their CSS,
@@ -38,7 +38,7 @@ interface Props {
 const {
   title,
   description = "Erik Drouhard is an AI Design Engineer specializing in human-agent interaction.",
-  field = "full",
+  field = "off",
   noindex = false,
   bodyClass,
   shell = "default",
@@ -87,8 +87,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <ClientRouter />
   </head>
 
-  <body data-field={field} data-accent={accent} class={bodyClassName || undefined}>
-    <a class="skip-link" href="#main">Skip to content</a>
+  <body data-field={field} data-accent={accent} data-case-color-prototype={accent ? true : undefined} class={bodyClassName || undefined}>
+    <a class="skip-link type-meta" href="#main">Skip to content</a>
 
     {/*
       transition:persist keeps the same canvas node across navigations, so the

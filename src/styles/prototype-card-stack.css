@@ -1,0 +1,59 @@
+/* Selected-work stack, promoted from the right-nav prototype.
+   The legacy scope is shared with the local comparison routes. */
+.stack-prototype { overflow-x: clip; isolation: isolate; transition: --stack-pigment var(--stack-swap-duration) var(--stack-easing); }
+[data-color-dragging] .stack-prototype { transition-duration: var(--stack-blend-duration); transition-timing-function: var(--stack-blend-easing); }
+.stack-prototype .prototype-note { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-1); color: var(--text-muted); margin-bottom: var(--space-4); }
+.stack-prototype .prototype-note a { text-decoration: none; }
+.stack-prototype .stack-layout { display: grid; grid-template-columns: max-content minmax(0,1fr); grid-template-areas: "nav card" ". help"; gap: var(--space-3) var(--space-4); align-items: start; }
+.stack-prototype:where(.stack-nav-right) .stack-layout { grid-template-columns: minmax(0,1fr) max-content; grid-template-areas: "card nav" "help ."; }
+.stack-prototype .stack-tabs { grid-area: nav; display: grid; gap: var(--space-1); }
+.stack-prototype .stack-tabs button { display: flex; align-items: center; justify-content: flex-start; gap: var(--space-1); padding: var(--space-1); min-height: var(--target-min); touch-action: manipulation; border: var(--border-width) solid var(--line); background: var(--surface); color: var(--text-muted); cursor: pointer; font: var(--type-meta); }
+.stack-prototype .stack-tabs button[aria-pressed="true"] { border-color: var(--accent); color: var(--text); background: var(--accent-soft); }
+.stack-prototype .stack-tabs kbd { padding: 0; border: 0; background: none; color: inherit; }
+.stack-prototype .deck { grid-area: card; position: relative; isolation: isolate; margin-right: var(--space-2); margin-bottom: 0; }
+.stack-prototype .deck::before,.stack-prototype .deck::after { content: ''; position: absolute; inset: 0; border: var(--border-width) solid var(--line); background: var(--page); transform: translate(var(--space-2),var(--space-2)); }
+.stack-prototype .deck::after { transform: translate(calc(var(--space-2) / 2),calc(var(--space-2) / 2)); }
+.stack-prototype .stack-sizer { display: grid; }
+.stack-prototype .stack-sizer .deck-card { grid-area: 1 / 1; }
+.stack-prototype .stack-sizer .deck-card:not(:first-child) { visibility: hidden; }
+.stack-prototype.stack-ready .stack-sizer { visibility: hidden; pointer-events: none; }
+
+.stack-prototype .deck-card { padding: var(--feature-card-padding); gap: var(--space-3); min-height: var(--stack-card-height); background: var(--page); border-color: var(--accent); backface-visibility: hidden; cursor: grab; }
+.stack-prototype .deck-card h2 { text-wrap: balance; }
+.stack-prototype .deck-card p { max-width: var(--measure); text-wrap: pretty; }
+.stack-prototype .deck-card .meta { justify-content: space-between; }
+.stack-prototype .stack-name { color: var(--accent); }
+.stack-prototype .stack-card-foot { display: flex; align-items: center; gap: var(--space-1); justify-content: space-between; margin-top: auto; padding-top: var(--space-3); color: var(--text-muted); }
+.stack-prototype #preview,.stack-prototype .motion-layer { position: absolute; inset: 0; z-index: var(--layer-sticky); }
+.stack-prototype .magnetic-hit { cursor: grab; touch-action: pan-y pinch-zoom; user-select: none; -webkit-user-select: none; }
+.stack-prototype .magnetic-hit[data-dragging] { cursor: grabbing; }
+.stack-prototype .magnetic-card { transform-origin: center center; }
+.stack-prototype .stack-read { display: inline-flex; align-items: center; min-height: var(--target-min); touch-action: manipulation; color: var(--accent); font: var(--type-body); text-decoration: none; cursor: pointer; }
+:where(html:not(.is-coarse-pointer)) .stack-prototype .stack-read:hover { text-decoration: underline; }
+.stack-prototype .stack-help { grid-area: help; margin: var(--space-2) 0 0; color: var(--text-muted); }
+.stack-prototype .stack-status { position: absolute; width: 0; height: 0; overflow: hidden; }
+.stack-prototype .stack-ambient { position: fixed; inset: 0; z-index: var(--stack-ambient-layer); pointer-events: none; }
+.stack-prototype .stack-ambient i { position: absolute; inset: 0; background: var(--stack-gradient); opacity: calc(var(--stack-glow) * var(--weight,0)); transition: opacity var(--stack-swap-duration) var(--stack-easing); }
+[data-color-dragging] .stack-prototype .stack-ambient i { transition: opacity var(--stack-blend-duration) var(--stack-blend-easing); }
+.stack-prototype .deck-card i { --primary: var(--accent); }
+@media (max-width: 809.98px) {
+ .stack-prototype .stack-layout { grid-template-columns: minmax(0,1fr); grid-template-areas: "nav" "card" "help"; }
+ .stack-prototype .stack-tabs { grid-template-columns: repeat(4,minmax(0,1fr)); gap: var(--space-1); }
+ .stack-prototype .stack-tabs button { flex-direction: column; justify-content: flex-start; gap: var(--space-1); padding: var(--space-1); min-width: 0; overflow-wrap: anywhere; }
+
+}
+@media (prefers-reduced-motion: reduce) {
+ .stack-prototype .stack-ambient i { transition: none; }
+ .stack-prototype .magnetic-hit { cursor: default; }
+ .stack-prototype .stack-gesture-help { display: none; }
+}
+
+.stack-prototype .stack-tabs[hidden], .stack-prototype .stack-help[hidden], .stack-prototype .deck-card[hidden] { display: none; }
+.stack-prototype .stack-help p { margin: 0; }
+.stack-prototype .stack-shortcuts { display: inline-flex; align-items: center; gap: var(--space-1); min-height: var(--target-min); cursor: pointer; }
+.stack-prototype .stack-shortcuts input { accent-color: var(--primary); }
+
+.stack-prototype .stack-card-foot > span { white-space: nowrap; }
+
+.stack-prototype .stack-fallback { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); }
+.stack-prototype .stack-fallback a { display: inline-flex; align-items: center; min-height: var(--target-min); }

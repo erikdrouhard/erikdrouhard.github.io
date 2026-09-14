@@ -25,7 +25,7 @@ import "../../styles/work/dragon-drive.css";
   </Fragment>
 
   <div class="back-row">
-    <a class="back" href="/">← Back <kbd data-key="B">B</kbd></a>
+    <a class="back type-meta" href="/">← Back <kbd class="type-meta" data-key="B">B</kbd></a>
   </div>
 
   <case-study-nav>
@@ -43,7 +43,7 @@ import "../../styles/work/dragon-drive.css";
         <div class="drive-hero-copy">
           <p class="drive-eyebrow type-meta">NUANCE · 2017–2019</p>
           <h1 class="type-display">Dragon Drive</h1>
-          <p class="drive-deck type-title">
+          <p class="drive-deck type-body">
             Exploring how gaze could give context to voice commands in a future autonomous vehicle—and make a multimodal system’s response visible.
           </p>
           <ul class="drive-badges" role="list" aria-label="Project details">
@@ -69,7 +69,7 @@ import "../../styles/work/dragon-drive.css";
             </video>
             <span class="drive-live-label type-meta">IN-VEHICLE PROTOTYPE · CES 2019</span>
           </div>
-          <figcaption class="type-body">
+          <figcaption class="type-body-small">
             The projected HUD and embedded center display working together in the Dragon Drive demonstration vehicle.
           </figcaption>
         </figure>
@@ -80,13 +80,13 @@ import "../../styles/work/dragon-drive.css";
           <p class="drive-section-label type-meta">01 · THE CHALLENGE</p>
           <h2 id="overview-heading" class="type-section">Exploring gaze as a new input modality</h2>
           <div class="drive-prose">
-            <p>
+            <p class="type-body">
               Dragon Drive was a future-facing technology demonstrator, not a production interface for someone actively driving. Its UI sat prominently in the center of the windshield—effective for showing the technology, but not a claim that this was the right attention model for today’s cars.
             </p>
-            <p>
+            <p class="type-body">
               The concept looked ahead to autonomous vehicles, where occupants could interact differently once they no longer needed to watch the road continuously. Gaze gave the system context: someone could look at the phone widget, say “call someone,” and the car could understand which domain the command referred to. Motion then confirmed what the system had recognized and how it was responding.
             </p>
-            <p>
+            <p class="type-body">
               Dragon Drive brought voice, gaze, a projected HUD, and an embedded center display into one real-time experience. I led the UI and interaction design for the windshield HUD and worked as the technical designer translating prototypes and animation intent into behavior the display systems could carry.
             </p>
           </div>
@@ -95,19 +95,19 @@ import "../../styles/work/dragon-drive.css";
         <dl class="drive-context type-body" aria-label="Project context">
           <div>
             <dt class="type-support">Scenario</dt>
-            <dd>A future autonomous vehicle with new ways for occupants to interact.</dd>
+            <dd class="type-body">A future autonomous vehicle with new ways for occupants to interact.</dd>
           </div>
           <div>
             <dt class="type-support">Purpose</dt>
-            <dd>Demonstrate multimodal technology, not a production-ready driving interface.</dd>
+            <dd class="type-body">Demonstrate multimodal technology, not a production-ready driving interface.</dd>
           </div>
           <div>
             <dt class="type-support">System</dt>
-            <dd>Windshield HUD, gaze input, voice, and embedded display.</dd>
+            <dd class="type-body">Windshield HUD, gaze input, voice, and embedded display.</dd>
           </div>
           <div>
             <dt class="type-support">Design job</dt>
-            <dd>Use gaze to establish context and make the system’s interpretation visible.</dd>
+            <dd class="type-body">Use gaze to establish context and make the system’s interpretation visible.</dd>
           </div>
         </dl>
 
@@ -126,7 +126,7 @@ import "../../styles/work/dragon-drive.css";
               loading="lazy"
             />
           </a>
-          <figcaption class="type-body">
+          <figcaption class="type-body-small">
             Four high-value domains—weather, phone, music, and navigation—were available in the windshield layer while the embedded display carried denser information. Open full size to zoom.
           </figcaption>
         </figure>
@@ -136,7 +136,7 @@ import "../../styles/work/dragon-drive.css";
         <div class="drive-reading">
           <p class="drive-section-label type-meta">02 · INTERACTION MODEL</p>
           <h2 id="interaction-heading" class="type-section">Gaze established context. Voice completed the command.</h2>
-          <p class="type-title">
+          <p class="type-body">
             The HUD explored a simple multimodal pattern: look at a widget to establish the relevant domain, then speak naturally. Focus and motion showed which context was active and made the system’s interpretation visible before it responded.
           </p>
         </div>
@@ -145,17 +145,17 @@ import "../../styles/work/dragon-drive.css";
           <article>
             <p class="drive-moment-number type-meta">01</p>
             <h3 class="type-support">Choose context</h3>
-            <p>Look at a stable widget—phone, music, weather, or navigation—to indicate the relevant domain.</p>
+            <p class="type-body">Look at a stable widget—phone, music, weather, or navigation—to indicate the relevant domain.</p>
           </article>
           <article>
             <p class="drive-moment-number type-meta">02</p>
             <h3 class="type-support">Confirm focus</h3>
-            <p>Use motion to acknowledge which widget has gaze focus and what the system is ready to act on.</p>
+            <p class="type-body">Use motion to acknowledge which widget has gaze focus and what the system is ready to act on.</p>
           </article>
           <article>
             <p class="drive-moment-number type-meta">03</p>
             <h3 class="type-support">Speak naturally</h3>
-            <p>Interpret the voice command within that context, then show the response across the HUD and embedded display.</p>
+            <p class="type-body">Interpret the voice command within that context, then show the response across the HUD and embedded display.</p>
           </article>
         </div>
 
@@ -167,23 +167,23 @@ import "../../styles/work/dragon-drive.css";
           <div class="drive-map-step">
             <span class="type-meta">OCCUPANT</span>
             <strong class="type-support">Gaze + voice</strong>
-            <small class="type-body">Looks at phone, then says “call someone.”</small>
+            <small class="type-body-small">Looks at phone, then says “call someone.”</small>
           </div>
           <span class="drive-map-arrow type-support" aria-hidden="true">→</span>
           <div class="drive-map-step drive-map-step-accent">
             <span class="type-meta">HUD</span>
             <strong class="type-support">Context</strong>
-            <small class="type-body">The phone widget acknowledges gaze focus.</small>
+            <small class="type-body-small">The phone widget acknowledges gaze focus.</small>
           </div>
           <span class="drive-map-arrow type-support" aria-hidden="true">→</span>
           <div class="drive-map-step">
             <span class="type-meta">SYSTEM</span>
             <strong class="type-support">Interpretation</strong>
-            <small class="type-body">The focused domain gives meaning to the command.</small>
+            <small class="type-body-small">The focused domain gives meaning to the command.</small>
           </div>
         </div>
 
-        <p class="drive-callout type-title">
+        <p class="drive-callout type-body">
           The prominent windshield UI made the underlying interaction easy to see in a CES demo. It was built to explore gaze, voice, and display coordination for a future autonomous-vehicle experience—not to propose a production interface for use while a person was actively driving.
         </p>
       </section>
@@ -193,10 +193,10 @@ import "../../styles/work/dragon-drive.css";
           <p class="drive-section-label type-meta">03 · MY ROLE</p>
           <h2 id="translation-heading" class="type-section">I translated design intent into embedded behavior</h2>
           <div class="drive-prose">
-            <p>
+            <p class="type-body">
               As the technical designer, I worked between interaction design and implementation. I used prototypes and animation studies to make the intended behavior concrete, then translated that behavior for the embedded display and HUD teams.
             </p>
-            <p>
+            <p class="type-body">
               The work was not simply making transitions look polished. Timing, hierarchy, movement, and feedback each carried meaning. The handoff had to preserve that meaning as the experience moved from a design prototype into a constrained, real-time automotive system.
             </p>
           </div>
@@ -206,29 +206,29 @@ import "../../styles/work/dragon-drive.css";
           <li>
             <span class="type-meta">01 · PROTOTYPE</span>
             <h3 class="type-support">Make the moment tangible</h3>
-            <p>Model gaze, focus, selection, and feedback as a complete interaction rather than a sequence of static screens.</p>
+            <p class="type-body">Model gaze, focus, selection, and feedback as a complete interaction rather than a sequence of static screens.</p>
           </li>
           <li>
             <span class="type-meta">02 · DECOMPOSE</span>
             <h3 class="type-support">Name the states and transitions</h3>
-            <p>Break the prototype into triggers, state changes, timing, layering, and visual assets that could be discussed precisely.</p>
+            <p class="type-body">Break the prototype into triggers, state changes, timing, layering, and visual assets that could be discussed precisely.</p>
           </li>
           <li>
             <span class="type-meta">03 · TRANSLATE</span>
             <h3 class="type-support">Adapt motion to the display system</h3>
-            <p>Shape the behavior for the embedded pipeline and HUD while protecting the interaction’s hierarchy and intent.</p>
+            <p class="type-body">Shape the behavior for the embedded pipeline and HUD while protecting the interaction’s hierarchy and intent.</p>
           </li>
           <li>
             <span class="type-meta">04 · VALIDATE</span>
             <h3 class="type-support">Evaluate it in physical context</h3>
-            <p>Review projection, gaze behavior, system timing, and feedback as part of the full in-car demonstration.</p>
+            <p class="type-body">Review projection, gaze behavior, system timing, and feedback as part of the full in-car demonstration.</p>
           </li>
         </ol>
 
         <aside class="drive-role-note" aria-labelledby="role-note-heading">
           <p class="drive-section-label type-meta">THE DESIGN-ENGINEERING BRIDGE</p>
           <h3 id="role-note-heading" class="type-support">The prototype became a shared language</h3>
-          <p>
+          <p class="type-body">
             Product and interaction intent could be experienced early; implementation partners could inspect the behavior they needed to reproduce. That bridge let motion function as a specification, not decoration.
           </p>
         </aside>
@@ -238,7 +238,7 @@ import "../../styles/work/dragon-drive.css";
         <div class="drive-reading">
           <p class="drive-section-label type-meta">04 · THE SHOWCASE</p>
           <h2 id="showcase-heading" class="type-section">A multimodal technology demo in a simulated drive</h2>
-          <p class="type-title">
+          <p class="type-body">
             The HUD was featured at the Dragon Drive Innovation Showcase at CES 2019. The vehicle remained stationary while a surrounding screen simulated movement. Within that staged environment, gaze, animated feedback, voice, and the embedded display could be demonstrated as one system.
           </p>
         </div>
@@ -253,14 +253,14 @@ import "../../styles/work/dragon-drive.css";
           >
             <source src="/work/dragon-drive/assets/gaze-hud-highlight.mp4" type="video/mp4" />
           </video>
-          <figcaption class="type-body">
+          <figcaption class="type-body-small">
             38-second excerpt from the preserved Dragon Drive car-demo footage. Press play to watch the HUD and embedded display in context.
           </figcaption>
         </figure>
 
         <div class="drive-outcome">
           <p class="drive-section-label type-meta">OUTCOME</p>
-          <blockquote class="type-title">
+          <blockquote class="type-body">
             The demonstration showed how gaze, voice, motion, and two displays could behave as one multimodal system.
           </blockquote>
           <p class="drive-outcome-copy type-body">
@@ -275,10 +275,10 @@ import "../../styles/work/dragon-drive.css";
       <footer class="drive-footer">
         <p class="drive-section-label type-meta">NEXT CASE STUDY</p>
         <h2 class="type-section">From intelligent cars to conversational systems.</h2>
-        <p>See how I made complex enterprise behavior easier to author in Mix.dialog.</p>
+        <p class="type-body">See how I made complex enterprise behavior easier to author in Mix.dialog.</p>
         <div class="drive-footer-actions">
-          <a class="drive-contact btn primary" href="/work/mix-dialog/">Read Mix.dialog</a>
-          <a class="drive-contact btn" href="mailto:erikdrouhard@gmail.com">Get in touch</a>
+          <a class="drive-contact btn primary type-label" href="/work/mix-dialog/">Read Mix.dialog</a>
+          <a class="drive-contact btn type-label" href="mailto:erikdrouhard@gmail.com">Get in touch</a>
         </div>
       </footer>
     </article>

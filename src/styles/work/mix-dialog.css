@@ -13,11 +13,6 @@
   overflow-x: hidden;
 }
 
-.mix-page .page-shell {
-  align-items: center;
-  container-type: inline-size;
-}
-
 .mix-main {
   padding-bottom: 0;
   align-items: stretch;
@@ -29,7 +24,7 @@
 }
 
 /* Zero-specificity reset: any class on the element wins over it. */
-.mix-content :where(h1, h2, h3, p, figure) {
+.mix-content :where(h1, h2, h3, p, figure, dt, dd) {
   margin: 0;
 }
 
@@ -47,7 +42,7 @@
   display: grid;
   padding: var(--space-7) 0;
   gap: var(--space-5);
-  grid-template-columns: minmax(0, 11fr) minmax(330px, 9fr);
+  grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
   align-items: center;
 }
 
@@ -75,8 +70,8 @@
   display: grid;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-top: var(--border-width) solid var(--line);
+  border-bottom: var(--border-width) solid var(--line);
 }
 
 .mix-project-meta > div {
@@ -84,12 +79,12 @@
   min-width: 0;
   padding: var(--space-1) 0;
   gap: var(--space-3);
-  grid-template-columns: 96px minmax(0, 1fr);
+  grid-template-columns: var(--space-7) minmax(0, 1fr);
   align-items: baseline;
 }
 
 .mix-project-meta > div + div {
-  border-top: 1px solid var(--line);
+  border-top: var(--border-width) solid var(--line);
 }
 
 .mix-project-meta dd {
@@ -106,12 +101,11 @@
   position: relative;
   display: grid;
   min-width: 0;
-  padding: var(--space-1);
-  border: 1px solid var(--line);
+  padding: var(--case-inset);
+  border: var(--border-width) solid var(--line);
   background: var(--page);
   color: var(--text);
   gap: var(--space-1);
-  transform: rotate(1deg);
 }
 
 /* Matches the intrinsic 1446x1100 of the hero screenshot. object-fit: cover
@@ -121,21 +115,20 @@
   height: auto;
   aspect-ratio: 723 / 550;
   object-fit: cover;
-  outline: 1px solid var(--line);
-  outline-offset: -1px;
+  outline: var(--border-width) solid var(--line);
+  outline-offset: calc(var(--border-width) * -1);
 }
 
 .mix-visual-label {
   position: absolute;
-  top: var(--space-3);
-  left: var(--space-3);
+  top: var(--case-inset);
+  left: var(--case-inset);
   padding: var(--space-1);
   background: var(--page);
   color: var(--text);
 }
 
 .mix-hero-visual figcaption {
-  padding: 0;
   color: var(--text-muted);
 }
 
@@ -146,7 +139,7 @@
   width: 100%;
   min-width: 0;
   padding: var(--section) 0;
-  border-top: 1px solid var(--line);
+  border-top: var(--border-width) solid var(--line);
   gap: var(--space-4);
   grid-template-columns: minmax(0, 1fr);
   scroll-margin-top: var(--section);
@@ -160,7 +153,7 @@
   width: 100cqi;
   margin-inline: calc((100% - 100cqi) / 2);
   padding-inline: calc((100cqi - 100%) / 2);
-  border-bottom: 1px solid var(--line);
+  border-bottom: var(--border-width) solid var(--line);
   background: var(--accent-soft);
 }
 
@@ -180,10 +173,7 @@
 }
 
 .mix-callout {
-  padding: var(--space-3);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--accent);
-  background: var(--surface);
+  border-left: var(--border-width) solid var(--accent);
 }
 
 .mix-three-column,
@@ -203,9 +193,6 @@
 .mix-three-column > div,
 .mix-four-column > div {
   min-width: 0;
-  padding: var(--space-3);
-  border: 1px solid var(--line);
-  background: var(--surface);
 }
 
 .mix-three-column h3,
@@ -217,10 +204,6 @@
 .mix-four-column p:last-child {
   margin-top: var(--space-1);
   color: var(--text-muted);
-}
-
-.mix-platform-grid {
-  margin-top: 0;
 }
 
 .mix-scope {
@@ -245,19 +228,15 @@
 
 .mix-action-list > article {
   display: grid;
-  padding: var(--space-3);
-  border: 1px solid var(--line);
-  background: var(--surface);
   gap: var(--space-3);
   /* A shared label column so headings and body share one left edge down
      the list. max-content sized each card from its own label and staggered
      the copy — Verse's "CHANGE THE TOOLING" is ~40px wider than "MAKE THE CASE". */
-  grid-template-columns: 12.5rem minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
 }
 
 .mix-action-list .mix-item-label {
   color: var(--accent);
-  white-space: nowrap;
 }
 
 .mix-action-list h3 + p {
@@ -295,15 +274,9 @@
   overscroll-behavior-inline: contain;
 }
 
-.mix-media-scroller:focus-visible {
-  outline: 1px solid var(--primary);
-  outline-offset: 2px;
-}
-
-/* A third of the page column, so three slides read as a row and the width is
-   the shell divided rather than a literal of its own. */
+/* Three desktop slides share the available content width after both gaps. */
 .mix-media-scroller figure {
-  width: calc(var(--shell) / 3);
+  width: calc((100% - var(--space-2) * 2) / 3);
   flex: 0 0 auto;
   scroll-snap-align: start;
 }
@@ -313,8 +286,8 @@
   height: auto;
   aspect-ratio: 45 / 32;
   object-fit: cover;
-  outline: 1px solid var(--line);
-  outline-offset: -1px;
+  outline: var(--border-width) solid var(--line);
+  outline-offset: calc(var(--border-width) * -1);
 }
 
 .mix-gallery-label {
@@ -327,19 +300,12 @@
   color: var(--accent);
 }
 
-/* Three Verse slides read as a complete row on desktop, so the scroll cue is
-   only useful below the breakpoint. */
-#verse .mix-gallery-label span {
-  display: none;
-  white-space: nowrap;
-}
-
 .mix-media-wide img {
   aspect-ratio: 16 / 9;
 }
 
 /* A standalone product screenshot inside a section, sharing the hero's panel
-   treatment without its rotation. Intrinsic width/height on the img carries
+   treatment. Intrinsic width/height on the img carries
    the ratio, so one class serves screenshots of any shape. */
 .mix-figure {
   --page: var(--page-dark);
@@ -348,8 +314,8 @@
   --accent-c: var(--accent-c-dark);
   display: grid;
   min-width: 0;
-  padding: var(--space-1);
-  border: 1px solid var(--line);
+  padding: var(--case-inset);
+  border: var(--border-width) solid var(--line);
   background: var(--page);
   color: var(--text);
   gap: var(--space-1);
@@ -359,17 +325,12 @@
   display: block;
   width: 100%;
   height: auto;
-  outline: 1px solid var(--line);
-  outline-offset: -1px;
+  outline: var(--border-width) solid var(--line);
+  outline-offset: calc(var(--border-width) * -1);
 }
 
 .mix-figure figcaption {
-  padding: 0;
   color: var(--text-muted);
-}
-
-.mix-results-grid {
-  margin-top: 0;
 }
 
 .mix-results-grid h3 {
@@ -387,7 +348,7 @@
   --accent-c: var(--accent-c-dark);
   display: grid;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   background: var(--page);
   color: var(--text);
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -397,12 +358,12 @@
   display: grid;
   container-type: inline-size;
   min-width: 0;
-  padding: var(--space-3);
+  padding: var(--case-inset);
   gap: var(--space-1);
 }
 
 .mix-metrics article + article {
-  border-left: 1px solid var(--line);
+  border-left: var(--border-width) solid var(--line);
 }
 
 /* The metric is nowrap so a `5.0 → 7.0` pair never breaks across its arrow. */
@@ -420,41 +381,15 @@
 }
 
 .mix-footer {
-  display: flex;
   width: 100cqi;
   margin: 0 0 0 calc((100% - 100cqi) / 2);
-  padding: var(--space-7) var(--space-3);
-  border-top: 1px solid var(--line);
-  align-items: center;
-  flex-direction: column;
-  gap: var(--space-2);
-  background: var(--surface);
-  color: var(--text);
-  text-align: center;
-}
-
-.mix-footer h2 {
-  max-width: var(--measure-title);
-}
-
-.mix-footer p {
-  color: var(--text-muted);
-}
-
-.mix-footer-actions {
-  display: flex;
-  margin-top: var(--space-1);
-  flex-wrap: wrap;
-  gap: var(--space-1);
-  justify-content: center;
 }
 
 /* Appearance and every state come from `.btn` in theme.css. */
 
 @media (max-width: 809.98px) {
-  .mix-main {
-    padding-right: var(--space-2);
-    padding-left: var(--space-2);
+  .mix-media-scroller figure {
+    width: 100%;
   }
 
   .mix-hero {
@@ -465,17 +400,11 @@
 
   .mix-project-meta > div {
     gap: var(--space-2);
-    grid-template-columns: 80px minmax(0, 1fr);
+    grid-template-columns: var(--space-6) minmax(0, 1fr);
   }
 
   .mix-hero-visual {
     width: 100%;
-    transform: none;
-  }
-
-  .mix-section {
-    padding-block: var(--section);
-    gap: var(--space-4);
   }
 
   .mix-three-column,
@@ -506,24 +435,13 @@
     display: none;
   }
 
-  #verse .mix-gallery-label span {
-    display: inline;
-  }
-
-  #verse .mix-gallery-label {
-    column-gap: var(--space-2);
-  }
-
   .mix-metrics {
     grid-template-columns: 1fr;
   }
 
   .mix-metrics article + article {
-    border-top: 1px solid var(--line);
+    border-top: var(--border-width) solid var(--line);
     border-left: 0;
   }
 
-  .mix-footer {
-    padding: var(--section) var(--space-2);
-  }
 }

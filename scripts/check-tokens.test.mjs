@@ -1,357 +1,494 @@
-/**
- * Source-only assertions about the token check. No browser and no build: a
- * fixture tree goes in, a list of violations comes out, and each ban is
- * proved on its own with one violating line and nothing else around it.
- *
- * Expected values come from `.scratch/design-system-remediation/spec.md` and
- * `DESIGN-SYSTEM.md`, not from re-running the checker.
- */
+/** Adversarial, in-memory fixtures. Tests never create or delete source files. */
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join, dirname } from "node:path";
-
+import { readFileSync } from "node:fs";
 import {
+  scanSources,
   scanTree,
+  main,
+  serializeSeed,
   readSeed,
   compareToSeed,
-  serializeSeed,
 } from "./check-tokens.mjs";
+import { tokenSnapshot, compareContract } from "./token-policy.mjs";
+const root = new URL("../", import.meta.url).pathname;
+const TOKENS = `:root {
+ --font-primary: serif; --body: 400 16px/1.4 var(--font-primary);
+ --type-body: var(--body); --type-title: var(--body); --type-meta: var(--body);
+ --track-caps: .08em; --space-1: 12px; --space-2:16px; --space-3:20px; --space-4:36px; --space-5:54px; --space-6:72px; --space-7:112px;
+ --gutter:var(--space-4); --case-gutter:var(--space-3); --case-inset:var(--space-3);
+ --case-edge:max(var(--case-gutter),calc((100cqi - var(--shell))/2 + var(--case-gutter)));
+ --shell:1000px; --measure:68ch; --target-min:44px;
+ --text:#000; --text-dark:#fff; --page:#fff; --page-dark:#070d09; --primary:#16713d; --line:var(--text); --accent:var(--primary); --accent-hue-mix:283.82;
+ --duration:150ms; --duration-slow:450ms; --bp-mobile:810px;
+ --layer-sticky:1; --border-width:1px; --focus-width:2px; --focus-offset:2px;
+ --opacity-disabled:.34; --stack-swap-duration:480ms; --stack-easing:cubic-bezier(.22,.61,.36,1);
+ --stack-glow:.28;
+}`;
+const scan = (files, options = {}) =>
+  scanSources({ "src/styles/tokens.css": TOKENS, ...files }, options);
+const css = (source) => scan({ "src/styles/a.css": source });
+const rules = (found) => found.map((v) => v.rule);
+const fails = (source, rule) =>
+  assert.ok(rules(css(source)).includes(rule), JSON.stringify(css(source)));
+const passes = (source) => assert.deepEqual(css(source), []);
 
-const repoRoot = new URL("../", import.meta.url).pathname;
-
-/* Build a throwaway tree and hand its path to the checker. Files are written
-   with their real extensions because the checker picks its rules from them. */
-function tree(files) {
-  const dir = mkdtempSync(join(tmpdir(), "check-tokens-"));
-  for (const [rel, body] of Object.entries(files)) {
-    const path = join(dir, rel);
-    mkdirSync(dirname(path), { recursive: true });
-    writeFileSync(path, body);
-  }
-  return dir;
-}
-
-/* One violation per ban, asserted as `file:line rule`. Anything else the
-   scan reports is a false positive and fails the test. */
-function only(dir, expected) {
-  const found = scanTree(dir).map((v) => `${v.file}:${v.line} ${v.rule}`);
-  assert.deepEqual(found.sort(), expected.slice().sort());
-}
-
-const CLEAN_CSS = `.a {\n  font: var(--type-body);\n  color: var(--text);\n  padding: var(--space-2);\n}\n`;
-
-test("1. a clean tree reports nothing", () => {
-  const dir = tree({
-    "src/styles/a.css": CLEAN_CSS,
-    "src/pages/a.astro": `<p class="type-body">hi</p>\n<style>\n${CLEAN_CSS}</style>\n`,
-    "src/scripts/a.js": `const d = getComputedStyle(document.documentElement).getPropertyValue("--duration");\n`,
-    "public/assets/a.woff2": "x",
-    "public/.archive/styles.css": "body { color: #fff; }\n",
-  });
-  only(dir, []);
-  rmSync(dir, { recursive: true });
+test("approved type, spacing, alias, width, color and stroke contracts pass", () => {
+  passes(
+    ".x{font:var(--type-body);letter-spacing:var(--track-caps);padding:var(--space-1) var(--gutter);width:100%;max-width:var(--shell);color:var(--text);border:var(--border-width) solid var(--line)}",
+  );
+  passes(".dark{--page:var(--page-dark);--text:var(--text-dark)}");
 });
-
-test("2. type literals outside tokens.css are violations", () => {
-  const dir = tree({
-    "src/styles/a.css": [
-      ".a { font-size: 18px; }", // 1
-      ".b { font-weight: 700; }", // 2
-      ".c { line-height: 1.4; }", // 3
-      ".d { letter-spacing: 0.08em; }", // 4
-      '.e { font-family: "Newsreader", serif; }', // 5
-      ".f { font: 300 36px/1.1 serif; }", // 6
-      ".g { font: var(--type-display); }", // 7 — fine
-      ".h { letter-spacing: var(--track-caps); }", // 8 — fine
-      ".i { line-height: inherit; letter-spacing: normal; }", // 9 — fine
-      ".j { font-size: calc(var(--x) + 2px); }", // 10 — bare px in calc
-      "",
-    ].join("\n"),
-  });
-  only(dir, [
-    "src/styles/a.css:1 font",
-    "src/styles/a.css:2 font",
-    "src/styles/a.css:3 font",
-    "src/styles/a.css:4 font",
-    "src/styles/a.css:5 font",
-    "src/styles/a.css:6 font",
-    "src/styles/a.css:10 font",
-  ]);
-  rmSync(dir, { recursive: true });
+test("type shorthand requires a type role, not arbitrary variables or sources", () => {
+  for (const value of ["18px serif", "var(--space-1)", "var(--body)"])
+    fails(`.x{font:${value}}`, "font");
+  for (const prop of ["font-size", "font-weight", "line-height", "font-family"])
+    fails(`.x{${prop}:var(--type-body)}`, "font");
 });
-
-test("3. tokens.css itself is exempt from the value bans", () => {
-  const dir = tree({
-    "src/styles/tokens.css":
-      ":root {\n  --display-1: 300 36px/1.1 var(--font-primary);\n  --page: #f4f6f0;\n  --space-1: 12px;\n}\n",
-  });
-  only(dir, []);
-  rmSync(dir, { recursive: true });
+test("unknown references, literal fallbacks, alias laundering and wrong categories fail", () => {
+  fails(".x{padding:var(--missing,13px)}", "token-reference");
+  fails(".x{padding:var(--space-1,13px)}", "token-fallback");
+  fails(
+    ".x{--private-gap:13px;padding:var(--private-gap)}",
+    "token-provenance",
+  );
+  fails(".x{--space-1:var(--text)}", "token-provenance");
+  fails(".x{padding:var(--text)}", "spacing");
+  fails(".x{color:var(--space-1)}", "color-category");
 });
-
-test("4. colour literals are violations", () => {
-  const dir = tree({
-    "src/styles/a.css": [
-      ".a { color: #fff; }", // 1
-      ".b { background: rgba(0, 0, 0, 0.4); }", // 2
-      ".c { border-color: hsl(120 50% 50%); }", // 3
-      ".d { color: white; }", // 4
-      ".e { color: var(--text); }", // 5 — fine
-      ".f { background: transparent; border-color: currentColor; }", // 6 — fine
-      "#field { inset: 0; }", // 7 — an id selector, not a hex colour
-      "",
-    ].join("\n"),
-    "src/scripts/a.js": 'ctx.fillStyle = "#0b0";\n',
-  });
-  only(dir, [
-    "src/styles/a.css:1 color",
-    "src/styles/a.css:2 color",
-    "src/styles/a.css:3 color",
-    "src/styles/a.css:4 color",
-    "src/scripts/a.js:1 color",
-  ]);
-  rmSync(dir, { recursive: true });
+test("full stylesheet parsing catches multiline declarations, nested rules and media", () => {
+  fails(".x{padding:\n13px; & span { inline-size:13px }}", "spacing");
+  fails(".x{padding:\n13px; & span { inline-size:13px }}", "dimension");
+  fails("@media\n(max-width:\n777px){.x{color:var(--text)}}", "media");
+  assert.equal(css(".x{\n\npadding:\n13px}")[0].line, 3);
 });
-
-/* A canvas fill is assembled as a string, so a script cannot write
-   `var(--field-rgb)` the way a stylesheet would; it reads the token and wraps
-   it. What makes that safe is that the wrapper carries no number of its own —
-   every channel comes from the token — so the palette still lives in one file.
-   A colour function in a script is therefore a violation only when its
-   arguments contain a numeric literal. */
-test("4a. a script colour function built only from tokens is allowed", () => {
-  const dir = tree({
-    "src/scripts/a.js": [
-      'const rgb = getComputedStyle(el).getPropertyValue("--field-rgb");', // 1 — fine
-      'ctx.fillStyle = "rgb(" + rgb + ")";', // 2 — fine, no number
-      "ctx.fillStyle = `rgb(${rgb})`;", // 3 — fine, no number
-      'ctx.fillStyle = "rgb(" + rgb + " / 0.4)";', // 4 — a number crept in
-      'ctx.fillStyle = "rgba(0, 0, 0, 0.4)";', // 5
-      "",
-    ].join("\n"),
+test("breakpoint literals derive from the actual breakpoint token", () => {
+  passes(
+    "@media(max-width:809.98px){.x{padding:0}} @media(min-width:810px){.x{padding:0}}",
+  );
+  const result = scan({
+    "src/styles/tokens.css": TOKENS.replace(
+      "--bp-mobile:810px",
+      "--bp-mobile:900px",
+    ),
+    "src/styles/a.css": "@media(min-width:810px){.x{padding:0}}",
   });
-  only(dir, ["src/scripts/a.js:4 color", "src/scripts/a.js:5 color"]);
-  rmSync(dir, { recursive: true });
+  assert.ok(rules(result).includes("media"));
 });
-
-/* The same relaxation must not reach CSS, where `var()` is available. */
-test("4b. a stylesheet colour function with no number is still a violation", () => {
-  const dir = tree({
-    "src/styles/a.css": ".a { color: rgb(var(--field-rgb)); }\n",
-  });
-  only(dir, ["src/styles/a.css:1 color"]);
-  rmSync(dir, { recursive: true });
+test("logical dimensions, flex bases, grid tracks and newer CSS units are enforced", () => {
+  for (const prop of [
+    "inline-size",
+    "block-size",
+    "min-inline-size",
+    "max-block-size",
+    "flex-basis",
+    "grid-template-columns",
+  ])
+    for (const unit of ["px", "cqw", "dvh", "rlh"])
+      fails(`.x{${prop}:13${unit}}`, "dimension");
+  passes(
+    ".x{grid-template-columns:repeat(3,minmax(0,1fr));height:100dvh;inline-size:100%;aspect-ratio:723/550}",
+  );
 });
-
-test("5. shadows are violations", () => {
-  const dir = tree({
-    "src/styles/a.css":
-      ".a { box-shadow: 0 0 0 1px var(--line); }\n.b { text-shadow: 0 1px 0 var(--line); }\n.c { filter: drop-shadow(0 1px 0 var(--line)); }\n",
-  });
-  only(dir, [
-    "src/styles/a.css:1 shadow",
-    "src/styles/a.css:2 shadow",
-    "src/styles/a.css:3 shadow",
-  ]);
-  rmSync(dir, { recursive: true });
+test("arithmetic cannot create micro spacing or new fixed dimensions", () => {
+  for (const value of [
+    "calc(var(--space-1)/2)",
+    "calc(var(--space-1) + var(--space-2))",
+    "clamp(0px,var(--space-1),var(--space-2))",
+  ])
+    fails(`.x{padding:${value}}`, "spacing");
+  fails(".x{width:calc(var(--space-1)*5)}", "scale-arithmetic");
+  passes(
+    ".x{margin-inline:calc((100% - 100cqi) / 2);padding-bottom:calc(var(--space-4) + env(safe-area-inset-bottom))}",
+  );
 });
-
-test("6. border-radius other than 50% or 0 is a violation", () => {
-  const dir = tree({
-    "src/styles/a.css":
-      ".a { border-radius: 4px; }\n.b { border-radius: 50%; }\n.c { border-radius: 0; }\n.d { border-radius: 999px; }\n",
-  });
-  only(dir, ["src/styles/a.css:1 radius", "src/styles/a.css:4 radius"]);
-  rmSync(dir, { recursive: true });
+test("all CSS color derivations and named colors are rejected outside tokens", () => {
+  for (const value of [
+    "#fff",
+    "rebeccapurple",
+    "aliceblue",
+    "CanvasText",
+    "rgb(1 2 3)",
+    "color-mix(in srgb,var(--text) 43%,var(--page))",
+    "oklch(from var(--text) .7 c h)",
+  ])
+    fails(`.x{color:${value}}`, "color");
+  passes(".x{color:inherit;background:transparent;fill:currentColor}");
 });
-
-test("7. only the two breakpoint literals are allowed in @media", () => {
-  const dir = tree({
-    "src/styles/a.css": [
-      "@media (max-width: 809.98px) { .a { color: var(--text); } }", // 1 — fine
-      "@media (min-width: 810px) { .a { color: var(--text); } }", // 2 — fine
-      "@media (max-width: 720px) { .a { color: var(--text); } }", // 3
-      "@media (min-width: 810px) and (max-height: 1000px) { .a { color: var(--text); } }", // 4
-      "@media (prefers-reduced-motion: reduce) { .a { color: var(--text); } }", // 5 — fine
-      "@media (hover: hover) and (pointer: fine) { .a { color: var(--text); } }", // 6 — fine
-      "",
-    ].join("\n"),
-  });
-  only(dir, ["src/styles/a.css:3 media", "src/styles/a.css:4 media"]);
-  rmSync(dir, { recursive: true });
+test("border and focus geometry cannot use raw widths or offsets", () => {
+  fails(".x{border:3px solid var(--line)}", "stroke");
+  fails(".x{outline-offset:7px}", "stroke");
+  passes(
+    ".x{outline:var(--focus-width) solid var(--primary);outline-offset:var(--focus-offset)}",
+  );
 });
-
-test("8. only ease-out and the duration tokens may time motion", () => {
-  const dir = tree({
-    "src/styles/a.css": [
-      ".a { transition: color var(--duration) ease-out; }", // 1 — fine
-      ".b { transition: color 150ms ease-out; }", // 2
-      ".c { transition: color var(--duration) ease-in-out; }", // 3
-      ".d { animation: pop 0.3s cubic-bezier(0.2, 0, 0, 1); }", // 4
-      ".e { animation: pop var(--duration-slow) ease-out both; }", // 5 — fine
-      ".f { transition-timing-function: linear; }", // 6
-      "",
-    ].join("\n"),
-  });
-  only(dir, [
-    "src/styles/a.css:2 motion",
-    "src/styles/a.css:3 motion",
-    "src/styles/a.css:4 motion",
-    "src/styles/a.css:6 motion",
-  ]);
-  rmSync(dir, { recursive: true });
+test("circles, endpoint opacity and geometric quarter turns are explicit exceptions", () => {
+  passes(".x{border-radius:50%;opacity:0;transform:rotate(90deg)}");
+  fails(".x{border-radius:4px}", "radius");
+  fails(".x{opacity:.43}", "opacity");
+  fails(".x{transform:translateY(13px)}", "geometry");
 });
-
-test("9. numeric z-index is a violation unless it is 1 in an isolated rule", () => {
-  const dir = tree({
-    "src/styles/a.css": [
-      ".a { z-index: var(--layer-sticky); }", // 1 — fine
-      ".b { isolation: isolate; z-index: 1; }", // 2 — fine
-      ".c { z-index: 1; }", // 3 — no isolation in the rule
-      ".d { z-index: -1; }", // 4
-      ".e { z-index: 40; }", // 5
-      ".f { z-index: auto; }", // 6 — fine
-      "",
-    ].join("\n"),
-  });
-  only(dir, [
-    "src/styles/a.css:3 z-index",
-    "src/styles/a.css:4 z-index",
-    "src/styles/a.css:5 z-index",
-  ]);
-  rmSync(dir, { recursive: true });
+test("shadows, font face, Crimson and motion literals remain prohibited", () => {
+  fails(".x{box-shadow:0 1px 2px var(--text)}", "shadow");
+  fails("@font-face{font-family:x;src:url(x)}", "font-face");
+  fails('.x{font-family:"Crimson Text"}', "crimson");
+  fails(".x{transition:color 150ms ease-out}", "motion");
+  fails(".x{transition:color var(--duration) linear}", "motion");
+  passes(".x{transition:color var(--duration) ease-out}");
 });
-
-test("10. scripts may read only the four allowed tokens", () => {
-  const dir = tree({
-    "src/scripts/a.js": [
-      'cs.getPropertyValue("--duration");', // 1 — fine
-      "cs.getPropertyValue('--duration-slow');", // 2 — fine
-      'cs.getPropertyValue("--field-rgb");', // 3 — fine
-      'cs.getPropertyValue("--field-gain");', // 4 — fine
-      'cs.getPropertyValue("--accent");', // 5
-      "",
-    ].join("\n"),
-  });
-  only(dir, ["src/scripts/a.js:5 js-token"]);
-  rmSync(dir, { recursive: true });
+test("local numeric layering requires isolation and only permits layer one", () => {
+  passes(".x{isolation:isolate;z-index:1}");
+  fails(".x{z-index:1}", "z-index");
+  fails(".x{isolation:isolate;z-index:40}", "z-index");
 });
-
-test("11. code under public/ outside .archive/ is a violation", () => {
-  const dir = tree({
-    "public/styles.css": "body { color: var(--text); }\n",
-    "public/components/a.js": "export default 1;\n",
-    "public/components/a.jsx": "export default 1;\n",
-    "public/experiments/index.html": "<p>hi</p>\n",
-    "public/.archive/styles.css": "body { color: #fff; }\n",
-    "public/assets/logo.svg": "<svg/>\n",
-  });
-  only(dir, [
-    "public/components/a.js:1 public-code",
-    "public/components/a.jsx:1 public-code",
-    "public/experiments/index.html:1 public-code",
-    "public/styles.css:1 public-code",
-  ]);
-  rmSync(dir, { recursive: true });
-});
-
-test("12. only the eight type roles may appear in markup", () => {
-  const dir = tree({
-    "src/pages/a.astro": [
-      '<h1 class="type-display">a</h1>', // 1 — fine
-      '<h2 class="type-section">a</h2>', // 2 — fine
-      '<h3 class="type-title">a</h3>', // 3 — fine
-      '<p class="type-support">a</p>', // 4 — fine
-      '<p class="type-label">a</p>', // 5 — fine
-      '<p class="type-body">a</p>', // 6 — fine
-      '<p class="type-body-small">a</p>', // 7 — fine
-      '<p class="type-meta">a</p>', // 8 — fine
-      '<p class="type-quote">a</p>', // 9
-      '<p class="type-body type-caps">a</p>', // 10
-      "",
-    ].join("\n"),
-  });
-  only(dir, ["src/pages/a.astro:9 type-class", "src/pages/a.astro:10 type-class"]);
-  rmSync(dir, { recursive: true });
-});
-
-test("13. @font-face outside tokens.css and any mention of Crimson Text", () => {
-  const dir = tree({
-    "src/styles/a.css": [
-      "@font-face {", // 1
-      '  font-family: "Crimson Text";', // 2 — crimson, and a font literal
-      '  src: url("/assets/crimson-text-regular.woff2") format("woff2");', // 3 — crimson
-      "}",
-      "",
-    ].join("\n"),
-    "src/styles/tokens.css": "@font-face { font-family: x; }\n",
-  });
-  const found = scanTree(dir).map((v) => `${v.file}:${v.line} ${v.rule}`);
-  assert.ok(found.includes("src/styles/a.css:1 font-face"));
-  assert.ok(found.includes("src/styles/a.css:2 crimson"));
-  assert.ok(found.includes("src/styles/a.css:3 crimson"));
+test("Astro and HTML inline style attributes are parsed as declarations", () => {
+  for (const ext of ["astro", "html", "mdx"])
+    assert.ok(
+      rules(
+        scan({
+          [`src/pages/a.${ext}`]:
+            '<p class="type-body" style="padding:\n13px">Hi</p>',
+        }),
+      ).includes("spacing"),
+    );
   assert.ok(
-    !found.some((f) => f.startsWith("src/styles/tokens.css")),
-    "tokens.css may declare @font-face",
+    rules(
+      scan({
+        "src/pages/a.astro": '<p class="type-body" style={styles}>Hi</p>',
+      }),
+    ).includes("dynamic-style"),
   );
-  rmSync(dir, { recursive: true });
 });
-
-test("14. spacing and size literals are violations", () => {
-  const dir = tree({
-    "src/styles/a.css": [
-      ".a { padding: 28px; }", // 1
-      ".b { margin: 0 auto; }", // 2 — fine
-      ".c { gap: var(--space-2); }", // 3 — fine
-      ".d { max-width: 940px; }", // 4
-      ".e { width: 100%; height: auto; }", // 5 — fine
-      ".f { inset: 0; }", // 6 — fine
-      ".g { padding: calc(var(--space-2) + 4px); }", // 7
-      ".h { max-width: calc(var(--shell) - var(--gutter)); }", // 8 — fine
-      ".i { min-height: 100vh; }", // 9
-      "",
-    ].join("\n"),
-  });
-  only(dir, [
-    "src/styles/a.css:1 spacing",
-    "src/styles/a.css:4 spacing",
-    "src/styles/a.css:7 spacing",
-    "src/styles/a.css:9 spacing",
-  ]);
-  rmSync(dir, { recursive: true });
-});
-
-test("15. an unlisted violation fails and a listed one passes", () => {
-  const dir = tree({ "src/styles/a.css": ".a { color: #fff; }\n" });
-  const found = scanTree(dir);
-
-  const bare = compareToSeed(found, []);
-  assert.equal(bare.ok, false);
-  assert.equal(bare.unlisted.length, 1);
-
-  const seeded = compareToSeed(found, readSeed(serializeSeed(found)));
-  assert.equal(seeded.ok, true, seeded.summary);
-  rmSync(dir, { recursive: true });
-});
-
-test("16. a stale seed entry fails", () => {
-  const dir = tree({ "src/styles/a.css": ".a { color: var(--text); }\n" });
-  const seed = readSeed(
-    serializeSeed([
-      { file: "src/styles/a.css", line: 1, rule: "color", text: "#fff" },
-    ]),
+test("type owners need one role; inline descendants can inherit", () => {
+  assert.deepEqual(
+    scan({
+      "src/pages/a.astro": '<p class="type-body">Hi <strong>there</strong></p>',
+    }),
+    [],
   );
-  const result = compareToSeed(scanTree(dir), seed);
-  assert.equal(result.ok, false);
-  assert.equal(result.stale.length, 1);
-  rmSync(dir, { recursive: true });
+  assert.ok(
+    rules(scan({ "src/pages/a.astro": "<p>Hi</p>" })).includes(
+      "type-role-missing",
+    ),
+  );
+  assert.ok(
+    rules(
+      scan({ "src/pages/a.astro": '<p class="type-body type-title">Hi</p>' }),
+    ).includes("type-role-count"),
+  );
+  assert.ok(
+    rules(
+      scan({ "src/pages/a.astro": '<p class="type-made-up">Hi</p>' }),
+    ).includes("type-class"),
+  );
+});
+test("new components require approval, dormant role omissions are checked on import", () => {
+  assert.ok(
+    rules(
+      scan({ "src/components/New.astro": '<p class="type-body">Hi</p>' }),
+    ).includes("component-registry"),
+  );
+  assert.deepEqual(
+    scan({ "src/components/Figure.astro": "<figcaption>Caption</figcaption>" }),
+    [],
+  );
+  assert.ok(
+    rules(
+      scan({
+        "src/components/Figure.astro": "<figcaption>Caption</figcaption>",
+        "src/pages/a.astro":
+          '---\nimport Figure from "../components/Figure.astro";\n---\n<Figure />',
+      }),
+    ).includes("type-role-missing"),
+  );
+});
+test("JS, JSX and TSX style writes cannot bypass value enforcement", () => {
+  for (const ext of ["js", "jsx", "tsx"])
+    assert.ok(
+      rules(
+        scan({ [`src/scripts/a.${ext}`]: 'element.style.padding="13px";' }),
+      ).includes("spacing"),
+    );
+  assert.ok(
+    rules(
+      scan({
+        "src/components/New.tsx":
+          'export const X=()=> <p style={{padding:"13px"}}>Hi</p>',
+      }),
+    ).includes("spacing"),
+  );
+  assert.ok(
+    rules(
+      scan({ "src/scripts/a.js": "element.style.padding=arbitrary;" }),
+    ).includes("runtime-style"),
+  );
+});
+test("runtime exemptions are restricted to named file and property pairs", () => {
+  assert.deepEqual(
+    scan({
+      "src/scripts/prototype-card-stack.js":
+        'element.style.transform="translateX(18px)";',
+    }),
+    [],
+  );
+  assert.ok(
+    rules(
+      scan({
+        "src/scripts/prototype-card-stack.js": 'element.style.padding="13px";',
+      }),
+    ).includes("spacing"),
+  );
+  assert.ok(
+    rules(
+      scan({
+        "src/scripts/a.js": 'element.style.transform="translateX(18px)";',
+      }),
+    ).includes("geometry"),
+  );
+  assert.ok(
+    rules(
+      scan({ "src/scripts/a.js": 'cs.getPropertyValue("--accent");' }),
+    ).includes("js-token"),
+  );
+  assert.deepEqual(
+    scan({
+      "src/scripts/prototype-card-stack.js":
+        'cs.getPropertyValue("--stack-swap-duration");cs.getPropertyValue("--stack-easing");',
+    }),
+    [],
+  );
+});
+test("generated template markup enforces roles", () => {
+  assert.ok(
+    rules(
+      scan({ "src/scripts/a.js": "const html=`<p>${name}</p>`;" }),
+    ).includes("type-role-missing"),
+  );
+});
+test("public code is rejected while archived assets are skipped", () => {
+  assert.ok(rules(scan({ "public/a.js": "x" })).includes("public-code"));
+  assert.deepEqual(
+    scan({ "public/.archive/a.js": "x", "public/assets/a.svg": "<svg/>" }),
+    [],
+  );
+});
+test("token snapshot catches added names, changed values and scope changes", () => {
+  const contract = tokenSnapshot(TOKENS);
+  assert.deepEqual(compareContract(TOKENS, contract), []);
+  for (const changed of [
+    TOKENS.replace("12px", "13px"),
+    TOKENS + "\n:root{--new-space:13px}",
+    TOKENS.replace(":root", ".new-scope"),
+  ])
+    assert.ok(compareContract(changed, contract).length);
+  assert.ok(
+    rules(
+      scan(
+        { "src/styles/tokens.css": TOKENS.replace("12px", "13px") },
+        { contract },
+      ),
+    ).includes("token-approval"),
+  );
+});
+test("tokens themselves must reference existing definitions", () => {
+  assert.ok(
+    rules(
+      scan({
+        "src/styles/tokens.css": TOKENS + "\n:root{--alias:var(--missing)}",
+      }),
+    ).includes("token-reference"),
+  );
+});
+test("legacy seed comparison still detects extra counts and stale entries", () => {
+  const violation = { file: "src/a.css", line: 1, rule: "color", text: "#fff" };
+  const seed = readSeed(serializeSeed([violation]));
+  assert.equal(compareToSeed([violation], seed).ok, true);
+  assert.equal(compareToSeed([violation, violation], seed).ok, false);
+  assert.equal(compareToSeed([], seed).ok, false);
+});
+test("--write cannot bless new violations or token changes", () =>
+  assert.equal(main(["--write"]), 1));
+test("real source matches the reviewed contract with no seed exemptions", () => {
+  assert.deepEqual(
+    readSeed(
+      readFileSync(new URL("./token-violations.txt", import.meta.url), "utf8"),
+    ),
+    [],
+  );
+  const found = scanTree(root);
+  assert.deepEqual(
+    found,
+    [],
+    found.map((v) => `${v.file}:${v.line} ${v.rule} ${v.text}`).join("\n"),
+  );
 });
 
-test("17. the real src/ and public/ pass against the seeded file", () => {
-  const found = scanTree(repoRoot);
-  const seed = readSeed(null, join(repoRoot, "scripts/token-violations.txt"));
-  const result = compareToSeed(found, seed);
-  assert.equal(result.ok, true, result.summary);
+test("primitive scales cannot be rebound locally, even to another valid scale token", () => {
+  for (const declaration of [
+    "--space-1:var(--space-2)",
+    "--type-body:var(--type-title)",
+    "--opacity-disabled:var(--opacity-muted)",
+    "--border-width:var(--focus-width)",
+  ])
+    fails(`.x{${declaration}}`, "token-provenance");
+});
+test("opacity and stroke arithmetic cannot synthesize intermediate values", () => {
+  fails(".x{opacity:calc(var(--opacity-disabled)*.99)}", "opacity");
+  fails(".x{border-width:calc(var(--border-width)*3)}", "scale-arithmetic");
+});
+test("a percentage does not excuse unrelated token arithmetic", () => {
+  for (const expression of [
+    "calc(100% + var(--space-1)/7)",
+    "min(calc(var(--shell)/3),100%)",
+    "calc((100% - var(--space-2)*2)/3)",
+  ])
+    fails(`.x{width:${expression}}`, "scale-arithmetic");
+});
+test("authored icon dimensions are controlled while intrinsic image attributes remain valid", () => {
+  assert.ok(
+    rules(
+      scan({
+        "src/pages/a.astro":
+          '<svg width="14" height="14" viewBox="0 0 24 24"><path d="M0 0" /></svg>',
+      }),
+    ).includes("icon-dimension"),
+  );
+  assert.deepEqual(
+    scan({
+      "src/pages/a.astro":
+        '<img width="723" height="550" src="a.png" alt="" />',
+    }),
+    [],
+  );
+});
+test("nontrivial transform scale is not a geometry exception", () => {
+  fails(".x{transform:scale(.95)}", "geometry");
+  fails(".x{transform:translate(var(--text))}", "geometry-category");
+  passes(".x{transform:scale(1)}");
+});
+test("computed style properties, cssText, Object.assign and style attributes are checked", () => {
+  for (const source of [
+    'element.style["padding"]="13px";',
+    'element["style"].padding="13px";',
+    'element.style.cssText="padding:13px";',
+    'Object.assign(element.style,{padding:"13px"});',
+    'element.setAttribute("style","padding:13px");',
+  ])
+    assert.ok(
+      rules(scan({ "src/scripts/a.js": source })).includes("spacing"),
+      source,
+    );
+  for (const source of [
+    "element.style[property]=value;",
+    "element.style.cssText=value;",
+    "Object.assign(element.style,styles);",
+    'element.setAttribute("style",styles);',
+  ])
+    assert.ok(
+      rules(scan({ "src/scripts/a.js": source })).includes("runtime-style"),
+      source,
+    );
+});
+test("runtime token exceptions are scoped and duration helpers cannot read new tokens", () => {
+  assert.ok(
+    rules(
+      scan({ "src/scripts/a.js": 'cs.getPropertyValue("--stack-easing");' }),
+    ).includes("js-token"),
+  );
+  assert.ok(
+    rules(
+      scan({
+        "src/scripts/keys.js":
+          'function duration(name){return cs.getPropertyValue(name)};duration("--text");',
+      }),
+    ).includes("dynamic-token-read"),
+  );
+  assert.deepEqual(
+    scan({
+      "src/scripts/keys.js":
+        'function duration(name){return cs.getPropertyValue(name)};duration("--duration");',
+    }),
+    [],
+  );
+});
+
+test("CSS comments cannot hide missing references or literal fallbacks", () => {
+  fails(".x{padding:var(/* hidden */--missing)}", "token-reference");
+  fails(".x{padding:var(--space-1 /* hidden */,13px)}", "token-fallback");
+});
+test("shorthand dimensions and standalone transform properties follow the same scale rules", () => {
+  fails(".x{flex:0 0 13px}", "dimension");
+  fails(".x{scale:.95}", "geometry");
+  fails(".x{filter:opacity(.43)}", "filter");
+  fails(".x{scroll-padding:13px}", "spacing");
+  assert.ok(
+    rules(
+      scan({ "src/scripts/a.js": 'element.style="padding:13px";' }),
+    ).includes("spacing"),
+  );
+});
+
+test("measured runtime exceptions do not permit new authored transforms or colors", () => {
+  assert.ok(
+    rules(
+      scan({
+        "src/scripts/egg-gesture.js":
+          "element.style.transform=`translateY(${amount*13}px)`;",
+      }),
+    ).includes("runtime-style"),
+  );
+  assert.ok(
+    rules(
+      scan({ "src/scripts/a.js": 'ctx.fillStyle="rebeccapurple";' }),
+    ).includes("color"),
+  );
+  assert.ok(
+    rules(
+      scan({ "src/scripts/a.js": 'cs["getPropertyValue"]("--accent");' }),
+    ).includes("js-token"),
+  );
+});
+
+test("style object aliases and arbitrary mutation helpers fail closed", () => {
+  for (const source of [
+    'const s=element.style;s.padding="13px";',
+    "mutate(element.style);",
+    "const get=()=>element.style;",
+  ])
+    assert.ok(
+      rules(scan({ "src/scripts/a.js": source })).includes("style-alias"),
+    );
+});
+
+test("removed canvas RGB token is no longer an allowed runtime read", () => {
+  assert.ok(
+    rules(
+      scan({ "src/scripts/field.js": 'cs.getPropertyValue("--field-rgb");' }),
+    ).includes("js-token"),
+  );
+});
+test("numeric WAAPI values and timings require approved motion scope", () => {
+  const source =
+    'element.animate([{opacity:.3},{opacity:1}],{duration:333,easing:"ease-out"});';
+  const found = rules(scan({ "src/scripts/a.js": source }));
+  assert.ok(found.includes("opacity"));
+  assert.ok(found.includes("motion"));
+  assert.deepEqual(scan({ "src/scripts/prototype-card-stack.js": source }), []);
+  assert.deepEqual(
+    scan({
+      "src/scripts/a.js":
+        "const simulation={opacity:.3,duration:333,stiffness:450};",
+    }),
+    [],
+  );
+});
+test("numeric JSX style values cannot bypass CSS token categories", () => {
+  const found = rules(
+    scan({
+      "src/pages/a.tsx":
+        'export const Example=()=> <p className="type-body" style={{opacity:.3,padding:13}}>Hi</p>;',
+    }),
+  );
+  assert.ok(found.includes("opacity"));
+  assert.ok(found.includes("spacing"));
 });

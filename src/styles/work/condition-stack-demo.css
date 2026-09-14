@@ -9,7 +9,7 @@
 
    The Mix accent carries the emphasis the old palette split across four hues,
    but only on structure — the nested-block spine, the drop target, the
-   variable chip, and the invitation. It is one fixed shade in both themes, so
+   variable chip, and the invitation. It follows the case accent in both themes, so
    small text stays on --text and --text-muted, which follow the theme.
    ========================================================================== */
 
@@ -25,7 +25,7 @@ condition-stack-demo {
 
 .condition-demo {
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   background: var(--surface);
 }
 
@@ -33,7 +33,7 @@ condition-stack-demo {
   display: flex;
   min-height: var(--space-6);
   padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
-  border-bottom: 1px solid var(--line);
+  border-bottom: var(--border-width) solid var(--line);
   background: var(--page);
   align-items: center;
   gap: var(--space-2);
@@ -71,7 +71,7 @@ condition-stack-demo {
 }
 
 .condition-demo button:disabled {
-  opacity: 0.34;
+  opacity: var(--opacity-disabled);
   cursor: default;
 }
 
@@ -80,14 +80,14 @@ condition-stack-demo {
 .cs-block:focus-visible,
 .cs-branch:focus-visible,
 .condition-demo__invitation:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
+  outline: var(--focus-width) solid var(--primary);
+  outline-offset: var(--focus-offset);
 }
 
 .condition-demo__reset,
 .condition-demo__cancel {
   padding-inline: var(--space-2);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   background: var(--page);
   color: var(--text);
 }
@@ -102,16 +102,15 @@ condition-stack-demo {
   background: var(--page);
 }
 
-/* Dark in both themes, so it sets --page and --text and lets the rest
-   re-derive. The published version was a yellow sticker with a hard offset
-   shadow; both the hue and the shadow are gone. */
+/* The invitation uses the shared case accent and page foreground pairing. */
 .condition-demo__invitation {
   position: absolute;
   z-index: var(--layer-overlay);
   top: var(--space-6);
   right: 0;
   display: grid;
-  width: min(calc(var(--shell) / 3), 100%);
+  width: fit-content;
+  max-width: 100%;
   min-height: var(--space-5);
   padding: var(--space-2) var(--space-3);
   border: 0;
@@ -124,9 +123,8 @@ condition-stack-demo {
   touch-action: manipulation;
   cursor: pointer;
   gap: var(--space-1);
-  transform: rotate(2deg);
   transform-origin: center;
-  transition: transform var(--duration) ease-out;
+  transition: background-color var(--duration) ease-out, color var(--duration) ease-out;
 }
 
 .condition-demo__invitation strong {
@@ -155,7 +153,7 @@ condition-stack-demo {
   display: flex;
   margin: 0;
   padding: var(--space-1) var(--space-3) var(--space-2);
-  border-top: 1px solid var(--line);
+  border-top: var(--border-width) solid var(--line);
   background: var(--page);
   flex-wrap: wrap;
   gap: var(--space-1) var(--space-3);
@@ -203,20 +201,20 @@ condition-stack-demo {
 .cs-block {
   position: relative;
   min-width: 0;
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   background: var(--page);
 }
 
 .cs-block.is-nested {
   margin: var(--space-1) 0 0 var(--space-3);
-  border-left: 3px solid var(--accent);
+  border-left: var(--border-width) solid var(--accent);
 }
 
 .cs-block__header {
   display: flex;
   min-height: var(--space-5);
   padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2);
-  border-bottom: 1px solid var(--line);
+  border-bottom: var(--border-width) solid var(--line);
   align-items: center;
   gap: var(--space-1);
   justify-content: space-between;
@@ -286,7 +284,7 @@ condition-stack-demo {
 .cs-branch {
   min-width: 0;
   overflow: visible;
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   background: var(--surface);
 }
 
@@ -306,7 +304,7 @@ condition-stack-demo {
   gap: var(--space-1);
 }
 
-/* The accent is one fixed shade in both themes, so it stays on structure —
+/* The accent stays on structure —
    the nested spine, the drop target, the invitation — and never carries small
    text that would fall under contrast on the dark ground. */
 .cs-branch__label {
@@ -331,7 +329,7 @@ condition-stack-demo {
   position: relative;
   min-height: var(--space-5);
   padding: 0 var(--space-1) var(--space-1);
-  border: 1px solid transparent;
+  border: var(--border-width) solid transparent;
   transition: background-color var(--duration) ease-out;
 }
 
@@ -351,7 +349,7 @@ condition-stack-demo {
   min-width: 0;
   min-height: var(--space-5);
   padding: var(--space-1);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   background: var(--page);
   align-items: center;
   gap: var(--space-1);
@@ -404,7 +402,7 @@ condition-stack-demo {
 
 .condition-demo .cs-move-here {
   width: 100%;
-  border: 1px dashed var(--accent);
+  border: var(--border-width) dashed var(--accent);
   background: var(--accent-soft);
 }
 
@@ -414,9 +412,10 @@ condition-stack-demo {
   bottom: var(--space-5);
   left: 0;
   display: grid;
-  width: min(calc(var(--shell) / 4), 100%);
+  width: max-content;
+  max-width: 100%;
   padding: var(--space-1);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   background: var(--page);
 }
 
@@ -437,36 +436,26 @@ condition-stack-demo {
 }
 
 .cs-moving {
-  opacity: 0.48;
+  opacity: var(--opacity-moving);
 }
 
 .cs-dragging {
-  opacity: 0.45;
+  opacity: var(--opacity-moving);
 }
 
-/* A local stack, so the popping element lifts above its siblings without
+/* A local stack, so the entering element lifts above its siblings without
    reaching a page layer. */
-.is-entering {
+.condition-demo .cs-entering {
   isolation: isolate;
-  z-index: 1;
+  z-index: var(--layer-sticky);
   transform-origin: center;
-  animation: condition-pop var(--duration) ease-out;
-  will-change: transform, opacity;
+  animation: condition-enter var(--duration) ease-out;
+  will-change: opacity;
 }
 
-@keyframes condition-pop {
-  0% {
-    opacity: 0;
-    transform: scale(0.94);
-  }
-  68% {
-    opacity: 1;
-    transform: scale(1.015);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+@keyframes condition-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Visually hidden, still announced. Clipped rather than sized to zero, since
@@ -481,7 +470,8 @@ condition-stack-demo {
 /* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
    which stays false on iPadOS while a trackpad drives a cursor. */
 :where(html:not(.is-coarse-pointer)) .condition-demo__invitation:hover {
-  transform: rotate(2deg) translateY(-3px);
+  background: var(--accent-soft);
+  color: var(--text);
 }
 
 :where(html:not(.is-coarse-pointer)) .condition-demo button:hover {
@@ -500,8 +490,7 @@ condition-stack-demo {
     right: auto;
     width: 100%;
     margin: 0 0 var(--space-3);
-    transform: rotate(-1deg);
-  }
+    }
 
   .condition-demo__topbar {
     padding-left: var(--space-2);
@@ -533,14 +522,4 @@ condition-stack-demo {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .condition-demo__invitation {
-    transition: none;
-  }
-
-  .cs-branch__body,
-  .is-entering {
-    animation: none;
-    transition: none;
-  }
-}
+/* Reduced motion is owned by the shared theme safety net. */
