@@ -23,12 +23,12 @@
 .stack-prototype .deck-card p { max-width: var(--measure); text-wrap: pretty; }
 .stack-prototype .deck-card .meta { justify-content: space-between; }
 .stack-prototype .stack-name { color: var(--accent); }
-.stack-prototype .stack-card-foot { display: flex; align-items: center; gap: var(--space-1); justify-content: space-between; margin-top: auto; padding-top: var(--space-3); color: var(--text-muted); }
+.stack-prototype .stack-card-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); justify-content: space-between; margin-top: auto; padding-top: var(--space-3); color: var(--text-muted); }
 .stack-prototype #preview,.stack-prototype .motion-layer { position: absolute; inset: 0; z-index: var(--layer-sticky); }
 .stack-prototype .magnetic-hit { cursor: grab; touch-action: pan-y pinch-zoom; user-select: none; -webkit-user-select: none; }
 .stack-prototype .magnetic-hit[data-dragging] { cursor: grabbing; }
 .stack-prototype .magnetic-card { transform-origin: center center; }
-.stack-prototype .stack-read { --primary: var(--accent); min-height: var(--target-min); touch-action: manipulation; cursor: pointer; }
+.stack-prototype .stack-read { --primary: var(--accent); white-space: nowrap; min-height: var(--target-min); touch-action: manipulation; cursor: pointer; }
 .stack-prototype .stack-help { grid-area: help; margin: var(--space-2) 0 0; color: var(--text-muted); }
 .stack-prototype .stack-status { position: absolute; width: 0; height: 0; overflow: hidden; }
 .stack-prototype .stack-ambient { position: fixed; inset: 0; z-index: var(--stack-ambient-layer); pointer-events: none; }
@@ -54,7 +54,7 @@
 .stack-prototype .stack-shortcuts { display: inline-flex; align-items: center; gap: var(--space-1); min-height: var(--target-min); cursor: pointer; }
 .stack-prototype .stack-shortcuts input { accent-color: var(--primary); }
 
-.stack-prototype .stack-card-foot > span { white-space: nowrap; }
+.stack-prototype .stack-card-foot > span { margin-left: auto; white-space: nowrap; }
 
 .stack-prototype .stack-fallback { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); }
 .stack-prototype .stack-fallback a { display: inline-flex; align-items: center; min-height: var(--target-min); }
