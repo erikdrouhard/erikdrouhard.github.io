@@ -28,8 +28,7 @@
 .stack-prototype .magnetic-hit { cursor: grab; touch-action: pan-y pinch-zoom; user-select: none; -webkit-user-select: none; }
 .stack-prototype .magnetic-hit[data-dragging] { cursor: grabbing; }
 .stack-prototype .magnetic-card { transform-origin: center center; }
-.stack-prototype .stack-read { display: inline-flex; align-items: center; min-height: var(--target-min); touch-action: manipulation; color: var(--accent); font: var(--type-body); text-decoration: none; cursor: pointer; }
-:where(html:not(.is-coarse-pointer)) .stack-prototype .stack-read:hover { text-decoration: underline; }
+.stack-prototype .stack-read { --primary: var(--accent); min-height: var(--target-min); touch-action: manipulation; cursor: pointer; }
 .stack-prototype .stack-help { grid-area: help; margin: var(--space-2) 0 0; color: var(--text-muted); }
 .stack-prototype .stack-status { position: absolute; width: 0; height: 0; overflow: hidden; }
 .stack-prototype .stack-ambient { position: fixed; inset: 0; z-index: var(--stack-ambient-layer); pointer-events: none; }
