@@ -154,6 +154,11 @@ function create(canvas, mode) {
   }
 
   function render() {
+    // The local color study uses the same field, with its animated primary.
+    // Keep the published field's token path and pointer physics unchanged.
+    if (import.meta.env.DEV && (document.body.classList.contains("stack-prototype") || document.body.hasAttribute("data-case-color-prototype"))) {
+      FIELD.color = getComputedStyle(canvas).color;
+    }
     const w = window.innerWidth;
     const h = window.innerHeight;
     ctx.clearRect(0, 0, w, h);
@@ -275,7 +280,11 @@ function create(canvas, mode) {
   }
 
   readTokens();
-  document.addEventListener("themechange", readTokens);
+  function onThemeChange() {
+    readTokens();
+    if (reduce || mode === "off") render();
+  }
+  document.addEventListener("themechange", onThemeChange);
   window.addEventListener("pointermove", onPointerMove);
   window.addEventListener("pointerleave", onPointerLeave);
   window.addEventListener("resize", onResize);
@@ -288,6 +297,10 @@ function create(canvas, mode) {
   return {
     canvas,
     mode,
+    refresh() {
+      readTokens();
+      if (reduce || mode === "off") render();
+    },
     get paused() {
       return paused;
     },
@@ -312,7 +325,7 @@ function create(canvas, mode) {
       paused = false;
       cancelAnimationFrame(raf);
       raf = 0;
-      document.removeEventListener("themechange", readTokens);
+      document.removeEventListener("themechange", onThemeChange);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerleave", onPointerLeave);
       window.removeEventListener("resize", onResize);
@@ -348,7 +361,10 @@ export function initField() {
   // the existing loop alone keeps the drift continuous across a navigation.
   // A paused instance counts as alive: re-initializing one would rebuild the
   // field under an open sheet and leave resumeField() with nothing to resume.
-  if (running && running.canvas === canvas && running.mode === mode) return;
+  if (running && running.canvas === canvas && running.mode === mode) {
+    running.refresh();
+    return;
+  }
 
   stopField();
   running = create(canvas, mode);

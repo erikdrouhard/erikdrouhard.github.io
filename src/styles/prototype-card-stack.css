@@ -1,5 +1,6 @@
 /* THROWAWAY route styling. The current homepage and shared components stay intact. */
-.stack-prototype { overflow-x: clip; isolation: isolate; }
+.stack-prototype { overflow-x: clip; isolation: isolate; transition: --stack-pigment var(--duration-slow) var(--stack-easing); }
+[data-color-dragging] .stack-prototype { transition-duration: var(--stack-blend-duration); transition-timing-function: var(--stack-blend-easing); }
 .stack-prototype .prototype-note { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-1); color: var(--text-muted); margin-bottom: var(--space-4); }
 .stack-prototype .prototype-note a { text-decoration: none; }
 .stack-prototype .stack-layout { display: grid; grid-template-columns: calc(var(--space-6) * 2 + var(--space-4)) minmax(0,1fr); gap: var(--space-3) var(--space-4); align-items: start; }

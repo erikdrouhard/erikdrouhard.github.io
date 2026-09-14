@@ -28,6 +28,10 @@ body {
   z-index: var(--layer-base);
   pointer-events: none;
 }
+/* The local experiment passes a resolved CSS color to the existing canvas. */
+:is(.stack-prototype, [data-case-color-prototype]) #field {
+  color: var(--primary);
+}
 
 /* Base layer like #field, but later in the DOM, so it paints over the canvas
    without a second stacking number. */

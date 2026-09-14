@@ -144,6 +144,7 @@ function notifyState(message){document.getElementById('stack-status').textConten
 function setCaseBlend(from,to,amount=0,dragging=false){
  const mix=Math.max(0,Math.min(1,amount));
  document.documentElement.toggleAttribute('data-color-dragging',dragging);
+ document.body.style.setProperty('--stack-pigment',`color-mix(in oklab, var(--stack-color-${from}) ${(1-mix)*100}%, var(--stack-color-${to}))`);
  document.querySelectorAll('.stack-ambient i').forEach((node,i)=>{
   const weight=from===to?(i===from?1:0):i===from?1-mix:i===to?mix:0;
   node.style.setProperty('--weight',weight);

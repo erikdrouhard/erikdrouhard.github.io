@@ -230,7 +230,27 @@
 
 /* Local card-stack study only. No production path is generated for this page.
    Case identities reuse the website's current accent hues. */
+@property --stack-pigment {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+.stack-prototype,
+[data-case-color-prototype] {
+  /* Dragon Drive tries the site's green family, in the shared accent ramp. */
+  --accent-hue-drive: 153;
+}
+[data-case-color-prototype],
+[data-case-color-prototype] * {
+  --primary: var(--accent);
+}
 .stack-prototype {
+  --stack-color-0: oklch(var(--accent-l) var(--accent-c) var(--accent-hue-verse));
+  --stack-color-1: oklch(var(--accent-l) var(--accent-c) var(--accent-hue-msft));
+  --stack-color-2: oklch(var(--accent-l) var(--accent-c) var(--accent-hue-mix));
+  --stack-color-3: oklch(var(--accent-l) var(--accent-c) var(--accent-hue-drive));
+  --stack-pigment: var(--stack-color-0);
+  --primary: var(--stack-pigment);
   --duration-slow: 480ms;
   --stack-easing: cubic-bezier(.22,.61,.36,1);
   --stack-blend-duration: 100ms;
