@@ -8,7 +8,8 @@ const motion = {
  exitY: -95, exitScale: .96, exitFraction: .7,
  commitOut: 360, commitIn: 300, cancel: 280,
  dragThresholdMin: 80, dragThresholdMax: 140, dragThresholdRatio: .25,
- dragStart: 7, blendLimit: .7, blendRate: .7, recessionScale: .22,
+ dragStart: 7, touchAxisRatio: 1.15, flickMinDistance: 24, flickMinSpeed: .45, flickSampleWindow: 90,
+ blendLimit: .7, blendRate: .7, recessionScale: .22,
  fadeDistance: 6, fadeRate: .52, dragTiltMax: 10, dragTiltGain: .035,
  travelRatio: 1.05, travelExtra: .65, releaseTilt: 13, releaseScale: .9,
  entryOpacity: .45, frontLayer: 5, backingLayer: 4,
@@ -23,7 +24,7 @@ function init() {
  stop();
  if (!document.body.classList.contains('stack-prototype')) return;
  const controller=new AbortController();
- const listen=(target,event,handler)=>target.addEventListener(event,handler,{signal:controller.signal});
+ const listen=(target,event,handler,options={})=>target.addEventListener(event,handler,{...options,signal:controller.signal});
  const cardNodes=[...document.querySelectorAll('.stack-sizer .deck-card')];
  const cards=cardNodes.map(node=>node.innerHTML);
  const caseLinks=cardNodes.map(node=>node.querySelector('.stack-read')?.href);
@@ -45,7 +46,8 @@ function initMagnetic(){
  const front=document.getElementById('preview'),deck=document.querySelector('.deck');
  const hit=deck;hit.classList.add('magnetic-hit');front.classList.add('magnetic-card');
  const fine=matchMedia('(hover: hover) and (pointer: fine)');
- let inside=false,x=0,y=0,frame=0,press=null,drag=null,dragFrame=0;
+ let inside=false,x=0,y=0,frame=0,press=null,drag=null,dragFrame=0,suppressClick=false;
+ const touches=new Set();
  const enabled=()=>fine.matches&&!reduced.matches;
  function paint(){
   frame=0;if(busy||press)return;
@@ -64,13 +66,23 @@ function initMagnetic(){
  }
  function freeze(){const pose=getComputedStyle(front).transform;cancelAnimationFrame(frame);frame=0;front.style.transition='none';front.style.transform='none';front.style.willChange='';return pose}
  function beginDrag(){
-  const pose=freeze(),r=hit.getBoundingClientRect();
+  let takeover=null;
+  // A fresh gesture can take over while the previous card is still settling.
+  // Resolve that selection first so rapid flicks never get dropped by `busy`.
+  if(busy){
+   const target=queued??settlingTarget??active;
+   const incoming=extras.findLast(node=>Number(node.dataset.caseIndex)===target);
+   if(incoming){const style=getComputedStyle(incoming);takeover={pose:style.transform,opacity:Number(style.opacity)}}
+   ++runToken;clearMotion();queued=null;settlingTarget=null;busy=false;settle(target);
+  }
+  const currentPose=freeze(),pose=takeover?.pose??currentPose,r=hit.getBoundingClientRect();
   preserveFocus(active);
   busy=true;++runToken;queued=null;
-  drag={from:active,to:(active+1)%4,dx:0,dy:0,pose,threshold:Math.max(motion.dragThresholdMin,Math.min(motion.dragThresholdMax,Math.min(r.width,r.height)*motion.dragThresholdRatio))};
+  drag={from:active,to:(active+1)%4,dx:0,dy:0,pose,baseOpacity:takeover?.opacity??1,threshold:Math.max(motion.dragThresholdMin,Math.min(motion.dragThresholdMax,Math.min(r.width,r.height)*motion.dragThresholdRatio))};
   drag.out=layer(drag.from,motion.frontLayer);drag.under=layer(drag.to,motion.backingLayer);
-  drag.out.style.transform=pose;drag.under.style.transform=backingPose();
-  front.style.visibility='hidden';hit.dataset.dragging='true';
+  drag.out.style.transform=pose;drag.out.style.opacity=drag.baseOpacity;drag.under.style.transform=backingPose();
+  front.style.visibility='hidden';hit.dataset.dragging='true';suppressClick=true;
+  hit.setPointerCapture(press.id);
  }
  function drawDrag(){
   dragFrame=0;if(!drag)return;
@@ -82,20 +94,31 @@ function initMagnetic(){
   d.scale=1-motion.recessionScale*recession;
   // Keep the ease-in fade, stretched across six times the drag distance.
   const opacityRatio=ratio/motion.fadeDistance;
-  d.opacity=Math.exp(-motion.fadeRate*opacityRatio*opacityRatio);
+  d.opacity=(d.baseOpacity+(1-d.baseOpacity)*progress)*Math.exp(-motion.fadeRate*opacityRatio*opacityRatio);
   d.transform=`translate3d(${d.dx}px,${d.dy}px,0) rotate(${Math.max(-motion.dragTiltMax,Math.min(motion.dragTiltMax,d.dx*motion.dragTiltGain))}deg) ${d.pose==='none'?'':d.pose} scale(${d.scale})`;
   d.out.style.transform=d.transform;
   d.out.style.opacity=d.opacity;
   d.underTransform=backingPose(progress);
   d.under.style.transform=d.underTransform;
  }
+ function sample(e){
+  // Velocity comes from the recent release window, never the whole gesture.
+  // A drag held still before release must not retain an earlier flick's speed.
+  press.samples.push({x:e.clientX,time:e.timeStamp});
+  press.samples=press.samples.filter(point=>e.timeStamp-point.time<=motion.flickSampleWindow);
+ }
  function move(e){
-  track(e);if(!press||press.id!==e.pointerId)return;
+  if(!press||press.id!==e.pointerId)return;
   const dx=e.clientX-press.x,dy=e.clientY-press.y;
+  sample(e);
   if(!drag){
    if(Math.hypot(dx,dy)<motion.dragStart)return;
-   // Let vertical touch movement continue scrolling the page.
-   if(press.type==='touch'&&Math.abs(dy)>Math.abs(dx)){end(e,true);return;}
+   if(press.type==='touch'){
+    // Decide direction before taking capture. Native pan-y and pinch-zoom
+    // remain available, and diagonal movement cannot steal a vertical scroll.
+    if(Math.abs(dy)>Math.abs(dx)*motion.touchAxisRatio){end(e,true);return;}
+    if(Math.abs(dx)<Math.abs(dy)*motion.touchAxisRatio)return;
+   }
    beginDrag();
   }
   drag.dx=dx;drag.dy=dy;
@@ -132,28 +155,60 @@ function initMagnetic(){
  }
  function end(e,cancel=false){
   if(!press||e&&press.id!==e.pointerId)return;
-  const pointer=press.id;press=null;
-  if(drag){const distance=Math.hypot(drag.dx,drag.dy);finishDrag(!cancel&&distance>=drag.threshold)}else schedule();
+  const pointer=press.id;
+  let commit=false;
+  if(drag){
+   if(e&&!cancel){
+    // Include pointerup coordinates: the final movement need not have had its
+    // own pointermove event, particularly on a quick touch release.
+    drag.dx=e.clientX-press.x;drag.dy=e.clientY-press.y;sample(e);
+   }
+   const touch=press.type==='touch';
+   const distance=touch?Math.abs(drag.dx):Math.hypot(drag.dx,drag.dy);
+   const first=press.samples[0],last=press.samples.at(-1);
+   const elapsed=last.time-first.time;
+   const velocity=elapsed>0?(last.x-first.x)/elapsed:0;
+   const flick=touch&&distance>=motion.flickMinDistance&&Math.abs(velocity)>=motion.flickMinSpeed&&Math.sign(velocity)===Math.sign(drag.dx);
+   commit=!cancel&&(distance>=drag.threshold||flick);
+  }
+  press=null;
+  if(drag)finishDrag(commit);else schedule();
   if(hit.hasPointerCapture(pointer))hit.releasePointerCapture(pointer);
  }
+ // Observe all touches, including a second finger landing outside the card.
+ // Cancel the card gesture before the browser handles a pinch.
+ listen(window,'pointerdown',e=>{
+  if(e.pointerType!=='touch')return;
+  touches.add(e.pointerId);
+  if(touches.size>1)end(null,true);
+ },{capture:true});
  listen(hit,'pointerdown',e=>{
-  if(busy||press||reduced.matches||!e.isPrimary||e.button!==0||e.target.closest('a'))return;
-  press={id:e.pointerId,x:e.clientX,y:e.clientY,type:e.pointerType};
-  hit.setPointerCapture(e.pointerId);
+  if(press||reduced.matches||!e.isPrimary||e.button!==0||touches.size>1)return;
+  suppressClick=false;
+  if(e.pointerType!=='touch'&&e.target.closest('a'))return;
+  press={id:e.pointerId,x:e.clientX,y:e.clientY,type:e.pointerType,samples:[{x:e.clientX,time:e.timeStamp}]};
  });
- listen(hit,'pointerenter',track);listen(hit,'pointermove',move);
- listen(hit,'pointerup',e=>end(e));
- listen(hit,'pointercancel',e=>end(e,true));
- listen(hit,'lostpointercapture',e=>end(e,true));
+ listen(hit,'pointerenter',track);listen(hit,'pointermove',track);
+ listen(window,'pointermove',move,{passive:false});
+ listen(window,'pointerup',e=>{touches.delete(e.pointerId);end(e)});
+ listen(window,'pointercancel',e=>{touches.delete(e.pointerId);end(e,true)});
+ // Touch initially captures the child under the finger. Transferring that
+ // implicit capture to the deck emits a bubbling lost event from the child.
+ listen(hit,'lostpointercapture',e=>{if(e.target===hit&&!hit.hasPointerCapture(e.pointerId))end(e,true)});
  listen(hit,'pointerleave',()=>{inside=false;if(!press)schedule()});
+ listen(hit,'click',e=>{
+  // A swipe beginning over the link is still a swipe. Keep an untouched tap
+  // native; suppress only the compatibility click generated by a real drag.
+  if(suppressClick&&e.detail!==0){e.preventDefault();e.stopPropagation();suppressClick=false;}
+ },{capture:true});
  listen(hit,'dragstart',e=>e.preventDefault());
- const cancel=()=>{inside=false;end(null,true);schedule()};
+ const cancel=()=>{inside=false;touches.clear();end(null,true);schedule()};
  listen(window,'blur',cancel);listen(window,'resize',cancel);
  listen(window,'keydown',e=>{if(e.key==='Escape')cancel()});
  listen(document,'visibilitychange',()=>{if(document.hidden)cancel()});
  const disable=()=>{
   cancelAnimationFrame(frame);frame=0;
-  inside=false;const pointer=press?.id;press=null;
+  inside=false;touches.clear();const pointer=press?.id;press=null;
   if(drag){const original=drag.from;drag=null;++runToken;cancelAnimationFrame(dragFrame);dragFrame=0;clearMotion();busy=false;queued=null;settle(original);hit.removeAttribute('data-dragging')}
   if(pointer!==undefined&&hit.hasPointerCapture(pointer))hit.releasePointerCapture(pointer);
   front.style.transition='none';front.style.transform='none';front.style.willChange='';
@@ -180,7 +235,15 @@ function setCaseColor(index){
 }
 function updateTabs(selected=active){setCaseColor(selected);
  document.getElementById('stack-count').textContent=`0${selected+1} / 04`;
-document.querySelectorAll('[data-case-pick]').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.casePick)===selected))}
+document.querySelectorAll('[data-case-pick]').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.casePick)===selected));
+ const rail=document.querySelector('.stack-tabs');
+ if(rail.scrollWidth>rail.clientWidth){
+  const button=picks[selected].getBoundingClientRect(),bounds=rail.getBoundingClientRect();
+  // Reveal the selected item horizontally without moving the page vertically.
+  if(button.left<bounds.left)rail.scrollLeft+=button.left-bounds.left;
+  else if(button.right>bounds.right)rail.scrollLeft+=button.right-bounds.right;
+ }
+}
 function preserveFocus(i){
  const front=document.getElementById('preview');
  if(front.contains(document.activeElement))picks[i].focus({preventScroll:true});

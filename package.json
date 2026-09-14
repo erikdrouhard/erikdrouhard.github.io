@@ -14,9 +14,10 @@
     "verify": "npm run build && npm run check:dist",
     "check:acceptance": "node scripts/check-acceptance.mjs",
     "check:square": "node scripts/check-square-style.mjs",
-    "check:all": "npm test && npm run check:tokens && npm run check:typography && npm run build && npm run check:dist && npm run check:acceptance && npm run check:square",
+    "check:all": "npm test && npm run check:tokens && npm run check:typography && npm run check:touch && npm run build && npm run check:dist && npm run check:acceptance && npm run check:square",
     "check:token-review": "node scripts/check-token-review.mjs",
-    "check:typography": "node scripts/check-typography.mjs"
+    "check:typography": "node scripts/check-typography.mjs",
+    "check:touch": "node scripts/check-card-stack-touch.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
