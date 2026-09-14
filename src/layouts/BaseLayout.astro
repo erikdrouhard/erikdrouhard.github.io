@@ -19,7 +19,7 @@ import monoLatin from "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-
 interface Props {
   title: string;
   description?: string;
-  /** "full" on home / about, "quiet" on reading pages, "off" for a static frame. */
+  /** "full" on homepage layouts, "off" for static inner pages. */
   field?: "full" | "quiet" | "off";
   noindex?: boolean;
   /** Extra class on <body>. Ported case studies use it to scope their CSS,
@@ -38,7 +38,7 @@ interface Props {
 const {
   title,
   description = "Erik Drouhard is an AI Design Engineer specializing in human-agent interaction.",
-  field = "full",
+  field = "off",
   noindex = false,
   bodyClass,
   shell = "default",

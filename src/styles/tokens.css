@@ -68,6 +68,10 @@
   --space-6: 72px;
   --space-7: 112px;
 
+  /* Case-study page gutters and the single inset for editorial containers. */
+  --case-gutter: var(--space-3);
+  --case-inset: var(--space-3);
+  --case-edge: max(var(--case-gutter), calc((100cqi - var(--shell)) / 2 + var(--case-gutter)));
   --feature-card-padding: var(--space-4);
   --target-min: 44px;
   --gutter: var(--space-4);
@@ -214,6 +218,7 @@
    body sizes never move. This is the only place the display roles shift. */
 @media (max-width: 809.98px) {
   :root {
+    --case-gutter: var(--space-2);
     --feature-card-padding: var(--space-3);
     --type-display: var(--display-2);
     --type-section: var(--display-2);

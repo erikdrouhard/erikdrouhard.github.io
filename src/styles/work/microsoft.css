@@ -14,10 +14,11 @@
 .core-ai-page .core-shell {
   width: min(100%, var(--shell));
   margin-inline: auto;
-  padding-inline: var(--gutter);
+  padding-inline: var(--case-gutter);
 }
 
 .core-ai-page .core-main {
+  padding: 0;
   isolation: isolate;
   width: 100%;
   overflow: hidden;
@@ -104,7 +105,7 @@
   display: grid;
   isolation: isolate;
   min-width: 0;
-  padding: var(--space-3);
+  padding: var(--case-inset);
   overflow: hidden;
   border: 1px solid var(--line);
   background: var(--page);
@@ -137,7 +138,7 @@
 .core-ai-page .prototype-loop-track > div {
   display: grid;
   min-height: var(--space-6);
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-1) var(--case-inset);
   border: 1px solid var(--line);
   background: var(--surface);
   column-gap: var(--space-1);
@@ -155,7 +156,7 @@
   position: relative;
   isolation: isolate;
   z-index: 1;
-  padding: var(--space-2);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   background: var(--surface);
   gap: var(--space-1);
@@ -178,13 +179,13 @@
 
 .core-ai-page .snapshot li {
   display: grid;
-  padding: var(--space-3);
+  padding: var(--case-inset);
   gap: var(--space-1);
   align-content: start;
 }
 
 .core-ai-page .snapshot li:first-child {
-  padding-left: var(--space-3);
+  padding-left: var(--case-inset);
 }
 
 .core-ai-page .snapshot li + li {
@@ -228,7 +229,7 @@
 .core-ai-page .recommendation {
   display: grid;
   margin: 0;
-  padding: var(--space-5);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   background: var(--surface);
   gap: var(--space-6);
@@ -255,7 +256,7 @@
 .core-ai-page .recommendation-quote {
   position: relative;
   margin: 0;
-  padding: 0 0 0 var(--space-4);
+  padding: 0 0 0 var(--case-inset);
   border-left: 1px solid var(--accent);
 }
 
@@ -301,7 +302,7 @@
 .core-ai-page .timeline li {
   position: relative;
   display: grid;
-  padding: var(--space-4) 0 var(--space-4) var(--space-4);
+  padding: var(--space-4) 0 var(--space-4) var(--case-inset);
   border-bottom: 1px solid var(--line);
   column-gap: var(--space-3);
   grid-template-columns: 160px minmax(220px, 1fr) minmax(260px, 1.45fr);
@@ -342,7 +343,7 @@
 
 .core-ai-page .pullquote {
   margin-bottom: 0;
-  padding-left: var(--space-3);
+  padding-left: var(--case-inset);
   border-left: 1px solid var(--line);
 }
 
@@ -362,7 +363,7 @@
 }
 
 .core-ai-page .architecture-frame {
-  padding: var(--space-3);
+  padding: var(--case-inset);
 }
 
 .core-ai-page figcaption {
@@ -386,14 +387,14 @@
 
 .core-ai-page .sprint-step,
 .core-ai-page .outcome {
-  padding: var(--space-3);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   background: var(--surface);
 }
 
 .core-ai-page .sprint-step:first-child,
 .core-ai-page .outcome:first-child {
-  padding-left: var(--space-3);
+  padding-left: var(--case-inset);
 }
 
 .core-ai-page .number {
@@ -404,7 +405,7 @@
 .core-ai-page .bridge,
 .core-ai-page .map-of-truth {
   display: grid;
-  padding: var(--space-5);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   background: var(--surface);
   gap: var(--space-5);
@@ -447,12 +448,12 @@
 
 .core-ai-page .system-layer {
   display: grid;
-  padding: var(--space-4);
+  padding: var(--case-inset);
   gap: var(--space-1);
 }
 
 .core-ai-page .system-layer:first-child {
-  padding-left: var(--space-4);
+  padding-left: var(--case-inset);
 }
 
 .core-ai-page .system-layer + .system-layer {
@@ -464,11 +465,11 @@
 }
 
 .core-ai-page .system-arrow {
-  padding: var(--space-2) 0;
+  padding: var(--space-2) var(--case-inset);
   border-top: 1px solid var(--line);
   color: var(--text-muted);
   grid-column: 1 / -1;
-  text-align: center;
+  text-align: left;
 }
 
 .core-ai-page .prototype-grid,
@@ -486,20 +487,20 @@
 /* Public links are a ruled two-column list: a hairline under each row and one
    between the columns. */
 .core-ai-page .public-link {
-  padding: var(--space-4) var(--space-4) var(--space-4) 0;
+  padding: var(--space-4) var(--case-inset) var(--space-4) 0;
   border-bottom: 1px solid var(--line);
 }
 
 .core-ai-page .public-link:nth-child(even) {
   padding-right: 0;
-  padding-left: var(--space-4);
+  padding-left: var(--case-inset);
   border-left: 1px solid var(--line);
 }
 
 /* Prototypes are self-contained cards; the grid gap separates them, so they
    own their full border at every width. */
 .core-ai-page .prototype {
-  padding: var(--space-3);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   background: var(--surface);
 }
@@ -527,7 +528,7 @@
 .core-ai-page .applied-work-link,
 .core-ai-page .scope-note {
   display: grid;
-  padding-left: var(--space-3);
+  padding-left: var(--case-inset);
   border-left: 1px solid var(--line);
   gap: var(--space-1);
 }
@@ -576,6 +577,7 @@
 }
 
 .core-ai-page .core-page-footer {
+  width: 100%;
   padding: var(--space-4) 0 var(--space-5);
 }
 
@@ -645,7 +647,7 @@
 @media (max-width: 809.98px) {
   .core-ai-page .core-shell {
     width: 100%;
-    padding-inline: var(--space-2);
+    padding-inline: var(--case-gutter);
   }
 
   .core-ai-page .hero {
@@ -664,7 +666,7 @@
 
   .core-ai-page .prototype-loop {
     width: 100%;
-    padding: var(--space-3);
+    padding: var(--case-inset);
   }
 
   .core-ai-page .snapshot,
@@ -682,7 +684,7 @@
 
   .core-ai-page .snapshot li,
   .core-ai-page .snapshot li:first-child {
-    padding: var(--space-3);
+    padding: var(--case-inset);
   }
 
   .core-ai-page .snapshot li + li {
@@ -731,12 +733,12 @@
   }
 
   .core-ai-page .recommendation {
-    padding: var(--space-3);
+    padding: var(--case-inset);
     gap: var(--space-4);
   }
 
   .core-ai-page .recommendation-quote {
-    padding: var(--space-3) 0 0;
+    padding: var(--case-inset) 0 0;
     border-top: 1px solid var(--accent);
     border-left: 0;
   }
@@ -747,7 +749,7 @@
   }
 
   .core-ai-page .timeline li {
-    padding-left: var(--space-3);
+    padding-left: var(--case-inset);
     gap: var(--space-1);
   }
 
@@ -764,18 +766,22 @@
   .core-ai-page .outcome,
   .core-ai-page .outcome:first-child,
   .core-ai-page .system-layer,
-  .core-ai-page .system-layer:first-child,
-  .core-ai-page .public-link,
-  .core-ai-page .public-link:nth-child(even) {
-    padding: var(--space-3);
+  .core-ai-page .system-layer:first-child {
+    padding: var(--case-inset);
     border-right: 0;
     border-left: 0;
   }
 
   .core-ai-page .bridge,
   .core-ai-page .map-of-truth {
-    padding: var(--space-3);
+    padding: var(--case-inset);
     gap: var(--space-4);
+  }
+
+  .core-ai-page .public-link,
+  .core-ai-page .public-link:nth-child(even) {
+    padding: var(--space-3) 0;
+    border-left: 0;
   }
 
   .core-ai-page .applied-work {
@@ -803,7 +809,7 @@
 .core-ai-page .core-cta {
   display: flex;
   width: 100%;
-  padding: var(--space-7) max(var(--gutter), calc((100% - var(--shell)) / 2));
+  padding: var(--space-7) var(--case-edge);
   border-top: 1px solid var(--line);
   align-items: flex-start;
   flex-direction: column;
@@ -834,6 +840,6 @@
 
 @media (max-width: 809.98px) {
   .core-ai-page .core-cta {
-    padding: var(--space-6) var(--space-2) var(--space-6);
+    padding: var(--space-6) var(--case-edge);
   }
 }

@@ -29,7 +29,7 @@ case-study-nav[data-offset] {
   width: min(100%, var(--shell));
   min-width: 0;
   margin-inline: auto;
-  padding-inline: var(--space-3);
+  padding-inline: var(--case-gutter);
   gap: var(--space-4);
   overflow-x: auto;
   scrollbar-width: none;
@@ -95,7 +95,7 @@ case-study-nav[data-offset] {
 
   .case-study-nav__inner {
     width: 100%;
-    padding-inline: var(--space-2);
+    padding-inline: var(--case-gutter);
     gap: var(--space-3);
   }
 }

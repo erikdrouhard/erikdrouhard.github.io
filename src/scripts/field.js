@@ -69,6 +69,7 @@ let running = null;
 function create(canvas, mode) {
   const ctx = canvas.getContext("2d");
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const interactive = !reduce && mode === "full";
 
   let cols = 0;
   let rows = 0;
@@ -89,8 +90,7 @@ function create(canvas, mode) {
     { x: -9999, y: -9999, vx: 0, vy: 0, k: 0.11, damp: 0.78, w: 0.38 },
   ];
 
-  // "quiet" reading pages keep the pointer distortion but drop the ambient
-  // gain to 40%, so the field is present without competing with body text.
+  // Legacy "quiet" mode dims ambient motion; only "full" accepts pointers.
   const DIM = mode === "quiet" ? 0.4 : 1;
   const SMOKE_MAX = 0.3 * DIM; // ceiling for the ambient smoke
   const IDLE = 0.02 * DIM; // floor, so the grid never disappears entirely
@@ -150,7 +150,7 @@ function create(canvas, mode) {
 
   function onResize() {
     build();
-    if (reduce) render();
+    if (reduce || mode === "off") render();
   }
 
   function render() {
@@ -285,8 +285,10 @@ function create(canvas, mode) {
     if (reduce || mode === "off") render();
   }
   document.addEventListener("themechange", onThemeChange);
-  window.addEventListener("pointermove", onPointerMove);
-  window.addEventListener("pointerleave", onPointerLeave);
+  if (interactive) {
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerleave", onPointerLeave);
+  }
   window.addEventListener("resize", onResize);
 
   build();
@@ -353,9 +355,9 @@ export function initField() {
     stopField();
     return;
   }
-  // data-field is read fresh every page-load: home and the work index run
-  // "full", case studies run "quiet".
-  const mode = document.body.dataset.field || "full";
+  // Read the mode on every navigation: homepage layouts opt into "full";
+  // inner pages retain the static texture without pointer interaction.
+  const mode = document.body.dataset.field || "off";
 
   // Same canvas element and same mode means the swap did not touch us; leaving
   // the existing loop alone keeps the drift continuous across a navigation.

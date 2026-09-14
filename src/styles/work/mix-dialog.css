@@ -106,7 +106,7 @@
   position: relative;
   display: grid;
   min-width: 0;
-  padding: var(--space-1);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   background: var(--page);
   color: var(--text);
@@ -180,7 +180,7 @@
 }
 
 .mix-callout {
-  padding: var(--space-3);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   border-left: 3px solid var(--accent);
   background: var(--surface);
@@ -203,7 +203,7 @@
 .mix-three-column > div,
 .mix-four-column > div {
   min-width: 0;
-  padding: var(--space-3);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   background: var(--surface);
 }
@@ -245,7 +245,7 @@
 
 .mix-action-list > article {
   display: grid;
-  padding: var(--space-3);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   background: var(--surface);
   gap: var(--space-3);
@@ -348,7 +348,7 @@
   --accent-c: var(--accent-c-dark);
   display: grid;
   min-width: 0;
-  padding: var(--space-1);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   background: var(--page);
   color: var(--text);
@@ -397,7 +397,7 @@
   display: grid;
   container-type: inline-size;
   min-width: 0;
-  padding: var(--space-3);
+  padding: var(--case-inset);
   gap: var(--space-1);
 }
 
@@ -423,7 +423,7 @@
   display: flex;
   width: 100cqi;
   margin: 0 0 0 calc((100% - 100cqi) / 2);
-  padding: var(--space-7) max(var(--gutter), calc((100cqi - var(--shell)) / 2));
+  padding: var(--space-7) var(--case-edge);
   border-top: 1px solid var(--line);
   align-items: flex-start;
   flex-direction: column;
@@ -454,8 +454,8 @@
 
 @media (max-width: 809.98px) {
   .mix-main {
-    padding-right: var(--space-2);
-    padding-left: var(--space-2);
+    padding-right: var(--case-gutter);
+    padding-left: var(--case-gutter);
   }
 
   .mix-hero {
@@ -525,6 +525,6 @@
   }
 
   .mix-footer {
-    padding: var(--section) var(--space-2);
+    padding: var(--section) var(--case-edge);
   }
 }

@@ -121,6 +121,7 @@ a {
 }
 
 .page-shell {
+  container-type: inline-size;
   isolation: isolate;
   display: flex;
   min-height: 100dvh;
@@ -144,7 +145,7 @@ a {
 .case-page .page-shell > .back-row,
 .case-page .page-shell > .site-footer {
   width: min(100%, var(--shell));
-  padding-inline: var(--space-3);
+  padding-inline: var(--case-gutter);
 }
 
 /* .page-shell centres its children, so without the page measure above the back
@@ -179,7 +180,7 @@ a {
   z-index: var(--layer-base);
   display: flex;
   width: min(100%, var(--shell));
-  padding: 0 var(--space-3) var(--space-4);
+  padding: 0 var(--case-gutter) var(--space-4);
   flex-direction: column;
   align-items: center;
 }
@@ -227,7 +228,7 @@ h1 a:focus-visible {
 @media (max-width: 809.98px) {
   .site-main {
     width: 100%;
-    padding: 0 var(--space-2) var(--space-2);
+    padding: 0 var(--case-gutter) var(--space-2);
   }
 
   .content {
@@ -238,12 +239,12 @@ h1 a:focus-visible {
   .case-page .page-shell > .site-nav {
     width: 100%;
     min-height: var(--space-5);
-    padding: var(--space-2) var(--space-2) 0;
+    padding: var(--space-2) var(--case-gutter) 0;
   }
 
   .case-page .page-shell > .back-row {
     width: 100%;
-    padding-inline: var(--space-2);
+    padding-inline: var(--case-gutter);
   }
 
   .case-page .page-shell > .site-footer {

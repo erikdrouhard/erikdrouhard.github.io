@@ -181,7 +181,7 @@
 .drive-context > div {
   display: grid;
   min-width: 0;
-  padding: var(--space-3);
+  padding: var(--case-inset);
   gap: var(--space-1);
   align-content: start;
 }
@@ -266,7 +266,7 @@
 .drive-moments article {
   display: grid;
   min-width: 0;
-  padding: var(--space-3);
+  padding: var(--case-inset);
   gap: var(--space-1);
 }
 
@@ -299,7 +299,7 @@
 
   display: grid;
   min-width: 0;
-  padding: var(--space-3);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   background: var(--page);
   color: var(--text);
@@ -313,7 +313,7 @@
   display: grid;
   min-width: 0;
   min-height: var(--space-7);
-  padding: var(--space-3);
+  padding: var(--case-inset);
   border: 1px solid var(--line);
   background: var(--surface);
   gap: var(--space-1);
@@ -337,7 +337,7 @@
 
 .drive-callout {
   max-width: var(--measure);
-  padding-left: var(--space-3);
+  padding-left: var(--case-inset);
   border-left: 1px solid var(--accent);
   color: var(--text);
 }
@@ -354,7 +354,7 @@
 .drive-translation-flow li {
   display: grid;
   min-width: 0;
-  padding: var(--space-4);
+  padding: var(--case-inset);
   border-bottom: 1px solid var(--line);
   gap: var(--space-1);
   align-content: start;
@@ -377,7 +377,7 @@
 .drive-role-note {
   display: grid;
   max-width: var(--measure);
-  padding: var(--space-4);
+  padding: var(--case-inset);
   border: 1px solid var(--accent);
   background: var(--accent-soft);
   gap: var(--space-1);
@@ -411,7 +411,7 @@
   /* Preserve the section's row gap below the video caption. The showcase's
      zero bottom padding still keeps this panel flush with the footer below. */
   margin-left: calc((100% - 100cqi) / 2);
-  padding: var(--space-6) max(var(--gutter), calc((100cqi - var(--shell)) / 2))
+  padding: var(--space-6) var(--case-edge)
     var(--space-7);
   overflow: hidden;
   background: var(--page);
@@ -471,7 +471,7 @@
   display: grid;
   width: 100cqi;
   margin-left: calc((100% - 100cqi) / 2);
-  padding: var(--space-7) max(var(--gutter), calc((100cqi - var(--shell)) / 2))
+  padding: var(--space-7) var(--case-edge)
     var(--space-7);
   background: var(--accent-soft);
   gap: var(--space-2);
@@ -505,8 +505,8 @@
 
 @media (max-width: 809.98px) {
   .drive-main {
-    padding-right: var(--space-2);
-    padding-left: var(--space-2);
+    padding-right: var(--case-gutter);
+    padding-left: var(--case-gutter);
   }
 
   .drive-hero {
@@ -563,17 +563,17 @@
   }
 
   .drive-callout {
-    padding-left: var(--space-2);
+    padding-left: var(--case-inset);
   }
 
   .drive-role-note {
-    padding: var(--space-3);
+    padding: var(--case-inset);
   }
 
   .drive-outcome,
   .drive-footer {
-    padding-right: var(--space-2);
-    padding-left: var(--space-2);
+    padding-right: var(--case-gutter);
+    padding-left: var(--case-gutter);
   }
 
   .drive-outcome {
