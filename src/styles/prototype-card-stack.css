@@ -38,8 +38,10 @@
 .stack-prototype .deck-card i { --primary: var(--accent); }
 @media (max-width: 809.98px) {
  .stack-prototype .stack-layout { grid-template-columns: minmax(0,1fr); grid-template-areas: "nav" "card" "help"; }
- .stack-prototype .stack-tabs { grid-template-columns: repeat(4,minmax(0,1fr)); gap: var(--space-1); }
- .stack-prototype .stack-tabs button { flex-direction: column; justify-content: flex-start; gap: var(--space-1); padding: var(--space-1); min-width: 0; overflow-wrap: anywhere; }
+ /* Keep case names intact. Narrow screens scroll this rail rather than
+    squeezing labels or expanding the page. */
+ .stack-prototype .stack-tabs { grid-template-columns: repeat(4,minmax(max-content,1fr)); gap: var(--space-1); min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; }
+ .stack-prototype .stack-tabs button { flex-direction: column; justify-content: center; gap: 0; padding: var(--space-1) 0; min-width: var(--target-min); white-space: nowrap; }
 
 }
 @media (prefers-reduced-motion: reduce) {

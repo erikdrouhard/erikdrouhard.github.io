@@ -23,6 +23,8 @@ jobs:
         run: npx playwright install --with-deps chromium
       - run: npm test
       - run: npm run check
+      - name: Verify mobile card navigation and touch gestures
+        run: npm run check:touch
       # Visibility only. Configure required code-owner reviews in GitHub to
       # enforce approval; this editable workflow cannot authorize itself.
       - name: Report design contract changes for review
