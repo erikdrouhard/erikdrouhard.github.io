@@ -10,31 +10,31 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 >
   <main id="main" class="view">
     <div class="back-row">
-      <a class="back" href="/">← Back <kbd data-key="B">B</kbd></a>
+      <a class="back type-meta" href="/">← Back <kbd class="type-meta" data-key="B">B</kbd></a>
     </div>
 
     <div class="work-head">
-      <h2>About Erik</h2>
+      <h1 class="type-display">About Erik</h1>
     </div>
 
     <div class="about-layout">
       <div class="prose">
-        <p>
+        <p class="type-body">
           I’m Erik, a designer and engineer. I live in <a
             href="https://www.worcesterma.gov/">Worcester, MA</a
           > with my wife Becca and our cat Star.
         </p>
 
-        <p class="lead">I make intelligent systems understandable, predictable, and useful.</p>
+        <p class="lead type-body">I make intelligent systems understandable, predictable, and useful.</p>
 
-        <p>
+        <p class="type-body">
           At <a href="/work/microsoft/">Microsoft CoreAI</a>, I design and build prototyping tools
           for <a href="https://ai.azure.com/">Microsoft Foundry</a> and Azure portals. They give
           design, research, product, and engineering teams a shared way to test AI product behavior
           as working software and make decisions without waiting on the production repo.
         </p>
 
-        <p>
+        <p class="type-body">
           Over the past <strong>15+ years</strong>, I've designed interfaces for conversational AI,
           developer tools, and automotive systems. At Nuance, I led UI and interaction design for a
           Dragon Drive <a href="https://www.youtube.com/watch?v=ITQPxzKxsuQ&t=232s"
@@ -44,12 +44,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           complex conversational behavior.
         </p>
 
-        <p>
+        <p class="type-body">
           I later led the strategy and architecture of <a href="/work/verse-design-system/">Verse</a
           >, the shared design system for Mix and the surrounding platform.
         </p>
 
-        <p class="lead">I prototype to think.</p>
+        <p class="lead type-body">I prototype to think.</p>
       </div>
 
       {/* The portrait is served from this repo. The old hashed www.erikdrouhard.com
@@ -67,8 +67,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
 
     <div class="about-actions">
-      <a class="btn primary" href="mailto:erikdrouhard@gmail.com"
-        >Get in touch <kbd data-key="C">C</kbd></a
+      <a class="btn primary type-label" href="mailto:erikdrouhard@gmail.com"
+        >Get in touch <kbd class="type-meta" data-key="C">C</kbd></a
       >
     </div>
 
@@ -79,7 +79,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       aria-label="View the work"
     >
       <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
-      <p class="close-line type-title">View the work →</p>
+      <h2 class="close-line type-section">View the work →</h2>
     </a>
   </main>
 
@@ -96,14 +96,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       hidden section — the About page reads exactly as it always did.
   */}
   <div class="egg-pocket" slot="after-footer">
-    <button type="button" class="egg-play">Play</button>
+    <button type="button" class="egg-play type-meta">Play</button>
   </div>
   <div class="egg-scrim" aria-hidden="true" slot="overlay"></div>
   <section class="egg-sheet" hidden aria-label="Block breaker" slot="overlay">
     <header class="egg-bar">
-      <span class="egg-title">Blocks</span>
-      <p class="egg-status" aria-live="polite"></p>
-      <button type="button" class="egg-close">Close</button>
+      <span class="egg-title type-meta">Blocks</span>
+      <p class="egg-status type-meta" aria-live="polite"></p>
+      <button type="button" class="egg-close type-meta">Close</button>
     </header>
     <canvas
       class="egg-canvas"

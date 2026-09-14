@@ -14,8 +14,8 @@
      RELEASE   past THRESHOLD, direct manipulation hands off to a spring with
                an initial velocity kick. It overshoots and settles. If it ever
                reads as a slide rather than a pop, the effect has failed.
-     TAKEOVER  a slower spring lifts the sheet while .shell scales back and the
-               scrim dims. Slower on purpose: heavier things move slower.
+     TAKEOVER  a slower spring lifts the sheet while the
+               scrim dims using the shared opacity token. Slower on purpose: heavier things move slower.
 
    The loop parks itself whenever nothing is moving, so an idle About page
    costs no frames beyond the smoke field.
@@ -53,11 +53,10 @@ const RELEASE_STIFF = 0.22;
 const RELEASE_DAMP = 0.72;
 const SHEET_STIFF = 0.14;
 const SHEET_DAMP = 0.8;
-const SHELL_SCALE = 0.04; // the page behind settles to 0.96
-const SCRIM_MAX = 0.55;
+let scrimMax = 0;
 
 // A line-mode wheel event reports lines, not pixels. Roughly one text line.
-const LINE_HEIGHT = 16;
+let lineHeight = 0;
 
 function stepSpring(s, target, stiffness, damping) {
   s.v = (s.v + (target - s.x) * stiffness) * damping;
@@ -71,7 +70,7 @@ const settled = (s, target, eps) =>
 let els = null;
 let pocket = null;
 let scrim = null;
-let peekMax = 88;
+let peekMax = 0;
 let reduce = false;
 
 let pull = 0;
@@ -119,8 +118,7 @@ function draw() {
   }
   const t = sheet.x / 100;
   els.sheet.style.transform = `translateY(${100 - sheet.x}%)`;
-  els.shell.style.transform = `scale(${1 - t * SHELL_SCALE})`;
-  if (scrim) scrim.style.opacity = String(t * SCRIM_MAX);
+  if (scrim) scrim.style.opacity = String(t * scrimMax);
 }
 
 function tick() {
@@ -194,6 +192,9 @@ export function initGesture(elements, _api) {
   pocket = els.play.closest(".egg-pocket") || els.play.parentElement;
   scrim = document.querySelector(".egg-scrim");
   measure();
+  const style = getComputedStyle(document.body);
+  scrimMax = Number.parseFloat(style.getPropertyValue("--opacity-muted"));
+  lineHeight = Number.parseFloat(style.lineHeight);
 
   reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -220,7 +221,7 @@ export function initGesture(elements, _api) {
       return;
     }
     if (event.deltaY <= 0 || !atBottom()) return;
-    const px = event.deltaMode === 1 ? event.deltaY * LINE_HEIGHT : event.deltaY;
+    const px = event.deltaMode === 1 ? event.deltaY * lineHeight : event.deltaY;
     addPull(px * WHEEL_GAIN);
     event.preventDefault(); // claim the overscroll
   };

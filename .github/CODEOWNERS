@@ -1,0 +1,22 @@
+# This routes review requests; GitHub branch protection must separately require
+# code-owner approval. A local file or digest cannot establish human approval.
+/src/styles/tokens.css @erikdrouhard
+/scripts/token-contract.json @erikdrouhard
+/scripts/token-contract.sha256 @erikdrouhard
+/scripts/token-policy.mjs @erikdrouhard
+/scripts/check-tokens.mjs @erikdrouhard
+/scripts/check-tokens.test.mjs @erikdrouhard
+/scripts/check-token-review.mjs @erikdrouhard
+/scripts/check-token-review.test.mjs @erikdrouhard
+/scripts/token-violations.txt @erikdrouhard
+/package.json @erikdrouhard
+/package-lock.json @erikdrouhard
+/.github/CODEOWNERS @erikdrouhard
+/.github/workflows/ @erikdrouhard
+
+# Heading/body hierarchy and its runtime enforcement require owner review.
+/scripts/typography-contract.mjs @erikdrouhard
+/scripts/typography-contract.test.mjs @erikdrouhard
+/scripts/check-typography.mjs @erikdrouhard
+/scripts/typography-browser.html @erikdrouhard
+/docs/typography-contract.md @erikdrouhard

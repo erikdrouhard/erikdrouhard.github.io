@@ -11,13 +11,13 @@
    - Handlers are bound in the constructor. The live version bound them inside
      connectedCallback, so a node that was detached and re-attached got fresh
      function identities and addEventListener bound a *second* copy of each.
-   - The deferred work — the is-entering timer and the focus rAF — is
+   - The deferred work — the cs-entering timer and the focus rAF — is
      tracked and cancelled. Both outlive a swap otherwise: the timer keeps a
      detached instance alive for its duration, and the rAF fires against a DOM
      that no longer exists.
    ========================================================================== */
 
-/* The `condition-pop` animation runs for --duration, so the is-entering class
+/* The `condition-enter` animation runs for --duration, so the cs-entering class
    comes off after exactly that long. Reading the token rather than hardcoding
    a number is what makes prefers-reduced-motion work: the media query zeroes
    --duration in tokens.css and this timer collapses with it. */
@@ -184,32 +184,32 @@ class ConditionStackDemo extends HTMLElement {
 
   render(focusId = null) {
     this.innerHTML = `
-      <button class="condition-demo__invitation" id="condition-demo-invitation" type="button" data-command="try-demo">
-        <span class="condition-demo__invitation-kicker">Interactive demo</span>
-        <strong>Try it live <span aria-hidden="true">↘</span></strong>
-        <span>Build, move, and reorder actions.</span>
+      <button class="condition-demo__invitation type-body-small" id="condition-demo-invitation" type="button" data-command="try-demo">
+        <span class="condition-demo__invitation-kicker type-meta">Interactive demo</span>
+        <strong class="type-title">Try it live <span aria-hidden="true">↘</span></strong>
+        <span class="type-body">Build, move, and reorder actions.</span>
       </button>
       <section class="condition-demo" aria-labelledby="condition-demo-title" aria-describedby="condition-demo-invitation">
         <header class="condition-demo__topbar">
           <div class="condition-demo__title">
-            <strong id="condition-demo-title">Account support dialog</strong>
-            <span>Representative interaction model · not production UI</span>
+            <strong class="type-support" id="condition-demo-title">Account support dialog</strong>
+            <span class="type-body-small">Representative interaction model · not production UI</span>
           </div>
           <div class="condition-demo__toolbar">
-            ${this.movingId ? '<button class="condition-demo__cancel" type="button" data-command="cancel-move">Cancel move</button>' : ""}
-            <button class="condition-demo__reset" type="button" data-command="reset">Reset</button>
+            ${this.movingId ? '<button class="condition-demo__cancel type-body-small" type="button" data-command="cancel-move">Cancel move</button>' : ""}
+            <button class="condition-demo__reset type-body-small" type="button" data-command="reset">Reset</button>
           </div>
         </header>
         <div class="condition-demo__canvas">
           ${this.renderBlock(this.root, true)}
         </div>
-        <ul class="condition-demo__legend" aria-label="Action types">
-          <li><i class="is-message">M</i> Message</li>
-          <li><i class="is-variable">V</i> Variable assignment</li>
-          <li><i class="is-event">E</i> Event</li>
-          <li>Else-if branches reorder only within their condition block</li>
+        <ul class="condition-demo__legend type-body-small" aria-label="Action types">
+          <li class="type-body-small"><i class="is-message type-meta">M</i> Message</li>
+          <li class="type-body-small"><i class="is-variable type-meta">V</i> Variable assignment</li>
+          <li class="type-body-small"><i class="is-event type-meta">E</i> Event</li>
+          <li class="type-body-small">Else-if branches reorder only within their condition block</li>
         </ul>
-        <p class="cs-live" aria-live="polite">${this.status || ""}</p>
+        <p class="cs-live type-body-small" aria-live="polite">${this.status || ""}</p>
       </section>`;
 
     cancelAnimationFrame(this.focusFrame);
@@ -228,19 +228,19 @@ class ConditionStackDemo extends HTMLElement {
   }
 
   renderBlock(block, isRoot = false) {
-    const entering = this.enteringId === block.id ? " is-entering" : "";
+    const entering = this.enteringId === block.id ? " cs-entering" : "";
     const moving = this.movingId === block.id ? " cs-moving" : "";
     const dragHandle = isRoot
-      ? '<span class="cs-drag-handle"><span class="cs-grip" aria-hidden="true">••<br>••</span><span>Root condition</span></span>'
-      : `<span class="cs-drag-handle" draggable="true" data-drag-kind="block" data-drag-id="${block.id}" title="Drag the whole condition block"><span class="cs-grip" aria-hidden="true">••<br>••</span><span>Condition block</span></span>`;
+      ? '<span class="cs-drag-handle type-body-small"><span class="cs-grip type-support" aria-hidden="true">••<br>••</span><span>Root condition</span></span>'
+      : `<span class="cs-drag-handle type-body-small" draggable="true" data-drag-kind="block" data-drag-id="${block.id}" title="Drag the whole condition block"><span class="cs-grip type-support" aria-hidden="true">••<br>••</span><span>Condition block</span></span>`;
 
     return `
       <section class="cs-block${isRoot ? "" : " is-nested"}${entering}${moving}" data-focus-id="${block.id}" data-item-id="${block.id}" tabindex="-1">
         <header class="cs-block__header">
-          <div class="cs-block__identity">${dragHandle}<strong>${block.label}</strong></div>
+          <div class="cs-block__identity">${dragHandle}<strong class="type-body-small">${block.label}</strong></div>
           <div class="cs-block__actions">
             ${isRoot ? "" : this.renderItemTools(block.id, "whole condition block")}
-            <button class="cs-add-elseif" type="button" data-command="add-elseif" data-block-id="${block.id}">+ Else if</button>
+            <button class="cs-add-elseif type-body-small" type="button" data-command="add-elseif" data-block-id="${block.id}">+ Else if</button>
           </div>
         </header>
         <div class="cs-branches">
@@ -251,13 +251,13 @@ class ConditionStackDemo extends HTMLElement {
 
   renderBranch(branch, block) {
     const isElseIf = branch.type === "elseif";
-    const entering = this.enteringId === branch.id ? " is-entering" : "";
+    const entering = this.enteringId === branch.id ? " cs-entering" : "";
     const label = branch.type === "elseif" ? "Else if" : branch.type;
     const branchIndex = block.branches.indexOf(branch);
     const elseIfs = block.branches.filter((item) => item.type === "elseif");
     const elseIfIndex = elseIfs.indexOf(branch);
     const branchHandle = isElseIf
-      ? `<span class="cs-drag-handle" draggable="true" data-drag-kind="branch" data-drag-id="${branch.id}" data-block-id="${block.id}" title="Reorder this else-if within its block"><span class="cs-grip" aria-hidden="true">••<br>••</span></span>`
+      ? `<span class="cs-drag-handle type-body-small" draggable="true" data-drag-kind="branch" data-drag-id="${branch.id}" data-block-id="${block.id}" title="Reorder this else-if within its block"><span class="cs-grip type-support" aria-hidden="true">••<br>••</span></span>`
       : "";
 
     return `
@@ -265,12 +265,12 @@ class ConditionStackDemo extends HTMLElement {
         <header class="cs-branch__header">
           <div class="cs-branch__condition">
             ${branchHandle}
-            <span class="cs-branch__label">${label}</span>
-            ${branch.type === "else" ? "" : `<code class="cs-expression">${branch.condition}</code>`}
+            <span class="cs-branch__label type-meta">${label}</span>
+            ${branch.type === "else" ? "" : `<code class="cs-expression type-meta">${branch.condition}</code>`}
           </div>
           ${isElseIf ? `<div class="cs-branch__tools">
-            <button class="cs-tool cs-reorder" type="button" data-command="reorder-branch" data-branch-id="${branch.id}" data-direction="up" aria-label="Move else-if up" ${elseIfIndex === 0 ? "disabled" : ""}>↑</button>
-            <button class="cs-tool cs-reorder" type="button" data-command="reorder-branch" data-branch-id="${branch.id}" data-direction="down" aria-label="Move else-if down" ${elseIfIndex === elseIfs.length - 1 ? "disabled" : ""}>↓</button>
+            <button class="cs-tool cs-reorder type-body-small" type="button" data-command="reorder-branch" data-branch-id="${branch.id}" data-direction="up" aria-label="Move else-if up" ${elseIfIndex === 0 ? "disabled" : ""}>↑</button>
+            <button class="cs-tool cs-reorder type-body-small" type="button" data-command="reorder-branch" data-branch-id="${branch.id}" data-direction="down" aria-label="Move else-if down" ${elseIfIndex === elseIfs.length - 1 ? "disabled" : ""}>↓</button>
           </div>` : ""}
         </header>
         <div class="cs-branch__body" data-branch-id="${branch.id}" data-block-id="${block.id}" data-branch-index="${branchIndex}">
@@ -279,13 +279,13 @@ class ConditionStackDemo extends HTMLElement {
           </div>
           <div class="cs-branch__footer">
             ${this.movingId
-              ? `<button class="cs-move-here" type="button" data-command="move-here" data-branch-id="${branch.id}">Move here</button>`
-              : `<button class="cs-add-trigger" type="button" data-command="toggle-add" data-branch-id="${branch.id}" aria-expanded="false">+ Add action</button>
+              ? `<button class="cs-move-here type-body-small" type="button" data-command="move-here" data-branch-id="${branch.id}">Move here</button>`
+              : `<button class="cs-add-trigger type-body-small" type="button" data-command="toggle-add" data-branch-id="${branch.id}" aria-expanded="false">+ Add action</button>
                 <div class="cs-add-menu" data-add-menu="${branch.id}" hidden>
-                  <button type="button" data-command="add-item" data-kind="message" data-branch-id="${branch.id}"><span class="cs-action__icon is-message">M</span>Message</button>
-                  <button type="button" data-command="add-item" data-kind="variable" data-branch-id="${branch.id}"><span class="cs-action__icon is-variable">V</span>Variable assignment</button>
-                  <button type="button" data-command="add-item" data-kind="event" data-branch-id="${branch.id}"><span class="cs-action__icon is-event">E</span>Event</button>
-                  <button type="button" data-command="add-item" data-kind="block" data-branch-id="${branch.id}"><span class="cs-action__icon is-variable">↳</span>Nested condition block</button>
+                  <button class="type-body-small" type="button" data-command="add-item" data-kind="message" data-branch-id="${branch.id}"><span class="cs-action__icon is-message type-meta">M</span>Message</button>
+                  <button class="type-body-small" type="button" data-command="add-item" data-kind="variable" data-branch-id="${branch.id}"><span class="cs-action__icon is-variable type-meta">V</span>Variable assignment</button>
+                  <button class="type-body-small" type="button" data-command="add-item" data-kind="event" data-branch-id="${branch.id}"><span class="cs-action__icon is-event type-meta">E</span>Event</button>
+                  <button class="type-body-small" type="button" data-command="add-item" data-kind="block" data-branch-id="${branch.id}"><span class="cs-action__icon is-variable type-meta">↳</span>Nested condition block</button>
                 </div>`}
           </div>
         </div>
@@ -293,15 +293,15 @@ class ConditionStackDemo extends HTMLElement {
   }
 
   renderAction(action) {
-    const entering = this.enteringId === action.id ? " is-entering" : "";
+    const entering = this.enteringId === action.id ? " cs-entering" : "";
     const moving = this.movingId === action.id ? " cs-moving" : "";
     const letter = action.type === "message" ? "M" : action.type === "variable" ? "V" : "E";
     return `
       <div class="cs-action is-${action.type}${entering}${moving}" data-focus-id="${action.id}" data-item-id="${action.id}" tabindex="-1">
         <div class="cs-action__content">
-          <span class="cs-drag-handle" draggable="true" data-drag-kind="action" data-drag-id="${action.id}" title="Drag this action"><span class="cs-grip" aria-hidden="true">••<br>••</span></span>
-          <span class="cs-action__icon" aria-hidden="true">${letter}</span>
-          <span class="cs-action__copy"><span>${actionNames[action.type]}</span><code>${action.value}</code></span>
+          <span class="cs-drag-handle type-body-small" draggable="true" data-drag-kind="action" data-drag-id="${action.id}" title="Drag this action"><span class="cs-grip type-support" aria-hidden="true">••<br>••</span></span>
+          <span class="cs-action__icon type-meta" aria-hidden="true">${letter}</span>
+          <span class="cs-action__copy"><span class="type-meta">${actionNames[action.type]}</span><code class="type-meta">${action.value}</code></span>
         </div>
         ${this.renderItemTools(action.id, actionNames[action.type].toLowerCase())}
       </div>`;
@@ -312,9 +312,9 @@ class ConditionStackDemo extends HTMLElement {
     const index = location?.index ?? 0;
     const length = location?.branch.items.length ?? 1;
     return `<div class="cs-item__tools">
-      <button class="cs-tool cs-reorder" type="button" data-command="reorder-item" data-item-id="${id}" data-direction="up" aria-label="Move ${label} up" ${index === 0 ? "disabled" : ""}>↑</button>
-      <button class="cs-tool cs-reorder" type="button" data-command="reorder-item" data-item-id="${id}" data-direction="down" aria-label="Move ${label} down" ${index === length - 1 ? "disabled" : ""}>↓</button>
-      <button class="cs-tool" type="button" data-command="start-move" data-item-id="${id}" aria-label="Move ${label} to another branch">Move</button>
+      <button class="cs-tool cs-reorder type-body-small" type="button" data-command="reorder-item" data-item-id="${id}" data-direction="up" aria-label="Move ${label} up" ${index === 0 ? "disabled" : ""}>↑</button>
+      <button class="cs-tool cs-reorder type-body-small" type="button" data-command="reorder-item" data-item-id="${id}" data-direction="down" aria-label="Move ${label} down" ${index === length - 1 ? "disabled" : ""}>↓</button>
+      <button class="cs-tool type-body-small" type="button" data-command="start-move" data-item-id="${id}" aria-label="Move ${label} to another branch">Move</button>
     </div>`;
   }
 

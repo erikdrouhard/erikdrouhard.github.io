@@ -95,17 +95,11 @@ function create(canvas, mode) {
   const SMOKE_MAX = 0.3 * DIM; // ceiling for the ambient smoke
   const IDLE = 0.02 * DIM; // floor, so the grid never disappears entirely
 
-  /* Pigment and gain both come from CSS, so the field follows the active
-     theme and no colour is written here. --field-rgb is the primary green as
-     a bare triple, because a canvas fill is a string and cannot hold a var();
-     wrapping it keeps every channel in tokens.css. --field-gain is the
-     ambient brightness, which differs per theme because the light-mode green
-     is dark against a pale ground. */
+  /* The resolved primary color is shared with CSS. No duplicated RGB palette. */
   const FIELD = { color: "", gain: 1 };
   function readTokens() {
     const root = getComputedStyle(document.documentElement);
-    const rgb = root.getPropertyValue("--field-rgb").trim();
-    FIELD.color = "rgb(" + rgb + ")";
+    FIELD.color = getComputedStyle(canvas).color;
     FIELD.gain = parseFloat(root.getPropertyValue("--field-gain")) || 1;
   }
 
@@ -154,9 +148,8 @@ function create(canvas, mode) {
   }
 
   function render() {
-    // The local color study uses the same field, with its animated primary.
-    // Keep the published field's token path and pointer physics unchanged.
-    if (import.meta.env.DEV && (document.body.classList.contains("stack-prototype") || document.body.hasAttribute("data-case-color-prototype"))) {
+    // Follow the homepage's animated primary and each case's resolved accent.
+    if (document.body.classList.contains("stack-prototype") || document.body.hasAttribute("data-case-color-prototype")) {
       FIELD.color = getComputedStyle(canvas).color;
     }
     const w = window.innerWidth;

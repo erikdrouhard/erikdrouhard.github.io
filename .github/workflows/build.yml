@@ -12,10 +12,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run check:tokens
+      - name: Install Chromium for computed typography checks
+        run: npx playwright install --with-deps chromium
+      - run: npm test
+      - run: npm run check
+      # Visibility only. Configure required code-owner reviews in GitHub to
+      # enforce approval; this editable workflow cannot authorize itself.
+      - name: Report design contract changes for review
+        if: github.event_name == 'pull_request'
+        env:
+          TOKEN_REVIEW_BASE: ${{ github.event.pull_request.base.sha }}
+        run: npm run check:token-review -- --base "$TOKEN_REVIEW_BASE" --report-only
       - run: npm run build

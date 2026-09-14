@@ -14,10 +14,10 @@ const { title, org, summary, featured } = entry.data;
 <a class:list={["card", { featured }]} href={`/work/${entry.id}/`}>
   <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
   <div class="meta">
-    {featured && <span class="badge">Featured</span>}
-    <span class="org">{org}</span>
+    {featured && <span class="badge type-meta">Featured</span>}
+    <span class="org type-meta">{org}</span>
   </div>
-  <h3>{title}</h3>
-  <p>{summary}</p>
-  <div class="cta">Read case study → <kbd data-key={shortcut}>{shortcut}</kbd></div>
+  <h2 class="type-section">{title}</h2>
+  <p class="type-body">{summary}</p>
+  <div class="cta type-body">Read case study → <kbd class="type-meta" data-key={shortcut}>{shortcut}</kbd></div>
 </a>

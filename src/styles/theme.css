@@ -1,5 +1,5 @@
 /* erikdrouhard.com — theme.css. The site chrome.
-   Values and rules live in DESIGN-SYSTEM.md and tokens.css. */
+   Approved values live in tokens.css; policy lives in docs/design-system-contract.md. */
 
 * {
   box-sizing: border-box;
@@ -19,17 +19,13 @@ body {
   min-height: 100dvh;
 }
 
-/* The canvas carries no colour. field.js reads --field-rgb and --field-gain
-   off the root, which is where the theme swaps them, so the field re-tints
-   without this rule holding a second copy of the palette. */
+/* Both homepage particles and the static inner-page texture read this resolved
+   primary color. There is no second RGB palette to keep synchronized. */
 #field {
   position: fixed;
   inset: 0;
   z-index: var(--layer-base);
   pointer-events: none;
-}
-/* The local experiment passes a resolved CSS color to the existing canvas. */
-:is(.stack-prototype, [data-case-color-prototype]) #field {
   color: var(--primary);
 }
 
@@ -44,8 +40,8 @@ body {
 }
 
 *:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
+  outline: var(--focus-width) solid var(--primary);
+  outline-offset: var(--focus-offset);
 }
 
 a {
@@ -53,9 +49,22 @@ a {
 }
 
 /* ------------------------------------------------------------- type role */
-/* The eight roles are applied in case.css; `.type-meta` lives here because it
-   is the one role the site chrome uses on every page. It is always mono,
-   always uppercase, always tracked out — there is no bare casing modifier. */
+/* All eight roles are available on every route. Structural selectors own
+   layout; roles own typography. Inline emphasis inherits the surrounding role. */
+:root {
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+}
+[data-theme="dark"] { color-scheme: dark; }
+.type-display { font: var(--type-display); text-wrap: balance; }
+.type-section { font: var(--type-section); text-wrap: balance; }
+.type-title { font: var(--type-title); text-wrap: balance; }
+.type-support { font: var(--type-support); }
+.type-label { font: var(--type-label); }
+.type-body { font: var(--type-body); }
+.type-body-small { font: var(--type-body-small); }
 .type-meta {
   font: var(--type-meta);
   text-transform: uppercase;
@@ -65,7 +74,7 @@ a {
 /* ------------------------------------------------------------------- nav */
 /* Class-scoped, not a bare `nav` selector: ported case studies bring their own
    <nav> (the chapter rail) and a bare selector would restyle it. */
-/* Centre, not baseline: the logomark is a 48px block, taller than the text
+/* Centre, not baseline: the logomark uses the 36px scale step, taller than the text
    row, and centring puts the About link and the resume button on its vertical
    midline. Baseline alignment sat them on the mark's bottom edge, which read as
    the row hanging off the logo. */
@@ -103,28 +112,29 @@ a {
 .nav-right :where(a) {
   color: var(--text-muted);
   text-decoration: none;
-  font: var(--type-body);
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
   transition: color var(--duration) ease-out;
 }
-.nav-right :where(a:hover) {
+:where(html:not(.is-coarse-pointer)) .nav-right :where(a:hover) {
   color: var(--text);
 }
-.resume {
+:where(.resume, .btn, .back, .egg-play, .egg-close) {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
   padding: var(--space-1) var(--space-2);
-  border: 1px solid var(--line);
-  color: var(--text);
   background: var(--surface);
+  border: var(--border-width) solid var(--line);
+}
+.resume {
+  color: var(--text);
   transition:
     border-color var(--duration) ease-out,
     background var(--duration) ease-out;
 }
-.resume:hover {
+:where(html:not(.is-coarse-pointer)) .resume:hover {
   border-color: var(--primary);
 }
 
@@ -132,9 +142,9 @@ a {
    the character inside it is already the literal key. */
 kbd {
   font: var(--type-meta);
-  padding: calc(var(--space-1) / 3) calc(var(--space-1) / 2);
+  padding: 0 var(--space-1);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   color: var(--text-muted);
   transition:
     background var(--duration) ease-out,
@@ -149,25 +159,21 @@ kbd.hot {
 
 /* ------------------------------------------------------------------ hero */
 .hero h1 {
-  font: var(--type-display);
   margin: 0 0 var(--space-4);
 }
 .hero h1 a {
   text-decoration: none;
-  border-bottom: 1px solid var(--line);
+  border-bottom: var(--border-width) solid var(--line);
   transition:
     border-color var(--duration) ease-out,
     color var(--duration) ease-out;
 }
-.hero h1 a:hover {
+:where(html:not(.is-coarse-pointer)) .hero h1 a:hover {
   border-color: var(--primary);
   color: var(--primary);
 }
 
 .skills-label {
-  font: var(--type-meta);
-  text-transform: uppercase;
-  letter-spacing: var(--track-caps);
   color: var(--text-muted);
   margin-bottom: var(--space-1);
 }
@@ -177,9 +183,8 @@ kbd.hot {
   gap: var(--space-1);
 }
 .skills span {
-  font: var(--type-meta);
   padding: var(--space-1);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   background: var(--surface);
   color: var(--text-muted);
   transition:
@@ -187,7 +192,7 @@ kbd.hot {
     background var(--duration) ease-out,
     color var(--duration) ease-out;
 }
-.skills span:hover {
+:where(html:not(.is-coarse-pointer)) .skills span:hover {
   border-color: var(--primary);
   color: var(--text);
 }
@@ -200,10 +205,8 @@ kbd.hot {
   cursor: pointer;
 }
 .close-card .close-line {
-  font: var(--type-title);
   color: var(--text);
   margin: 0 0 var(--space-3);
-  max-width: var(--measure-title);
   text-wrap: balance;
 }
 .close-card .close-actions {
@@ -212,25 +215,18 @@ kbd.hot {
   gap: var(--space-1);
 }
 .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1) var(--space-2);
   /* The button carries its own role rather than inheriting it. On the home
      page that is what it would have inherited anyway; on a case study the
      surrounding role is a different size, and without this the same button
      renders at two sizes on two pages. */
-  font: var(--type-label);
   text-decoration: none;
   color: var(--text-muted);
-  background: var(--surface);
-  border: 1px solid var(--line);
   transition:
     border-color var(--duration) ease-out,
     background var(--duration) ease-out,
     color var(--duration) ease-out;
 }
-.btn:hover {
+:where(html:not(.is-coarse-pointer)) .btn:hover {
   border-color: var(--primary);
   color: var(--text);
 }
@@ -238,7 +234,7 @@ kbd.hot {
   border-color: var(--primary);
   color: var(--text);
 }
-.btn.primary:hover {
+:where(html:not(.is-coarse-pointer)) .btn.primary:hover {
   background: var(--surface);
   color: var(--primary-hover);
 }
@@ -252,14 +248,10 @@ kbd.hot {
   margin: var(--section) 0 var(--space-3);
 }
 .section-head h2 {
-  font: var(--type-meta);
-  text-transform: uppercase;
-  letter-spacing: var(--track-caps);
   color: var(--text-muted);
   margin: 0;
 }
 .section-head .count {
-  font: var(--type-meta);
   color: var(--text-muted);
 }
 
@@ -278,14 +270,14 @@ kbd.hot {
   gap: var(--space-1);
   padding: var(--space-3);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   text-decoration: none;
   cursor: pointer;
   transition:
     border-color var(--duration) ease-out,
     background var(--duration) ease-out;
 }
-.card:hover {
+:where(html:not(.is-coarse-pointer)) .card:hover {
   border-color: var(--primary);
 }
 
@@ -293,36 +285,36 @@ kbd.hot {
   position: absolute;
   width: var(--space-1);
   height: var(--space-1);
-  opacity: 0.55;
+  opacity: var(--opacity-muted);
   pointer-events: none;
   transition: opacity var(--duration) ease-out;
 }
-.card:hover i {
+:where(html:not(.is-coarse-pointer)) .card:hover i {
   opacity: 1;
 }
 .card i.tl {
-  top: calc(var(--space-1) / 2);
-  left: calc(var(--space-1) / 2);
-  border-top: 1px solid var(--primary);
-  border-left: 1px solid var(--primary);
+  top: var(--space-1);
+  left: var(--space-1);
+  border-top: var(--border-width) solid var(--primary);
+  border-left: var(--border-width) solid var(--primary);
 }
 .card i.tr {
-  top: calc(var(--space-1) / 2);
-  right: calc(var(--space-1) / 2);
-  border-top: 1px solid var(--primary);
-  border-right: 1px solid var(--primary);
+  top: var(--space-1);
+  right: var(--space-1);
+  border-top: var(--border-width) solid var(--primary);
+  border-right: var(--border-width) solid var(--primary);
 }
 .card i.bl {
-  bottom: calc(var(--space-1) / 2);
-  left: calc(var(--space-1) / 2);
-  border-bottom: 1px solid var(--primary);
-  border-left: 1px solid var(--primary);
+  bottom: var(--space-1);
+  left: var(--space-1);
+  border-bottom: var(--border-width) solid var(--primary);
+  border-left: var(--border-width) solid var(--primary);
 }
 .card i.br {
-  bottom: calc(var(--space-1) / 2);
-  right: calc(var(--space-1) / 2);
-  border-bottom: 1px solid var(--primary);
-  border-right: 1px solid var(--primary);
+  bottom: var(--space-1);
+  right: var(--space-1);
+  border-bottom: var(--border-width) solid var(--primary);
+  border-right: var(--border-width) solid var(--primary);
 }
 
 .meta {
@@ -332,27 +324,21 @@ kbd.hot {
   flex-wrap: wrap;
 }
 .badge {
-  font: var(--type-meta);
-  text-transform: uppercase;
-  letter-spacing: var(--track-caps);
-  padding: calc(var(--space-1) / 4) calc(var(--space-1) / 2);
+  padding: 0 var(--space-1);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   color: var(--text-muted);
 }
 .org {
-  font: var(--type-meta);
   color: var(--text-muted);
 }
 
-.card h3 {
-  font: var(--type-title);
+.card h2 {
   margin: 0;
   color: var(--text);
 }
 .card p {
   margin: 0;
-  font: var(--type-body);
   color: var(--text);
 }
 
@@ -364,19 +350,11 @@ kbd.hot {
   grid-row: span 4;
   row-gap: var(--space-1);
 }
-.grid > .card h3 {
+.grid > .card h2 {
   text-wrap: balance;
 }
 .grid > .card p {
   text-wrap: pretty;
-}
-
-/* Constrain titles only when neighboring cards need matching line counts.
-   Stacked cards use the full available measure. */
-@media (min-width: 810px) {
-  .grid > .card h3 {
-    max-inline-size: var(--measure-work-title);
-  }
 }
 
 .cta {
@@ -385,7 +363,6 @@ kbd.hot {
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  font: var(--type-body);
   color: var(--text);
 }
 
@@ -399,9 +376,6 @@ kbd.hot {
   align-items: center;
   flex-wrap: wrap;
   gap: var(--space-1);
-  font: var(--type-meta);
-  text-transform: uppercase;
-  letter-spacing: var(--track-caps);
   color: var(--text-muted);
 }
 .site-footer a {
@@ -409,7 +383,7 @@ kbd.hot {
   text-decoration: none;
   transition: color var(--duration) ease-out;
 }
-.site-footer a:hover {
+:where(html:not(.is-coarse-pointer)) .site-footer a:hover {
   color: var(--primary);
 }
 .social {
@@ -438,9 +412,6 @@ kbd.hot {
   .card.close-card {
     margin-top: var(--section);
   }
-  .close-card .close-line {
-    max-width: none;
-  }
   .grid {
     grid-template-columns: 1fr;
   }
@@ -452,9 +423,11 @@ kbd.hot {
   }
 }
 
+/* One CSS safety net; scripts separately stop their animation loops. */
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *, ::before, ::after {
     transition: none !important;
+    animation: none !important;
   }
 }
 
@@ -462,7 +435,7 @@ kbd.hot {
    4. CASE STUDIES + LONG-FORM
    ========================================================================== */
 
-/* Put data-field="quiet" on <body> for reading pages; site.js dims the smoke. */
+/* Inner pages use data-field="off": static texture, no pointer response. */
 
 /* ------------------------------------------------------------ case header */
 .case-header {
@@ -475,12 +448,9 @@ kbd.hot {
 .case-meta {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--space-7), 1fr));
-  /* One hairline, the same width every border on the site draws, expressed off
-     the scale so no literal is typed. The gap is the rule: the container's
-     background shows through between the opaque cells. */
-  gap: calc(var(--space-1) / 12);
+  gap: var(--space-1);
   background: var(--line);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
 }
 .case-meta > div {
   background: var(--page);
@@ -491,7 +461,7 @@ kbd.hot {
   text-transform: uppercase;
   letter-spacing: var(--track-caps);
   color: var(--text-muted);
-  margin: 0 0 calc(var(--space-1) / 2);
+  margin: 0 0 var(--space-1);
 }
 .case-meta dd {
   margin: 0;
@@ -524,12 +494,12 @@ kbd.hot {
 .prose a {
   color: var(--primary);
   text-decoration: none;
-  border-bottom: 1px solid var(--line);
+  border-bottom: var(--border-width) solid var(--line);
   transition:
     border-color var(--duration) ease-out,
     color var(--duration) ease-out;
 }
-.prose a:hover {
+:where(html:not(.is-coarse-pointer)) .prose a:hover {
   border-color: var(--primary);
   color: var(--primary-hover);
 }
@@ -544,21 +514,21 @@ kbd.hot {
 .prose blockquote {
   margin: var(--space-4) 0;
   padding: 0 0 0 var(--space-3);
-  border-left: 2px solid var(--line);
-  font: var(--type-title);
+  border-left: var(--border-width) solid var(--line);
+  font: var(--type-body);
   color: var(--text);
 }
 .prose code {
   font: var(--type-meta);
-  padding: calc(var(--space-1) / 6) calc(var(--space-1) / 2);
+  padding: 0 var(--space-1);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
 }
 .prose pre {
   margin: 0 0 var(--space-3);
   padding: var(--space-2);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   overflow-x: auto;
 }
 .prose pre code {
@@ -574,7 +544,7 @@ kbd.hot {
   margin: var(--space-4) 0;
   padding: var(--space-1);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
 }
 .figure img,
 .figure video {
@@ -600,12 +570,12 @@ kbd.hot {
 }
 .metric .bar {
   display: flex;
-  gap: calc(var(--space-1) / 4);
+  gap: var(--space-1);
   margin-bottom: var(--space-1);
 }
 .metric .bar span {
   flex: 1;
-  height: calc(var(--space-1) / 3);
+  height: var(--space-1);
   background: var(--line);
 }
 .metric .bar span.on {
@@ -641,8 +611,8 @@ kbd.hot {
   color: var(--text);
 }
 .case-nav .next {
-  text-align: right;
-  align-items: flex-end;
+  text-align: left;
+  align-items: flex-start;
 }
 
 @media (max-width: 809.98px) {
@@ -730,38 +700,27 @@ kbd.hot {
   gap: var(--space-2);
   margin: 0 0 var(--space-3);
 }
-.work-head h2 {
-  font: var(--type-section);
+.work-head :is(h1, h2) {
   margin: 0;
 }
 .back-row {
   margin-bottom: var(--space-4);
 }
 .back {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1) var(--space-2);
-  font: var(--type-meta);
-  text-transform: uppercase;
-  letter-spacing: var(--track-caps);
   color: var(--text-muted);
   text-decoration: none;
-  background: var(--surface);
-  border: 1px solid var(--line);
   cursor: pointer;
   transition:
     border-color var(--duration) ease-out,
     background var(--duration) ease-out,
     color var(--duration) ease-out;
 }
-.back:hover {
+:where(html:not(.is-coarse-pointer)) .back:hover {
   border-color: var(--primary);
   color: var(--text);
 }
 
 button.btn {
-  font-family: inherit;
   cursor: pointer;
 }
 
@@ -773,7 +732,6 @@ button.btn {
   .view.is-entered .grid > * {
     transform: none !important;
     opacity: 1 !important;
-    transition: none !important;
   }
 }
 
@@ -786,7 +744,6 @@ button.btn {
   margin-bottom: var(--space-4);
 }
 .prose .lead {
-  font: var(--type-title);
   color: var(--text);
 }
 .portrait {
@@ -794,7 +751,7 @@ button.btn {
   padding: var(--space-1);
   position: relative;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
 }
 .portrait img {
   display: block;
@@ -828,14 +785,11 @@ button.btn {
   background: none;
   border: none;
   padding: 0;
-  font: var(--type-meta);
-  text-transform: uppercase;
-  letter-spacing: var(--track-caps);
   color: var(--text-muted);
   cursor: pointer;
   transition: color var(--duration) ease-out;
 }
-.theme-toggle:hover {
+:where(html:not(.is-coarse-pointer)) .theme-toggle:hover {
   color: var(--text);
 }
 
@@ -846,12 +800,12 @@ button.btn {
   width: var(--space-4);
   height: var(--space-2);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   transition:
     background var(--duration) ease-out,
     border-color var(--duration) ease-out;
 }
-.theme-toggle:hover .switch {
+:where(html:not(.is-coarse-pointer)) .theme-toggle:hover .switch {
   border-color: var(--primary);
 }
 /* `inset: 0` plus `margin: auto` parks the knob dead centre of the track on
@@ -865,7 +819,7 @@ button.btn {
   width: var(--space-1);
   height: var(--space-1);
   background: var(--primary);
-  transform: translateX(calc(var(--space-3) / 2));
+  transform: translateX(calc((var(--space-4) - var(--space-1) - var(--border-width) * 2) / 2));
   transition:
     transform var(--duration) ease-out,
     background var(--duration) ease-out;
@@ -874,14 +828,7 @@ button.btn {
    so only the dark state moves it back. */
 [data-theme="dark"] .switch::after {
   background: var(--text-muted);
-  transform: translateX(calc(var(--space-3) / -2));
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .switch,
-  .switch::after {
-    transition: none;
-  }
+  transform: translateX(calc((var(--space-4) - var(--space-1) - var(--border-width) * 2) / -2));
 }
 
 /* ==========================================================================
@@ -942,9 +889,8 @@ button.btn {
   transform: translateY(-100%);
   z-index: var(--layer-sticky);
   padding: var(--space-1) var(--space-2);
-  font: var(--type-meta);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-width) solid var(--line);
   color: var(--text);
   text-decoration: none;
 }
@@ -999,12 +945,9 @@ html:has(.about-page) {
   overscroll-behavior-y: none;
 }
 
-/* The shell scales back when the sheet rises, so it needs an origin and a
-   compositing hint. Its bottom padding becomes the pocket, below. */
+/* The shell’s bottom padding becomes the discovery pocket below. */
 .about-page .shell {
   padding-bottom: 0;
-  transform-origin: 50% 0;
-  will-change: transform;
 }
 
 /* The clip that hides the button. Its height is what .shell gave up — the same
@@ -1031,23 +974,14 @@ html:has(.about-page) {
 
 .egg-play,
 .egg-close {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1) var(--space-2);
-  font: var(--type-meta);
-  text-transform: uppercase;
-  letter-spacing: var(--track-caps);
   color: var(--text);
-  background: var(--surface);
-  border: 1px solid var(--line);
   cursor: pointer;
   transition:
     border-color var(--duration) ease-out,
     background var(--duration) ease-out;
 }
-.egg-play:hover,
-.egg-close:hover {
+:where(html:not(.is-coarse-pointer)) .egg-play:hover,
+:where(html:not(.is-coarse-pointer)) .egg-close:hover {
   border-color: var(--primary);
 }
 
@@ -1069,7 +1003,7 @@ html:has(.about-page) {
   z-index: var(--layer-overlay);
   transform: translateY(100%);
   background: var(--page);
-  border-top: 1px solid var(--line);
+  border-top: var(--border-width) solid var(--line);
   display: flex;
   flex-direction: column;
 }
@@ -1084,10 +1018,7 @@ html:has(.about-page) {
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-1) var(--space-3);
-  border-bottom: 1px solid var(--line);
-  font: var(--type-meta);
-  text-transform: uppercase;
-  letter-spacing: var(--track-caps);
+  border-bottom: var(--border-width) solid var(--line);
   color: var(--text-muted);
 }
 /* The status line takes the slack so Close sits hard right. */
@@ -1097,9 +1028,7 @@ html:has(.about-page) {
   color: var(--text-muted);
 }
 
-/* The game canvas cannot read a custom property — the design system lets JS
-   read four tokens and none of them are colours — so it carries its palette on
-   three ordinary colour properties instead. egg-game.js reads them back off
+/* The game canvas carries its approved palette on ordinary color properties. egg-game.js reads them back off
    computed style: `color` is a live brick, `caret-color` a spent one, and
    `accent-color` the paddle and ball. None of the three has any other effect
    on a <canvas>. */
@@ -1122,3 +1051,5 @@ html:has(.about-page) {
 }
 
 .card.close-card:not([href]):not([data-href]) { cursor: default; }
+
+.resume-icon { width: var(--space-2); height: var(--space-2); flex: none; }

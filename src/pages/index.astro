@@ -1,54 +1,83 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import WorkCard from "../components/WorkCard.astro";
-import { getPublishedWork, pad } from "../lib/work";
-
+import { getPublishedWork } from "../lib/work";
+import "../styles/prototype-card-stack.css";
 const published = await getPublishedWork();
-// The count is computed. Hand-writing "04 entries" is how it goes stale.
-const count = pad(published.length);
+const names: Record<string, string> = {
+  "verse-design-system": "Verse", microsoft: "Microsoft",
+  "mix-dialog": "Mix.dialog", "dragon-drive": "Dragon Drive",
+};
 ---
-
-<BaseLayout title="Erik Drouhard | Designer & Engineer" field="full">
+<BaseLayout title="Erik Drouhard | Designer & Engineer" field="full" bodyClass="stack-prototype stack-nav-right">
+  <div slot="overlay" class="stack-ambient" aria-hidden="true">
+    {published.map((_, i) => <i data-case-index={i}></i>)}
+  </div>
   <main id="main" class="view">
     <section class="hero">
-      <h1>
+      <h1 class="type-display">
         I’m <a href="https://www.linkedin.com/in/erikdrouhard">Erik Drouhard</a>, a Designer &amp;
         Engineer. I make complex software easier to understand and use, and build working
         prototypes that help teams decide what to make next.
       </h1>
 
-      <div class="skills-label">Key skills:</div>
+      <div class="skills-label type-meta">Key skills:</div>
       <div class="skills">
-        <span>AI product design</span>
-        <span>Human-agent interaction</span>
-        <span>UX engineering</span>
-        <span>Design systems</span>
-        <span>Working prototypes</span>
+        <span class="type-meta">AI product design</span>
+        <span class="type-meta">Human-agent interaction</span>
+        <span class="type-meta">UX engineering</span>
+        <span class="type-meta">Design systems</span>
+        <span class="type-meta">Working prototypes</span>
       </div>
     </section>
 
-    {/* id is the anchor /about/ links to. Renaming it breaks that link. */}
-    <div class="section-head" id="work">
-      <h2>Selected work</h2>
-      <span class="count">{count} entries</span>
-    </div>
 
-    <div class="grid">
-      {published.map((entry) => <WorkCard entry={entry} shortcut={entry.data.key} />)}
-    </div>
-
+    <section id="work" aria-label="Selected work">
+      <div class="section-head">
+        <h2 class="type-section">Selected work</h2>
+        <span class="count type-meta" id="stack-count">01 / {String(published.length).padStart(2, "0")}</span>
+      </div>
+      <div class="stack-layout">
+      <nav class="stack-tabs" aria-label="Choose a case study" hidden>
+        {published.map((entry, i) => <button class="type-meta" data-case-pick={i} data-case-index={i} aria-controls="preview" type="button" data-name={names[entry.id]} aria-keyshortcuts={String(i+1)} aria-pressed={i === 0}><kbd class="type-meta">{i+1}</kbd>{names[entry.id]}</button>)}
+      </nav>
+      <div class="deck">
+        <div class="stack-sizer">
+          {published.map((entry, i) => <article class="card deck-card" data-case-index={i}>
+            <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+            <div class="meta type-meta"><span class="org type-meta">{entry.data.org}</span><span class="stack-name">{names[entry.id]}</span></div>
+            <h2 class="type-section">{entry.data.title}</h2>
+            <p class="type-body">{entry.data.summary}</p>
+            <div class="stack-card-foot type-meta"><a class="stack-read type-body" href={`/work/${entry.id}/`} aria-label={`Read case study: ${names[entry.id]}`}>Read case study →</a><span>{String(i+1).padStart(2,'0')} / {String(published.length).padStart(2, "0")}</span></div>
+          </article>)}
+        </div>
+        <article class="card deck-card" id="preview" data-case-index="0" aria-label="Current case study" hidden></article>
+      </div>
+      <div class="stack-help" hidden>
+        <p class="type-meta stack-gesture-help">Drag to peek · Release to switch</p>
+        <label class="stack-shortcuts type-meta"><input type="checkbox" data-shortcuts-toggle checked /> Keyboard shortcuts (1–4, Enter to open)</label>
+      </div>
+      </div>
+      <noscript>
+        <nav class="stack-fallback type-body" aria-label="All case studies">
+          {published.map(entry => <a href={`/work/${entry.id}/`}>{names[entry.id]}</a>)}
+        </nav>
+      </noscript>
+      <span class="stack-status" id="stack-status" role="status" aria-live="polite"></span>
+    </section>
     <section
       class="card close-card"
       aria-label="Get in touch"
     >
       <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
-      <p class="close-line type-title">Let’s work through what your product needs next.</p>
+      <h2 class="close-line type-section">Let’s work through what your product needs next.</h2>
       <div class="close-actions">
-        <a class="btn primary" href="mailto:erikdrouhard@gmail.com"
-          >Get in touch <kbd data-key="C">C</kbd></a
+        <a class="btn primary type-label" href="mailto:erikdrouhard@gmail.com"
+          >Get in touch <kbd class="type-meta" data-key="C">C</kbd></a
         >
-        <a class="btn" href="/about/">More about Erik →</a>
+        <a class="btn type-label" href="/about/">More about Erik →</a>
       </div>
     </section>
+
   </main>
+  <script>import "../scripts/prototype-card-stack.js";</script>
 </BaseLayout>

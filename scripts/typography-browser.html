@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Typography contract test</title><h1>Typography contract test</h1><p>Read-only local browser adapter. The CI command discovers all source routes; this adapter covers the eight current routes.</p><button id="run">Run typography tests</button><p id="status" role="status">Ready</p><pre id="result"></pre><iframe id="probe" title="Typography test page" style="position:absolute;left:-10000px;border:0"></iframe><script type="module">
+import {TYPOGRAPHY_WIDTHS,validateTypography,collectTypography} from './typography-contract.mjs';
+const routes=['/','/about/','/prototype/card-stack/','/prototype/card-stack-right/','/work/microsoft/','/work/mix-dialog/','/work/verse-design-system/','/work/dragon-drive/'];
+const status=document.querySelector('#status'),frame=document.querySelector('#probe'),result=document.querySelector('#result');
+document.querySelector('#run').onclick=async()=>{
+ const original=localStorage.getItem('ed-theme');const report={snapshots:[],issues:[]};
+ try{for(const theme of ['light','dark']){localStorage.setItem('ed-theme',theme);for(const width of TYPOGRAPHY_WIDTHS){for(const path of routes){
+ status.textContent=`Testing ${path} at ${width}px · ${theme}`;frame.style.width=width+'px';frame.style.height='1000px';await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Frame load timeout')),30000);frame.onload=()=>{clearTimeout(timer);resolve();};frame.src=path;});await frame.contentDocument.fonts.ready;await new Promise(r=>setTimeout(r,400));
+ // The collector is a pure function over DOM globals; execute its unmodified source in the test frame.
+ const data=frame.contentWindow.eval('('+collectTypography.toString()+')()');report.snapshots.push(data);report.issues.push(...validateTypography(data));
+ }}}
+ const groups={};for(const i of report.issues){const key=i.path+' | '+i.rule;groups[key]=(groups[key]||0)+1;}
+ result.textContent=JSON.stringify({snapshots:report.snapshots.length,violations:report.issues.length,byPageAndRule:groups,examples:report.issues.slice(0,12)},null,2);status.textContent=report.issues.length?'FAIL — current website violates the requested hierarchy':'PASS';
+ }catch(e){status.textContent='HARNESS ERROR: '+e.message;}finally{if(original===null)localStorage.removeItem('ed-theme');else localStorage.setItem('ed-theme',original);}
+};
+</script></html>

@@ -87,8 +87,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <ClientRouter />
   </head>
 
-  <body data-field={field} data-accent={accent} data-case-color-prototype={import.meta.env.DEV && accent ? true : undefined} class={bodyClassName || undefined}>
-    <a class="skip-link" href="#main">Skip to content</a>
+  <body data-field={field} data-accent={accent} data-case-color-prototype={accent ? true : undefined} class={bodyClassName || undefined}>
+    <a class="skip-link type-meta" href="#main">Skip to content</a>
 
     {/*
       transition:persist keeps the same canvas node across navigations, so the

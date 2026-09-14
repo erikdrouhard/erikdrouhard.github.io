@@ -8,13 +8,15 @@
     "test": "node --test scripts/*.test.mjs",
     "build": "astro build",
     "preview": "astro preview --host 127.0.0.1",
-    "check": "astro check && node scripts/check-tokens.mjs",
+    "check": "astro check && node scripts/check-tokens.mjs && npm run check:typography",
     "check:tokens": "node scripts/check-tokens.mjs",
     "check:dist": "node scripts/check-dist.mjs",
     "verify": "npm run build && npm run check:dist",
     "check:acceptance": "node scripts/check-acceptance.mjs",
     "check:square": "node scripts/check-square-style.mjs",
-    "check:all": "npm test && npm run check:tokens && npm run build && npm run check:dist && npm run check:acceptance && npm run check:square"
+    "check:all": "npm test && npm run check:tokens && npm run check:typography && npm run build && npm run check:dist && npm run check:acceptance && npm run check:square",
+    "check:token-review": "node scripts/check-token-review.mjs",
+    "check:typography": "node scripts/check-typography.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
@@ -24,8 +26,10 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/compiler": "2.13.1",
     "@types/node": "^22.20.1",
     "playwright": "^1.62.0",
+    "postcss": "8.5.26",
     "typescript": "^5.9.0"
   }
 }

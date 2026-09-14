@@ -16,7 +16,7 @@ case-study-nav {
   top: 0;
   display: block;
   width: 100%;
-  border-block: 1px solid var(--line);
+  border-block: var(--border-width) solid var(--line);
   background: var(--page);
 }
 
@@ -60,7 +60,7 @@ case-study-nav[data-offset] {
      hairline the system writes, and it keeps the element itself at zero
      height so the scale never has to describe it. */
   height: 0;
-  border-bottom: 1px solid currentColor;
+  border-bottom: var(--border-width) solid currentColor;
   content: "";
   transform: scaleX(0);
   transform-origin: center;
@@ -73,11 +73,6 @@ case-study-nav[data-offset] {
 
 .case-study-nav__inner a[aria-current="location"]::after {
   transform: scaleX(1);
-}
-
-.case-study-nav__inner a:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
 }
 
 /* Guarded on the pointer in use, not on (hover: hover) and (pointer: fine),
@@ -94,8 +89,6 @@ case-study-nav[data-offset] {
   }
 
   .case-study-nav__inner {
-    width: 100%;
-    padding-inline: var(--case-gutter);
     gap: var(--space-3);
   }
 }
